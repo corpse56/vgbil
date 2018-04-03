@@ -109,6 +109,10 @@ namespace ExportBJ_XML.classes
             TValue value;
             return dictionary.TryGetValue(key, out value) ? value : defaultValue;
         }
-
+       
     }
+}
+namespace System.Runtime.CompilerServices
+{
+    public class ExtensionAttribute : Attribute { }
 }

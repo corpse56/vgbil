@@ -89,14 +89,14 @@ namespace Circulation
             return dbg.BookOrReader(data);
         }
 
-        internal int ISSUE(int IDEMP)
+        public int ISSUE(int IDEMP)
         {
             DBGeneral dbg = new DBGeneral();
             return dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
 
         }
 
-        internal void Prolong(int idiss, int days,int idemp)
+        public void Prolong(int idiss, int days, int idemp)
         {
             DBReader dbr = new DBReader();
             dbr.ProlongByIDISS(idiss,days,idemp);
@@ -105,20 +105,20 @@ namespace Circulation
 
 
 
-        internal void RemoveResponsibility(int idiss, int EmpID)
+        public void RemoveResponsibility(int idiss, int EmpID)
         {
             DBGeneral dbg = new DBGeneral();
             dbg.RemoveResposibility(idiss, EmpID);
             return;
         }
 
-        internal int GetAttendance()
+        public int GetAttendance()
         {
             DBGeneral dbg = new DBGeneral();
             return dbg.GetAttendance();
         }
 
-        internal void AddAttendance(ReaderVO reader)
+        public void AddAttendance(ReaderVO reader)
         {
             DBGeneral dbg = new DBGeneral();
             dbg.AddAttendance(reader);

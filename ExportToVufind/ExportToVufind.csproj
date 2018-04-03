@@ -8,10 +8,12 @@
     <ProjectGuid>{2B6E5A78-107E-4958-94B3-12EE837434DA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExportBJ_XML</RootNamespace>
-    <AssemblyName>ExportBJ_XML</AssemblyName>
+    <RootNamespace>ExportToVufind</RootNamespace>
+    <AssemblyName>ExportToVufind</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -131,7 +133,7 @@
     <None Include="Service References\test\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\test\ExportBJ_XML.test.ReaderInfo.datasource">
+    <None Include="Service References\test\ExportToVufind.test.ReaderInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\test\Reference.svcmap">

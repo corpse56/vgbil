@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Windows.Forms.VisualStyles;
 
-namespace Circulation
+namespace CirculationACC
 {
     public class DataGridViewDisableButtonColumn : DataGridViewButtonColumn
     {

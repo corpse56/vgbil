@@ -5,9 +5,9 @@ using System.Text;
 using System.Data;
 using System.Text.RegularExpressions;
 
-namespace Circulation
+namespace CirculationACC
 {
-    class DBReader : DB
+    public class DBReader : DB
     {
         public DBReader() { }
 
@@ -134,7 +134,7 @@ namespace Circulation
 
         }
 
-        internal DataTable GetReaderByFamily(string p)
+        public DataTable GetReaderByFamily(string p)
         {
             DA.SelectCommand.CommandText = "select NumberReader, FamilyName, [Name], FatherName,DateBirth, RegistrationCity,RegistrationStreet, " +
                                            " ISNULL(Email,'') from Readers..Main where lower(FamilyName) like lower('" + p + "')+'%'";
@@ -143,7 +143,7 @@ namespace Circulation
             return DS.Tables["t"];
         }
 
-        internal void AddPhoto(byte[] fotka)
+        public void AddPhoto(byte[] fotka)
         {
             DA.UpdateCommand.CommandText = "insert into Readers..Photo (IDReader,Photo) values (189245,@fotka)";
             DA.UpdateCommand.Parameters.AddWithValue("fotka", fotka);
@@ -151,7 +151,7 @@ namespace Circulation
             DA.UpdateCommand.ExecuteNonQuery();
             DA.UpdateCommand.Connection.Close();
         }
-        internal string GetEmail(ReaderVO reader)
+        public string GetEmail(ReaderVO reader)
         {
             DA.SelectCommand.CommandText = "select Email from Readers..Main where NumberReader = " + reader.ID;
             DataSet D = new DataSet();
@@ -189,7 +189,7 @@ namespace Circulation
             return Convert.ToDateTime(D.Tables["t"].Rows[0][0]).ToString("dd.MM.yyyy HH:mm");
         }
 
-        internal string GetRealIDByGuestBar(string bar)
+        public string GetRealIDByGuestBar(string bar)
         {
 
             DA.SelectCommand.CommandText = " SELECT top 1 A.IDReaderInput id FROM Readers..Input A " +
@@ -201,7 +201,7 @@ namespace Circulation
             return (DS.Tables["tt"].Rows[0]["id"].ToString() == "0") ? "-1" : DS.Tables["tt"].Rows[0]["id"].ToString();
         }
 
-        internal bool IsAlreadyMarked(string bar)
+        public bool IsAlreadyMarked(string bar)
         {
             DA.SelectCommand.CommandText = "SELECT * FROM " + DB.BASENAME + "..ATTENDANCE_ACC " +
                                                    " where Cast(Cast(DATEATT As VarChar(11)) As DateTime) = cast(cast(getdate() as varchar(11)) as datetime) " +
@@ -211,7 +211,7 @@ namespace Circulation
             return (t > 0) ? true : false;
         }
 
-        internal string GetComment(int IDReader)
+        public string GetComment(int IDReader)
         {
             DA.SelectCommand.CommandText = "SELECT Comment FROM " + DB.BASENAME + "..Comments_ACC " +
                                                    " where IDReader = " + IDReader;
@@ -221,7 +221,7 @@ namespace Circulation
             return DS.Tables["t"].Rows[0][0].ToString();
         }
 
-        internal void ChangeComment(int IDReader, string comment)
+        public void ChangeComment(int IDReader, string comment)
         {
             DA.SelectCommand.CommandText = "SELECT ID, Comment FROM " + DB.BASENAME + "..Comments_ACC " +
                                                    " where IDReader = " + IDReader;

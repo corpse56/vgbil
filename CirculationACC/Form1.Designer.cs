@@ -1,4 +1,4 @@
-namespace Circulation
+namespace CirculationACC
 {
     partial class Form1
     {
@@ -242,8 +242,8 @@ namespace Circulation
             // RPhoto
             // 
             this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RPhoto.ErrorImage = global::Circulation.Properties.Resources.nofoto;
-            this.RPhoto.InitialImage = global::Circulation.Properties.Resources.nofoto;
+            this.RPhoto.ErrorImage = global::CirculationACC.Properties.Resources.nofoto;
+            this.RPhoto.InitialImage = global::CirculationACC.Properties.Resources.nofoto;
             this.RPhoto.Location = new System.Drawing.Point(577, 12);
             this.RPhoto.Name = "RPhoto";
             this.RPhoto.Size = new System.Drawing.Size(93, 101);
@@ -421,8 +421,8 @@ namespace Circulation
             // pictureBox2
             // 
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox2.ErrorImage = global::Circulation.Properties.Resources.nofoto;
-            this.pictureBox2.InitialImage = global::Circulation.Properties.Resources.nofoto;
+            this.pictureBox2.ErrorImage = global::CirculationACC.Properties.Resources.nofoto;
+            this.pictureBox2.InitialImage = global::CirculationACC.Properties.Resources.nofoto;
             this.pictureBox2.Location = new System.Drawing.Point(593, 9);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(100, 105);

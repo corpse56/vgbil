@@ -5,7 +5,7 @@ using System.Text;
 using System.Data;
 using System.Drawing;
 
-namespace Circulation
+namespace CirculationACC
 {
     public class ReaderVO
     {
@@ -46,7 +46,7 @@ namespace Circulation
             }
             else
             {
-                this.Photo = Properties.Resources.nofoto;
+                this.Photo = LibflClassLibrary.Properties.Resources.nofoto;
             }
         }
 
@@ -80,7 +80,7 @@ namespace Circulation
             }
             else
             {
-                this.Photo = Properties.Resources.nofoto;
+                this.Photo = LibflClassLibrary.Properties.Resources.nofoto;
             }
         }
         public bool IsAlreadyIssuedMoreThanFourBooks()
@@ -103,13 +103,13 @@ namespace Circulation
         public Image Photo;
         public string FIO;
         public string BAR;
-        internal string GetEmail()
+        public string GetEmail()
         {
             DBReader dbr = new DBReader();
             return dbr.GetEmail(this);
         }
 
-        internal string GetLastDateEmail()
+        public string GetLastDateEmail()
         {
             DBReader dbr = new DBReader();
             return dbr.GetLastDateEmail(this);
@@ -146,13 +146,13 @@ namespace Circulation
 
         }
 
-        internal string GetComment()
+        public string GetComment()
         {
             DBReader dbr = new DBReader();
             return dbr.GetComment(this.ID);
         }
 
-        internal void ChangeComment(string comment)
+        public void ChangeComment(string comment)
         {
             DBReader dbr = new DBReader();
             dbr.ChangeComment(this.ID, comment);

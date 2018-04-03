@@ -6,11 +6,11 @@ using System.Data;
 
 namespace Circulation
 {
-    class DBReference:DB
+    public class DBReference:DB
     {
         public DBReference()
         { }
-        internal DataTable GetAllIssuedBook()
+        public DataTable GetAllIssuedBook()
         {
             DA.SelectCommand.CommandText = "select 1,C.PLAIN collate Cyrillic_general_ci_ai tit,D.PLAIN collate Cyrillic_general_ci_ai avt,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
                 " INV.SORT collate Cyrillic_general_ci_ai inv,A.DATE_ISSUE,A.DATE_RETURN," +
@@ -46,7 +46,7 @@ namespace Circulation
 
 
 
-        internal object GetAllOverdueBook()
+        public object GetAllOverdueBook()
         {
             DA.SelectCommand.CommandText = "select distinct 1,C.PLAIN collate Cyrillic_general_ci_ai tit,D.PLAIN collate Cyrillic_general_ci_ai avt,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
                 " INV.SORT collate Cyrillic_general_ci_ai inv,A.DATE_ISSUE,A.DATE_RETURN," +
@@ -85,7 +85,7 @@ namespace Circulation
             return DS.Tables["t"];
         }
 
-        internal object GetReaderHistory(ReaderVO reader)
+        public object GetReaderHistory(ReaderVO reader)
         {
             DA.SelectCommand.CommandText = "with hist as (select 1 ID,C.PLAIN collate Cyrillic_general_ci_ai tit,D.PLAIN collate Cyrillic_general_ci_ai avt," +
                 " INV.SORT collate Cyrillic_general_ci_ai inv,A.DATE_ISSUE,ret.DATEACTION DATE_RETURN" +
@@ -115,7 +115,7 @@ namespace Circulation
             return DS.Tables["t"];
         }
 
-        internal object GetAllBooks()
+        public object GetAllBooks()
         {
             DA.SelectCommand.CommandText =
                 " with S0 as " +
@@ -249,7 +249,7 @@ namespace Circulation
             return DS.Tables["t"];
         }
 
-        internal object GetBookNegotiability()
+        public object GetBookNegotiability()
         {
             DA.SelectCommand.CommandText = "with F1 as  " +
                                            " ( " +
@@ -296,7 +296,7 @@ namespace Circulation
             return DS.Tables["t"];
         }
 
-        internal object GetBooksWithRemovedResponsibility()
+        public object GetBooksWithRemovedResponsibility()
         {
             DA.SelectCommand.CommandText = " select 1,C.PLAIN collate Cyrillic_general_ci_ai tit,D.PLAIN collate Cyrillic_general_ci_ai avt,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
                 " INV.SORT collate Cyrillic_general_ci_ai inv,A.DATE_ISSUE,AA.DATEACTION,'ЦФК' fund " +
@@ -329,7 +329,7 @@ namespace Circulation
 
         }
 
-        internal object GetViolators()
+        public object GetViolators()
         {
             DA.SelectCommand.CommandText = "with vio as (select distinct 1 nn,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
                 " (case when (B.Email is null or B.Email = '') then 'false' else 'true' end) isemail," +

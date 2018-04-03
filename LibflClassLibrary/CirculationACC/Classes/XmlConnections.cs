@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.IO;
 
-namespace Circulation
+namespace CirculationACC
 {
     public class XmlConnections
     {

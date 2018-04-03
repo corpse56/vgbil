@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Net.Mail;
-namespace Circulation
+namespace CirculationACC
 {
     public partial class ReaderInformation : Form
     {

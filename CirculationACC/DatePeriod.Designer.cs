@@ -1,4 +1,4 @@
-namespace Circulation
+namespace CirculationACC
 {
     partial class DatePeriod
     {

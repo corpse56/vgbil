@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ExportBJ_XML.test {
+namespace ExportToVufind.test {
     using System.Runtime.Serialization;
     using System;
     
@@ -274,51 +274,51 @@ namespace ExportBJ_XML.test {
         
         // CODEGEN: Контракт генерации сообщений с именем NumberReader из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetReaderInfo", ReplyAction="*")]
-        ExportBJ_XML.test.GetReaderInfoResponse GetReaderInfo(ExportBJ_XML.test.GetReaderInfoRequest request);
+        ExportToVufind.test.GetReaderInfoResponse GetReaderInfo(ExportToVufind.test.GetReaderInfoRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем login из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/Authorize", ReplyAction="*")]
-        ExportBJ_XML.test.AuthorizeResponse Authorize(ExportBJ_XML.test.AuthorizeRequest request);
+        ExportToVufind.test.AuthorizeResponse Authorize(ExportToVufind.test.AuthorizeRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем strPassword из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/HashPass", ReplyAction="*")]
-        ExportBJ_XML.test.HashPassResponse HashPass(ExportBJ_XML.test.HashPassRequest request);
+        ExportToVufind.test.HashPassResponse HashPass(ExportToVufind.test.HashPassRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем login из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetLoginType", ReplyAction="*")]
-        ExportBJ_XML.test.GetLoginTypeResponse GetLoginType(ExportBJ_XML.test.GetLoginTypeRequest request);
+        ExportToVufind.test.GetLoginTypeResponse GetLoginType(ExportToVufind.test.GetLoginTypeRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем login из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetUser", ReplyAction="*")]
-        ExportBJ_XML.test.GetUserResponse GetUser(ExportBJ_XML.test.GetUserRequest request);
+        ExportToVufind.test.GetUserResponse GetUser(ExportToVufind.test.GetUserRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем IDSession из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/InsertIntoBasket", ReplyAction="*")]
-        ExportBJ_XML.test.InsertIntoBasketResponse InsertIntoBasket(ExportBJ_XML.test.InsertIntoBasketRequest request);
+        ExportToVufind.test.InsertIntoBasketResponse InsertIntoBasket(ExportToVufind.test.InsertIntoBasketRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем PINs из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/InsertArrayIntoBasket", ReplyAction="*")]
-        ExportBJ_XML.test.InsertArrayIntoBasketResponse InsertArrayIntoBasket(ExportBJ_XML.test.InsertArrayIntoBasketRequest request);
+        ExportToVufind.test.InsertArrayIntoBasketResponse InsertArrayIntoBasket(ExportToVufind.test.InsertArrayIntoBasketRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем IDDATA из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetExemplarStatus", ReplyAction="*")]
-        ExportBJ_XML.test.GetExemplarStatusResponse GetExemplarStatus(ExportBJ_XML.test.GetExemplarStatusRequest request);
+        ExportToVufind.test.GetExemplarStatusResponse GetExemplarStatus(ExportToVufind.test.GetExemplarStatusRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем id из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetBookStatus", ReplyAction="*")]
-        ExportBJ_XML.test.GetBookStatusResponse GetBookStatus(ExportBJ_XML.test.GetBookStatusRequest request);
+        ExportToVufind.test.GetBookStatusResponse GetBookStatus(ExportToVufind.test.GetBookStatusRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем id из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetBookInfoByID", ReplyAction="*")]
-        ExportBJ_XML.test.GetBookInfoByIDResponse GetBookInfoByID(ExportBJ_XML.test.GetBookInfoByIDRequest request);
+        ExportToVufind.test.GetBookInfoByIDResponse GetBookInfoByID(ExportToVufind.test.GetBookInfoByIDRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем invNumber из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetBookInfoByInvNumber", ReplyAction="*")]
-        ExportBJ_XML.test.GetBookInfoByInvNumberResponse GetBookInfoByInvNumber(ExportBJ_XML.test.GetBookInfoByInvNumberRequest request);
+        ExportToVufind.test.GetBookInfoByInvNumberResponse GetBookInfoByInvNumber(ExportToVufind.test.GetBookInfoByInvNumberRequest request);
         
         // CODEGEN: Контракт генерации сообщений с именем pwd из пространства имен http://tempuri.org/ не отмечен как обнуляемый
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ChangePWD", ReplyAction="*")]
-        ExportBJ_XML.test.ChangePWDResponse ChangePWD(ExportBJ_XML.test.ChangePWDRequest request);
+        ExportToVufind.test.ChangePWDResponse ChangePWD(ExportToVufind.test.ChangePWDRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -327,12 +327,12 @@ namespace ExportBJ_XML.test {
     public partial class GetReaderInfoRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetReaderInfo", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetReaderInfoRequestBody Body;
+        public ExportToVufind.test.GetReaderInfoRequestBody Body;
         
         public GetReaderInfoRequest() {
         }
         
-        public GetReaderInfoRequest(ExportBJ_XML.test.GetReaderInfoRequestBody Body) {
+        public GetReaderInfoRequest(ExportToVufind.test.GetReaderInfoRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -359,12 +359,12 @@ namespace ExportBJ_XML.test {
     public partial class GetReaderInfoResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetReaderInfoResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetReaderInfoResponseBody Body;
+        public ExportToVufind.test.GetReaderInfoResponseBody Body;
         
         public GetReaderInfoResponse() {
         }
         
-        public GetReaderInfoResponse(ExportBJ_XML.test.GetReaderInfoResponseBody Body) {
+        public GetReaderInfoResponse(ExportToVufind.test.GetReaderInfoResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -375,12 +375,12 @@ namespace ExportBJ_XML.test {
     public partial class GetReaderInfoResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public ExportBJ_XML.test.ReaderInfo GetReaderInfoResult;
+        public ExportToVufind.test.ReaderInfo GetReaderInfoResult;
         
         public GetReaderInfoResponseBody() {
         }
         
-        public GetReaderInfoResponseBody(ExportBJ_XML.test.ReaderInfo GetReaderInfoResult) {
+        public GetReaderInfoResponseBody(ExportToVufind.test.ReaderInfo GetReaderInfoResult) {
             this.GetReaderInfoResult = GetReaderInfoResult;
         }
     }
@@ -391,12 +391,12 @@ namespace ExportBJ_XML.test {
     public partial class AuthorizeRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Authorize", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.AuthorizeRequestBody Body;
+        public ExportToVufind.test.AuthorizeRequestBody Body;
         
         public AuthorizeRequest() {
         }
         
-        public AuthorizeRequest(ExportBJ_XML.test.AuthorizeRequestBody Body) {
+        public AuthorizeRequest(ExportToVufind.test.AuthorizeRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -427,12 +427,12 @@ namespace ExportBJ_XML.test {
     public partial class AuthorizeResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthorizeResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.AuthorizeResponseBody Body;
+        public ExportToVufind.test.AuthorizeResponseBody Body;
         
         public AuthorizeResponse() {
         }
         
-        public AuthorizeResponse(ExportBJ_XML.test.AuthorizeResponseBody Body) {
+        public AuthorizeResponse(ExportToVufind.test.AuthorizeResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -459,12 +459,12 @@ namespace ExportBJ_XML.test {
     public partial class HashPassRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="HashPass", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.HashPassRequestBody Body;
+        public ExportToVufind.test.HashPassRequestBody Body;
         
         public HashPassRequest() {
         }
         
-        public HashPassRequest(ExportBJ_XML.test.HashPassRequestBody Body) {
+        public HashPassRequest(ExportToVufind.test.HashPassRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -495,12 +495,12 @@ namespace ExportBJ_XML.test {
     public partial class HashPassResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="HashPassResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.HashPassResponseBody Body;
+        public ExportToVufind.test.HashPassResponseBody Body;
         
         public HashPassResponse() {
         }
         
-        public HashPassResponse(ExportBJ_XML.test.HashPassResponseBody Body) {
+        public HashPassResponse(ExportToVufind.test.HashPassResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -527,12 +527,12 @@ namespace ExportBJ_XML.test {
     public partial class GetLoginTypeRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetLoginType", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetLoginTypeRequestBody Body;
+        public ExportToVufind.test.GetLoginTypeRequestBody Body;
         
         public GetLoginTypeRequest() {
         }
         
-        public GetLoginTypeRequest(ExportBJ_XML.test.GetLoginTypeRequestBody Body) {
+        public GetLoginTypeRequest(ExportToVufind.test.GetLoginTypeRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -559,12 +559,12 @@ namespace ExportBJ_XML.test {
     public partial class GetLoginTypeResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetLoginTypeResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetLoginTypeResponseBody Body;
+        public ExportToVufind.test.GetLoginTypeResponseBody Body;
         
         public GetLoginTypeResponse() {
         }
         
-        public GetLoginTypeResponse(ExportBJ_XML.test.GetLoginTypeResponseBody Body) {
+        public GetLoginTypeResponse(ExportToVufind.test.GetLoginTypeResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -591,12 +591,12 @@ namespace ExportBJ_XML.test {
     public partial class GetUserRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetUser", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetUserRequestBody Body;
+        public ExportToVufind.test.GetUserRequestBody Body;
         
         public GetUserRequest() {
         }
         
-        public GetUserRequest(ExportBJ_XML.test.GetUserRequestBody Body) {
+        public GetUserRequest(ExportToVufind.test.GetUserRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -623,12 +623,12 @@ namespace ExportBJ_XML.test {
     public partial class GetUserResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetUserResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetUserResponseBody Body;
+        public ExportToVufind.test.GetUserResponseBody Body;
         
         public GetUserResponse() {
         }
         
-        public GetUserResponse(ExportBJ_XML.test.GetUserResponseBody Body) {
+        public GetUserResponse(ExportToVufind.test.GetUserResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -639,12 +639,12 @@ namespace ExportBJ_XML.test {
     public partial class GetUserResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public ExportBJ_XML.test.ReaderInfo GetUserResult;
+        public ExportToVufind.test.ReaderInfo GetUserResult;
         
         public GetUserResponseBody() {
         }
         
-        public GetUserResponseBody(ExportBJ_XML.test.ReaderInfo GetUserResult) {
+        public GetUserResponseBody(ExportToVufind.test.ReaderInfo GetUserResult) {
             this.GetUserResult = GetUserResult;
         }
     }
@@ -655,12 +655,12 @@ namespace ExportBJ_XML.test {
     public partial class InsertIntoBasketRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="InsertIntoBasket", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.InsertIntoBasketRequestBody Body;
+        public ExportToVufind.test.InsertIntoBasketRequestBody Body;
         
         public InsertIntoBasketRequest() {
         }
         
-        public InsertIntoBasketRequest(ExportBJ_XML.test.InsertIntoBasketRequestBody Body) {
+        public InsertIntoBasketRequest(ExportToVufind.test.InsertIntoBasketRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -691,12 +691,12 @@ namespace ExportBJ_XML.test {
     public partial class InsertIntoBasketResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="InsertIntoBasketResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.InsertIntoBasketResponseBody Body;
+        public ExportToVufind.test.InsertIntoBasketResponseBody Body;
         
         public InsertIntoBasketResponse() {
         }
         
-        public InsertIntoBasketResponse(ExportBJ_XML.test.InsertIntoBasketResponseBody Body) {
+        public InsertIntoBasketResponse(ExportToVufind.test.InsertIntoBasketResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -723,12 +723,12 @@ namespace ExportBJ_XML.test {
     public partial class InsertArrayIntoBasketRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="InsertArrayIntoBasket", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.InsertArrayIntoBasketRequestBody Body;
+        public ExportToVufind.test.InsertArrayIntoBasketRequestBody Body;
         
         public InsertArrayIntoBasketRequest() {
         }
         
-        public InsertArrayIntoBasketRequest(ExportBJ_XML.test.InsertArrayIntoBasketRequestBody Body) {
+        public InsertArrayIntoBasketRequest(ExportToVufind.test.InsertArrayIntoBasketRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -739,7 +739,7 @@ namespace ExportBJ_XML.test {
     public partial class InsertArrayIntoBasketRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public ExportBJ_XML.test.ArrayOfInt PINs;
+        public ExportToVufind.test.ArrayOfInt PINs;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public string IDSession;
@@ -747,7 +747,7 @@ namespace ExportBJ_XML.test {
         public InsertArrayIntoBasketRequestBody() {
         }
         
-        public InsertArrayIntoBasketRequestBody(ExportBJ_XML.test.ArrayOfInt PINs, string IDSession) {
+        public InsertArrayIntoBasketRequestBody(ExportToVufind.test.ArrayOfInt PINs, string IDSession) {
             this.PINs = PINs;
             this.IDSession = IDSession;
         }
@@ -759,12 +759,12 @@ namespace ExportBJ_XML.test {
     public partial class InsertArrayIntoBasketResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="InsertArrayIntoBasketResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.InsertArrayIntoBasketResponseBody Body;
+        public ExportToVufind.test.InsertArrayIntoBasketResponseBody Body;
         
         public InsertArrayIntoBasketResponse() {
         }
         
-        public InsertArrayIntoBasketResponse(ExportBJ_XML.test.InsertArrayIntoBasketResponseBody Body) {
+        public InsertArrayIntoBasketResponse(ExportToVufind.test.InsertArrayIntoBasketResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -791,12 +791,12 @@ namespace ExportBJ_XML.test {
     public partial class GetExemplarStatusRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetExemplarStatus", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetExemplarStatusRequestBody Body;
+        public ExportToVufind.test.GetExemplarStatusRequestBody Body;
         
         public GetExemplarStatusRequest() {
         }
         
-        public GetExemplarStatusRequest(ExportBJ_XML.test.GetExemplarStatusRequestBody Body) {
+        public GetExemplarStatusRequest(ExportToVufind.test.GetExemplarStatusRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -827,12 +827,12 @@ namespace ExportBJ_XML.test {
     public partial class GetExemplarStatusResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetExemplarStatusResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetExemplarStatusResponseBody Body;
+        public ExportToVufind.test.GetExemplarStatusResponseBody Body;
         
         public GetExemplarStatusResponse() {
         }
         
-        public GetExemplarStatusResponse(ExportBJ_XML.test.GetExemplarStatusResponseBody Body) {
+        public GetExemplarStatusResponse(ExportToVufind.test.GetExemplarStatusResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -859,12 +859,12 @@ namespace ExportBJ_XML.test {
     public partial class GetBookStatusRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetBookStatus", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetBookStatusRequestBody Body;
+        public ExportToVufind.test.GetBookStatusRequestBody Body;
         
         public GetBookStatusRequest() {
         }
         
-        public GetBookStatusRequest(ExportBJ_XML.test.GetBookStatusRequestBody Body) {
+        public GetBookStatusRequest(ExportToVufind.test.GetBookStatusRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -891,12 +891,12 @@ namespace ExportBJ_XML.test {
     public partial class GetBookStatusResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetBookStatusResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetBookStatusResponseBody Body;
+        public ExportToVufind.test.GetBookStatusResponseBody Body;
         
         public GetBookStatusResponse() {
         }
         
-        public GetBookStatusResponse(ExportBJ_XML.test.GetBookStatusResponseBody Body) {
+        public GetBookStatusResponse(ExportToVufind.test.GetBookStatusResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -923,12 +923,12 @@ namespace ExportBJ_XML.test {
     public partial class GetBookInfoByIDRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetBookInfoByID", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetBookInfoByIDRequestBody Body;
+        public ExportToVufind.test.GetBookInfoByIDRequestBody Body;
         
         public GetBookInfoByIDRequest() {
         }
         
-        public GetBookInfoByIDRequest(ExportBJ_XML.test.GetBookInfoByIDRequestBody Body) {
+        public GetBookInfoByIDRequest(ExportToVufind.test.GetBookInfoByIDRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -955,12 +955,12 @@ namespace ExportBJ_XML.test {
     public partial class GetBookInfoByIDResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetBookInfoByIDResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetBookInfoByIDResponseBody Body;
+        public ExportToVufind.test.GetBookInfoByIDResponseBody Body;
         
         public GetBookInfoByIDResponse() {
         }
         
-        public GetBookInfoByIDResponse(ExportBJ_XML.test.GetBookInfoByIDResponseBody Body) {
+        public GetBookInfoByIDResponse(ExportToVufind.test.GetBookInfoByIDResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -987,12 +987,12 @@ namespace ExportBJ_XML.test {
     public partial class GetBookInfoByInvNumberRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetBookInfoByInvNumber", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetBookInfoByInvNumberRequestBody Body;
+        public ExportToVufind.test.GetBookInfoByInvNumberRequestBody Body;
         
         public GetBookInfoByInvNumberRequest() {
         }
         
-        public GetBookInfoByInvNumberRequest(ExportBJ_XML.test.GetBookInfoByInvNumberRequestBody Body) {
+        public GetBookInfoByInvNumberRequest(ExportToVufind.test.GetBookInfoByInvNumberRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1023,12 +1023,12 @@ namespace ExportBJ_XML.test {
     public partial class GetBookInfoByInvNumberResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetBookInfoByInvNumberResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.GetBookInfoByInvNumberResponseBody Body;
+        public ExportToVufind.test.GetBookInfoByInvNumberResponseBody Body;
         
         public GetBookInfoByInvNumberResponse() {
         }
         
-        public GetBookInfoByInvNumberResponse(ExportBJ_XML.test.GetBookInfoByInvNumberResponseBody Body) {
+        public GetBookInfoByInvNumberResponse(ExportToVufind.test.GetBookInfoByInvNumberResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1055,12 +1055,12 @@ namespace ExportBJ_XML.test {
     public partial class ChangePWDRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="ChangePWD", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.ChangePWDRequestBody Body;
+        public ExportToVufind.test.ChangePWDRequestBody Body;
         
         public ChangePWDRequest() {
         }
         
-        public ChangePWDRequest(ExportBJ_XML.test.ChangePWDRequestBody Body) {
+        public ChangePWDRequest(ExportToVufind.test.ChangePWDRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1091,12 +1091,12 @@ namespace ExportBJ_XML.test {
     public partial class ChangePWDResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="ChangePWDResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ExportBJ_XML.test.ChangePWDResponseBody Body;
+        public ExportToVufind.test.ChangePWDResponseBody Body;
         
         public ChangePWDResponse() {
         }
         
-        public ChangePWDResponse(ExportBJ_XML.test.ChangePWDResponseBody Body) {
+        public ChangePWDResponse(ExportToVufind.test.ChangePWDResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1111,12 +1111,12 @@ namespace ExportBJ_XML.test {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public interface ServiceSoapChannel : ExportBJ_XML.test.ServiceSoap, System.ServiceModel.IClientChannel {
+    public interface ServiceSoapChannel : ExportToVufind.test.ServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public partial class ServiceSoapClient : System.ServiceModel.ClientBase<ExportBJ_XML.test.ServiceSoap>, ExportBJ_XML.test.ServiceSoap {
+    public partial class ServiceSoapClient : System.ServiceModel.ClientBase<ExportToVufind.test.ServiceSoap>, ExportToVufind.test.ServiceSoap {
         
         public ServiceSoapClient() {
         }
@@ -1138,165 +1138,165 @@ namespace ExportBJ_XML.test {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.GetReaderInfoResponse ExportBJ_XML.test.ServiceSoap.GetReaderInfo(ExportBJ_XML.test.GetReaderInfoRequest request) {
+        ExportToVufind.test.GetReaderInfoResponse ExportToVufind.test.ServiceSoap.GetReaderInfo(ExportToVufind.test.GetReaderInfoRequest request) {
             return base.Channel.GetReaderInfo(request);
         }
         
-        public ExportBJ_XML.test.ReaderInfo GetReaderInfo(string NumberReader) {
-            ExportBJ_XML.test.GetReaderInfoRequest inValue = new ExportBJ_XML.test.GetReaderInfoRequest();
-            inValue.Body = new ExportBJ_XML.test.GetReaderInfoRequestBody();
+        public ExportToVufind.test.ReaderInfo GetReaderInfo(string NumberReader) {
+            ExportToVufind.test.GetReaderInfoRequest inValue = new ExportToVufind.test.GetReaderInfoRequest();
+            inValue.Body = new ExportToVufind.test.GetReaderInfoRequestBody();
             inValue.Body.NumberReader = NumberReader;
-            ExportBJ_XML.test.GetReaderInfoResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).GetReaderInfo(inValue);
+            ExportToVufind.test.GetReaderInfoResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).GetReaderInfo(inValue);
             return retVal.Body.GetReaderInfoResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.AuthorizeResponse ExportBJ_XML.test.ServiceSoap.Authorize(ExportBJ_XML.test.AuthorizeRequest request) {
+        ExportToVufind.test.AuthorizeResponse ExportToVufind.test.ServiceSoap.Authorize(ExportToVufind.test.AuthorizeRequest request) {
             return base.Channel.Authorize(request);
         }
         
         public string Authorize(string login, string password) {
-            ExportBJ_XML.test.AuthorizeRequest inValue = new ExportBJ_XML.test.AuthorizeRequest();
-            inValue.Body = new ExportBJ_XML.test.AuthorizeRequestBody();
+            ExportToVufind.test.AuthorizeRequest inValue = new ExportToVufind.test.AuthorizeRequest();
+            inValue.Body = new ExportToVufind.test.AuthorizeRequestBody();
             inValue.Body.login = login;
             inValue.Body.password = password;
-            ExportBJ_XML.test.AuthorizeResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).Authorize(inValue);
+            ExportToVufind.test.AuthorizeResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).Authorize(inValue);
             return retVal.Body.AuthorizeResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.HashPassResponse ExportBJ_XML.test.ServiceSoap.HashPass(ExportBJ_XML.test.HashPassRequest request) {
+        ExportToVufind.test.HashPassResponse ExportToVufind.test.ServiceSoap.HashPass(ExportToVufind.test.HashPassRequest request) {
             return base.Channel.HashPass(request);
         }
         
         public string HashPass(string strPassword, string strSol) {
-            ExportBJ_XML.test.HashPassRequest inValue = new ExportBJ_XML.test.HashPassRequest();
-            inValue.Body = new ExportBJ_XML.test.HashPassRequestBody();
+            ExportToVufind.test.HashPassRequest inValue = new ExportToVufind.test.HashPassRequest();
+            inValue.Body = new ExportToVufind.test.HashPassRequestBody();
             inValue.Body.strPassword = strPassword;
             inValue.Body.strSol = strSol;
-            ExportBJ_XML.test.HashPassResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).HashPass(inValue);
+            ExportToVufind.test.HashPassResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).HashPass(inValue);
             return retVal.Body.HashPassResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.GetLoginTypeResponse ExportBJ_XML.test.ServiceSoap.GetLoginType(ExportBJ_XML.test.GetLoginTypeRequest request) {
+        ExportToVufind.test.GetLoginTypeResponse ExportToVufind.test.ServiceSoap.GetLoginType(ExportToVufind.test.GetLoginTypeRequest request) {
             return base.Channel.GetLoginType(request);
         }
         
         public string GetLoginType(string login) {
-            ExportBJ_XML.test.GetLoginTypeRequest inValue = new ExportBJ_XML.test.GetLoginTypeRequest();
-            inValue.Body = new ExportBJ_XML.test.GetLoginTypeRequestBody();
+            ExportToVufind.test.GetLoginTypeRequest inValue = new ExportToVufind.test.GetLoginTypeRequest();
+            inValue.Body = new ExportToVufind.test.GetLoginTypeRequestBody();
             inValue.Body.login = login;
-            ExportBJ_XML.test.GetLoginTypeResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).GetLoginType(inValue);
+            ExportToVufind.test.GetLoginTypeResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).GetLoginType(inValue);
             return retVal.Body.GetLoginTypeResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.GetUserResponse ExportBJ_XML.test.ServiceSoap.GetUser(ExportBJ_XML.test.GetUserRequest request) {
+        ExportToVufind.test.GetUserResponse ExportToVufind.test.ServiceSoap.GetUser(ExportToVufind.test.GetUserRequest request) {
             return base.Channel.GetUser(request);
         }
         
-        public ExportBJ_XML.test.ReaderInfo GetUser(string login) {
-            ExportBJ_XML.test.GetUserRequest inValue = new ExportBJ_XML.test.GetUserRequest();
-            inValue.Body = new ExportBJ_XML.test.GetUserRequestBody();
+        public ExportToVufind.test.ReaderInfo GetUser(string login) {
+            ExportToVufind.test.GetUserRequest inValue = new ExportToVufind.test.GetUserRequest();
+            inValue.Body = new ExportToVufind.test.GetUserRequestBody();
             inValue.Body.login = login;
-            ExportBJ_XML.test.GetUserResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).GetUser(inValue);
+            ExportToVufind.test.GetUserResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).GetUser(inValue);
             return retVal.Body.GetUserResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.InsertIntoBasketResponse ExportBJ_XML.test.ServiceSoap.InsertIntoBasket(ExportBJ_XML.test.InsertIntoBasketRequest request) {
+        ExportToVufind.test.InsertIntoBasketResponse ExportToVufind.test.ServiceSoap.InsertIntoBasket(ExportToVufind.test.InsertIntoBasketRequest request) {
             return base.Channel.InsertIntoBasket(request);
         }
         
         public bool InsertIntoBasket(int PIN, string IDSession) {
-            ExportBJ_XML.test.InsertIntoBasketRequest inValue = new ExportBJ_XML.test.InsertIntoBasketRequest();
-            inValue.Body = new ExportBJ_XML.test.InsertIntoBasketRequestBody();
+            ExportToVufind.test.InsertIntoBasketRequest inValue = new ExportToVufind.test.InsertIntoBasketRequest();
+            inValue.Body = new ExportToVufind.test.InsertIntoBasketRequestBody();
             inValue.Body.PIN = PIN;
             inValue.Body.IDSession = IDSession;
-            ExportBJ_XML.test.InsertIntoBasketResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).InsertIntoBasket(inValue);
+            ExportToVufind.test.InsertIntoBasketResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).InsertIntoBasket(inValue);
             return retVal.Body.InsertIntoBasketResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.InsertArrayIntoBasketResponse ExportBJ_XML.test.ServiceSoap.InsertArrayIntoBasket(ExportBJ_XML.test.InsertArrayIntoBasketRequest request) {
+        ExportToVufind.test.InsertArrayIntoBasketResponse ExportToVufind.test.ServiceSoap.InsertArrayIntoBasket(ExportToVufind.test.InsertArrayIntoBasketRequest request) {
             return base.Channel.InsertArrayIntoBasket(request);
         }
         
-        public bool InsertArrayIntoBasket(ExportBJ_XML.test.ArrayOfInt PINs, string IDSession) {
-            ExportBJ_XML.test.InsertArrayIntoBasketRequest inValue = new ExportBJ_XML.test.InsertArrayIntoBasketRequest();
-            inValue.Body = new ExportBJ_XML.test.InsertArrayIntoBasketRequestBody();
+        public bool InsertArrayIntoBasket(ExportToVufind.test.ArrayOfInt PINs, string IDSession) {
+            ExportToVufind.test.InsertArrayIntoBasketRequest inValue = new ExportToVufind.test.InsertArrayIntoBasketRequest();
+            inValue.Body = new ExportToVufind.test.InsertArrayIntoBasketRequestBody();
             inValue.Body.PINs = PINs;
             inValue.Body.IDSession = IDSession;
-            ExportBJ_XML.test.InsertArrayIntoBasketResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).InsertArrayIntoBasket(inValue);
+            ExportToVufind.test.InsertArrayIntoBasketResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).InsertArrayIntoBasket(inValue);
             return retVal.Body.InsertArrayIntoBasketResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.GetExemplarStatusResponse ExportBJ_XML.test.ServiceSoap.GetExemplarStatus(ExportBJ_XML.test.GetExemplarStatusRequest request) {
+        ExportToVufind.test.GetExemplarStatusResponse ExportToVufind.test.ServiceSoap.GetExemplarStatus(ExportToVufind.test.GetExemplarStatusRequest request) {
             return base.Channel.GetExemplarStatus(request);
         }
         
         public string GetExemplarStatus(string IDDATA, string BaseName) {
-            ExportBJ_XML.test.GetExemplarStatusRequest inValue = new ExportBJ_XML.test.GetExemplarStatusRequest();
-            inValue.Body = new ExportBJ_XML.test.GetExemplarStatusRequestBody();
+            ExportToVufind.test.GetExemplarStatusRequest inValue = new ExportToVufind.test.GetExemplarStatusRequest();
+            inValue.Body = new ExportToVufind.test.GetExemplarStatusRequestBody();
             inValue.Body.IDDATA = IDDATA;
             inValue.Body.BaseName = BaseName;
-            ExportBJ_XML.test.GetExemplarStatusResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).GetExemplarStatus(inValue);
+            ExportToVufind.test.GetExemplarStatusResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).GetExemplarStatus(inValue);
             return retVal.Body.GetExemplarStatusResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.GetBookStatusResponse ExportBJ_XML.test.ServiceSoap.GetBookStatus(ExportBJ_XML.test.GetBookStatusRequest request) {
+        ExportToVufind.test.GetBookStatusResponse ExportToVufind.test.ServiceSoap.GetBookStatus(ExportToVufind.test.GetBookStatusRequest request) {
             return base.Channel.GetBookStatus(request);
         }
         
         public string GetBookStatus(string id) {
-            ExportBJ_XML.test.GetBookStatusRequest inValue = new ExportBJ_XML.test.GetBookStatusRequest();
-            inValue.Body = new ExportBJ_XML.test.GetBookStatusRequestBody();
+            ExportToVufind.test.GetBookStatusRequest inValue = new ExportToVufind.test.GetBookStatusRequest();
+            inValue.Body = new ExportToVufind.test.GetBookStatusRequestBody();
             inValue.Body.id = id;
-            ExportBJ_XML.test.GetBookStatusResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).GetBookStatus(inValue);
+            ExportToVufind.test.GetBookStatusResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).GetBookStatus(inValue);
             return retVal.Body.GetBookStatusResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.GetBookInfoByIDResponse ExportBJ_XML.test.ServiceSoap.GetBookInfoByID(ExportBJ_XML.test.GetBookInfoByIDRequest request) {
+        ExportToVufind.test.GetBookInfoByIDResponse ExportToVufind.test.ServiceSoap.GetBookInfoByID(ExportToVufind.test.GetBookInfoByIDRequest request) {
             return base.Channel.GetBookInfoByID(request);
         }
         
         public string GetBookInfoByID(string id) {
-            ExportBJ_XML.test.GetBookInfoByIDRequest inValue = new ExportBJ_XML.test.GetBookInfoByIDRequest();
-            inValue.Body = new ExportBJ_XML.test.GetBookInfoByIDRequestBody();
+            ExportToVufind.test.GetBookInfoByIDRequest inValue = new ExportToVufind.test.GetBookInfoByIDRequest();
+            inValue.Body = new ExportToVufind.test.GetBookInfoByIDRequestBody();
             inValue.Body.id = id;
-            ExportBJ_XML.test.GetBookInfoByIDResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).GetBookInfoByID(inValue);
+            ExportToVufind.test.GetBookInfoByIDResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).GetBookInfoByID(inValue);
             return retVal.Body.GetBookInfoByIDResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.GetBookInfoByInvNumberResponse ExportBJ_XML.test.ServiceSoap.GetBookInfoByInvNumber(ExportBJ_XML.test.GetBookInfoByInvNumberRequest request) {
+        ExportToVufind.test.GetBookInfoByInvNumberResponse ExportToVufind.test.ServiceSoap.GetBookInfoByInvNumber(ExportToVufind.test.GetBookInfoByInvNumberRequest request) {
             return base.Channel.GetBookInfoByInvNumber(request);
         }
         
         public string GetBookInfoByInvNumber(string invNumber, string id) {
-            ExportBJ_XML.test.GetBookInfoByInvNumberRequest inValue = new ExportBJ_XML.test.GetBookInfoByInvNumberRequest();
-            inValue.Body = new ExportBJ_XML.test.GetBookInfoByInvNumberRequestBody();
+            ExportToVufind.test.GetBookInfoByInvNumberRequest inValue = new ExportToVufind.test.GetBookInfoByInvNumberRequest();
+            inValue.Body = new ExportToVufind.test.GetBookInfoByInvNumberRequestBody();
             inValue.Body.invNumber = invNumber;
             inValue.Body.id = id;
-            ExportBJ_XML.test.GetBookInfoByInvNumberResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).GetBookInfoByInvNumber(inValue);
+            ExportToVufind.test.GetBookInfoByInvNumberResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).GetBookInfoByInvNumber(inValue);
             return retVal.Body.GetBookInfoByInvNumberResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ExportBJ_XML.test.ChangePWDResponse ExportBJ_XML.test.ServiceSoap.ChangePWD(ExportBJ_XML.test.ChangePWDRequest request) {
+        ExportToVufind.test.ChangePWDResponse ExportToVufind.test.ServiceSoap.ChangePWD(ExportToVufind.test.ChangePWDRequest request) {
             return base.Channel.ChangePWD(request);
         }
         
         public void ChangePWD(int number, string pwd) {
-            ExportBJ_XML.test.ChangePWDRequest inValue = new ExportBJ_XML.test.ChangePWDRequest();
-            inValue.Body = new ExportBJ_XML.test.ChangePWDRequestBody();
+            ExportToVufind.test.ChangePWDRequest inValue = new ExportToVufind.test.ChangePWDRequest();
+            inValue.Body = new ExportToVufind.test.ChangePWDRequestBody();
             inValue.Body.number = number;
             inValue.Body.pwd = pwd;
-            ExportBJ_XML.test.ChangePWDResponse retVal = ((ExportBJ_XML.test.ServiceSoap)(this)).ChangePWD(inValue);
+            ExportToVufind.test.ChangePWDResponse retVal = ((ExportToVufind.test.ServiceSoap)(this)).ChangePWD(inValue);
         }
     }
 }

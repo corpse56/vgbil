@@ -50,6 +50,8 @@ public partial class _Default : System.Web.UI.Page
             this.Dep = DS.Tables["Employee"].Rows[0]["dname"].ToString();
             this.Session = sess;
             //DA.SelectCommand.Connection.Close();
+
+            
         }
         public string Name;
         public string Dep;

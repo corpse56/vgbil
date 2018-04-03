@@ -7,7 +7,7 @@
     <ProjectGuid>{2964A788-0667-4F91-93F0-1678D2269399}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Circulation</RootNamespace>
+    <RootNamespace>CirculationFCC</RootNamespace>
     <AssemblyName>CirculationFCC</AssemblyName>
     <ApplicationIcon>wizard.ico</ApplicationIcon>
     <FileUpgradeFlags>
@@ -109,17 +109,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\BJRecord.cs" />
-    <Compile Include="Classes\BookVO.cs" />
-    <Compile Include="Classes\DataGridViewDisableButtonCell.cs" />
-    <Compile Include="Classes\DB.cs" />
-    <Compile Include="Classes\DBGeneral.cs" />
-    <Compile Include="Classes\DBReader.cs" />
-    <Compile Include="Classes\Department.cs" />
-    <Compile Include="Classes\ReaderVO.cs" />
-    <Compile Include="Classes\Utils.cs" />
-    <Compile Include="Classes\XmlConnections.cs" />
-    <Compile Include="Classes\DBReference.cs" />
     <Compile Include="CrystalReport1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -127,7 +116,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataGridViewPrinter.cs" />
-    <Compile Include="Classes\DBBook.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -188,6 +176,11 @@
     <Compile Include="History.Designer.cs">
       <DependentUpon>History.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ReaderInformation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -240,13 +233,12 @@
       <DependentUpon>History.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ReaderInformation.resx">
-      <DependentUpon>ReaderInformation.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReaderInformation.resx">
+      <DependentUpon>ReaderInformation.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="RoundProgress.resx">
@@ -256,11 +248,6 @@
     <EmbeddedResource Include="ViewFullSizePhoto.resx">
       <DependentUpon>ViewFullSizePhoto.cs</DependentUpon>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -307,6 +294,12 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibflClassLibrary\LibflClassLibrary.csproj">
+      <Project>{CA4020F7-B048-4DFA-9E13-3E04DB83B093}</Project>
+      <Name>LibflClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
