@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Connections gg = "dddd">   
+    <base03>
+	Data Source=192.168.4.25,1443;Initial Catalog=EXPORTNEB;Persist Security Info=True;User ID=OAIUSER;Password=User_OAI;Connect Timeout=1200
+    </base03>
+    <MySQL>
+	Server=192.168.6.211;Port=3306;Character Set=utf8;Uid=root;Pwd=kerensky2015112;Database=neb;Connect Timeout=1200
+    </MySQL>
+    <base01>
+	Data Source=192.168.3.241;Initial Catalog=TECHNOLOG_VVV;Persist Security Info=True;User ID=OAIUSER;Password=User_OAI;Connect Timeout=1200
+    </base01>
+    <BJVVV>
+	Data Source=192.168.4.25,1443;Initial Catalog=BJVVV;Persist Security Info=True;User ID=ReaderOrd;Password=Reader_Order;Connect Timeout=1200
+    </BJVVV>
+</Connections>

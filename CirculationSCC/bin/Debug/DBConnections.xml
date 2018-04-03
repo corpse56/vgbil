@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Connections gg = "dddd">
+    <CirculationSCC>
+	Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=CirculationSCC;Password=Circulation_SCC_Password
+    </CirculationSCC>
+    <CirculationFCC1>
+	Data Source=127.0.0.1\SQL2008R2;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=CirculationFCC;Password=Circulation_FCC_Password
+    </CirculationFCC1>
+    <CirculationFCC2>
+	Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=sasha;Password=Corpse536
+    </CirculationFCC2>
+	
+</Connections>

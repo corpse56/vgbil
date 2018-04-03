@@ -1,0 +1,31 @@
+*
+{
+	margin:5px;
+	padding:0;
+}
+body
+{
+	background-color:Silver;
+}
+
+p.para
+{
+	text-align:justify;
+	text-indent:30px;
+	font-size:20px;
+}
+p.bold
+{
+	font-weight:bold;
+}
+p.ctr
+{
+	text-align:center;
+	font-size:20px;
+
+}
+Image.help
+{
+	width:90%;
+	height:90%;
+}

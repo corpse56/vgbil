@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Reservation_RDataSet" targetNamespace="http://tempuri.org/Reservation_RDataSet.xsd" xmlns:mstns="http://tempuri.org/Reservation_RDataSet.xsd" xmlns="http://tempuri.org/Reservation_RDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="Reservation_RConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="Reservation_RConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.Circulation.Properties.Settings.GlobalReference.Default.Reservation_RConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="Reservation_RConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT     zagp.PLAIN AS zag, avtp.PLAIN AS avt, B.INV AS inv, B.DATE_ISSUE AS iss, B.DATE_VOZV AS vzv
+FROM         BJVVV.dbo.DATAEXT AS A INNER JOIN
+                      ISSUED AS B ON B.INV COLLATE Cyrillic_General_CI_AI = A.SORT AND A.MNFIELD = 899 AND A.MSFIELD = '$p' LEFT OUTER JOIN
+                      BJVVV.dbo.DATAEXT AS zag ON zag.MNFIELD = 200 AND zag.MSFIELD = '$a' AND zag.IDMAIN = A.IDMAIN LEFT OUTER JOIN
+                      BJVVV.dbo.DATAEXT AS avt ON avt.MNFIELD = 700 AND avt.MSFIELD = '$a' AND avt.IDMAIN = A.IDMAIN INNER JOIN
+                      BJVVV.dbo.DATAEXTPLAIN AS zagp ON zagp.IDDATAEXT = zag.ID INNER JOIN
+                      BJVVV.dbo.DATAEXTPLAIN AS avtp ON avtp.IDDATAEXT = avt.ID
+WHERE     (B.IDREADER = 100731)</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="zag" DataSetColumn="zag" />
+              <Mapping SourceColumn="avt" DataSetColumn="avt" />
+              <Mapping SourceColumn="inv" DataSetColumn="inv" />
+              <Mapping SourceColumn="iss" DataSetColumn="iss" />
+              <Mapping SourceColumn="vzv" DataSetColumn="vzv" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="Reservation_RDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="Reservation_RDataSet" msprop:Generator_DataSetName="Reservation_RDataSet" msprop:EnableTableAdapterManager="True">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_TablePropName="DataTable1" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="zag" msprop:Generator_UserColumnName="zag" msprop:Generator_ColumnPropNameInRow="zag" msprop:Generator_ColumnVarNameInTable="columnzag" msprop:Generator_ColumnPropNameInTable="zagColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="avt" msprop:Generator_UserColumnName="avt" msprop:Generator_ColumnPropNameInRow="avt" msprop:Generator_ColumnVarNameInTable="columnavt" msprop:Generator_ColumnPropNameInTable="avtColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="inv" msprop:Generator_UserColumnName="inv" msprop:Generator_ColumnPropNameInRow="inv" msprop:Generator_ColumnVarNameInTable="columninv" msprop:Generator_ColumnPropNameInTable="invColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="iss" msprop:Generator_UserColumnName="iss" msprop:Generator_ColumnPropNameInRow="iss" msprop:Generator_ColumnVarNameInTable="columniss" msprop:Generator_ColumnPropNameInTable="issColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="vzv" msprop:Generator_UserColumnName="vzv" msprop:Generator_ColumnPropNameInRow="vzv" msprop:Generator_ColumnVarNameInTable="columnvzv" msprop:Generator_ColumnPropNameInTable="vzvColumn" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable2" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_RowClassName="DataTable2Row" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_TablePropName="DataTable2" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting">
+          <xs:complexType>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<Connections gg = "dddd">
+    <BJVVV>
+	Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=ReaderOrd;Password=Reader_Order;Connect Timeout=1200
+    </BJVVV>
+    <Entity>metadata=res://*/BooksModel.csdl|res://*/BooksModel.ssdl|res://*/BooksModel.msl;provider=System.Data.SqlClient;provider connection string="Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=sasha;Password=Corpse536;MultipleActiveResultSets=True"</Entity>	
+</Connections>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Circulation">
+</Property><Property Name="Файл решения" Value="D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Circulation.sln">
+</Property><Property Name="Файл параметров пользователя" Value="D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Circulation.suo">
+</Property><Property Name="Date" Value="14 мая 2010 г.">
+</Property><Property Name="Time" Value="14:17">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="Circulation.sln" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Circulation.sln">
+</Event><Event ErrorLevel="0" Project="" Source="Circulation.suo" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Circulation.suo">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Circulation.csproj" Description="Успешно создана резервная копия файла проекта: D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Circulation.csproj">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Circulation.csproj.user" Description="Резервная копия проекта успешно создана как D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Circulation.csproj.user">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="DataGridViewPrinter.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\DataGridViewPrinter.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form1.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form1.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form1.Designer.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form1.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form2.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form2.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form2.Designer.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form2.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form3.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form3.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form3.Designer.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form3.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form4.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form4.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form4.Designer.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form4.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form5.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form5.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form5.Designer.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form5.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="LostBook.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\LostBook.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="LostBook.Designer.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\LostBook.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="OPOSHelper.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\OPOSHelper.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Program.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Program.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Properties\AssemblyInfo.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Properties\Resources.Designer.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Properties\Resources.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Properties\Settings.Designer.cs" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Properties\Settings.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="app.config" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\app.config">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Properties\Settings.settings" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Properties\Settings.settings">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="wizard.ico" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\wizard.ico">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form1.resx" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form1.resx">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form2.resx" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form2.resx">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form3.resx" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form3.resx">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form4.resx" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form4.resx">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Form5.resx" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Form5.resx">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="LostBook.resx" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\LostBook.resx">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Properties\Resources.resx" Description="Успешно создана резервная копия файла D:\backup\d\from_perhaps_bad_disk\progs\Circulation\Backup\Properties\Resources.resx">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Circulation.csproj" Description="Проект успешно преобразован">
+</Event><Event ErrorLevel="3" Project="Circulation" Source="Circulation.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Circulation.sln" Description="Преобразование решения успешно завершено">
+</Event><Event ErrorLevel="3" Project="" Source="Circulation.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Circulation" Source="Circulation.csproj" Description="Сканирование завершено: обновление для файлов проекта не требуется.">
+</Event></UpgradeLog>

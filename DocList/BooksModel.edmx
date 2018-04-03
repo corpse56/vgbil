@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BooksModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="BooksModelStoreContainer">
+          <EntitySet Name="BooksView" EntityType="BooksModel.Store.BooksView" store:Type="Views" store:Schema="dbo" store:Name="BooksView">
+            <DefiningQuery>SELECT 
+      [BooksView].[idm] AS [idm], 
+      [BooksView].[title] AS [title], 
+      [BooksView].[author] AS [author], 
+      [BooksView].[pubhouse] AS [pubhouse], 
+      [BooksView].[placepub] AS [placepub], 
+      [BooksView].[dpublish] AS [dpublish], 
+      [BooksView].[volume] AS [volume], 
+      [BooksView].[illustrs] AS [illustrs], 
+      [BooksView].[size] AS [size], 
+      [BooksView].[note] AS [note], 
+      [BooksView].[notesp] AS [notesp], 
+      [BooksView].[inv] AS [inv], 
+      [BooksView].[cdc] AS [cdc], 
+      [BooksView].[bar] AS [bar], 
+      [BooksView].[id] AS [id]
+      FROM [dbo].[BooksView] AS [BooksView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="BooksViewFCC" EntityType="BooksModel.Store.BooksViewFCC" store:Type="Views" store:Schema="dbo" store:Name="BooksViewFCC">
+            <DefiningQuery>SELECT 
+      [BooksViewFCC].[idm] AS [idm], 
+      [BooksViewFCC].[title] AS [title], 
+      [BooksViewFCC].[author] AS [author], 
+      [BooksViewFCC].[pubhouse] AS [pubhouse], 
+      [BooksViewFCC].[placepub] AS [placepub], 
+      [BooksViewFCC].[dpublish] AS [dpublish], 
+      [BooksViewFCC].[volume] AS [volume], 
+      [BooksViewFCC].[illustrs] AS [illustrs], 
+      [BooksViewFCC].[size] AS [size], 
+      [BooksViewFCC].[note] AS [note], 
+      [BooksViewFCC].[notesp] AS [notesp], 
+      [BooksViewFCC].[inv] AS [inv], 
+      [BooksViewFCC].[cdc] AS [cdc], 
+      [BooksViewFCC].[bar] AS [bar], 
+      [BooksViewFCC].[id] AS [id]
+      FROM [dbo].[BooksViewFCC] AS [BooksViewFCC]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="BooksViewRED" EntityType="BooksModel.Store.BooksViewRED" store:Type="Views" store:Schema="dbo" store:Name="BooksViewRED">
+            <DefiningQuery>SELECT 
+      [BooksViewRED].[idm] AS [idm], 
+      [BooksViewRED].[title] AS [title], 
+      [BooksViewRED].[author] AS [author], 
+      [BooksViewRED].[pubhouse] AS [pubhouse], 
+      [BooksViewRED].[placepub] AS [placepub], 
+      [BooksViewRED].[dpublish] AS [dpublish], 
+      [BooksViewRED].[volume] AS [volume], 
+      [BooksViewRED].[illustrs] AS [illustrs], 
+      [BooksViewRED].[size] AS [size], 
+      [BooksViewRED].[note] AS [note], 
+      [BooksViewRED].[notesp] AS [notesp], 
+      [BooksViewRED].[inv] AS [inv], 
+      [BooksViewRED].[cdc] AS [cdc], 
+      [BooksViewRED].[bar] AS [bar], 
+      [BooksViewRED].[id] AS [id]
+      FROM [dbo].[BooksViewRED] AS [BooksViewRED]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Reservation_R.dbo.BooksView" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+      -->
+        <EntityType Name="BooksView">
+          <Key>
+            <PropertyRef Name="idm" />
+          </Key>
+          <Property Name="idm" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="3500" />
+          <Property Name="author" Type="nvarchar" MaxLength="3500" />
+          <Property Name="pubhouse" Type="nvarchar" MaxLength="3500" />
+          <Property Name="placepub" Type="nvarchar" MaxLength="3500" />
+          <Property Name="dpublish" Type="nvarchar" MaxLength="3500" />
+          <Property Name="volume" Type="nvarchar" MaxLength="3500" />
+          <Property Name="illustrs" Type="nvarchar" MaxLength="3500" />
+          <Property Name="size" Type="nvarchar" MaxLength="3500" />
+          <Property Name="note" Type="nvarchar" MaxLength="3500" />
+          <Property Name="notesp" Type="nvarchar" MaxLength="3500" />
+          <Property Name="inv" Type="nvarchar" MaxLength="3500" />
+          <Property Name="cdc" Type="nvarchar" MaxLength="3500" />
+          <Property Name="bar" Type="nvarchar" MaxLength="3500" />
+          <Property Name="id" Type="int" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Reservation_R.dbo.BooksViewFCC" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+      -->
+        <EntityType Name="BooksViewFCC">
+          <Key>
+            <PropertyRef Name="idm" />
+          </Key>
+          <Property Name="idm" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="3500" />
+          <Property Name="author" Type="nvarchar" MaxLength="3500" />
+          <Property Name="pubhouse" Type="nvarchar" MaxLength="3500" />
+          <Property Name="placepub" Type="nvarchar" MaxLength="3500" />
+          <Property Name="dpublish" Type="nvarchar" MaxLength="3500" />
+          <Property Name="volume" Type="nvarchar" MaxLength="3500" />
+          <Property Name="illustrs" Type="nvarchar" MaxLength="3500" />
+          <Property Name="size" Type="nvarchar" MaxLength="3500" />
+          <Property Name="note" Type="nvarchar" MaxLength="3500" />
+          <Property Name="notesp" Type="nvarchar" MaxLength="3500" />
+          <Property Name="inv" Type="nvarchar" MaxLength="3500" />
+          <Property Name="cdc" Type="nvarchar" MaxLength="3500" />
+          <Property Name="bar" Type="nvarchar" MaxLength="3500" />
+          <Property Name="id" Type="int" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Reservation_R.dbo.BooksViewRED" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
+      -->
+        <EntityType Name="BooksViewRED">
+          <Key>
+            <PropertyRef Name="idm" />
+          </Key>
+          <Property Name="idm" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="3500" />
+          <Property Name="author" Type="nvarchar" MaxLength="3500" />
+          <Property Name="pubhouse" Type="nvarchar" MaxLength="3500" />
+          <Property Name="placepub" Type="nvarchar" MaxLength="3500" />
+          <Property Name="dpublish" Type="nvarchar" MaxLength="3500" />
+          <Property Name="volume" Type="nvarchar" MaxLength="3500" />
+          <Property Name="illustrs" Type="nvarchar" MaxLength="3500" />
+          <Property Name="size" Type="nvarchar" MaxLength="3500" />
+          <Property Name="note" Type="nvarchar" MaxLength="3500" />
+          <Property Name="notesp" Type="nvarchar" MaxLength="3500" />
+          <Property Name="inv" Type="nvarchar" MaxLength="3500" />
+          <Property Name="cdc" Type="nvarchar" MaxLength="3500" />
+          <Property Name="bar" Type="nvarchar" MaxLength="3500" />
+          <Property Name="id" Type="int" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BooksModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="BookEntity">
+          <EntitySet Name="BooksView" EntityType="BooksModel.BooksView" />
+          <EntitySet Name="BooksViewRED" EntityType="BooksModel.BooksViewRED" />
+          <EntitySet Name="BooksViewFCC" EntityType="BooksModel.BooksViewFCC" /></EntityContainer>
+        <EntityType Name="BooksView">
+          <Key>
+            <PropertyRef Name="idm" />
+          </Key>
+          <Property Name="idm" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="author" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="pubhouse" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="placepub" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="dpublish" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="volume" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="illustrs" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="size" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="note" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="inv" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="cdc" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="bar" Type="String" MaxLength="3500" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" />
+          <Property Name="notesp" Type="String" Nullable="true" /></EntityType>
+        <EntityType Name="BooksViewRED">
+          <Key>
+            <PropertyRef Name="idm" /></Key>
+          <Property Name="idm" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="true" />
+          <Property Name="author" Type="String" Nullable="true" />
+          <Property Name="pubhouse" Type="String" Nullable="true" />
+          <Property Name="placepub" Type="String" Nullable="true" />
+          <Property Name="dpublish" Type="String" Nullable="true" />
+          <Property Name="volume" Type="String" Nullable="true" />
+          <Property Name="illustrs" Type="String" Nullable="true" />
+          <Property Name="size" Type="String" Nullable="true" />
+          <Property Name="note" Type="String" Nullable="true" />
+          <Property Name="inv" Type="String" Nullable="true" />
+          <Property Name="cdc" Type="String" Nullable="true" />
+          <Property Name="bar" Type="String" Nullable="true" />
+          <Property Name="id" Type="Int32" Nullable="true" />
+          <Property Name="notesp" Type="String" Nullable="true" /></EntityType>
+        <EntityType Name="BooksViewFCC">
+          <Key>
+            <PropertyRef Name="idm" /></Key>
+          <Property Name="idm" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="true" />
+          <Property Name="author" Type="String" Nullable="true" />
+          <Property Name="pubhouse" Type="String" Nullable="true" />
+          <Property Name="placepub" Type="String" Nullable="true" />
+          <Property Name="dpublish" Type="String" Nullable="true" />
+          <Property Name="volume" Type="String" Nullable="true" />
+          <Property Name="illustrs" Type="String" Nullable="true" />
+          <Property Name="size" Type="String" Nullable="true" />
+          <Property Name="note" Type="String" Nullable="true" />
+          <Property Name="notesp" Type="String" Nullable="true" />
+          <Property Name="inv" Type="String" Nullable="true" />
+          <Property Name="cdc" Type="String" Nullable="true" />
+          <Property Name="bar" Type="String" Nullable="true" />
+          <Property Name="id" Type="Int32" Nullable="true" /></EntityType></Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="BooksModelStoreContainer" CdmEntityContainer="BookEntity">
+          <EntitySetMapping Name="BooksView">
+            <EntityTypeMapping TypeName="IsTypeOf(BooksModel.BooksView)">
+              <MappingFragment StoreEntitySet="BooksView">
+                <ScalarProperty Name="notesp" ColumnName="notesp" />
+                <ScalarProperty Name="idm" ColumnName="idm" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="pubhouse" ColumnName="pubhouse" />
+                <ScalarProperty Name="placepub" ColumnName="placepub" />
+                <ScalarProperty Name="dpublish" ColumnName="dpublish" />
+                <ScalarProperty Name="volume" ColumnName="volume" />
+                <ScalarProperty Name="illustrs" ColumnName="illustrs" />
+                <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="inv" ColumnName="inv" />
+                <ScalarProperty Name="cdc" ColumnName="cdc" />
+                <ScalarProperty Name="bar" ColumnName="bar" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BooksViewRED">
+            <EntityTypeMapping TypeName="IsTypeOf(BooksModel.BooksViewRED)">
+              <MappingFragment StoreEntitySet="BooksViewRED">
+                <ScalarProperty Name="notesp" ColumnName="notesp" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="bar" ColumnName="bar" />
+                <ScalarProperty Name="cdc" ColumnName="cdc" />
+                <ScalarProperty Name="inv" ColumnName="inv" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="illustrs" ColumnName="illustrs" />
+                <ScalarProperty Name="volume" ColumnName="volume" />
+                <ScalarProperty Name="dpublish" ColumnName="dpublish" />
+                <ScalarProperty Name="placepub" ColumnName="placepub" />
+                <ScalarProperty Name="pubhouse" ColumnName="pubhouse" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="idm" ColumnName="idm" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="BooksViewFCC">
+            <EntityTypeMapping TypeName="IsTypeOf(BooksModel.BooksViewFCC)">
+              <MappingFragment StoreEntitySet="BooksViewFCC">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="bar" ColumnName="bar" />
+                <ScalarProperty Name="cdc" ColumnName="cdc" />
+                <ScalarProperty Name="inv" ColumnName="inv" />
+                <ScalarProperty Name="notesp" ColumnName="notesp" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="illustrs" ColumnName="illustrs" />
+                <ScalarProperty Name="volume" ColumnName="volume" />
+                <ScalarProperty Name="dpublish" ColumnName="dpublish" />
+                <ScalarProperty Name="placepub" ColumnName="placepub" />
+                <ScalarProperty Name="pubhouse" ColumnName="pubhouse" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="idm" ColumnName="idm" /></MappingFragment></EntityTypeMapping></EntitySetMapping></EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="BooksModel">
+        <EntityTypeShape EntityType="BooksModel.BooksView" Width="1.5" PointX="2.25" PointY="0.75" Height="3.9033007812499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="BooksModel.BooksViewRED" Width="1.5" PointX="4.5" PointY="0.625" Height="3.2357796223958335" />
+        <EntityTypeShape EntityType="BooksModel.BooksViewFCC" Width="1.5" PointX="9.25" PointY="1.5" Height="3.9033007812499996" /></Diagram></edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

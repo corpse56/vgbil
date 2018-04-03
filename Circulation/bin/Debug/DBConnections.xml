@@ -1,0 +1,8 @@
+<Connections>
+    <Reader>Provider=Microsoft.Jet.OLEDB.4.0;Data Source=D:\\backup\\d\\from_perhaps_bad_disk\\progs\\Circulation\\Readers.mdb</Reader>
+    <Zakaz>Data Source=192.168.4.25,1443;Initial Catalog=BRIT_SOVET;Persist Security Info=True;User ID=tmpbrit;Password=brittmp</Zakaz>
+    <BRIT_SOVET>Data Source=192.168.4.25,1443;Initial Catalog=BRIT_SOVET;Persist Security Info=True;User ID=tmpbrit;Password=brittmp</BRIT_SOVET>
+<Readers>Data Source=192.168.4.25,1443;Initial Catalog=Readers;Persist Security Info=True;User ID=ReaderOrd;Password=Reader_Order</Readers> 
+
+</Connections>
+<!--<ID=BJBritS_RW;Password=BJ_onlyReadWriteBS>-->

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Connections gg = "dddd">
+    <Reader>
+	Provider=Microsoft.Jet.OLEDB.4.0;Data Source=D:\\from_perhaps_bad_disk\\progs\\Circulation\\Readers.mdb
+    </Reader>
+    <Zakaz>
+	Data Source=192.168.3.241;Initial Catalog=BRIT_SOVET;Integrated Security=True
+    </Zakaz>
+    <BRIT_SOVET>
+	Data Source=192.168.3.241;Initial Catalog=BRIT_SOVET;Integrated Security=True
+    </BRIT_SOVET>
+</Connections>

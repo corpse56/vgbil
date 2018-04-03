@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="BRIT_SOVETDataSet" targetNamespace="http://tempuri.org/BRIT_SOVETDataSet.xsd" xmlns:mstns="http://tempuri.org/BRIT_SOVETDataSet.xsd" xmlns="http://tempuri.org/BRIT_SOVETDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" GeneratorFunctionsComponentClassName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" UserFunctionsComponentName="QueriesTableAdapter" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="BRIT_SOVETConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="BRIT_SOVETConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.Circulation.Properties.Settings.GlobalReference.Default.BRIT_SOVETConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="BRIT_SOVET_Crystal" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="BRIT_SOVET_Crystal (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.Circulation.Properties.Settings.GlobalReference.Default.BRIT_SOVET_Crystal" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="BRIT_SOVET_Crystal (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT     MAX(CASE WHEN tmp.mnf = 200 THEN pl END) AS Zag, MAX(CASE WHEN tmp.mnf = 200 THEN srt END) AS zag_sort, 
+                      MAX(CASE WHEN tmp.mnf = 700 THEN pl END) AS avt, MAX(CASE WHEN tmp.mnf = 700 THEN srt END) AS Автор_sort, 
+                      MAX(CASE WHEN tmp.mnf = 2100 THEN pl END) AS god, MAX(CASE WHEN tmp.mnf = 200 THEN pl END) AS Место_Издания, 
+                      MAX(CASE WHEN tmp.mnf = 200 THEN idm END) AS idmain, MAX(CASE WHEN tmp.mnf = 200 THEN iss END) AS issue, 
+                      MAX(CASE WHEN tmp.mnf = 200 THEN vozv END) AS vozv, MAX(CASE WHEN tmp.mnf = 200 THEN fct END) AS fact, 
+                      MAX(CASE WHEN tmp.mnf = 200 THEN zakid END) AS zkid, MAX(CASE WHEN tmp.mnf = 200 THEN zi END) AS zid, ((CASE WHEN (tmp.pnlt = 'false' OR
+                      tmp.pnlt IS NULL) THEN 'false' ELSE 'true' END)) AS penalty, ((CASE WHEN (tmp.rempnlt = 'false' OR
+                      tmp.rempnlt IS NULL) THEN 'false' ELSE 'true' END)) AS rempenalty, COUNT(*) AS EXPR1
+FROM         (SELECT     Z.ID AS zi, Z.IDMAIN AS zakid, Z.DATE_ISSUE AS iss, Z.DATE_VOZV AS vozv, Z.DATE_FACT_VOZV AS fct, Z.PENALTY AS pnlt, 
+                                              Z.REMPENALTY AS rempnlt, X.IDMAIN AS idm, X.PLAIN AS pl, Y.SORT AS srt, Y.MNFIELD AS mnf
+                       FROM          DATAEXTPLAIN AS X INNER JOIN
+                                              DATAEXT AS Y ON Y.ID = X.IDDATAEXT INNER JOIN
+                                              ZAKAZ AS Z ON Z.IDMAIN = Y.IDMAIN OR Z.IDMAIN_CONST = Y.IDMAIN AND Z.PENALTY = 'true'
+                       WHERE      (Y.MNFIELD = 200) AND (Y.MSFIELD = '$a') AND (Z.IDREADER = 149921) AND (Z.IDMAIN &lt;&gt; 0) AND (Z.REMPENALTY = 'false') AND 
+                                              (Z.PENALTY = 'true') OR
+                                              (Y.MNFIELD = 700) AND (Y.MSFIELD = '$a') AND (Z.IDREADER = 149921) AND (Z.IDMAIN &lt;&gt; 0) AND (Z.REMPENALTY = 'false') AND 
+                                              (Z.PENALTY = 'true') OR
+                                              (Y.MNFIELD = 2100) AND (Y.MSFIELD = '$d') AND (Z.IDREADER = 149921) AND (Z.IDMAIN &lt;&gt; 0) AND (Z.REMPENALTY = 'false') AND 
+                                              (Z.PENALTY = 'true') OR
+                                              (Y.MNFIELD = 210) AND (Y.MSFIELD = '$a') AND (Z.IDREADER = 149921) AND (Z.IDMAIN &lt;&gt; 0) AND (Z.REMPENALTY = 'false') AND 
+                                              (Z.PENALTY = 'true') OR
+                                              (Y.MNFIELD = 200) AND (Y.MSFIELD = '$a') AND (Z.IDREADER = 149921) AND (Z.IDMAIN = 0) AND (Z.PENALTY = 'true') OR
+                                              (Y.MNFIELD = 700) AND (Y.MSFIELD = '$a') AND (Z.IDREADER = 149921) AND (Z.IDMAIN = 0) AND (Z.PENALTY = 'true') OR
+                                              (Y.MNFIELD = 2100) AND (Y.MSFIELD = '$d') AND (Z.IDREADER = 149921) AND (Z.IDMAIN = 0) AND (Z.PENALTY = 'true') OR
+                                              (Y.MNFIELD = 210) AND (Y.MSFIELD = '$a') AND (Z.IDREADER = 149921) AND (Z.IDMAIN = 0) AND (Z.PENALTY = 'true') OR
+                                              (Y.MNFIELD = 200) AND (Y.MSFIELD = '$a') AND (Z.IDREADER = 149921) AND (Z.IDMAIN &lt;&gt; 0) AND (Z.REMPENALTY = 'false') AND 
+                                              (Z.PENALTY = 'false') OR
+                                              (Y.MNFIELD = 700) AND (Y.MSFIELD = '$a') AND (Z.IDREADER = 149921) AND (Z.IDMAIN &lt;&gt; 0) AND (Z.REMPENALTY = 'false') AND 
+                                              (Z.PENALTY = 'false') OR
+                                              (Y.MNFIELD = 2100) AND (Y.MSFIELD = '$d') AND (Z.IDREADER = 149921) AND (Z.IDMAIN &lt;&gt; 0) AND (Z.REMPENALTY = 'false') AND 
+                                              (Z.PENALTY = 'false') OR
+                                              (Y.MNFIELD = 210) AND (Y.MSFIELD = '$a') AND (Z.IDREADER = 149921) AND (Z.IDMAIN &lt;&gt; 0) AND (Z.REMPENALTY = 'false') AND 
+                                              (Z.PENALTY = 'false')
+                       GROUP BY Z.ID, Z.IDMAIN, X.PLAIN, Y.SORT, Y.MNFIELD, X.IDMAIN, Z.DATE_ISSUE, Z.DATE_VOZV, Z.DATE_FACT_VOZV, Z.PENALTY, 
+                                              Z.REMPENALTY) AS tmp
+GROUP BY idm, pnlt, rempnlt</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="Zag" DataSetColumn="Zag" />
+              <Mapping SourceColumn="Автор_sort" DataSetColumn="avt_sort" />
+              <Mapping SourceColumn="Место_Издания" DataSetColumn="mesto" />
+              <Mapping SourceColumn="idmain" DataSetColumn="idmain" />
+              <Mapping SourceColumn="issue" DataSetColumn="issue" />
+              <Mapping SourceColumn="vozv" DataSetColumn="vozv" />
+              <Mapping SourceColumn="fact" DataSetColumn="fact" />
+              <Mapping SourceColumn="zkid" DataSetColumn="zkid" />
+              <Mapping SourceColumn="zid" DataSetColumn="zid" />
+              <Mapping SourceColumn="penalty" DataSetColumn="penalty" />
+              <Mapping SourceColumn="rempenalty" DataSetColumn="rempenalty" />
+              <Mapping SourceColumn="zag_sort" DataSetColumn="zag_sort" />
+              <Mapping SourceColumn="avt" DataSetColumn="avt" />
+              <Mapping SourceColumn="god" DataSetColumn="god" />
+              <Mapping SourceColumn="EXPR1" DataSetColumn="EXPR1" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="BRIT_SOVETDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="BRIT_SOVETDataSet" msprop:Generator_DataSetName="BRIT_SOVETDataSet" msprop:EnableTableAdapterManager="True">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_TablePropName="DataTable1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Zag" msdata:ReadOnly="true" msdata:Caption="Заглавие" msprop:Generator_UserColumnName="Zag" msprop:Generator_ColumnPropNameInRow="Zag" msprop:Generator_ColumnVarNameInTable="columnZag" msprop:Generator_ColumnPropNameInTable="ZagColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="avt_sort" msdata:ReadOnly="true" msprop:Generator_UserColumnName="avt_sort" msprop:Generator_ColumnPropNameInRow="avt_sort" msprop:Generator_ColumnVarNameInTable="columnavt_sort" msprop:Generator_ColumnPropNameInTable="avt_sortColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="mesto" msdata:ReadOnly="true" msdata:Caption="Место издания" msprop:Generator_UserColumnName="mesto" msprop:Generator_ColumnPropNameInRow="mesto" msprop:Generator_ColumnVarNameInTable="columnmesto" msprop:Generator_ColumnPropNameInTable="mestoColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="idmain" msdata:ReadOnly="true" msprop:Generator_UserColumnName="idmain" msprop:Generator_ColumnPropNameInRow="idmain" msprop:Generator_ColumnVarNameInTable="columnidmain" msprop:Generator_ColumnPropNameInTable="idmainColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="issue" msdata:ReadOnly="true" msdata:Caption="Дата выдачи" msprop:Generator_UserColumnName="issue" msprop:Generator_ColumnPropNameInRow="issue" msprop:Generator_ColumnVarNameInTable="columnissue" msprop:Generator_ColumnPropNameInTable="issueColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="vozv" msdata:ReadOnly="true" msprop:Generator_UserColumnName="vozv" msprop:Generator_ColumnPropNameInRow="vozv" msprop:Generator_ColumnVarNameInTable="columnvozv" msprop:Generator_ColumnPropNameInTable="vozvColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="fact" msdata:ReadOnly="true" msprop:Generator_UserColumnName="fact" msprop:Generator_ColumnPropNameInRow="fact" msprop:Generator_ColumnVarNameInTable="columnfact" msprop:Generator_ColumnPropNameInTable="factColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="zkid" msdata:ReadOnly="true" msprop:Generator_UserColumnName="zkid" msprop:Generator_ColumnPropNameInRow="zkid" msprop:Generator_ColumnVarNameInTable="columnzkid" msprop:Generator_ColumnPropNameInTable="zkidColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="zid" msdata:ReadOnly="true" msprop:Generator_UserColumnName="zid" msprop:Generator_ColumnPropNameInRow="zid" msprop:Generator_ColumnVarNameInTable="columnzid" msprop:Generator_ColumnPropNameInTable="zidColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="penalty" msdata:ReadOnly="true" msprop:Generator_UserColumnName="penalty" msprop:Generator_ColumnPropNameInRow="penalty" msprop:Generator_ColumnVarNameInTable="columnpenalty" msprop:Generator_ColumnPropNameInTable="penaltyColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="5" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="rempenalty" msdata:ReadOnly="true" msprop:Generator_UserColumnName="rempenalty" msprop:Generator_ColumnPropNameInRow="rempenalty" msprop:Generator_ColumnVarNameInTable="columnrempenalty" msprop:Generator_ColumnPropNameInTable="rempenaltyColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="5" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="zag_sort" msdata:ReadOnly="true" msprop:Generator_UserColumnName="zag_sort" msprop:Generator_ColumnVarNameInTable="columnzag_sort" msprop:Generator_ColumnPropNameInRow="zag_sort" msprop:Generator_ColumnPropNameInTable="zag_sortColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="250" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="avt" msdata:ReadOnly="true" msprop:Generator_UserColumnName="avt" msprop:Generator_ColumnVarNameInTable="columnavt" msprop:Generator_ColumnPropNameInRow="avt" msprop:Generator_ColumnPropNameInTable="avtColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="god" msdata:ReadOnly="true" msprop:Generator_UserColumnName="god" msprop:Generator_ColumnVarNameInTable="columngod" msprop:Generator_ColumnPropNameInRow="god" msprop:Generator_ColumnPropNameInTable="godColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="EXPR1" msdata:ReadOnly="true" msprop:Generator_UserColumnName="EXPR1" msprop:Generator_ColumnVarNameInTable="columnEXPR1" msprop:Generator_ColumnPropNameInRow="EXPR1" msprop:Generator_ColumnPropNameInTable="EXPR1Column" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

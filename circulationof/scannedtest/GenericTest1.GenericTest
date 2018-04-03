@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenericTest name="GenericTest1" storage="d:\projects\circulationof\scannedtest\generictest1.generictest" id="5f0f77fc-23f8-41e6-afc6-eeaff3b9db79" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <Css projectStructure="" iteration="" />
+  <Owners>
+    <Owner name="" />
+  </Owners>
+  <Command filename="D:\projects\CirculationOF\bin\Debug\CirculationOF.exe" workingDirectory="%TestOutputDirectory%" />
+  <SummaryXmlFile path="%TestOutputDirectory%\&lt;Введите имя файла сводки&gt;" />
+</GenericTest>
