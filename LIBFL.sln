@@ -10,6 +10,7 @@ EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "personal", "personal\", "{6F89A4F3-4FC4-44DE-89C9-A74855CC2878}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
+		ProjectReferences = "{CA4020F7-B048-4DFA-9E13-3E04DB83B093}|LibflClassLibrary.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/personal"
 		Debug.AspNetCompiler.PhysicalPath = "personal\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\personal\"
@@ -84,6 +85,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenStat", "GenStat\GenStat.csproj", "{E890864F-D72A-4818-92FA-1EE7BF3F93C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportToVufind", "ExportToVufind\ExportToVufind.csproj", "{2B6E5A78-107E-4958-94B3-12EE837434DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CA4020F7-B048-4DFA-9E13-3E04DB83B093} = {CA4020F7-B048-4DFA-9E13-3E04DB83B093}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsertElectronicExemplarBJ", "InsertElectronicExemplarBJ\InsertElectronicExemplarBJ.csproj", "{E8ACD810-FA6A-4EDA-BDB3-2D7995D694E4}"
 EndProject

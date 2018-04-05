@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using ExportBJ_XML.classes.BJ;
 using ExportBJ_XML.classes.DB;
 using System.Data;
+using System.Windows.Forms;
 
 /// <summary>
 /// Сводное описание для BookInfo
@@ -20,12 +21,13 @@ namespace ExportBJ_XML.ValueObjects
         }
 
         public BJFields Fields = new BJFields();
-        
+
+        public string RTF;
         //public string Title { get; set; }
         //public BJField Author = new BJField();//700a,701a
         //public BJField Annotation = new BJField();//
 
-        public string ID { get; set; }
+        public int ID { get; set; }
 
 
         #region Экземпляры книги
@@ -39,6 +41,7 @@ namespace ExportBJ_XML.ValueObjects
             DatabaseWrapper dbw = new DatabaseWrapper(fund);
             DataTable table = dbw.GetBJRecord(pin);
             BJBookInfo result = new BJBookInfo();
+            result.ID = pin;
             ExemplarInfo exemplar = new ExemplarInfo(0);
             int CurrentIdData = 0;
             foreach (DataRow row in table.Rows)
@@ -61,6 +64,14 @@ namespace ExportBJ_XML.ValueObjects
                         exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
                     }
                 }
+            }
+            
+            table = dbw.GetRTF(pin);
+            RichTextBox rtb = new RichTextBox();
+            if (table.Rows.Count != 0)
+            {
+                rtb.Rtf = table.Rows[0][0].ToString();
+                result.RTF = rtb.Text;
             }
             return result;
         }

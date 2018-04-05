@@ -205,7 +205,14 @@ namespace ExportBJ_XML.QueriesText
                                " where IDAF = @AFLinkId";
             }
         }
-
+        public string GET_RTF
+        {
+            get
+            {
+                return " select RTF from " + this.Fund + "..RTF A " +
+                               " where IDMAIN = @idmain";
+            }
+        }
 
     }
 

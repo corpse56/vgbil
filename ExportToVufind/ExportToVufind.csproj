@@ -57,28 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="classes\AppSettings.cs" />
-    <Compile Include="classes\BJ\AuthoritativeFile.cs" />
-    <Compile Include="classes\BJ\BJField.cs" />
-    <Compile Include="classes\BJ\BJFields.cs" />
-    <Compile Include="classes\BJ\BJVuFindConverter.cs" />
-    <Compile Include="classes\BJ\BJBookInfo.cs" />
-    <Compile Include="classes\BJ\ElectronicExemplarInfo.cs" />
-    <Compile Include="classes\BJ\ExemplarAccess.cs" />
-    <Compile Include="classes\BJ\ExemplarInfo.cs" />
-    <Compile Include="classes\BJ\KeyValueMapping.cs" />
-    <Compile Include="classes\Vufind\VufindField.cs" />
-    <Compile Include="classes\DB\DatabaseWrapper.cs" />
-    <Compile Include="classes\DB\QueriesText.cs" />
-    <Compile Include="classes\Utilites\Extensions.cs" />
-    <Compile Include="classes\JBHVuFindConverter.cs" />
-    <Compile Include="classes\LitresVuFindConverter.cs" />
-    <Compile Include="classes\PearsonVuFindConverter.cs" />
-    <Compile Include="classes\PeriodTreeLoader.cs" />
-    <Compile Include="classes\PeriodVuFindConverter.cs" />
-    <Compile Include="classes\Vufind\VuFindConverter.cs" />
-    <Compile Include="classes\Vufind\VuFindConverterEventArgs.cs" />
-    <Compile Include="classes\Vufind\VuFindDoc.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -140,6 +118,12 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibflClassLibrary\LibflClassLibrary.csproj">
+      <Project>{CA4020F7-B048-4DFA-9E13-3E04DB83B093}</Project>
+      <Name>LibflClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

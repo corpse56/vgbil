@@ -275,5 +275,17 @@ namespace ExportBJ_XML.classes.DB
                 return this.ExecuteSelectQuery(dataAdapter);
             }
         }
+
+        internal DataTable GetRTF(int IDMAIN)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_RTF, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = IDMAIN;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
     }
 }

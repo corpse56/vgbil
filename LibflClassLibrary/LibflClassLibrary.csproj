@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\PersonalAccount\Bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -70,7 +74,28 @@
     <Compile Include="CirculationFCC\Classes\ReaderVO.cs" />
     <Compile Include="CirculationFCC\Classes\Utils.cs" />
     <Compile Include="CirculationFCC\Classes\XmlConnections.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="ExportToVufind\classes\AppSettings.cs" />
+    <Compile Include="ExportToVufind\classes\BJ\AuthoritativeFile.cs" />
+    <Compile Include="ExportToVufind\classes\BJ\BJBookInfo.cs" />
+    <Compile Include="ExportToVufind\classes\BJ\BJField.cs" />
+    <Compile Include="ExportToVufind\classes\BJ\BJFields.cs" />
+    <Compile Include="ExportToVufind\classes\BJ\BJVuFindConverter.cs" />
+    <Compile Include="ExportToVufind\classes\BJ\ElectronicExemplarInfo.cs" />
+    <Compile Include="ExportToVufind\classes\BJ\ExemplarAccess.cs" />
+    <Compile Include="ExportToVufind\classes\BJ\ExemplarInfo.cs" />
+    <Compile Include="ExportToVufind\classes\BJ\KeyValueMapping.cs" />
+    <Compile Include="ExportToVufind\classes\DB\DatabaseWrapper.cs" />
+    <Compile Include="ExportToVufind\classes\DB\QueriesText.cs" />
+    <Compile Include="ExportToVufind\classes\JBHVuFindConverter.cs" />
+    <Compile Include="ExportToVufind\classes\LitresVuFindConverter.cs" />
+    <Compile Include="ExportToVufind\classes\PearsonVuFindConverter.cs" />
+    <Compile Include="ExportToVufind\classes\PeriodTreeLoader.cs" />
+    <Compile Include="ExportToVufind\classes\PeriodVuFindConverter.cs" />
+    <Compile Include="ExportToVufind\classes\Utilites\Extensions.cs" />
+    <Compile Include="ExportToVufind\classes\Vufind\VuFindConverter.cs" />
+    <Compile Include="ExportToVufind\classes\Vufind\VuFindConverterEventArgs.cs" />
+    <Compile Include="ExportToVufind\classes\Vufind\VuFindDoc.cs" />
+    <Compile Include="ExportToVufind\classes\Vufind\VufindField.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
