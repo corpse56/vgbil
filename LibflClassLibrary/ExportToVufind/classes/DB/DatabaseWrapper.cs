@@ -287,5 +287,30 @@ namespace ExportBJ_XML.classes.DB
                 return this.ExecuteSelectQuery(dataAdapter);
             }
         }
+
+        internal DataTable IsIssuedOrOrderedEmployee(int IDMAIN, int IDDATA)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_ISSUED_OR_ORDERED_EMPLOYEE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = IDMAIN;
+                dataAdapter.SelectCommand.Parameters.Add("iddata", SqlDbType.Int).Value = IDDATA;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
+        internal DataTable IsAlligat(int IDDATA)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_ALLIGAT, connection);
+                dataAdapter.SelectCommand.Parameters.Add("iddata", SqlDbType.Int).Value = IDDATA;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
     }
 }

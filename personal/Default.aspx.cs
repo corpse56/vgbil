@@ -123,6 +123,24 @@ public partial class _Default : System.Web.UI.Page
             j++;
             foreach (ExemplarInfo exemplar in book.Exemplars)
             {
+                string location = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];
+                StringBuilder Status = new StringBuilder();
+                if ((location == "Книгохранение") )
+                {
+                    Status.Append("Нажмите ссылку \"Заказать\"");
+                }
+                else if (location == "Служебные подразделения")
+                {
+                    Status.Append("Экземпляр находится в службном подразделении. Попробуйте заказать позже.");
+                }
+                else
+                {
+                    Status.AppendFormat("Книга находится в открытом доступе в зале {0}.", location);
+                }
+
+                if (exemplar.IsIssuedOrOrderedEmployee())
+                {
+                }
                 DataRow row = table.NewRow();
                 row[0] = book.ID;
                 row[1] = j;
@@ -131,15 +149,77 @@ public partial class _Default : System.Web.UI.Page
                 row[4] = book.Fields["700$a"].ToString();
                 row[5] = exemplar.Fields["899$p"].ToString();
                 row[6] = exemplar.Fields["899$x"].ToString();
-                row[7] = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];
+                row[7] = Status.ToString();//
+                row[10] = exemplar.IdData;
                 table.Rows.Add(row);
             }
         }
 
         return table;
     }
-   
 
+    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        string argument = e.CommandArgument.ToString();
+        //e.CommandName;
+        object check = e.CommandSource;
+        switch (e.CommandName)
+        {
+            case "del":
+                break;
+            case "ord":
+                break;
+        }
+
+
+    }
+   
+    protected void gwBasket_DataBound(object sender, EventArgs e)
+    {
+        for (int i = gwBasket.Rows.Count - 1; i > 0; i--)
+        {
+            GridViewRow row = gwBasket.Rows[i];
+            GridViewRow previousRow = gwBasket.Rows[i - 1];
+
+            for (int j = 1; j <= 4; j++)//мержим заглавие, автора, бибописание и номер.
+            {
+                if (row.Cells[0].Text == previousRow.Cells[0].Text)
+                {
+                    if (previousRow.Cells[j].RowSpan == 0)
+                    {
+                        if (row.Cells[j].RowSpan == 0)
+                        {
+                            previousRow.Cells[j].RowSpan += 2;
+                        }
+                        else
+                        {
+                            previousRow.Cells[j].RowSpan = row.Cells[j].RowSpan + 1;
+                        }
+                        row.Cells[j].Visible = false;
+                    }
+                }
+            }
+        }
+    }
+    protected void gwBasket_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        //if (e.Row.RowType == DataControlRowType.DataRow)
+        //{
+        //    if (e.Row.RowIndex % 4 == 0)
+        //    {
+        //        e.Row.Cells[0].Attributes.Add("rowspan", "4");
+        //    }
+        //    else
+        //    {
+        //        e.Row.Cells[0].Visible = false;
+        //    }
+        //}
+    }
+
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+
+    }
     public string GetStatus(string ids,string refu)
     {
         DataSet DS = new DataSet();
@@ -422,113 +502,5 @@ public partial class _Default : System.Web.UI.Page
         //sdvig.DeleteCommand.ExecuteNonQuery();
 
     }
-    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
-    {
-        object check = e.CommandArgument;
-        check = e.CommandName;
-        check = e.CommandSource;
-        
-    }
-    protected void Button2_Click(object sender, EventArgs e)
-    {
 
-    }
-    protected void gwBasket_DataBound(object sender, EventArgs e)
-    {
-        for (int i = gwBasket.Rows.Count - 1; i > 0; i--)
-        {
-            GridViewRow row = gwBasket.Rows[i];
-            GridViewRow previousRow = gwBasket.Rows[i - 1];
-            //if (previousRow.Cells[0].Text == row.Cells[0].Text)
-            //{
-            //    if (previousRow.Cells[2].RowSpan == 0)
-            //    {
-            //        if (row.Cells[2].RowSpan == 0)
-            //        {
-            //            previousRow.Cells[2].RowSpan += 2;
-            //        }
-            //        else
-            //        {
-            //            previousRow.Cells[2].RowSpan = row.Cells[2].RowSpan + 1;
-            //        }
-            //        row.Cells[2].Visible = false;
-            //    }
-
-            //}
-
-            for (int j = 1; j <= 4; j++)
-            {
-                
-                if (row.Cells[0].Text == previousRow.Cells[0].Text)
-                {
-                    if (previousRow.Cells[j].RowSpan == 0)
-                    {
-                        if (row.Cells[j].RowSpan == 0)
-                        {
-                            previousRow.Cells[j].RowSpan += 2;
-                        }
-                        else
-                        {
-                            previousRow.Cells[j].RowSpan = row.Cells[j].RowSpan + 1;
-                        }
-                        row.Cells[j].Visible = false;
-                    }
-                }
-            }
-        }
-        //string currentPIN = gwBasket.Rows[0].Cells[0].Text;
-        //int currentRowSpan = 0;
-        //int rowCounter = 0;
-        //int rowStart = 0;
-        //foreach (GridViewRow row in gwBasket.Rows)
-        //{
-
-        //    if (row.Cells[0].Text != currentPIN)
-        //    {
-        //        gwBasket.Rows[rowStart].Cells[1].Attributes.Add("rowspan", currentRowSpan.ToString());
-        //        //gwBasket.Rows[rowStart].Cells[2].Attributes.Add("rowspan", currentRowSpan.ToString());
-        //        //gwBasket.Rows[rowStart].Cells[3].Attributes.Add("rowspan", currentRowSpan.ToString());
-        //        currentRowSpan = 1;
-        //        rowStart = rowCounter;
-        //        currentPIN = row.Cells[0].Text;
-        //    }
-        //    else
-        //    {
-
-        //        currentRowSpan++;
-        //    }
-        //    rowCounter++;
-        //}
-        //gwBasket.Rows[3].Cells[2].Text = "111";
-        //gwBasket.Rows[3].Cells[2].Attributes.Add("rowspan", "3");
-        //gwBasket.Rows[4].Cells[2].Visible = false;
-        //gwBasket.Rows[5].Cells[2].Visible = false;
-
-    }
-    protected void gwBasket_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        if (e.Row.RowType == DataControlRowType.DataRow)
-        {
-            if (e.Row.RowIndex % 4 == 0)
-            {
-                e.Row.Cells[0].Attributes.Add("rowspan", "4");
-            }
-            else
-            {
-                e.Row.Cells[0].Visible = false;
-            }
-        }
-
-        //if (e.Row.RowType == DataControlRowType.DataRow)
-        //{
-        //    if (e.Row.RowIndex % 4 == 0)
-        //    {
-        //        e.Row.Cells[0].Attributes.Add("rowspan", "4");
-        //    }
-        //    else
-        //    {
-        //        e.Row.Cells[0].Visible = false;
-        //    }
-        //}
-    }
 }

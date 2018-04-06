@@ -213,7 +213,26 @@ namespace ExportBJ_XML.QueriesText
                                " where IDMAIN = @idmain";
             }
         }
-
+        public string IS_ISSUED_OR_ORDERED_EMPLOYEE
+        {
+            get
+            {
+                return " select * from Reservation_E..Orders A " +
+                               " where IDDATA = @iddata";
+            }
+        }
+        public string IS_ALLIGAT//запрос не дописан
+        {
+            get
+            {
+                return " select * from "+this.Fund+"..DATAEXT A " +
+                        " where exists (select 1 from "+this.Fund+"..DATAEXT B on)"+
+                        " and A.IDDATA = @iddata and A.MNFIELD = 899 and A.MSFIELD = '$p' "+
+                        ""+
+                        ""+
+                               " where IDDATA = @iddata";
+            }
+        }
     }
 
 

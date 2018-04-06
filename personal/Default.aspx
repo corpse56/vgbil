@@ -100,6 +100,14 @@
                                         <HeaderStyle BackColor="Silver" />
                                         </asp:BoundField>
 
+                                        <asp:TemplateField HeaderText="Заказ" >
+                                        <HeaderStyle BackColor="Silver" />
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="lbdelete" runat="server" CommandName="ord" 
+                                                    Text="Заказать"  CommandArgument='<%#Eval("IDDATA")%>' >
+                                                </asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Удаление" >
                                         <HeaderStyle BackColor="Silver" />
                                             <ItemTemplate>
@@ -108,6 +116,11 @@
                                                 </asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:BoundField
+                                         DataField="IDDATA" >
+                                            <HeaderStyle CssClass="hiddencol" />
+                                            <ItemStyle CssClass="hiddencol" />
+                                        </asp:BoundField>                                        
                                     </Columns>
 
                                     

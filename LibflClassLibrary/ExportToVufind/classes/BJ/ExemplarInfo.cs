@@ -32,6 +32,12 @@ namespace ExportBJ_XML.ValueObjects
         public string Fund { get; set; }
         public int IDMAIN { get; set; }
 
+        public bool IsAlligat { get; set; }
+        public int ConvolutePin { get; set; }
+        public int ConvoluteIdData { get; set; }
+
+
+
         public BJFields Fields = new BJFields();
 
         public ExemplarAccessInfo ExemplarAccess = new ExemplarAccessInfo(); 
@@ -53,6 +59,7 @@ namespace ExportBJ_XML.ValueObjects
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
             }
             exemplar.ExemplarAccess = ExemplarInfo.GetExemplarAccess(exemplar);
+            exemplar.IsAlligat = dbw.IsAlligat(exemplar.IdData);
             return exemplar;
         }
         public static ExemplarInfo GetExemplarByIdData(int iddata, string fund)
@@ -67,6 +74,7 @@ namespace ExportBJ_XML.ValueObjects
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
             }
             exemplar.ExemplarAccess = ExemplarInfo.GetExemplarAccess(exemplar);
+
             return exemplar;
         }
 
@@ -314,5 +322,18 @@ namespace ExportBJ_XML.ValueObjects
 
 
 
+
+        public bool IsIssuedOrOrderedEmployee()
+        {
+            switch (this.Fund)
+            {
+                case "BJVVV":
+                    DatabaseWrapper dbw = new DatabaseWrapper(this.Fund);
+                    DataTable table = dbw.IsIssuedOrOrderedEmployee(this.IDMAIN, this.IdData);
+                    return (table.Rows.Count == 0) ? false : true;
+                default:
+                    return false;
+            }
+        }
     }
 }
