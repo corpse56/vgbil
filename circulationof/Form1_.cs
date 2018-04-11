@@ -8,11 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Data.OleDb;
-using OposScanner_CCO;
-using Test1;
 using System.Globalization;
 using System.Xml;
-using OPOSCONSTANTSLib;
 using System.Windows.Forms.VisualStyles;
 using CrystalDecisions.CrystalReports.Engine;
 using System.Threading;
@@ -22,6 +19,7 @@ using ExtGui;
 using System.Diagnostics;
 using System.IO.Ports;
 using CrystalDecisions.Windows.Forms;
+using System.ServiceModel;
 namespace Circulation
 {
     public delegate void ScannedEventHandler(object sender, EventArgs ev);
@@ -70,7 +68,7 @@ namespace Circulation
                 label15.Text = "Книг на руках: " + dbw.getCountIssuedBooks();
                 label16.Text = "Книг на руках: " + dbw.GetCountIssuedHomeBooks();
                 dateTimePicker1.Value = DateTime.Now.Date.AddDays(3);
-                dateTimePicker2.Value = DateTime.Now.Date.AddDays(90);
+                dateTimePicker2.Value = DateTime.Now.Date.AddDays(30);
                 dbw.DeleteRefusual();
                 port = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
                 port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
@@ -245,6 +243,15 @@ namespace Circulation
             col.ValueType = typeof(DateTime);
             col.Name = "diss";
 
+            col = new DataGridViewTextBoxColumn();
+            col.HeaderText = "Продлено, раз";
+            col.ReadOnly = true;
+            col.Width = 80;
+            Formular.Columns.Add(col);
+            col.DataPropertyName = "prolonged";
+            col.Name = "prolonged";
+            col.Visible = true;
+
             autoinc(Formular);
             PaintDebts(Formular);
         }
@@ -287,13 +294,20 @@ namespace Circulation
                         /*if (_data.Length < 20)
                             _data = _data.Remove(0, 1);*/
                         //_data = _data.Remove(_data.Length - 1, 1);
-                        if ((_data[0].ToString() == "G") || (_data[0].ToString() == "V"))
+                        if ((_data[0].ToString() == "V") || (_data[0].ToString() == "X"))
                         {
                             MessageBox.Show("Читатель с таким билетом не привязан к реальному билету! Попробуйте найти читателя по фамилии!");
                             InScan = false;
                             return;
                         }
-                        ReaderRecordFormular = new dbReader(_data);
+                        if (_data[0].ToString() == "G")
+                        {
+                            ReaderRecordFormular = new dbReader(_data);
+                        }
+                        else
+                        {
+                            ReaderRecordFormular = new dbReader(_data);
+                        }
 
                         if (ReaderRecordFormular.barcode == "notfoundbynumber")
                         {
@@ -315,8 +329,9 @@ namespace Circulation
                         }
                         label20.Text = ReaderRecordFormular.Surname + " " + ReaderRecordFormular.Name + " " + ReaderRecordFormular.SecondName;
                         label25.Text = ReaderRecordFormular.id;
-
+                        pictureBox2.Image = ReaderRecordFormular.Photo;
                         this.FormularColumnsForming(ReaderRecordFormular.id);
+                        label29.Text = dbw.GetReaderRights(ReaderRecordFormular.id);
 
                         Sorting.WhatStat = Stats.Formular;
                         Sorting.AuthorSort = SortDir.None;
@@ -383,14 +398,21 @@ namespace Circulation
                             /*if (_data.Length < 20)
                                 _data = _data.Remove(0, 1);*/
                             //_data = _data.Remove(_data.Length - 1, 1);
-                            if ((_data[0] == 'G') || (_data[0] == 'V') || (_data[0] == 'Q'))
+                            if ((_data[0] == 'V') || (_data[0] == 'Q'))
                             {
                                 MessageBox.Show("Выдача документов читателю с таким билетом запрещена!");
                                 this.emul = "";
                                 InScan = false;
                                 return;
-                            }
-                            ReaderRecordWork = new dbReader(_data);
+                            } else
+                                if ((_data[0] == 'X'))
+                                {
+                                    ReaderRecordWork = new dbReader(_data);
+                                }
+                                else
+                                {
+                                    ReaderRecordWork = new dbReader(_data);
+                                }
                             if (ReaderRecordWork.barcode == "notfoundbynumber")
                             {
                                 MessageBox.Show("Читатель не найден, либо неверный штрихкод! Возможна ошибка сканера", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -500,6 +522,7 @@ namespace Circulation
                                     ReaderRecord = ReaderRecordWork.Clone();
                                     this.label5.Text = ReaderRecord.FIO;
                                     this.label12.Text = ReaderRecord.id;
+                                    RPhoto.Image = ReaderRecord.Photo;
                                     //заполнена книга и читатель ждать нажати я подтвердить или отмена
                                     button2.Enabled = true;
                                     button4.Enabled = true;
@@ -553,12 +576,16 @@ namespace Circulation
                                         InScan = false;
                                         return;
                                     }
-                                    if ((!dbw.IsRecievedInHall(BookRecordWork)) && (BookRecordWork.klass != "ДП"))//условие если книга не принята залом!
+                                    if (BookRecordWork.zalid != "29")//если зал абонементного обслуживания, то не надо принимать книгу из к/х
                                     {
-                                        MessageBox.Show("Эта книга не принята залом! Перед выдачей перейдите на вкладку \"Прием кафедра/хранение\" и примите книгу из хранения!");
-                                        CancelIssueInterface();
-                                        InScan = false;
-                                        return;
+                                        if ((!dbw.IsRecievedInHall(BookRecordWork)) && (BookRecordWork.klass != "ДП"))
+                                        //&& (BookRecordWork.zalid != "29"))//условие если книга не принята залом, но не книги из зала абонемента!
+                                        {
+                                            MessageBox.Show("Эта книга не принята залом! Перед выдачей перейдите на вкладку \"Прием кафедра/хранение\" и примите книгу из хранения!");
+                                            CancelIssueInterface();
+                                            InScan = false;
+                                            return;
+                                        }
                                     }
                                     if (dbw.isBookBusy(_data))
                                     {
@@ -571,7 +598,7 @@ namespace Circulation
                                             {
                                                 CancelIssueInterface();
                                                 dateTimePicker1.Value = DateTime.Now.Date.AddDays(3);
-                                                dateTimePicker2.Value = DateTime.Now.Date.AddDays(90);
+                                                dateTimePicker2.Value = DateTime.Now.Date.AddDays(30);
 
                                                 InScan = false;
                                                 return;
@@ -591,7 +618,7 @@ namespace Circulation
                                         {
                                             CancelIssueInterface();
                                             dateTimePicker1.Value = DateTime.Now.Date.AddDays(3);
-                                            dateTimePicker2.Value = DateTime.Now.Date.AddDays(90);
+                                            dateTimePicker2.Value = DateTime.Now.Date.AddDays(30);
                                             InScan = false;
                                             return;
                                         }
@@ -608,7 +635,7 @@ namespace Circulation
                                         RemoveRow_athome();
                                         FillGridReturn(zaliss, zalret);
                                         dateTimePicker1.Value = DateTime.Now.Date.AddDays(3);
-                                        dateTimePicker2.Value = DateTime.Now.Date.AddDays(90);
+                                        dateTimePicker2.Value = DateTime.Now.Date.AddDays(30);
                                         BookRecord = null;
                                         ReaderRecord = null;
                                         button2.Enabled = false;
@@ -760,6 +787,10 @@ namespace Circulation
                             this.emul = "";
                             switch (result)
                             {
+                                case "книга в зале абонементного обслуживания":
+                                    MessageBox.Show("Книгу не нужно принимать из книгохранения, так как её местонахождение - Зал абонементного обслуживания");
+                                    InScan = false;
+                                    return;
                                 case "Неверный штрихкод":
                                     MessageBox.Show("Считан неверный штрихкод!");
                                     InScan = false;
@@ -900,6 +931,11 @@ namespace Circulation
                     //dbw.MoveToHistory(BookRecordWork);
                 }
                 tabControl2.SelectedTab = tabControl2.TabPages["tabHome"];
+                if (dbw.ResPanORBookKeeping == DialogResult.No)
+                {
+                    dbw.MoveToHistory(BookRecordWork);
+                }
+
             }
             else//прием из зала
             {
@@ -1071,6 +1107,48 @@ namespace Circulation
 
         public void button2_Click_1(object sender, EventArgs e)
         {
+            if ((((ReaderRecord.ReaderRights & dbReader.Rights.PERS) != dbReader.Rights.PERS)) && (this.DepID == "29"))
+            {
+                DialogResult dr = MessageBox.Show("У читателя нет прав персонального абонемента! Всё равно выдать?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                if (dr == DialogResult.No)
+                {
+                    CancelIssueInterface();
+                    return;
+                }
+
+            }
+            if ((((ReaderRecord.ReaderRights & dbReader.Rights.PERS) == dbReader.Rights.PERS)) && (this.DepID == "29"))
+            {
+                DateTime? dt = ReaderRecord.GetDateEndPersAbonement();
+                if ((dt < DateTime.Now) || (dt == null))
+                {
+                    DialogResult dr = MessageBox.Show("У читателя закончился срок персонального абонемента! Всё равно выдать?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                    if (dr == DialogResult.No)
+                    {
+                        CancelIssueInterface();
+                        return;
+                    }
+                }
+            }
+            if ((((ReaderRecord.ReaderRights & dbReader.Rights.ABON) == dbReader.Rights.ABON)) && (this.DepID == "29"))
+            {
+                DateTime? dt = ReaderRecord.GetDateEndIndividualPersAbonement();
+                if (dt == null)
+                {
+                }
+                else
+                {
+                    if (dt < DateTime.Now)
+                    {
+                        DialogResult dr = MessageBox.Show("У читателя закончился срок индивидуального абонемента! Всё равно выдать?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                        if (dr == DialogResult.No)
+                        {
+                            CancelIssueInterface();
+                            return;
+                        }
+                    }
+                }
+            }
             if ((ReaderRecord.CanGetAtHome == false) && (ReaderRecord.Department != "1"))
             {
                 MessageBox.Show("У читателя либо не проставлены права сотрудника, либо он бывший сотрудник. Необходимо обратиться в регистратуру и либо выставить права сотрудника, либо убрать отдел в котором читатель работал. В противном случае выдача не будет возможна.");
@@ -1108,7 +1186,7 @@ namespace Circulation
                 BookRecord = null;
                 ReaderRecord = null;
                 dateTimePicker1.Value = DateTime.Now.Date.AddDays(3);
-                dateTimePicker2.Value = DateTime.Now.Date.AddDays(90);
+                dateTimePicker2.Value = DateTime.Now.Date.AddDays(30);
                 label15.Text = "Книг на руках: " + dbw.getCountIssuedBooks();
                 label16.Text = "Книг на руках: " + dbw.GetCountIssuedHomeBooks();
             }
@@ -1135,7 +1213,7 @@ namespace Circulation
                     BookRecord = null;
                     ReaderRecord = null;
                     dateTimePicker1.Value = DateTime.Now.Date.AddDays(3);
-                    dateTimePicker2.Value = DateTime.Now.Date.AddDays(90);
+                    dateTimePicker2.Value = DateTime.Now.Date.AddDays(30);
                     label15.Text = "Книг на руках: " + dbw.getCountIssuedBooks();
                     label16.Text = "Книг на руках: " + dbw.GetCountIssuedHomeBooks();
                 }
@@ -1153,6 +1231,7 @@ namespace Circulation
             this.label13.Text = "";
             this.label5.Text = "";
             this.label12.Text = "";
+            RPhoto.Image = null;
             BookRecord = null;
             ReaderRecord = null;
             button2.Enabled = false;
@@ -1160,14 +1239,51 @@ namespace Circulation
             label1.Text = "Считайте штрихкод издания";
         }
         bool wantAbonementAlienRespanOrVistavka = false;//если хочет взять книгу заказанную другим читателем с чужой бронеполки
+        bool homezal = false;//false - zal
         private bool SetBookForReaderInterface()
         {
                         //вот тут начинаются чудеса))
             //if (!wantAbonementAlienRespan)
             //{
-            if (((ReaderRecord.CanGetAtHome) && (this.DepID != "20") || BookRecord.getFloor().Contains("Абонемент")) && (!wantAbonementAlienRespanOrVistavka))//выдача домой
+            if (((((ReaderRecord.ReaderRights & dbReader.Rights.PERS) == dbReader.Rights.PERS) ||
+               ((ReaderRecord.ReaderRights & dbReader.Rights.COLL) == dbReader.Rights.COLL))) && !homezal)//если коллективный или персональный
+            {
+                DialogResult colper = MessageBox.Show("Читатель с правами персонального или коллективного абонемента хочет взять книгу. "+
+                    "\nДа - выдать книгу на дом "+
+                    "\nНет - выдать книгу в залы ",
+                    "Вопрос", MessageBoxButtons.YesNo);
+                if (colper == DialogResult.No)
+                {
+                    ReaderRecord.CanGetAtHome = false;
+                    homezal = true;
+                    if (SetBookForReaderInterface())
+                    {
+                        homezal = false;
+                        return true;
+                    }
+                    else
+                    {
+                        homezal = false;
+                        return false;
+                    }
+                }
+            }
+
+            if (((ReaderRecord.CanGetAtHome) && (this.DepID != "20") || BookRecord.getFloor().Contains("Абонемент")) && (!wantAbonementAlienRespanOrVistavka) && !homezal)//выдача домой
             {
                 wantAbonementAlienRespanOrVistavka = false;
+                /*if ((BookRecord.getFloor() == "Зал абонементного обслуживания") && (BookRecord.klass == "ДП"))
+                {
+                    DialogResult dr = MessageBox.Show("Читатель хочет взять книгу находящуюся на ДП в зале абонементного обслуживания. " +
+                                                            "\nДа - выдать книгу на дом " +
+                                                            "\nНет - выдать книгу в залы ",
+                                                            "Вопрос", MessageBoxButtons.YesNo);
+                    if (dr == DialogResult.Yes)
+                    {
+
+                    }
+
+                }*/
                 if (BookRecord.klass == "ДП")
                 {
                     //dbw.setBookForReaderHome(BookRecord, ReaderRecord);
@@ -1200,7 +1316,6 @@ namespace Circulation
                             CancelIssueInterface();
                             return true;
                         }
-
                     }
                     else
                     {
@@ -1216,19 +1331,28 @@ namespace Circulation
                                     }
                                     else
                                     {
-                                        DialogResult dr = MessageBox.Show("У читателя нет прав индивидуального персонального абонемента. Хотите выдать ему такие права вместе с книгой?", " Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                                        DialogResult dr = MessageBox.Show("У читателя нет прав индивидуального абонемента. Хотите выдать ему такие права вместе с книгой?", " Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                                         if (dr == DialogResult.Yes)
                                         {
                                             ReaderRecord.setReaderRight();
                                             ReaderRecord = new dbReader(ReaderRecord.IntID);
-                                            dbw.setBookForReaderHome(BookRecord, ReaderRecord);
+
+                                            if (SetBookForReaderInterface())
+                                            {
+                                                homezal = false;
+                                                return true;
+                                            }
+                                            else
+                                            {
+                                                homezal = false;
+                                                return false;
+                                            }
                                         }
                                         else
                                         {
                                             CancelIssueInterface();
                                             return true;
                                         }
-
                                     }
                                 }
                                 else
@@ -1280,7 +1404,6 @@ namespace Circulation
                                             CancelIssueInterface();
                                             return true;
                                         }
-
                                     }
                                 }
                                 else
@@ -1320,7 +1443,7 @@ namespace Circulation
                                         }
                                         else
                                         {
-                                            DialogResult dr = MessageBox.Show("У читателя нет прав индивидуального персонального абонемента. Хотите выдать ему такие права вместе с книгой?", " Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                                            DialogResult dr = MessageBox.Show("У читателя нет прав индивидуального абонемента. Хотите выдать ему такие права вместе с книгой?", " Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                                             if (dr == DialogResult.Yes)
                                             {
                                                 ReaderRecord.setReaderRight();
@@ -1405,11 +1528,11 @@ namespace Circulation
                             }
                             else
                             {
-                                Form27 f27 = new Form27(this);
-                                f27.textBox1.Text = ReaderRecord.id;
-                                f27.ShowDialog();
-                                BookRecord.RESPAN = f27.respan;
-                                ReaderRecord.rlocation = f27.rlocation;
+                                //Form27 f27 = new Form27(this);
+                                //f27.textBox1.Text = ReaderRecord.id;
+                                //f27.ShowDialog();
+                                BookRecord.RESPAN = ReaderRecord.id;
+                                ReaderRecord.rlocation = this.DepName;
                             }
                         }
 
@@ -1517,6 +1640,7 @@ namespace Circulation
                     label25.Text = "";
                     label20.Text = "";
                     label27.Text = "";
+                    pictureBox2.Image = null;
                     Formular.Columns.Clear();
                     AcceptButton = this.button10;
                     break;
@@ -1759,6 +1883,7 @@ namespace Circulation
                         break;
                 }
                 VirtualTable = VirtualTable.DefaultView.ToTable();
+
                 Statistics.Refresh();
             }
             if (label19.Text.Contains("Обращаемость"))
@@ -1823,13 +1948,162 @@ namespace Circulation
                         }
                         break;
                 }
-                VirtualTable = VirtualTable.DefaultView.ToTable();
-                Statistics.Refresh();
             }
+            if (label19.Text.Contains("Список все книг находящихся в открытом доступе в зале абонементного обслуживания"))
+            {
+                System.Windows.Forms.SortOrder so = Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection;
+                Statistics.Columns[1].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None;
+                Statistics.Columns[2].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None;
+                Statistics.Columns[3].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None;
+                Statistics.Columns[4].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None;
+                Statistics.Columns[5].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None;
+                Statistics.Columns[6].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None;
+                Statistics.Columns[7].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None;
+                Statistics.Columns[8].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None;
+                Statistics.Columns[9].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None;
+                switch (e.ColumnIndex)
+                {
+                    case 1:
+                        if ((so == System.Windows.Forms.SortOrder.None) ||
+                        (so == System.Windows.Forms.SortOrder.Descending))
+                        {
+                            VirtualTable.DefaultView.Sort = "pol ASC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+                        }
+                        else
+                        {
+                            VirtualTable.DefaultView.Sort = "pol DESC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending;
+                        }
+                        break;
+                    case 2:
+                        if ((so == System.Windows.Forms.SortOrder.None) ||
+                        (so == System.Windows.Forms.SortOrder.Descending))
+                        {
+                            VirtualTable.DefaultView.Sort = "zag ASC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+                        }
+                        else
+                        {
+                            VirtualTable.DefaultView.Sort = "zag DESC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending;
+                        }
+                        break;
+                    case 3:
+                        if ((so == System.Windows.Forms.SortOrder.None) ||
+                        (so == System.Windows.Forms.SortOrder.Descending))
+                        {
+                            VirtualTable.DefaultView.Sort = "avt ASC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+                        }
+                        else
+                        {
+                            VirtualTable.DefaultView.Sort = "avt DESC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending;
+                        }
+                        break;
+                    case 4:
+                        if ((so == System.Windows.Forms.SortOrder.None) ||
+                        (so == System.Windows.Forms.SortOrder.Descending))
+                        {
+                            VirtualTable.DefaultView.Sort = "god ASC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+                        }
+                        else
+                        {
+                            VirtualTable.DefaultView.Sort = "god DESC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending;
+                        }
+                        break;
+                    case 5:
+                        if ((so == System.Windows.Forms.SortOrder.None) ||
+                        (so == System.Windows.Forms.SortOrder.Descending))
+                        {
+                            VirtualTable.DefaultView.Sort = "inv ASC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+                        }
+                        else
+                        {
+                            VirtualTable.DefaultView.Sort = "inv DESC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending;
+                        }
+                        break;
+                    case 6:
+                        if ((so == System.Windows.Forms.SortOrder.None) ||
+                        (so == System.Windows.Forms.SortOrder.Descending))
+                        {
+                            VirtualTable.DefaultView.Sort = "spr ASC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+                        }
+                        else
+                        {
+                            VirtualTable.DefaultView.Sort = "spr DESC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending;
+                        }
+                        break;
+                    case 7:
+                        if ((so == System.Windows.Forms.SortOrder.None) ||
+                        (so == System.Windows.Forms.SortOrder.Descending))
+                        {
+                            VirtualTable.DefaultView.Sort = "vyd ASC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+                        }
+                        else
+                        {
+                            VirtualTable.DefaultView.Sort = "vyd DESC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending;
+                        }
+                        break;
+                    case 8:
+                        if ((so == System.Windows.Forms.SortOrder.None) ||
+                        (so == System.Windows.Forms.SortOrder.Descending))
+                        {
+                            VirtualTable.DefaultView.Sort = "vaj ASC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+                        }
+                        else
+                        {
+                            VirtualTable.DefaultView.Sort = "vaj DESC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending;
+                        }
+                        break;
+                    case 9:
+                        if ((so == System.Windows.Forms.SortOrder.None) ||
+                        (so == System.Windows.Forms.SortOrder.Descending))
+                        {
+                            VirtualTable.DefaultView.Sort = "lng ASC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+                        }
+                        else
+                        {
+                            VirtualTable.DefaultView.Sort = "lng DESC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending;
+                        }
+                        break;
+                    case 10:
+                        if ((so == System.Windows.Forms.SortOrder.None) ||
+                        (so == System.Windows.Forms.SortOrder.Descending))
+                        {
+                            VirtualTable.DefaultView.Sort = "tema ASC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+                        }
+                        else
+                        {
+                            VirtualTable.DefaultView.Sort = "tema DESC";
+                            Statistics.Columns[e.ColumnIndex].HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending;
+                        }
+                        break;
+                }
+            }
+                VirtualTable = VirtualTable.DefaultView.ToTable();
+                autoinc(Statistics);
+                Statistics.Refresh();
+            
         }
         private void button10_Click(object sender, EventArgs e)
         {
             //dbw.GetFormular("1000001");
+            this.label27.Text = "";
             if (this.numericUpDown3.Value.ToString() == "")
             {
                 MessageBox.Show("Введите номер читателя!", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -1840,7 +2114,7 @@ namespace Circulation
                 MessageBox.Show("Введите число больше нуля", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
-            ReaderSetBarcode = new dbReader((int)numericUpDown3.Value);
+            ReaderSetBarcode = new dbReader((int)numericUpDown3.Value, "formular");
             if (ReaderSetBarcode.barcode == "Читателю не присвоен штрихкод и нет социальной карты")
             {
                 MessageBox.Show("Читателю не присвоен штрихкод и нет социальной карты!");
@@ -1851,11 +2125,19 @@ namespace Circulation
                 MessageBox.Show("Читатель не найден!", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
+            if (ReaderSetBarcode.barcode == "notfoundbynumber")
+            {
+                MessageBox.Show("Читатель не найден!", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
             dbw.GetFormular(ReaderSetBarcode.id);
             label20.Text = ReaderSetBarcode.Surname + " " + ReaderSetBarcode.Name + " " + ReaderSetBarcode.SecondName;
             label25.Text = ReaderSetBarcode.id;
+            pictureBox2.Image = ReaderSetBarcode.Photo;
             ReaderRecordFormular = new dbReader(ReaderSetBarcode);
             this.FormularColumnsForming(ReaderSetBarcode.id);
+            label29.Text = dbw.GetReaderRights(ReaderSetBarcode.id);
+
         }
 
 
@@ -1913,14 +2195,33 @@ namespace Circulation
             Conn.ReaderDA.SelectCommand.CommandText = "select * from Main where";
 
             //Conn.SQLDA.SelectCommand.Parameters["@IDR"].Value = reader.id;
-            Conn.SQLDA.SelectCommand.CommandText = "select zagp.PLAIN zag,avtp.PLAIN avt, B.INV inv, B.DATE_ISSUE iss,B.DATE_RET vzv  " +
-                                                   "  from BJVVV..DATAEXT A  " +
-                                                   " inner join " + BASENAME + "..ISSUED_OF B on B.IDDATA = A.IDDATA " +
-                                                   " left join BJVVV..DATAEXT zag on zag.MNFIELD = 200 and zag.MSFIELD = '$a' and zag.IDMAIN = A.IDMAIN " +
-                                                   " left join BJVVV..DATAEXT avt on avt.MNFIELD = 700 and avt.MSFIELD = '$a' and avt.IDMAIN = A.IDMAIN " +
-                                                   " left join BJVVV..DATAEXTPLAIN zagp on zagp.IDDATAEXT = zag.ID " +
-                                                   " left join BJVVV..DATAEXTPLAIN avtp on avtp.IDDATAEXT = avt.ID " +
-                                                   " where B.IDREADER = "+reader.id+" and B.IDMAIN != 0";
+            //Conn.SQLDA.SelectCommand.CommandText = "with A as (select zagp.PLAIN zag,avtp.PLAIN avt, B.INV inv, B.DATE_ISSUE iss,B.DATE_RET vzv  " +
+            //                                       "  from BJVVV..DATAEXT A  " +
+            //                                       " inner join " + BASENAME + "..ISSUED_OF B on B.IDDATA = A.IDDATA " +
+            //                                       " left join BJVVV..DATAEXT zag on zag.MNFIELD = 200 and zag.MSFIELD = '$a' and zag.IDMAIN = A.IDMAIN " +
+            //                                       " left join BJVVV..DATAEXT avt on avt.MNFIELD = 700 and avt.MSFIELD = '$a' and avt.IDMAIN = A.IDMAIN " +
+            //                                       " left join BJVVV..DATAEXTPLAIN zagp on zagp.IDDATAEXT = zag.ID " +
+            //                                       " left join BJVVV..DATAEXTPLAIN avtp on avtp.IDDATAEXT = avt.ID " +
+            //                                       " where B.IDREADER = "+reader.id+" and B.IDMAIN != 0 and A.MNFIELD = 899 and A.MSFIELD = '$w') "+
+            //                                       " select A1.zag, (select A2.avt +'; ' from A A2 where A1.zag = A2.zag for xml path('')) avtfull, A1.inv, A1.iss, A1.vzv from A A1 group by A1.zag,A1.inv, A1.iss, A1.vzv ";
+
+
+            Conn.SQLDA.SelectCommand.CommandText = "  with A as (select zagp.PLAIN zag,avtp.PLAIN avt, B.INV inv, B.DATE_ISSUE iss,B.DATE_RET vzv , B.ID idm " +
+            "  from BJVVV..DATAEXT A  " +
+            "   inner join Reservation_R..ISSUED_OF B on B.IDDATA = A.IDDATA " +
+            "   left join BJVVV..DATAEXT zag on zag.MNFIELD = 200 and zag.MSFIELD = '$a' and zag.IDMAIN = A.IDMAIN " +
+            "   left join BJVVV..DATAEXT avt on avt.MNFIELD = 700 and avt.MSFIELD = '$a' and avt.IDMAIN = A.IDMAIN " +
+            "   left join BJVVV..DATAEXTPLAIN zagp on zagp.IDDATAEXT = zag.ID " +
+            "   left join BJVVV..DATAEXTPLAIN avtp on avtp.IDDATAEXT = avt.ID " +
+            "   where  B.IDREADER = " + reader.id + " and B.IDMAIN != 0 and A.MNFIELD = 899 and A.MSFIELD = '$w') " +
+
+            "   select A1.zag, " +
+            "                  (select A2.avt +'; ' " +
+            "                   from A A2 " +
+            "                   where A1.idm = A2.idm for xml path('')) avtfull, A1.inv, A1.iss, A1.vzv  " +
+            "   from A A1 " +
+            "   group by A1.zag,A1.inv, A1.iss, A1.vzv , A1.idm ";
+
             Conn.SQLDA.SelectCommand.Connection = Conn.ZakazCon;
             DataSet R = new DataSet();
             //R.Tables.Add("form");
@@ -1952,9 +2253,9 @@ namespace Circulation
         public string pass;
         private void button14_Click(object sender, EventArgs e)
         {
-            Form20 f20 = new Form20(this);
-            f20.ShowDialog();
-            if (pass == "aa")
+            //Form20 f20 = new Form20(this);
+            //f20.ShowDialog();
+           // if (pass == "aa")
             {
                 pass = "";
                 Form19 f19 = new Form19(this);
@@ -1991,11 +2292,16 @@ namespace Circulation
         public void FrmlrFam(string id)
         {
             ReaderRecordFormular = new dbReader(int.Parse(id));
-
+            if (ReaderRecordFormular.barcode == "Читателю не присвоен штрихкод и нет социальной карты")
+            {
+                MessageBox.Show("Читателю не присвоен штрихкод и нет социальной карты. ничего никогда не выдавалось и не принималось");
+                return;
+            }
             dbw.GetFormular(ReaderRecordFormular.id);
             ReaderSetBarcode = new dbReader(ReaderRecordFormular);
             label20.Text = ReaderRecordFormular.Surname + " " + ReaderRecordFormular.Name + " " + ReaderRecordFormular.SecondName;
             label25.Text = ReaderRecordFormular.id;
+            pictureBox2.Image = ReaderRecordFormular.Photo;
             FormularColumnsForming(ReaderRecordFormular.id);
         }
 
@@ -2070,10 +2376,20 @@ namespace Circulation
                     DateTime dend = (DateTime)r.Cells["dend"].Value;
                     dend = dend.AddDays(f29.days);
                     string zi = r.Cells["zi"].Value.ToString();
+                    
+                    
                     dbw.ProlongReservation(dend, zi);
+                    if (!dbw.IsAtHome(zi))
+                    {
+                        //dbReader reader  = new dbReader(int.Parse(label25.Text));
+                        dbBook book = new dbBook(r.Cells["bar"].Value.ToString(),this.BASENAME);
+                        dbw.InsertStatisticsReservationProlonged(book, label25.Text);
+                    }
                     r.Cells["dend"].Value = dend;
                 }
             }
+            dbw.GetFormular(label25.Text);
+            this.FormularColumnsForming(label25.Text);
         }
 
         private void книгиВыданныеСЧужойБронеполкиToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2191,11 +2507,11 @@ namespace Circulation
                                                    " and ACTIONTYPE = 2 and IDEMP = '" + this.EmpID + "'";
             DS = new DataSet();
             int s2 = (int)Conn.SQLDA.SelectCommand.ExecuteScalar();
-            //int s2 = Conn.SQLDA.Fill(DS, "t");//выдано изданий читателю
+            //int s2 = Conn.SQLDA.Fill(DS, "t");//выдано изданий читателю из кх в зал
             //---------------------------------------------------------------------------------
             Conn.SQLDA.SelectCommand.CommandText = "select IDREADER from " + BASENAME + "..[Statistics] " +
                                                    " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
-                                                   " and ACTIONTYPE = 3 and IDEMP = " + this.EmpID + " and IDREADER is not null " +
+                                                   " and (ACTIONTYPE = 3  or ACTIONTYPE = 20) and IDEMP = " + this.EmpID + " and IDREADER is not null " +
                                                    " group by Cast(Cast(DATEACTION As VarChar(11)) As DateTime),IDREADER ";
                 
             DS = new DataSet();
@@ -2271,7 +2587,7 @@ namespace Circulation
                                                    " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
                                                    " and ACTIONTYPE = 15 and IDEMP = '" + this.EmpID + "' ";
             DS = new DataSet();
-            int s15 = Conn.SQLDA.Fill(DS, "t");//Выдано на дом 
+            int s15 = Conn.SQLDA.Fill(DS, "t");//Выдано на дом из книгохранения
             //----------------------------------------------------------------------------------
             Conn.SQLDA.SelectCommand.CommandText = "select ID from " + BASENAME + "..[Statistics] " +
                                                    " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
@@ -2279,7 +2595,64 @@ namespace Circulation
             DS = new DataSet();
             int s16 = Conn.SQLDA.Fill(DS, "t");//Принято из дому
             //----------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select IDREADER from " + BASENAME + "..[Statistics] " +
+                           " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                           " and (ACTIONTYPE = 14 or ACTIONTYPE = 15 or ACTIONTYPE = 20) and IDEMP = " + this.EmpID + " and IDREADER is not null " +
+                           " group by Cast(Cast(DATEACTION As VarChar(11)) As DateTime),IDREADER ";
+            DS = new DataSet();
+            int s17 = Conn.SQLDA.Fill(DS, "t");//Кол-во чит, получивших изданий на дом
+            //---------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select A.*,C.SORT from " + BASENAME + "..[Statistics] A " +
+                  " left join BJVVV..DATAEXT B on B.MNFIELD = 899 and B.MSFIELD = '$w' and A.BAR collate Cyrillic_general_CI_AI = B.SORT " +
+                  " left join BJVVV..DATAEXT C on C.MNFIELD = 899 and C.MSFIELD = '$a' and B.IDDATA = C.IDDATA " +
+                  " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                  " and ACTIONTYPE = 14 and IDEMP = " + this.EmpID + " and IDREADER is not null " +
+                  " and C.IDINLIST = " + this.DepID;
+            DS = new DataSet();
+            int s18 = Conn.SQLDA.Fill(DS, "t");//Выдано изданий из открытого доступа зала
+            //---------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select A.*,C.SORT from " + BASENAME + "..[Statistics] A " +
+                  " left join BJVVV..DATAEXT B on B.MNFIELD = 899 and B.MSFIELD = '$w' and A.BAR collate Cyrillic_general_CI_AI = B.SORT " +
+                  " left join BJVVV..DATAEXT C on C.MNFIELD = 899 and C.MSFIELD = '$a' and B.IDDATA = C.IDDATA " +
+                  " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                  " and ACTIONTYPE = 17 and IDEMP = " + this.EmpID + " and IDREADER is not null " +
+                  " and C.IDINLIST = " + this.DepID;
+            DS = new DataSet();
+            int s19 = Conn.SQLDA.Fill(DS, "t");//Принято изданий из открытого доступа зала
+            //---------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select A.*,C.SORT from " + BASENAME + "..[Statistics] A " +
+                  " left join BJVVV..DATAEXT B on B.MNFIELD = 899 and B.MSFIELD = '$w' and A.BAR collate Cyrillic_general_CI_AI = B.SORT " +
+                  " left join BJVVV..DATAEXT C on C.MNFIELD = 899 and C.MSFIELD = '$a' and B.IDDATA = C.IDDATA " +
+                  " left join Readers..ReaderRight R on R.IDReader = A.IDREADER " +
+                  " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                  " and (ACTIONTYPE = 14 or ACTIONTYPE=15) and IDEMP = " + this.EmpID + " and A.IDREADER is not null and R.IDReaderRight = 3" +
+                  " ";
+            DS = new DataSet();
+            int s20 = Conn.SQLDA.Fill(DS, "t");//Выдано книг сотрудникам на дом
+            //---------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select * from " + BASENAME + "..[ISSUED_OF_ACTIONS] A " +
+                  " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                  " and IDACTION = 3 and IDEMP = " + this.EmpID;
 
+            
+            DS = new DataSet();
+            int s21 = Conn.SQLDA.Fill(DS, "t");//продлен срок пользования изданием
+            //---------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select ID from " + BASENAME + "..[Statistics] " +
+                                                   " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                                                   " and ACTIONTYPE = 21 and IDEMP = '" + this.EmpID + "' ";
+            DS = new DataSet();
+            int s22 = Conn.SQLDA.Fill(DS, "t");//Продлён срок бронеполки
+            //----------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select ID from " + BASENAME + "..[Statistics] " +
+                                                   " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                                                   " and ACTIONTYPE = 20 and IDEMP = '" + this.EmpID + "' ";
+            DS = new DataSet();
+            int s23 = Conn.SQLDA.Fill(DS, "t");//Продлён срок бронеполки
+            //----------------------------------------------------------------------------------
+            string s12 = dbw.GetAttendance(f3.StartDate, f3.EndDate);
+            //Количество читателей посетивших зал, но не воспользовавшихся услугами книговыдачи
+            //---------------------------------------------------------------------------------
             //11 - сменили зал бронеполки
             //12 - сменили отдел, который принял книгу из книгохранения
             //13 - выдано с чужой бронеполки
@@ -2298,41 +2671,78 @@ namespace Circulation
             Statistics.Rows[0].Cells[1].Value = "Всего получено изданий из книгохранения";
             Statistics.Rows[0].Cells[2].Value = s1;
             Statistics.Rows.Add();
-            Statistics.Rows[1].Cells[1].Value = "Выдано изданий читателю из книгохранения";
-            Statistics.Rows[1].Cells[2].Value = s2;
+            Statistics.Rows[1].Cells[1].Value = "Получено изданий из к/х не в базе";
+            Statistics.Rows[1].Cells[2].Value = s10;
             Statistics.Rows.Add();
-            Statistics.Rows[2].Cells[1].Value = "Выдано изданий читателю из подсобного фонда";
-            Statistics.Rows[2].Cells[2].Value = s6;
+            Statistics.Rows[2].Cells[1].Value = "Выдано изданий читателю из книгохранения в зал";
+            Statistics.Rows[2].Cells[2].Value = s2;
             Statistics.Rows.Add();
-            Statistics.Rows[3].Cells[1].Value = "Выдано изданий читателю с выставки";
-            Statistics.Rows[3].Cells[2].Value = s8;
+            Statistics.Rows[3].Cells[1].Value = "Выдано изданий читателю с бронеполки";
+            Statistics.Rows[3].Cells[2].Value = s23;
+            if (this.DepID == "29")//если зал абонемента
+            {
+                Statistics.Rows.Add();
+                Statistics.Rows[4].Cells[1].Value = "Выдано изданий читателю из открытого доступа зала на дом";
+                Statistics.Rows[4].Cells[2].Value = s18;
+            }
+            else
+            {
+                Statistics.Rows.Add();
+                Statistics.Rows[4].Cells[1].Value = "Выдано изданий  из открытого доступа зала на дом";
+                Statistics.Rows[4].Cells[2].Value = s6;
+            }
             Statistics.Rows.Add();
-            Statistics.Rows[4].Cells[1].Value = "Принято изданий с выставки";
-            Statistics.Rows[4].Cells[2].Value = s9;
+            Statistics.Rows[5].Cells[1].Value = "Выдано изданий читателю с выставки";
+            Statistics.Rows[5].Cells[2].Value = s8;
             Statistics.Rows.Add();
-            Statistics.Rows[5].Cells[1].Value = "Количество читателей, получивших издания";
-            Statistics.Rows[5].Cells[2].Value = s3;
+            Statistics.Rows[6].Cells[1].Value = "Изданий выдано на дом из книгохранения";
+            Statistics.Rows[6].Cells[2].Value = s15;
             Statistics.Rows.Add();
-            Statistics.Rows[6].Cells[1].Value = "Принято изданий от читателей на бронеполку";
-            Statistics.Rows[6].Cells[2].Value = s4;
-            Statistics.Rows.Add();
-            Statistics.Rows[7].Cells[1].Value = "Принято изданий от читателей в подсобный фонд";
-            Statistics.Rows[7].Cells[2].Value = s7;
+            Statistics.Rows[7].Cells[1].Value = "Изданий выдано на дом сотрудникам";
+            Statistics.Rows[7].Cells[2].Value = s20;
             Statistics.Rows.Add();
             Statistics.Rows[8].Cells[1].Value = "Принято изданий от читателя для сдачи в книгохранение всего";
-            Statistics.Rows[8].Cells[2].Value = s5;
+            Statistics.Rows[8].Cells[2].Value = s5+s16;
             Statistics.Rows.Add();
-            Statistics.Rows[9].Cells[1].Value = "Получено изданий из к/х не в базе";
-            Statistics.Rows[9].Cells[2].Value = s10;
+            Statistics.Rows[9].Cells[1].Value = "Принято изданий от читателей на бронеполку";
+            Statistics.Rows[9].Cells[2].Value = s4;
+            
+            if (this.DepID == "29")//если зал абонемента
+            {
+                Statistics.Rows.Add();
+                Statistics.Rows[10].Cells[1].Value = "Принято изданий от читателей в открытый доступ";
+                Statistics.Rows[10].Cells[2].Value = s19;
+            }
+            else
+            {
+                Statistics.Rows.Add();
+                Statistics.Rows[10].Cells[1].Value = "Принято изданий от читателей в подсобный фонд";
+                Statistics.Rows[10].Cells[2].Value = s7;
+            }
             Statistics.Rows.Add();
-            Statistics.Rows[10].Cells[1].Value = "Ни разу не выданных изданий сдано в книгохранение";
-            Statistics.Rows[10].Cells[2].Value = s11;
-            Statistics.Rows.Add();
-            Statistics.Rows[11].Cells[1].Value = "Изданий выдано на дом";
-            Statistics.Rows[11].Cells[2].Value = s15;
+            Statistics.Rows[11].Cells[1].Value = "Принято изданий с выставки";
+            Statistics.Rows[11].Cells[2].Value = s9;
             Statistics.Rows.Add();
             Statistics.Rows[12].Cells[1].Value = "Изданий принято из выданных на дом";
             Statistics.Rows[12].Cells[2].Value = s16;
+            Statistics.Rows.Add();
+            Statistics.Rows[13].Cells[1].Value = "Продление срока пользования изданием";//такая ведётся но с середины апреля 17
+            Statistics.Rows[13].Cells[2].Value = s21;
+            Statistics.Rows.Add();
+            Statistics.Rows[14].Cells[1].Value = "Продление срока бронирования изданием";//такая ведётся но с середины апреля 21
+            Statistics.Rows[14].Cells[2].Value = s22;
+            Statistics.Rows.Add();
+            Statistics.Rows[15].Cells[1].Value = "Ни разу не выданных изданий сдано в книгохранение";
+            Statistics.Rows[15].Cells[2].Value = s5+s11;
+            Statistics.Rows.Add();
+            Statistics.Rows[16].Cells[1].Value = "Количество читателей посетивших зал, но не воспользовавшихся услугами книговыдачи";
+            Statistics.Rows[16].Cells[2].Value = s12;
+            Statistics.Rows.Add();
+            Statistics.Rows[17].Cells[1].Value = "Количество читателей, получивших издания (в залы + на дом)";
+            Statistics.Rows[17].Cells[2].Value = s3;
+            Statistics.Rows.Add();
+            Statistics.Rows[18].Cells[1].Value = "Количество читателей, получивших издания на дом";
+            Statistics.Rows[18].Cells[2].Value = s17;
             /*Statistics.Rows.Add();
             Statistics.Rows[13].Cells[1].Value = "Изданий выдано на дом с ДП";
             Statistics.Rows[13].Cells[2].Value = s13;
@@ -2367,14 +2777,15 @@ namespace Circulation
                                                    " and ACTIONTYPE = 2 and DEPID = " + this.DepID ;
             DS = new DataSet();
             int s2 = (int)Conn.SQLDA.SelectCommand.ExecuteScalar();
-            //int s2 = Conn.SQLDA.Fill(DS, "t");//выдано изданий читателю 
+            //int s2 = Conn.SQLDA.Fill(DS, "t");//выдано изданий читателю в залы
             //---------------------------------------------------------------------------------
             Conn.SQLDA.SelectCommand.CommandText = "select IDREADER from " + BASENAME + "..[Statistics] " +
                                                    " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
-                                                   " and ACTIONTYPE = 3 and DEPID = " + this.DepID + " and IDREADER is not null " +
+                                                   " and (ACTIONTYPE = 3  or ACTIONTYPE = 20) and DEPID = " + this.DepID + " and IDREADER is not null " +
                                                    " group by Cast(Cast(DATEACTION As VarChar(11)) As DateTime),IDREADER ";
             DS = new DataSet();
             int s3 = Conn.SQLDA.Fill(DS, "t");//Кол-во чит, получивших изданий (на дом + в залы)
+            s3 = DS.Tables["t"].Rows.Count;
             //---------------------------------------------------------------------------------
             Conn.SQLDA.SelectCommand.CommandText = "select (case when sum(COUNTISS) is null then 0 else sum(COUNTISS) end) from " + BASENAME + "..[Statistics] " +
                                                    " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
@@ -2383,19 +2794,22 @@ namespace Circulation
             int s4 = (int)Conn.SQLDA.SelectCommand.ExecuteScalar();
             //int s4 = Conn.SQLDA.Fill(DS, "t");//принято изданий от читателей на бронеполку
             //---------------------------------------------------------------------------------
-            Conn.SQLDA.SelectCommand.CommandText = "select (case when sum(COUNTISS) is null then 0 else sum(COUNTISS) end) from " + BASENAME + "..[Statistics] " +
+            //Conn.SQLDA.SelectCommand.CommandText = "select (case when sum(COUNTISS) is null then 0 else sum(COUNTISS) end) from " + BASENAME + "..[Statistics] " +
+            //                                       " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+            //                                       " and ACTIONTYPE = 5 and DEPID = " + this.DepID;
+            Conn.SQLDA.SelectCommand.CommandText = "select * from " + BASENAME + "..[Statistics] " +
                                                    " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
                                                    " and ACTIONTYPE = 5 and DEPID = " + this.DepID;
             DS = new DataSet();
-            int s5 = (int)Conn.SQLDA.SelectCommand.ExecuteScalar();
-            //int s5 = Conn.SQLDA.Fill(DS, "t");//принято изданий от читателя для сдачи в книгохранение
+            //int s5 = (int)Conn.SQLDA.SelectCommand.ExecuteScalar();
+            int s5 = Conn.SQLDA.Fill(DS, "t");//принято изданий от читателя для сдачи в книгохранение
             //---------------------------------------------------------------------------------
             Conn.SQLDA.SelectCommand.CommandText = "select (case when sum(COUNTISS) is null then 0 else sum(COUNTISS) end) from " + BASENAME + "..[Statistics] " +
                                                    " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
                                                    " and ACTIONTYPE = 6 and DEPID = " + this.DepID;
             DS = new DataSet();
             int s6 = (int)Conn.SQLDA.SelectCommand.ExecuteScalar();
-            //int s6 = Conn.SQLDA.Fill(DS, "t");//Выдано изданий читателю из подсобного фонда
+            //int s6 = Conn.SQLDA.Fill(DS, "t");//Выдано изданий читателю из подсобного фонда (на дом только в абонементе такое)
             //---------------------------------------------------------------------------------
             Conn.SQLDA.SelectCommand.CommandText = "select (case when sum(COUNTISS) is null then 0 else sum(COUNTISS) end) from " + BASENAME + "..[Statistics] " +
                                                    " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
@@ -2449,7 +2863,7 @@ namespace Circulation
                                                    " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
                                                    " and ACTIONTYPE = 15 and DEPID = " + this.DepID;
             DS = new DataSet();
-            int s15 = Conn.SQLDA.Fill(DS, "t");//Выдано на дом 
+            int s15 = Conn.SQLDA.Fill(DS, "t");//Выдано на дом из кх
             //----------------------------------------------------------------------------------
             Conn.SQLDA.SelectCommand.CommandText = "select ID from " + BASENAME + "..[Statistics] " +
                                                    " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
@@ -2459,11 +2873,59 @@ namespace Circulation
             //----------------------------------------------------------------------------------
             Conn.SQLDA.SelectCommand.CommandText = "select IDREADER from " + BASENAME + "..[Statistics] " +
                                        " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
-                                       " and (ACTIONTYPE = 14 or ACTIONTYPE = 15) and DEPID = " + this.DepID + " and IDREADER is not null " +
+                                       " and (ACTIONTYPE = 14 or ACTIONTYPE = 15 or ACTIONTYPE = 20) and DEPID = " + this.DepID + " and IDREADER is not null " +
                                        " group by Cast(Cast(DATEACTION As VarChar(11)) As DateTime),IDREADER ";
             DS = new DataSet();
             int s17 = Conn.SQLDA.Fill(DS, "t");//Кол-во чит, получивших изданий на дом
             //---------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select A.*,C.SORT from " + BASENAME + "..[Statistics] A " +
+                  " left join BJVVV..DATAEXT B on B.MNFIELD = 899 and B.MSFIELD = '$w' and A.BAR collate Cyrillic_general_CI_AI = B.SORT "+
+                  " left join BJVVV..DATAEXT C on C.MNFIELD = 899 and C.MSFIELD = '$a' and B.IDDATA = C.IDDATA "+
+                  " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                  " and ACTIONTYPE = 14 and DEPID = " + this.DepID + " and IDREADER is not null " +
+                  " and C.IDINLIST = "+this.DepID;
+            DS = new DataSet();
+            int s18 = Conn.SQLDA.Fill(DS, "t");//Выдано изданий из открытого доступа зала на дом
+            //---------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select A.*,C.SORT from " + BASENAME + "..[Statistics] A " +
+                  " left join BJVVV..DATAEXT B on B.MNFIELD = 899 and B.MSFIELD = '$w' and A.BAR collate Cyrillic_general_CI_AI = B.SORT " +
+                  " left join BJVVV..DATAEXT C on C.MNFIELD = 899 and C.MSFIELD = '$a' and B.IDDATA = C.IDDATA " +
+                  " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                  " and ACTIONTYPE = 17 and DEPID = " + this.DepID + " and IDREADER is not null " +
+                  " and C.IDINLIST = " + this.DepID;
+            DS = new DataSet();
+            int s19 = Conn.SQLDA.Fill(DS, "t");//Принято изданий из открытого доступа зала
+            //---------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select A.*,C.SORT from " + BASENAME + "..[Statistics] A " +
+                  " left join BJVVV..DATAEXT B on B.MNFIELD = 899 and B.MSFIELD = '$w' and A.BAR collate Cyrillic_general_CI_AI = B.SORT " +
+                  " left join BJVVV..DATAEXT C on C.MNFIELD = 899 and C.MSFIELD = '$a' and B.IDDATA = C.IDDATA " +
+                  " left join Readers..ReaderRight R on R.IDReader = A.IDREADER " +
+                  " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                  " and (ACTIONTYPE = 14 or ACTIONTYPE=15) and DEPID = " + this.DepID + " and A.IDREADER is not null and R.IDReaderRight = 3" +
+                  " ";
+            DS = new DataSet();
+            int s20 = Conn.SQLDA.Fill(DS, "t");//Выдано книг сотрудникам на дом
+            //---------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select * from " + BASENAME + "..[ISSUED_OF_ACTIONS] A " +
+                  " left join BJVVV..USERS U on U.ID = A.IDEMP " +
+                  //" left join BJVVV..LIST_8 B on B.ID = U.DEPT "+
+                  " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                  " and IDACTION = 3 and U.DEPT = " + this.DepID;
+            DS = new DataSet();
+            int s21 = Conn.SQLDA.Fill(DS, "t");//продлен срок пользования изданием
+            //---------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select ID from " + BASENAME + "..[Statistics] " +
+                                                   " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                                                   " and ACTIONTYPE = 21 and DEPID = '" + this.DepID + "' ";
+            DS = new DataSet();
+            int s22 = Conn.SQLDA.Fill(DS, "t");//Продлён срок бронеполки
+            //----------------------------------------------------------------------------------
+            Conn.SQLDA.SelectCommand.CommandText = "select ID from " + BASENAME + "..[Statistics] " +
+                                                   " where Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
+                                                   " and ACTIONTYPE = 20 and DEPID = '" + this.DepID + "' ";
+            DS = new DataSet();
+            int s23 = Conn.SQLDA.Fill(DS, "t");//Продлён срок бронеполки
+            //----------------------------------------------------------------------------------
 
 
             Statistics.Columns.Clear();
@@ -2475,50 +2937,80 @@ namespace Circulation
             Statistics.Columns[1].Width = 550;
             Statistics.Columns.Add("C", "Кол-во");
             Statistics.Columns[2].Width = 60;
-
+            
             Statistics.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             Statistics.Rows.Add();
             Statistics.Rows[0].Cells[1].Value = "Всего получено изданий из книгохранения";
             Statistics.Rows[0].Cells[2].Value = s1;
             Statistics.Rows.Add();
-            Statistics.Rows[1].Cells[1].Value = "Выдано изданий читателю из книгохранения";
-            Statistics.Rows[1].Cells[2].Value = s2;
+            Statistics.Rows[1].Cells[1].Value = "Получено изданий из к/х не в базе";
+            Statistics.Rows[1].Cells[2].Value = s10;
             Statistics.Rows.Add();
-            Statistics.Rows[2].Cells[1].Value = "Выдано изданий читателю из подсобного фонда";
-            Statistics.Rows[2].Cells[2].Value = s6;
+            Statistics.Rows[2].Cells[1].Value = "Выдано изданий читателю из книгохранения в зал";
+            Statistics.Rows[2].Cells[2].Value = s2;
             Statistics.Rows.Add();
-            Statistics.Rows[3].Cells[1].Value = "Выдано изданий читателю с выставки";
-            Statistics.Rows[3].Cells[2].Value = s8;
+            Statistics.Rows[3].Cells[1].Value = "Выдано изданий читателю c бронеполки";//такая статистика не ведётся. нужно добвлять.
+            Statistics.Rows[3].Cells[2].Value = s23;
+            if (this.DepID == "29")//если зал абонемента
+            {
+                Statistics.Rows.Add();
+                Statistics.Rows[4].Cells[1].Value = "Выдано изданий читателю из открытого доступа зала на дом";
+                Statistics.Rows[4].Cells[2].Value = s18;
+            }
+            else
+            {
+                Statistics.Rows.Add();
+                Statistics.Rows[4].Cells[1].Value = "Выдано изданий  из открытого доступа зала";
+                Statistics.Rows[4].Cells[2].Value = s6;
+            }
             Statistics.Rows.Add();
-            Statistics.Rows[4].Cells[1].Value = "Принято изданий с выставки";
-            Statistics.Rows[4].Cells[2].Value = s9;
+            Statistics.Rows[5].Cells[1].Value = "Выдано изданий читателю с выставки";
+            Statistics.Rows[5].Cells[2].Value = s8;
             Statistics.Rows.Add();
-            Statistics.Rows[5].Cells[1].Value = "Количество читателей, получивших издания (в залы + на дом)";
-            Statistics.Rows[5].Cells[2].Value = s3;
+            Statistics.Rows[6].Cells[1].Value = "Изданий выдано на дом из книгохранения";
+            Statistics.Rows[6].Cells[2].Value = s15;
             Statistics.Rows.Add();
-            Statistics.Rows[6].Cells[1].Value = "Количество читателей посетивших зал, но не воспользовавшихся услугами книговыдачи";
-            Statistics.Rows[6].Cells[2].Value = s12;
+            Statistics.Rows[7].Cells[1].Value = "Количество книг, выданных сотрудникам на дом";
+            Statistics.Rows[7].Cells[2].Value = s20;
             Statistics.Rows.Add();
-            Statistics.Rows[7].Cells[1].Value = "Принято изданий от читателей на бронеполку";
-            Statistics.Rows[7].Cells[2].Value = s4;
+            Statistics.Rows[8].Cells[1].Value = "Принято изданий от читателя для сдачи в книгохранение всего";
+            Statistics.Rows[8].Cells[2].Value = s5+s16;
             Statistics.Rows.Add();
-            Statistics.Rows[8].Cells[1].Value = "Принято изданий от читателей в подсобный фонд";
-            Statistics.Rows[8].Cells[2].Value = s7;
+            Statistics.Rows[9].Cells[1].Value = "Принято изданий от читателей на бронеполку";
+            Statistics.Rows[9].Cells[2].Value = s4;
+            if (this.DepID == "29")
+            {
+                Statistics.Rows.Add();
+                Statistics.Rows[10].Cells[1].Value = "Принято изданий от читателей в открытый доступ";
+                Statistics.Rows[10].Cells[2].Value = s19;
+            }
+            else
+            {
+                Statistics.Rows.Add();
+                Statistics.Rows[10].Cells[1].Value = "Принято изданий от читателей в подсобный фонд";
+                Statistics.Rows[10].Cells[2].Value = s7;
+            }
             Statistics.Rows.Add();
-            Statistics.Rows[9].Cells[1].Value = "Принято изданий от читателя для сдачи в книгохранение всего";
-            Statistics.Rows[9].Cells[2].Value = s5;
+            Statistics.Rows[11].Cells[1].Value = "Принято изданий с выставки";
+            Statistics.Rows[11].Cells[2].Value = s9;
             Statistics.Rows.Add();
-            Statistics.Rows[10].Cells[1].Value = "Получено изданий из к/х не в базе";
-            Statistics.Rows[10].Cells[2].Value = s10;
+            Statistics.Rows[12].Cells[1].Value = "Изданий принято из выданных на дом";
+            Statistics.Rows[12].Cells[2].Value = s16;
             Statistics.Rows.Add();
-            Statistics.Rows[11].Cells[1].Value = "Ни разу не выданных изданий сдано в книгохранение";
-            Statistics.Rows[11].Cells[2].Value = s11;
+            Statistics.Rows[13].Cells[1].Value = "Продление срока пользования изданием";//такая ведётся но с середины апреля 17
+            Statistics.Rows[13].Cells[2].Value = s21;
             Statistics.Rows.Add();
-            Statistics.Rows[12].Cells[1].Value = "Изданий выдано на дом";
-            Statistics.Rows[12].Cells[2].Value = s15;
+            Statistics.Rows[14].Cells[1].Value = "Продление срока бронирования изданием";//такая ведётся но с середины апреля 21
+            Statistics.Rows[14].Cells[2].Value = s22;
             Statistics.Rows.Add();
-            Statistics.Rows[13].Cells[1].Value = "Изданий принято из выданных на дом";
-            Statistics.Rows[13].Cells[2].Value = s16;
+            Statistics.Rows[15].Cells[1].Value = "Ни разу не выданных изданий сдано в книгохранение";
+            Statistics.Rows[15].Cells[2].Value = s5+s11;
+            Statistics.Rows.Add();
+            Statistics.Rows[16].Cells[1].Value = "Количество читателей посетивших зал, но не воспользовавшихся услугами книговыдачи";
+            Statistics.Rows[16].Cells[2].Value = s12;
+            Statistics.Rows.Add();
+            Statistics.Rows[17].Cells[1].Value = "Количество читателей, получивших издания (в залы + на дом)";
+            Statistics.Rows[17].Cells[2].Value = s3;
             /*Statistics.Rows.Add();
             Statistics.Rows[14].Cells[1].Value = "Изданий выдано на дом с ДП";
             Statistics.Rows[14].Cells[2].Value = s13;
@@ -2526,8 +3018,8 @@ namespace Circulation
             Statistics.Rows[15].Cells[1].Value = "Изданий принято из выданных на дом с ДП";
             Statistics.Rows[15].Cells[2].Value = s14;*/
             Statistics.Rows.Add();
-            Statistics.Rows[14].Cells[1].Value = "Количество читателей, получивших издания на дом";
-            Statistics.Rows[14].Cells[2].Value = s17;
+            Statistics.Rows[18].Cells[1].Value = "Количество читателей, получивших издания на дом";
+            Statistics.Rows[18].Cells[2].Value = s17;
 
             autoinc(Statistics);
             Conn.SQLDA.SelectCommand.Connection.Close();
@@ -2545,7 +3037,7 @@ namespace Circulation
                 "with FA as (select (case when A.IDMAIN = -1 then 'Не в базе' else A.STARTMHR end) mhr ,(A.BAR) a" +
                 ",  (F0.ID) F0 " +", (F2.ID) F2 " + ", (F3.ID) F3 " + ", (F4.ID) F4 " +  ", (F5.ID) F5 " +
                 ", (F6.ID) F6 " +
-                ", (F7.ID) F7 " +
+                ", (F7.ID) F7, (F8.ID) F8 " +
                 " from " + BASENAME + "..RecievedBooks A " +
                 " left join BJVVV..DATAEXT B on A.BAR collate Cyrillic_General_CS_AI = B.SORT and B.MNFIELD = 899 and B.MSFIELD = '$w' and A.IDMAIN = B.IDMAIN " +
                 " left join BJVVV..DATAEXT C on B.IDDATA = C.IDDATA and C.MNFIELD = 899 and C.MSFIELD = '$a' " +
@@ -2554,60 +3046,64 @@ namespace Circulation
                                 //" and (D.DATESTART between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "'"+
                                 //"  and ( D.DATEFINISH between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "') " +
                 "left join " + BASENAME + "..RecievedBooks F0 on  " +
-	            "    A.ID = F0.ID  and F0.STARTMHR = 'Книгохранение - цоколь' " +
+                "    A.ID = F0.ID  and F0.STARTMHR = '…Хран… Сектор книгохранения - 0 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F2 on  " +
-                "    A.ID = F2.ID and  F2.STARTMHR = 'Книгохранение - 2 этаж' " +
+                "    A.ID = F2.ID and  F2.STARTMHR = '…Хран… Сектор книгохранения - 2 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F3 on  " +
-                "    A.ID = F3.ID and F3.STARTMHR = 'Книгохранение - 3 этаж' " +
+                "    A.ID = F3.ID and F3.STARTMHR = '…Хран… Сектор книгохранения - 3 этаж' " +
                 " left join " + BASENAME + "..RecievedBooks F4 on  " +
-                "    A.ID = F4.ID  and F4.STARTMHR = 'Книгохранение - Фонд редкой книги' " +
+                "    A.ID = F4.ID  and F4.STARTMHR like '%редкой%' " +
                 "left join " + BASENAME + "..RecievedBooks F5 on  " +
-                "    A.ID = F5.ID and F5.STARTMHR = 'Книгохранение - 5 этаж' " +
+                "    A.ID = F5.ID and F5.STARTMHR = '…Хран… Сектор книгохранения - 5 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F6 on  " +
-                "    A.ID = F6.ID  and F6.STARTMHR = 'Книгохранение - 6 этаж' " +
+                "    A.ID = F6.ID  and F6.STARTMHR = '…Хран… Сектор книгохранения - 6 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F7 on  " +
-                "    A.ID = F7.ID and F7.STARTMHR = 'Книгохранение - 7 этаж' " +
+                "    A.ID = F7.ID and F7.STARTMHR = '…Хран… Сектор книгохранения - 7 этаж' " +
+                "left join " + BASENAME + "..RecievedBooks F8 on  " +
+                "    A.ID = F8.ID and F8.STARTMHR = '…Хран… Сектор книгохранения - Абонемент' " +
                 " where  " +
                 "         (cast(cast(A.DATESTART as nvarchar(11)) as datetime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "')"+//  or  " +
                 
                 //"         A.DATEFINISH between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "') " +
-                "and A.DEPNAME != 'НИО редкой книги') " +
+                "and A.DEPNAME  not like '%едкой книги%') " +
                 //" FB as (select * from " + BASENAME + "..RecievedBooks D where D.RETINBK = 1  and ( D.DATEFINISH between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "')) "+
                 " select A.mhr,count(A.a),0,count(A.F0),count(A.F2),count(A.F3),count(A.F4), "+
-                " count(A.F5),count(A.F6),count(A.F7) from FA A group by A.mhr";
+                " count(A.F5),count(A.F6),count(A.F7),count(A.F8) from FA A group by A.mhr";
             DataSet DS = new DataSet();
             int s6 = Conn.SQLDA.Fill(DS, "t");
             Conn.SQLDA.SelectCommand.CommandText =
                 "with FA as (select (case when A.IDMAIN = -1 then 'Не в базе' else A.STARTMHR end) mhr ,(A.BAR) a" +
                 ",  (F0.ID) F0 " + ", (F2.ID) F2 " + ", (F3.ID) F3 " + ", (F4.ID) F4 " + ", (F5.ID) F5 " +
                 ", (F6.ID) F6 " +
-                ", (F7.ID) F7 " +
+                ", (F7.ID) F7, (F8.ID) F8 " +
                 " from " + BASENAME + "..RecievedBooks A " +
                 " left join BJVVV..DATAEXT B on A.BAR collate Cyrillic_General_CS_AI = B.SORT and B.MNFIELD = 899 and B.MSFIELD = '$w' and A.IDMAIN = B.IDMAIN " +
                 " left join BJVVV..DATAEXT C on B.IDDATA = C.IDDATA and C.MNFIELD = 899 and C.MSFIELD = '$a' " +
                 " left join BJVVV..DATAEXTPLAIN CC on CC.IDDATAEXT = C.ID " +
                 "left join " + BASENAME + "..RecievedBooks F0 on  " +
-                "    A.ID = F0.ID  and F0.RECDEPNAME = 'Книгохранение - цоколь' " +
+                "    A.ID = F0.ID  and F0.RECDEPNAME = '…Хран… Сектор книгохранения - 0 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F2 on  " +
-                "    A.ID = F2.ID and  F2.RECDEPNAME = 'Книгохранение - 2 этаж' " +
+                "    A.ID = F2.ID and  F2.RECDEPNAME = '…Хран… Сектор книгохранения - 2 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F3 on  " +
-                "    A.ID = F3.ID and F3.RECDEPNAME = 'Книгохранение - 3 этаж' " +
+                "    A.ID = F3.ID and F3.RECDEPNAME = '…Хран… Сектор книгохранения - 3 этаж' " +
                 " left join " + BASENAME + "..RecievedBooks F4 on  " +
-                "    A.ID = F4.ID  and F4.RECDEPNAME = 'Книгохранение - Фонд редкой книги' " +
+                "    A.ID = F4.ID  and F4.RECDEPNAME like '%едкой%' " +
                 "left join " + BASENAME + "..RecievedBooks F5 on  " +
-                "    A.ID = F5.ID and F5.RECDEPNAME = 'Книгохранение - 5 этаж' " +
+                "    A.ID = F5.ID and F5.RECDEPNAME = '…Хран… Сектор книгохранения - 5 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F6 on  " +
-                "    A.ID = F6.ID  and F6.RECDEPNAME = 'Книгохранение - 6 этаж' " +
+                "    A.ID = F6.ID  and F6.RECDEPNAME = '…Хран… Сектор книгохранения - 6 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F7 on  " +
-                "    A.ID = F7.ID and F7.RECDEPNAME = 'Книгохранение - 7 этаж' " +
+                "    A.ID = F7.ID and F7.RECDEPNAME = '…Хран… Сектор книгохранения - 7 этаж' " +
+                "left join " + BASENAME + "..RecievedBooks F8 on  " +
+                "    A.ID = F8.ID and F8.RECDEPNAME = '…Хран… Сектор книгохранения - Абонемент' " +
                 " where  " +
                 //"         (A.DATESTART between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "')" +//  or  " +
 
                 "         A.DATEFINISH between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
-                "and A.DEPNAME != 'НИО редкой книги') " +
+                "and A.DEPNAME not like '%едкой книги%') " +
                 //" FB as (select * from " + BASENAME + "..RecievedBooks D where D.RETINBK = 1  and ( D.DATEFINISH between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "')) "+
                 " select A.mhr,count(A.a),count(A.a),count(A.F0),count(A.F2),count(A.F3),count(A.F4), " +
-                " count(A.F5),count(A.F6),count(A.F7) from FA A group by A.mhr";
+                " count(A.F5),count(A.F6),count(A.F7), count(A.F8) from FA A group by A.mhr";
             DataSet DS1 = new DataSet();
             s6 = Conn.SQLDA.Fill(DS1, "t");
 
@@ -2626,23 +3122,23 @@ namespace Circulation
                         //        " and (D.DATESTART between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") +
                          //       "'  or D.DATEFINISH between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "') " +
                 "left join " + BASENAME + "..RecievedBooks F0 on  " +
-                "    A.ID = F0.ID  and F0.STARTMHR = 'Книгохранение - цоколь' " +
+                "    A.ID = F0.ID  and F0.STARTMHR = '…Хран… Сектор книгохранения - 0 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F2 on  " +
-                "    A.ID = F2.ID and  F2.STARTMHR = 'Книгохранение - 2 этаж' " +
+                "    A.ID = F2.ID and  F2.STARTMHR = '…Хран… Сектор книгохранения - 2 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F3 on  " +
-                "    A.ID = F3.ID and F3.STARTMHR = 'Книгохранение - 3 этаж' " +
+                "    A.ID = F3.ID and F3.STARTMHR = '…Хран… Сектор книгохранения - 3 этаж' " +
                 " left join " + BASENAME + "..RecievedBooks F4 on  " +
-                "    A.ID = F4.ID  and F4.STARTMHR = 'Книгохранение - Фонд редкой книги' " +
+                "    A.ID = F4.ID  and F4.STARTMHR like '%едкой%' " +
                 "left join " + BASENAME + "..RecievedBooks F5 on  " +
-                "    A.ID = F5.ID and F5.STARTMHR = 'Книгохранение - 5 этаж' " +
+                "    A.ID = F5.ID and F5.STARTMHR = '…Хран… Сектор книгохранения - 5 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F6 on  " +
-                "    A.ID = F6.ID  and F6.STARTMHR = 'Книгохранение - 6 этаж' " +
+                "    A.ID = F6.ID  and F6.STARTMHR = '…Хран… Сектор книгохранения - 6 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F7 on  " +
-                "    A.ID = F7.ID and F7.STARTMHR = 'Книгохранение - 7 этаж' " +
+                "    A.ID = F7.ID and F7.STARTMHR = '…Хран… Сектор книгохранения - 7 этаж' " +
                 " where  " +
                 "         ( cast(cast(A.DATESTART as nvarchar(11)) as datetime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "')    " +
                 //"         A.DATEFINISH between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "') " +
-                "and A.DEPNAME = 'НИО редкой книги') " +
+                "and A.DEPNAME like '%едкой%') " +
                 " select A.mhr,count(A.a),0,count(A.F0),count(A.F2),count(A.F3),count(A.F4), " +
                 " count(A.F5),count(A.F6),count(A.F7) from FA A group by A.mhr";
 
@@ -2662,23 +3158,23 @@ namespace Circulation
                             //        " and (D.DATESTART between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") +
                             //       "'  or D.DATEFINISH between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "') " +
                 "left join " + BASENAME + "..RecievedBooks F0 on  " +
-                "    A.ID = F0.ID  and F0.RECDEPNAME = 'Книгохранение - цоколь' " +
+                "    A.ID = F0.ID  and F0.RECDEPNAME = '…Хран… Сектор книгохранения - 0 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F2 on  " +
-                "    A.ID = F2.ID and  F2.RECDEPNAME = 'Книгохранение - 2 этаж' " +
+                "    A.ID = F2.ID and  F2.RECDEPNAME = '…Хран… Сектор книгохранения - 2 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F3 on  " +
-                "    A.ID = F3.ID and F3.RECDEPNAME = 'Книгохранение - 3 этаж' " +
+                "    A.ID = F3.ID and F3.RECDEPNAME = '…Хран… Сектор книгохранения - 3 этаж' " +
                 " left join " + BASENAME + "..RecievedBooks F4 on  " +
-                "    A.ID = F4.ID  and F4.RECDEPNAME = 'Книгохранение - Фонд редкой книги' " +
+                "    A.ID = F4.ID  and F4.RECDEPNAME like '%едкой%' " +
                 "left join " + BASENAME + "..RecievedBooks F5 on  " +
-                "    A.ID = F5.ID and F5.RECDEPNAME = 'Книгохранение - 5 этаж' " +
+                "    A.ID = F5.ID and F5.RECDEPNAME = '…Хран… Сектор книгохранения - 5 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F6 on  " +
-                "    A.ID = F6.ID  and F6.RECDEPNAME = 'Книгохранение - 6 этаж' " +
+                "    A.ID = F6.ID  and F6.RECDEPNAME = '…Хран… Сектор книгохранения - 6 этаж' " +
                 "left join " + BASENAME + "..RecievedBooks F7 on  " +
-                "    A.ID = F7.ID and F7.RECDEPNAME = 'Книгохранение - 7 этаж' " +
+                "    A.ID = F7.ID and F7.RECDEPNAME = '…Хран… Сектор книгохранения - 7 этаж' " +
                 " where  " +
                 "         (A.DATEFINISH between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "')    " +
                             //"         A.DATEFINISH between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "') " +
-                "and A.DEPNAME = 'НИО редкой книги') " +
+                "and A.DEPNAME  like '%едкой%') " +
                 " select A.mhr,count(A.a),count(A.a),count(A.F0),count(A.F2),count(A.F3),count(A.F4), " +
                 " count(A.F5),count(A.F6),count(A.F7) from FA A group by A.mhr";
 
@@ -2703,11 +3199,14 @@ namespace Circulation
             Statistics.Columns[5].Width = 60;
             Statistics.Columns.Add("F2", "к/х ред. кн.");
             Statistics.Columns[6].Width = 60;
-            Statistics.Columns.Add("F2", "5 этаж");
-            Statistics.Columns[7].Width = 60;
+            //Statistics.Columns.Add("F2", "5 этаж");
+            //Statistics.Columns[7].Width = 60;
+
             Statistics.Columns.Add("F2", "6 этаж");
-            Statistics.Columns[8].Width = 60;
+            Statistics.Columns[7].Width = 60;
             Statistics.Columns.Add("F2", "7 этаж");
+            Statistics.Columns[8].Width = 60;
+            Statistics.Columns.Add("F2", "Абоне мент");
             Statistics.Columns[9].Width = 60;
             Statistics.Columns.Add("ORD", "Кол-во требо ваний");
             Statistics.Columns[10].Width = 60;
@@ -2717,19 +3216,23 @@ namespace Circulation
             string f11 = "0", f12 = "0", f21 = "0", f22 = "0", f31 = "0", f32 = "0",
                 f41 = "0", f42 = "0", f51 = "0", f52 = "0", f61 = "0", f62 = "0",
                 f71 = "0", f72 = "0", f81 = "0", f82 = "0", f91 = "0", f92 = "0",
-                f101 = "0", f102 = "0", f111 = "0", f112 = "0";
+                f101 = "0", f102 = "0", f111 = "0", f112 = "0",
+                f121 = "0", f122 = "0";//абонемент
             string r00 = "0", r02 = "0", r03 = "0", r04 = "0", r05 = "0", r06 = "0", r07 = "0",//цоколь
-                   r20 = "0", r22 = "0", r23 = "0", r24 = "0", r25 = "0", r26 = "0", r27 = "0",
-                   r30 = "0", r32 = "0", r33 = "0", r34 = "0", r35 = "0", r36 = "0", r37 = "0",
-                   r40 = "0", r42 = "0", r43 = "0", r44 = "0", r45 = "0", r46 = "0", r47 = "0",
-                   r50 = "0", r52 = "0", r53 = "0", r54 = "0", r55 = "0", r56 = "0", r57 = "0",
-                   r60 = "0", r62 = "0", r63 = "0", r64 = "0", r65 = "0", r66 = "0", r67 = "0",
-                   r70 = "0", r72 = "0", r73 = "0", r74 = "0", r75 = "0", r76 = "0", r77 = "0",
-                   r80 = "0", r82 = "0", r83 = "0", r84 = "0", r85 = "0", r86 = "0", r87 = "0";//не в базе
+                   r20 = "0", r22 = "0", r23 = "0", r24 = "0", r25 = "0", r26 = "0", r27 = "0",//2 этаж
+                   r30 = "0", r32 = "0", r33 = "0", r34 = "0", r35 = "0", r36 = "0", r37 = "0",//3 этаж
+                   r40 = "0", r42 = "0", r43 = "0", r44 = "0", r45 = "0", r46 = "0", r47 = "0",//4 этаж
+                   r50 = "0", r52 = "0", r53 = "0", r54 = "0", r55 = "0", r56 = "0", r57 = "0",//5 этаж
+                   r60 = "0", r62 = "0", r63 = "0", r64 = "0", r65 = "0", r66 = "0", r67 = "0",//6 этаж
+                   r70 = "0", r72 = "0", r73 = "0", r74 = "0", r75 = "0", r76 = "0", r77 = "0",//7 этаж
+                   r80 = "0", r82 = "0", r83 = "0", r84 = "0", r85 = "0", r86 = "0", r87 = "0",//не в базе
+                   r90 = "0", r92 = "0", r93 = "0", r94 = "0", r95 = "0", r96 = "0", r97 = "0";//абонемент
             string rr00 = "0", rr02 = "0", rr03 = "0", rr04 = "0", rr05 = "0", rr06 = "0", rr07 = "0",
                    rr10 = "0", rr12 = "0", rr13 = "0", rr14 = "0", rr15 = "0", rr16 = "0", rr17 = "0";
-            string ord0 = "0", ord1 = "0", ord2 = "0", ord3 = "0", ord4 = "0", ord5 = "0", ord6 = "0", ord7 = "-", ord8 = "0", ord9 = "-", ord10 = "-";
-            string ref0 = "0", ref1 = "0", ref2 = "0", ref3 = "0", ref4 = "0", ref5 = "0", ref6 = "0", ref7 = "-", ref8 = "0", ref9 = "-", ref10 = "-";
+            string ord0 = "0", ord1 = "0", ord2 = "0", ord3 = "0", ord4 = "0", ord5 = "0", ord6 = "0", ord7 = "-", ord8 = "0", ord9 = "-", ord10 = "-",
+                ord11 = "0" /*абонемент*/;
+            string ref0 = "0", ref1 = "0", ref2 = "0", ref3 = "0", ref4 = "0", ref5 = "0", ref6 = "0", ref7 = "-", ref8 = "0", ref9 = "-", ref10 = "-", 
+                ref11 = "0"/*абонемент*/;
             ord0 = dbw.GetOrders0(f3.StartDate, f3.EndDate);//цоколь
             ord1 = dbw.GetOrders1(f3.StartDate, f3.EndDate);//2
             ord2 = dbw.GetOrders2(f3.StartDate, f3.EndDate);//3
@@ -2738,6 +3241,7 @@ namespace Circulation
             ord5 = dbw.GetOrders5(f3.StartDate, f3.EndDate);//6 этаж
             ord6 = dbw.GetOrders6(f3.StartDate, f3.EndDate);//7
             ord8 = dbw.GetOrders8(f3.StartDate, f3.EndDate);//всего
+            ord11 = dbw.GetOrders11(f3.StartDate, f3.EndDate);//абонемент
 
             ref0 = dbw.GetResusual(f3.StartDate, f3.EndDate, "15");
             ref1 = dbw.GetResusual(f3.StartDate, f3.EndDate, "6");
@@ -2747,10 +3251,22 @@ namespace Circulation
             ref5 = dbw.GetResusual(f3.StartDate, f3.EndDate, "10");
             ref6 = dbw.GetResusual(f3.StartDate, f3.EndDate, "11");
             ref8 = dbw.GetResusual(f3.StartDate, f3.EndDate, "all");
+            ref11 = dbw.GetResusual(f3.StartDate, f3.EndDate, "47");
             foreach (DataRow r in DS1.Tables[0].Rows)
             {
                 switch (r[0].ToString())
                 {
+                    case "…Хран… Сектор книгохранения - Абонемент":
+                        //f81 = r[1].ToString();
+                        f122 = r[2].ToString();
+                        r90 = r[3].ToString();
+                        r92 = r[4].ToString();
+                        r93 = r[5].ToString();
+                        r94 = r[6].ToString();
+                        r95 = r[7].ToString();
+                        r96 = r[8].ToString();
+                        r97 = r[10].ToString();
+                        break;
                     case "Не в базе":
                         //f81 = r[1].ToString();
                         f82 = r[2].ToString();
@@ -2762,7 +3278,7 @@ namespace Circulation
                         r86 = r[8].ToString();
                         r87 = r[9].ToString();
                         break;
-                    case "Книгохранение - 2 этаж":
+                    case "…Хран… Сектор книгохранения - 2 этаж":
                         //f21 = r[1].ToString();
                         f22 = r[2].ToString();
                         r20 = r[3].ToString();
@@ -2773,7 +3289,7 @@ namespace Circulation
                         r26 = r[8].ToString();
                         r27 = r[9].ToString();
                         break;
-                    case "Книгохранение - 3 этаж":
+                    case "…Хран… Сектор книгохранения - 3 этаж":
                         //f31 = r[1].ToString();
                         f32 = r[2].ToString();
                         r30 = r[3].ToString();
@@ -2784,7 +3300,7 @@ namespace Circulation
                         r36 = r[8].ToString();
                         r37 = r[9].ToString();
                         break;
-                    case "Книгохранение - 4 этаж":
+                    case "…Хран… Сектор книгохранения - 4 этаж":
                         //f41 = r[1].ToString();
                         f42 = r[2].ToString();
                         r40 = r[3].ToString();
@@ -2795,7 +3311,7 @@ namespace Circulation
                         r46 = r[8].ToString();
                         r47 = r[9].ToString();
                         break;
-                    case "Книгохранение - 5 этаж":
+                    case "…Хран… Сектор книгохранения - 5 этаж":
                         //f51 = r[1].ToString();
                         f52 = r[2].ToString();
                         r50 = r[3].ToString();
@@ -2806,7 +3322,7 @@ namespace Circulation
                         r56 = r[8].ToString();
                         r57 = r[9].ToString();
                         break;
-                    case "Книгохранение - 6 этаж":
+                    case "…Хран… Сектор книгохранения - 6 этаж":
                         //f61 = r[1].ToString();
                         f62 = r[2].ToString();
                         r60 = r[3].ToString();
@@ -2817,7 +3333,7 @@ namespace Circulation
                         r66 = r[8].ToString();
                         r67 = r[9].ToString();
                         break;
-                    case "Книгохранение - 7 этаж":
+                    case "…Хран… Сектор книгохранения - 7 этаж":
                         //f71 = r[1].ToString();
                         f72 = r[2].ToString();
                         r70 = r[3].ToString();
@@ -2828,7 +3344,7 @@ namespace Circulation
                         r76 = r[8].ToString();
                         r77 = r[9].ToString();
                         break;
-                    case "Книгохранение - цоколь":
+                    case "…Хран… Сектор книгохранения - 0 этаж":
                         //f11 = r[1].ToString();
                         f12 = r[2].ToString();
                         r00 = r[3].ToString();
@@ -2848,33 +3364,36 @@ namespace Circulation
                     case "Не в базе":
                         f81 = r[1].ToString();
                         break;
-                    case "Книгохранение - 2 этаж":
+                    case "…Хран… Сектор книгохранения - 2 этаж":
                         f21 = r[1].ToString();
                         break;
-                    case "Книгохранение - 3 этаж":
+                    case "…Хран… Сектор книгохранения - 3 этаж":
                         f31 = r[1].ToString();
                         break;
-                    case "Книгохранение - 4 этаж":
+                    case "…Хран… Сектор книгохранения - 4 этаж":
                         f41 = r[1].ToString();
                         break;
-                    case "Книгохранение - 5 этаж":
+                    case "…Хран… Сектор книгохранения - 5 этаж":
                         f51 = r[1].ToString();
                         break;
-                    case "Книгохранение - 6 этаж":
+                    case "…Хран… Сектор книгохранения - 6 этаж":
                         f61 = r[1].ToString();
                         break;
-                    case "Книгохранение - 7 этаж":
+                    case "…Хран… Сектор книгохранения - 7 этаж":
                         f71 = r[1].ToString();
                         break;
-                    case "Книгохранение - цоколь":
+                    case "…Хран… Сектор книгохранения - 0 этаж":
                         f11 = r[1].ToString();
+                        break;
+                    case "…Хран… Сектор книгохранения - Абонемент":
+                        f121 = r[1].ToString();
                         break;
                 }
             }
             // "Книгохранение - Фонд редкой книги":
             foreach (DataRow r in DSRED1.Tables[0].Rows)
             {
-                if (r[0].ToString() == "Книгохранение - Фонд редкой книги")
+                if (r[0].ToString().Contains("едкой книги"))
                 {
                     f101 = r[1].ToString();
                     f102 = r[2].ToString();
@@ -2901,7 +3420,7 @@ namespace Circulation
             }
             foreach (DataRow r in DSRED.Tables[0].Rows)
             {
-                if (r[0].ToString() == "Книгохранение - Фонд редкой книги")
+                if (r[0].ToString().Contains("едкой книги"))
                 {
                     f101 = r[1].ToString();
                 }
@@ -2910,151 +3429,164 @@ namespace Circulation
                     f111 = r[1].ToString();
                 }
             }
-            f91 = (int.Parse(f11)  + int.Parse(f21) + int.Parse(f31) + int.Parse(f41) + int.Parse(f51) + int.Parse(f61) + int.Parse(f71) + int.Parse(f81)).ToString();
-            f92 = (int.Parse(f12)  + int.Parse(f22) + int.Parse(f32) + int.Parse(f42) + int.Parse(f52) + int.Parse(f62) + int.Parse(f72) + int.Parse(f82)).ToString();
+            f91 = (int.Parse(f11) + int.Parse(f21) + int.Parse(f31) + int.Parse(f41) + int.Parse(f51) + int.Parse(f61) + int.Parse(f71) + int.Parse(f81) + int.Parse(f121)).ToString();
+            f92 = (int.Parse(f12)  + int.Parse(f22) + int.Parse(f32) + int.Parse(f42) + int.Parse(f52) + int.Parse(f62) + int.Parse(f72) + int.Parse(f82) + int.Parse(f122)).ToString();
             Statistics.Rows.Add();
-            Statistics.Rows[0].Cells[0].Value = "Цоколь";
-            Statistics.Rows[0].Cells[1].Value = f11;
-            Statistics.Rows[0].Cells[2].Value = f12;
-            Statistics.Rows[0].Cells[3].Value = r00;
-            Statistics.Rows[0].Cells[4].Value = r02;
-            Statistics.Rows[0].Cells[5].Value = r03;
-            Statistics.Rows[0].Cells[6].Value = r04;
-            Statistics.Rows[0].Cells[7].Value = r05;
-            Statistics.Rows[0].Cells[8].Value = r06;
-            Statistics.Rows[0].Cells[9].Value = r07;
-            Statistics.Rows[0].Cells[10].Value = ord0;
-            Statistics.Rows[0].Cells[11].Value = ref0;
+            Statistics.Rows[0].Cells[0].Value = "Абонемент";
+            Statistics.Rows[0].Cells[1].Value = f121;
+            Statistics.Rows[0].Cells[2].Value = f122;
+            Statistics.Rows[0].Cells[3].Value = r90;
+            Statistics.Rows[0].Cells[4].Value = r92;
+            Statistics.Rows[0].Cells[5].Value = r93;
+            Statistics.Rows[0].Cells[6].Value = r94;
+            Statistics.Rows[0].Cells[7].Value = r95;
+            Statistics.Rows[0].Cells[8].Value = r96;
+            Statistics.Rows[0].Cells[9].Value = r97;
+            Statistics.Rows[0].Cells[10].Value = ord11;
+            Statistics.Rows[0].Cells[11].Value = ref11;
             Statistics.Rows.Add();
-            Statistics.Rows[1].Cells[0].Value = "2 этаж";
-            Statistics.Rows[1].Cells[1].Value = f21;
-            Statistics.Rows[1].Cells[2].Value = f22;
-            Statistics.Rows[1].Cells[3].Value = r20;
-            Statistics.Rows[1].Cells[4].Value = r22;
-            Statistics.Rows[1].Cells[5].Value = r23;
-            Statistics.Rows[1].Cells[6].Value = r24;
-            Statistics.Rows[1].Cells[7].Value = r25;
-            Statistics.Rows[1].Cells[8].Value = r26;
-            Statistics.Rows[1].Cells[9].Value = r27;
-            Statistics.Rows[1].Cells[10].Value = ord1;
-            Statistics.Rows[1].Cells[11].Value = ref1;
+            Statistics.Rows[1].Cells[0].Value = "Цоколь";
+            Statistics.Rows[1].Cells[1].Value = f11;
+            Statistics.Rows[1].Cells[2].Value = f12;
+            Statistics.Rows[1].Cells[3].Value = r00;
+            Statistics.Rows[1].Cells[4].Value = r02;
+            Statistics.Rows[1].Cells[5].Value = r03;
+            Statistics.Rows[1].Cells[6].Value = r04;
+            Statistics.Rows[1].Cells[7].Value = r05;
+            Statistics.Rows[1].Cells[8].Value = r06;
+            Statistics.Rows[1].Cells[9].Value = r07;
+            Statistics.Rows[1].Cells[10].Value = ord0;
+            Statistics.Rows[1].Cells[11].Value = ref0;
             Statistics.Rows.Add();
-            Statistics.Rows[2].Cells[0].Value = "3 этаж";
-            Statistics.Rows[2].Cells[1].Value = f31;
-            Statistics.Rows[2].Cells[2].Value = f32;
-            Statistics.Rows[2].Cells[3].Value = r30;
-            Statistics.Rows[2].Cells[4].Value = r32;
-            Statistics.Rows[2].Cells[5].Value = r33;
-            Statistics.Rows[2].Cells[6].Value = r34;
-            Statistics.Rows[2].Cells[7].Value = r35;
-            Statistics.Rows[2].Cells[8].Value = r36;
-            Statistics.Rows[2].Cells[9].Value = r37;
-            Statistics.Rows[2].Cells[10].Value = ord2;
-            Statistics.Rows[2].Cells[11].Value = ref2;
+            Statistics.Rows[2].Cells[0].Value = "2 этаж";
+            Statistics.Rows[2].Cells[1].Value = f21;
+            Statistics.Rows[2].Cells[2].Value = f22;
+            Statistics.Rows[2].Cells[3].Value = r20;
+            Statistics.Rows[2].Cells[4].Value = r22;
+            Statistics.Rows[2].Cells[5].Value = r23;
+            Statistics.Rows[2].Cells[6].Value = r24;
+            Statistics.Rows[2].Cells[7].Value = r25;
+            Statistics.Rows[2].Cells[8].Value = r26;
+            Statistics.Rows[2].Cells[9].Value = r27;
+            Statistics.Rows[2].Cells[10].Value = ord1;
+            Statistics.Rows[2].Cells[11].Value = ref1;
             Statistics.Rows.Add();
-            Statistics.Rows[3].Cells[0].Value = "4 этаж";
-            Statistics.Rows[3].Cells[1].Value = f41;
-            Statistics.Rows[3].Cells[2].Value = f42;
-            Statistics.Rows[3].Cells[3].Value = r40;
-            Statistics.Rows[3].Cells[4].Value = r42;
-            Statistics.Rows[3].Cells[5].Value = r43;
-            Statistics.Rows[3].Cells[6].Value = r44;
-            Statistics.Rows[3].Cells[7].Value = r45;
-            Statistics.Rows[3].Cells[8].Value = r46;
-            Statistics.Rows[3].Cells[9].Value = r47;
-            Statistics.Rows[3].Cells[10].Value = ord3;
-            Statistics.Rows[3].Cells[11].Value = ref3;
+            Statistics.Rows[3].Cells[0].Value = "3 этаж";
+            Statistics.Rows[3].Cells[1].Value = f31;
+            Statistics.Rows[3].Cells[2].Value = f32;
+            Statistics.Rows[3].Cells[3].Value = r30;
+            Statistics.Rows[3].Cells[4].Value = r32;
+            Statistics.Rows[3].Cells[5].Value = r33;
+            Statistics.Rows[3].Cells[6].Value = r34;
+            Statistics.Rows[3].Cells[7].Value = r35;
+            Statistics.Rows[3].Cells[8].Value = r36;
+            Statistics.Rows[3].Cells[9].Value = r37;
+            Statistics.Rows[3].Cells[10].Value = ord2;
+            Statistics.Rows[3].Cells[11].Value = ref2;
             Statistics.Rows.Add();
-            Statistics.Rows[4].Cells[0].Value = "5 этаж";
-            Statistics.Rows[4].Cells[1].Value = f51;
-            Statistics.Rows[4].Cells[2].Value = f52;
-            Statistics.Rows[4].Cells[3].Value = r50;
-            Statistics.Rows[4].Cells[4].Value = r52;
-            Statistics.Rows[4].Cells[5].Value = r53;
-            Statistics.Rows[4].Cells[6].Value = r54;
-            Statistics.Rows[4].Cells[7].Value = r55;
-            Statistics.Rows[4].Cells[8].Value = r56;
-            Statistics.Rows[4].Cells[9].Value = r57;
-            Statistics.Rows[4].Cells[10].Value = ord4;
-            Statistics.Rows[4].Cells[11].Value = ref4;
+            Statistics.Rows[4].Cells[0].Value = "4 этаж";
+            Statistics.Rows[4].Cells[1].Value = f41;
+            Statistics.Rows[4].Cells[2].Value = f42;
+            Statistics.Rows[4].Cells[3].Value = r40;
+            Statistics.Rows[4].Cells[4].Value = r42;
+            Statistics.Rows[4].Cells[5].Value = r43;
+            Statistics.Rows[4].Cells[6].Value = r44;
+            Statistics.Rows[4].Cells[7].Value = r45;
+            Statistics.Rows[4].Cells[8].Value = r46;
+            Statistics.Rows[4].Cells[9].Value = r47;
+            Statistics.Rows[4].Cells[10].Value = ord3;
+            Statistics.Rows[4].Cells[11].Value = ref3;
             Statistics.Rows.Add();
-            Statistics.Rows[5].Cells[0].Value = "6 этаж";
-            Statistics.Rows[5].Cells[1].Value = f61;
-            Statistics.Rows[5].Cells[2].Value = f62;
-            Statistics.Rows[5].Cells[3].Value = r60;
-            Statistics.Rows[5].Cells[4].Value = r62;
-            Statistics.Rows[5].Cells[5].Value = r63;
-            Statistics.Rows[5].Cells[6].Value = r64;
-            Statistics.Rows[5].Cells[7].Value = r65;
-            Statistics.Rows[5].Cells[8].Value = r66;
-            Statistics.Rows[5].Cells[9].Value = r67;
-            Statistics.Rows[5].Cells[10].Value = ord5;
-            Statistics.Rows[5].Cells[11].Value = ref5;
+            Statistics.Rows[5].Cells[0].Value = "5 этаж";
+            Statistics.Rows[5].Cells[1].Value = f51;
+            Statistics.Rows[5].Cells[2].Value = f52;
+            Statistics.Rows[5].Cells[3].Value = r50;
+            Statistics.Rows[5].Cells[4].Value = r52;
+            Statistics.Rows[5].Cells[5].Value = r53;
+            Statistics.Rows[5].Cells[6].Value = r54;
+            Statistics.Rows[5].Cells[7].Value = r55;
+            Statistics.Rows[5].Cells[8].Value = r56;
+            Statistics.Rows[5].Cells[9].Value = r57;
+            Statistics.Rows[5].Cells[10].Value = ord4;
+            Statistics.Rows[5].Cells[11].Value = ref4;
             Statistics.Rows.Add();
-            Statistics.Rows[6].Cells[0].Value = "7 этаж";
-            Statistics.Rows[6].Cells[1].Value = f71;
-            Statistics.Rows[6].Cells[2].Value = f72;
-            Statistics.Rows[6].Cells[3].Value = r70;
-            Statistics.Rows[6].Cells[4].Value = r72;
-            Statistics.Rows[6].Cells[5].Value = r73;
-            Statistics.Rows[6].Cells[6].Value = r74;
-            Statistics.Rows[6].Cells[7].Value = r75;
-            Statistics.Rows[6].Cells[8].Value = r76;
-            Statistics.Rows[6].Cells[9].Value = r77;
-            Statistics.Rows[6].Cells[10].Value = ord6;
-            Statistics.Rows[6].Cells[11].Value = ref6;
+            Statistics.Rows[6].Cells[0].Value = "6 этаж";
+            Statistics.Rows[6].Cells[1].Value = f61;
+            Statistics.Rows[6].Cells[2].Value = f62;
+            Statistics.Rows[6].Cells[3].Value = r60;
+            Statistics.Rows[6].Cells[4].Value = r62;
+            Statistics.Rows[6].Cells[5].Value = r63;
+            Statistics.Rows[6].Cells[6].Value = r64;
+            Statistics.Rows[6].Cells[7].Value = r65;
+            Statistics.Rows[6].Cells[8].Value = r66;
+            Statistics.Rows[6].Cells[9].Value = r67;
+            Statistics.Rows[6].Cells[10].Value = ord5;
+            Statistics.Rows[6].Cells[11].Value = ref5;
             Statistics.Rows.Add();
-            Statistics.Rows[7].Cells[0].Value = "Не в базе (ОФ)";
-            Statistics.Rows[7].Cells[1].Value = f81;
-            Statistics.Rows[7].Cells[2].Value = f82;
-            Statistics.Rows[7].Cells[3].Value = r80;
-            Statistics.Rows[7].Cells[4].Value = r82;
-            Statistics.Rows[7].Cells[5].Value = r83;
-            Statistics.Rows[7].Cells[6].Value = r84;
-            Statistics.Rows[7].Cells[7].Value = r85;
-            Statistics.Rows[7].Cells[8].Value = r86;
-            Statistics.Rows[7].Cells[9].Value = r87;
-            Statistics.Rows[7].Cells[10].Value = ord7;
-            Statistics.Rows[7].Cells[11].Value = ref7;
+            Statistics.Rows[7].Cells[0].Value = "7 этаж";
+            Statistics.Rows[7].Cells[1].Value = f71;
+            Statistics.Rows[7].Cells[2].Value = f72;
+            Statistics.Rows[7].Cells[3].Value = r70;
+            Statistics.Rows[7].Cells[4].Value = r72;
+            Statistics.Rows[7].Cells[5].Value = r73;
+            Statistics.Rows[7].Cells[6].Value = r74;
+            Statistics.Rows[7].Cells[7].Value = r75;
+            Statistics.Rows[7].Cells[8].Value = r76;
+            Statistics.Rows[7].Cells[9].Value = r77;
+            Statistics.Rows[7].Cells[10].Value = ord6;
+            Statistics.Rows[7].Cells[11].Value = ref6;
             Statistics.Rows.Add();
-            Statistics.Rows[8].Cells[0].Value = "Всего (без редкой книги)";
-            Statistics.Rows[8].Cells[1].Value = f91;
-            Statistics.Rows[8].Cells[2].Value = f92;
-            Statistics.Rows[8].Cells[3].Value = (int.Parse(r00) + int.Parse(r20) + int.Parse(r30) + int.Parse(r40) + int.Parse(r50) + int.Parse(r60) + int.Parse(r70) + int.Parse(r80)).ToString();
-            Statistics.Rows[8].Cells[4].Value = (int.Parse(r02) + int.Parse(r22) + int.Parse(r32) + int.Parse(r42) + int.Parse(r52) + int.Parse(r62) + int.Parse(r72) + int.Parse(r82)).ToString();
-            Statistics.Rows[8].Cells[5].Value = (int.Parse(r03) + int.Parse(r23) + int.Parse(r33) + int.Parse(r43) + int.Parse(r53) + int.Parse(r63) + int.Parse(r73) + int.Parse(r83)).ToString();
-            Statistics.Rows[8].Cells[6].Value = (int.Parse(r04) + int.Parse(r24) + int.Parse(r34) + int.Parse(r44) + int.Parse(r54) + int.Parse(r64) + int.Parse(r74) + int.Parse(r84)).ToString();
-            Statistics.Rows[8].Cells[7].Value = (int.Parse(r05) + int.Parse(r25) + int.Parse(r35) + int.Parse(r45) + int.Parse(r55) + int.Parse(r65) + int.Parse(r75) + int.Parse(r85)).ToString();
-            Statistics.Rows[8].Cells[8].Value = (int.Parse(r06) + int.Parse(r26) + int.Parse(r36) + int.Parse(r46) + int.Parse(r56) + int.Parse(r66) + int.Parse(r76) + int.Parse(r86)).ToString();
-            Statistics.Rows[8].Cells[9].Value = (int.Parse(r07) + int.Parse(r27) + int.Parse(r37) + int.Parse(r47) + int.Parse(r57) + int.Parse(r67) + int.Parse(r77) + int.Parse(r87)).ToString();
-            Statistics.Rows[8].Cells[10].Value = ord8;
-            Statistics.Rows[8].Cells[11].Value = ref8;
+            Statistics.Rows[8].Cells[0].Value = "Не в базе (ОФ)";
+            Statistics.Rows[8].Cells[1].Value = f81;
+            Statistics.Rows[8].Cells[2].Value = f82;
+            Statistics.Rows[8].Cells[3].Value = r80;
+            Statistics.Rows[8].Cells[4].Value = r82;
+            Statistics.Rows[8].Cells[5].Value = r83;
+            Statistics.Rows[8].Cells[6].Value = r84;
+            Statistics.Rows[8].Cells[7].Value = r85;
+            Statistics.Rows[8].Cells[8].Value = r86;
+            Statistics.Rows[8].Cells[9].Value = r87;
+            Statistics.Rows[8].Cells[10].Value = ord7;
+            Statistics.Rows[8].Cells[11].Value = ref7;
             Statistics.Rows.Add();
-            Statistics.Rows[9].Cells[0].Value = "Редкой книги";
-            Statistics.Rows[9].Cells[1].Value = f101;
-            Statistics.Rows[9].Cells[2].Value = f102;
-            Statistics.Rows[9].Cells[3].Value = rr10;
-            Statistics.Rows[9].Cells[4].Value = rr12;
-            Statistics.Rows[9].Cells[5].Value = rr13;
-            Statistics.Rows[9].Cells[6].Value = rr14;
-            Statistics.Rows[9].Cells[7].Value = rr15;
-            Statistics.Rows[9].Cells[8].Value = rr16;
-            Statistics.Rows[9].Cells[9].Value = rr17;
-            Statistics.Rows[9].Cells[10].Value = ord9;
-            Statistics.Rows[9].Cells[11].Value = ref9;
+            Statistics.Rows[9].Cells[0].Value = "Всего (без редкой книги)";
+            Statistics.Rows[9].Cells[1].Value = f91;
+            Statistics.Rows[9].Cells[2].Value = f92;
+            Statistics.Rows[9].Cells[3].Value = (int.Parse(r00) + int.Parse(r20) + int.Parse(r30) + int.Parse(r40) + int.Parse(r50) + int.Parse(r60) + int.Parse(r70) + int.Parse(r80) + int.Parse(r90)).ToString();
+            Statistics.Rows[9].Cells[4].Value = (int.Parse(r02) + int.Parse(r22) + int.Parse(r32) + int.Parse(r42) + int.Parse(r52) + int.Parse(r62) + int.Parse(r72) + int.Parse(r82) + int.Parse(r92)).ToString();
+            Statistics.Rows[9].Cells[5].Value = (int.Parse(r03) + int.Parse(r23) + int.Parse(r33) + int.Parse(r43) + int.Parse(r53) + int.Parse(r63) + int.Parse(r73) + int.Parse(r83) + int.Parse(r93)).ToString();
+            Statistics.Rows[9].Cells[6].Value = (int.Parse(r04) + int.Parse(r24) + int.Parse(r34) + int.Parse(r44) + int.Parse(r54) + int.Parse(r64) + int.Parse(r74) + int.Parse(r84) + int.Parse(r94)).ToString();
+            Statistics.Rows[9].Cells[7].Value = (int.Parse(r05) + int.Parse(r25) + int.Parse(r35) + int.Parse(r45) + int.Parse(r55) + int.Parse(r65) + int.Parse(r75) + int.Parse(r85) + int.Parse(r95)).ToString();
+            Statistics.Rows[9].Cells[8].Value = (int.Parse(r06) + int.Parse(r26) + int.Parse(r36) + int.Parse(r46) + int.Parse(r56) + int.Parse(r66) + int.Parse(r76) + int.Parse(r86) + int.Parse(r96)).ToString();
+            Statistics.Rows[9].Cells[9].Value = (int.Parse(r07) + int.Parse(r27) + int.Parse(r37) + int.Parse(r47) + int.Parse(r57) + int.Parse(r67) + int.Parse(r77) + int.Parse(r87) + int.Parse(r97)).ToString();
+            Statistics.Rows[9].Cells[10].Value = ord8;
+            Statistics.Rows[9].Cells[11].Value = ref8;
             Statistics.Rows.Add();
-            Statistics.Rows[10].Cells[0].Value = "Не в базе (Фонд редкой книги)";
-            Statistics.Rows[10].Cells[1].Value = f111;
-            Statistics.Rows[10].Cells[2].Value = f112;
-            Statistics.Rows[10].Cells[3].Value = rr00;
-            Statistics.Rows[10].Cells[4].Value = rr02;
-            Statistics.Rows[10].Cells[5].Value = rr03;
-            Statistics.Rows[10].Cells[6].Value = rr04;
-            Statistics.Rows[10].Cells[7].Value = rr05;
-            Statistics.Rows[10].Cells[8].Value = rr06;
-            Statistics.Rows[10].Cells[9].Value = rr07;
-            Statistics.Rows[10].Cells[10].Value = ord10;
-            Statistics.Rows[10].Cells[11].Value = ref10;
+            Statistics.Rows[10].Cells[0].Value = "Редкой книги";
+            Statistics.Rows[10].Cells[1].Value = f101;
+            Statistics.Rows[10].Cells[2].Value = f102;
+            Statistics.Rows[10].Cells[3].Value = rr10;
+            Statistics.Rows[10].Cells[4].Value = rr12;
+            Statistics.Rows[10].Cells[5].Value = rr13;
+            Statistics.Rows[10].Cells[6].Value = rr14;
+            Statistics.Rows[10].Cells[7].Value = rr15;
+            Statistics.Rows[10].Cells[8].Value = rr16;
+            Statistics.Rows[10].Cells[9].Value = rr17;
+            Statistics.Rows[10].Cells[10].Value = ord9;
+            Statistics.Rows[10].Cells[11].Value = ref9;
+            Statistics.Rows.Add();
+            Statistics.Rows[11].Cells[0].Value = "Не в базе (Фонд редкой книги)";
+            Statistics.Rows[11].Cells[1].Value = f111;
+            Statistics.Rows[11].Cells[2].Value = f112;
+            Statistics.Rows[11].Cells[3].Value = rr00;
+            Statistics.Rows[11].Cells[4].Value = rr02;
+            Statistics.Rows[11].Cells[5].Value = rr03;
+            Statistics.Rows[11].Cells[6].Value = rr04;
+            Statistics.Rows[11].Cells[7].Value = rr05;
+            Statistics.Rows[11].Cells[8].Value = rr06;
+            Statistics.Rows[11].Cells[9].Value = rr07;
+            Statistics.Rows[11].Cells[10].Value = ord10;
+            Statistics.Rows[11].Cells[11].Value = ref10;
         }
 
         private void button24_Click(object sender, EventArgs e)
@@ -3069,7 +3601,7 @@ namespace Circulation
             //Column Heading
             foreach (DataGridViewColumn dc in Statistics.Columns)
             {
-                strExport += dc.HeaderText + "  ; ";
+                strExport += dc.HeaderText.Replace(";", " ") + "  ; ";
             }
             strExport = strExport.Substring(0, strExport.Length - 3) + Environment.NewLine.ToString();
             //Loop through all the row and append the value with 3 spaces
@@ -3079,7 +3611,7 @@ namespace Circulation
                 {
                     if (dc.Value != null)
                     {
-                        strExport += dc.Value.ToString() + " ;  ";
+                        strExport += dc.FormattedValue.ToString().Replace(";", " ") + " ;  ";
                     }
                 }
                 strExport += Environment.NewLine.ToString();
@@ -3267,25 +3799,25 @@ namespace Circulation
                 switch (e.RowIndex)
                 {
                     case 0://Цоколь
-                        delta = dbw.GetDeltaISS_REC("Книгохранение - цоколь", f3Start, f3End);
+                        delta = dbw.GetDeltaISS_REC("…Хран… Сектор книгохранения - 0 этаж", f3Start, f3End);
                         break;
                     case 1:
-                        delta = dbw.GetDeltaISS_REC("Книгохранение - 2 этаж", f3Start, f3End);
+                        delta = dbw.GetDeltaISS_REC("…Хран… Сектор книгохранения - 2 этаж", f3Start, f3End);
                         break;
                     case 2:
-                        delta = dbw.GetDeltaISS_REC("Книгохранение - 3 этаж", f3Start, f3End);
+                        delta = dbw.GetDeltaISS_REC("…Хран… Сектор книгохранения - 3 этаж", f3Start, f3End);
                         break;
                     case 3:
-                        delta = dbw.GetDeltaISS_REC("Книгохранение - 4 этаж", f3Start, f3End);
+                        delta = dbw.GetDeltaISS_REC("…Хран… Сектор книгохранения - 4 этаж", f3Start, f3End);
                         break;
                     case 4:
-                        delta = dbw.GetDeltaISS_REC("Книгохранение - 5 этаж", f3Start, f3End);
+                        delta = dbw.GetDeltaISS_REC("…Хран… Сектор книгохранения - 5 этаж", f3Start, f3End);
                         break;
                     case 5:
-                        delta = dbw.GetDeltaISS_REC("Книгохранение - 6 этаж", f3Start, f3End);
+                        delta = dbw.GetDeltaISS_REC("…Хран… Сектор книгохранения - 6 этаж", f3Start, f3End);
                         break;
                     case 6:
-                        delta = dbw.GetDeltaISS_REC("Книгохранение - 7 этаж", f3Start, f3End);
+                        delta = dbw.GetDeltaISS_REC("…Хран… Сектор книгохранения - 7 этаж", f3Start, f3End);
                         break;
                     case 7:
                         delta = dbw.GetDeltaISS_REC("Не в базе", f3Start, f3End);
@@ -3294,7 +3826,7 @@ namespace Circulation
                         delta = dbw.GetDeltaISS_REC("Всего", f3Start, f3End);
                         break;
                     case 9:
-                        delta = dbw.GetDeltaISS_REC("Книгохранение - Фонд редкой книги", f3Start, f3End);
+                        delta = dbw.GetDeltaISS_REC("…Хран… КНИО Группа хранения редкой книги", f3Start, f3End);
                         break;
                     case 10:
                         delta = dbw.GetDeltaISS_REC("Не в базе редкой книги", f3Start, f3End);
@@ -3452,15 +3984,15 @@ namespace Circulation
             Statistics.Columns[3].Width = 70;
             Statistics.Columns.Add("F2", "2 этаж");
             Statistics.Columns[4].Width = 70;
-            Statistics.Columns.Add("F2", "3 этаж");
+            Statistics.Columns.Add("F3", "3 этаж");
             Statistics.Columns[5].Width = 70;
-            Statistics.Columns.Add("F2", "к/х ред. кн.");
+            Statistics.Columns.Add("F4", "к/х ред. кн.");
             Statistics.Columns[6].Width = 70;
-            Statistics.Columns.Add("F2", "5 этаж");
+            Statistics.Columns.Add("F5", "5 этаж");
             Statistics.Columns[7].Width = 70;
-            Statistics.Columns.Add("F2", "6 этаж");
+            Statistics.Columns.Add("F6", "6 этаж");
             Statistics.Columns[8].Width = 70;
-            Statistics.Columns.Add("F2", "7 этаж");
+            Statistics.Columns.Add("F7", "7 этаж");
             Statistics.Columns[9].Width = 70;
 
             Statistics.Rows.AddRange(backRows);
@@ -3826,8 +4358,126 @@ namespace Circulation
 
         private void button12_Click(object sender, EventArgs e)
         {
-            dbBook b = new dbBook("U100169918", this.BASENAME);
-            string s = dbw.getReaderIDFromOrders(b);
+            //BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
+
+            //basicHttpBinding.Security.Mode = BasicHttpSecurityMode.TransportCredentialOnly;
+
+            //basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
+
+            //EndpointAddress endpoint = new EndpointAddress("http://opac.libfl.ru/LibFLDataProviderAPI");
+
+            ////List.ListsSoapClient client = new ConsoleApplication1.List.ListsSoapClient();
+            //LibFLDataProviderAPI.ServiceSoapClient client = new Circulation.LibFLDataProviderAPI.ServiceSoapClient(basicHttpBinding, endpoint);
+
+            //client.ClientCredentials.Windows.AllowedImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Identification;
+
+            //client.ChannelFactory.Credentials.Windows.ClientCredential = System.Net.CredentialCache.DefaultNetworkCredentials;
+            //client.ChannelFactory.Credentials.Windows.ClientCredential.UserName= "Admin";
+            //client.ChannelFactory.Credentials.Windows.ClientCredential.Password = "Boss_1215";
+
+
+
+
+
+            //client.ClientCredentials.Windows.ClientCredential.UserName = "Admin";
+            //client.ClientCredentials.Windows.ClientCredential.Password = "Boss_1215";
+            LibFLDataProviderAPI.ServiceSoapClient client = new Circulation.LibFLDataProviderAPI.ServiceSoapClient();
+            string ri = client.GetReaderInfo("1").FamilyName;
+            ri = client.Authorize("189245", "PfrdfcrF");
+            int i = 3 + 2;
+            dbBook b ;
+            dbReader r ;
+
+            
+            
+            //FromPort = "U100427371";//зал абонемента
+            //Form1_Scanned(sender, e);
+            //FromPort = "R1027501";
+            //Form1_Scanned(sender, e);
+
+
+            //FromPort = "U100427372";//книгохранение абонемента
+            //Form1_Scanned(sender, e);
+            //FromPort = "R1027501";
+            //Form1_Scanned(sender, e);
+
+
+            
+
+            //dbBook b = new dbBook("U100200485", this.BASENAME);
+            //dbReader r = new dbReader(113940);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100076706", this.BASENAME);
+            //r = new dbReader(113940);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100002166", this.BASENAME);
+            //r = new dbReader(113940);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100202658", this.BASENAME);
+            //r = new dbReader(113940);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100272868", this.BASENAME);
+            //r = new dbReader(113940);
+            //dbw.setBookForReaderHome(b, r);
+
+            //b = new dbBook("U100087239", this.BASENAME);
+            //r = new dbReader(163709);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100340590", this.BASENAME);
+            //r = new dbReader(163709);
+            //dbw.setBookForReaderHome(b, r);
+
+            //b = new dbBook("U100165509", this.BASENAME);
+            //r = new dbReader(181555);
+            //dbw.setBookForReaderHome(b, r);
+
+            //b = new dbBook("U100340419", this.BASENAME);
+            //r = new dbReader(165808);
+            //dbw.setBookForReaderHome(b, r);
+
+            //b = new dbBook("U100272473", this.BASENAME);
+            //r = new dbReader(186531);
+            //dbw.setBookForReaderHome(b, r);
+
+            //b = new dbBook("U100278480", this.BASENAME);
+            //r = new dbReader(149559);
+            //dbw.setBookForReaderHome(b, r);
+
+            //b = new dbBook("U100089214", this.BASENAME);
+            //r = new dbReader(182445);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100381841", this.BASENAME);
+            //r = new dbReader(182445);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100089084", this.BASENAME);
+            //r = new dbReader(182445);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100075949", this.BASENAME);
+            //r = new dbReader(182445);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100075218", this.BASENAME);
+            //r = new dbReader(182445);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100095562", this.BASENAME);
+            //r = new dbReader(182445);
+            //dbw.setBookForReaderHome(b, r);
+
+            //b = new dbBook("U100110790", this.BASENAME);
+            //r = new dbReader(188666);
+            //dbw.setBookForReaderHome(b, r);
+
+            //b = new dbBook("U100271390", this.BASENAME);
+            //r = new dbReader(182178);
+            //dbw.setBookForReaderHome(b, r);
+            //b = new dbBook("U100232867", this.BASENAME);
+            //r = new dbReader(182178);
+            //dbw.setBookForReaderHome(b, r);
+
+            //b = new dbBook("U100382326", this.BASENAME);
+            //r = new dbReader(151446);
+            //dbw.setBookForReaderHome(b, r);
+
+            ////string s = dbw.getReaderIDFromOrders(b);
         }
 
         private void label15_Click(object sender, EventArgs e)
@@ -3846,20 +4496,100 @@ namespace Circulation
 
         private void button18_Click(object sender, EventArgs e)
         {
-            if (Statistics.SelectedRows.Count != 0)
+            if (label19.Text == "Список нарушителей сроков пользования документов из основного фонда")
             {
-                FormularColumnsForming(Statistics.SelectedRows[0].Cells[4].Value.ToString());
-                OverdueEmail oe = new OverdueEmail(this, new dbReader((int)Statistics.SelectedRows[0].Cells[4].Value),this.Formular,dbw);
-                if (oe.canshow)
-                    oe.ShowDialog();
+                if (Statistics.SelectedRows.Count != 0)
+                {
+                    FormularColumnsForming(Statistics.SelectedRows[0].Cells[2].Value.ToString());
+                    OverdueEmail oe = new OverdueEmail(this, new dbReader((int)Statistics.SelectedRows[0].Cells[2].Value), this.Formular, dbw);
+                    if (oe.canshow)
+                        oe.ShowDialog();
+                }
+            }
+            if (label19.Text == "Книги на руках, с просроченным сроком сдачи")
+            {
+                if (Statistics.SelectedRows.Count != 0)
+                {
+                    FormularColumnsForming(Statistics.SelectedRows[0].Cells[3].Value.ToString());
+                    OverdueEmail oe = new OverdueEmail(this, new dbReader((int)Statistics.SelectedRows[0].Cells[3].Value), this.Formular, dbw);
+                    if (oe.canshow)
+                        oe.ShowDialog();
+                }
             }
         }
 
         private void button22_Click(object sender, EventArgs e)
         {
-            dbw.InsertTEST();
+            //dbw.InsertTEST1();
+            //Form28 f28 = new Form28(
+
+
+
         }
 
+        private void button29_Click(object sender, EventArgs e)
+        {
+            Form20 f20 = new Form20(this);
+            f20.ShowDialog();
+            if (f20.pass != "aa")
+            {
+                MessageBox.Show("Неверный пароль");
+                return;
+            }
+            
+            
+            //LostBook lb = new LostBook(
+            if (Formular.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Не выбрана ни одна строка в таблице!");
+                return;
+            }
+            if (MessageBox.Show("Вы действительно хотите снять ответственность за выбранную книгу с читателя?", "Внимание", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                return;
+            }
+            dbBook b = new dbBook(Formular.SelectedRows[0].Cells["bar"].Value.ToString(), this.BASENAME);
+            dbw.RemoveResponsibility(b);
+
+            this.FormularColumnsForming(ReaderRecordFormular.id);
+
+        }
+
+        private void RPhoto_Click(object sender, EventArgs e)
+        {
+            if (RPhoto.Image == null) return;
+            ViewFullSizePhoto fullsize = new ViewFullSizePhoto(RPhoto.Image);
+            fullsize.ShowDialog();
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            if (pictureBox2.Image == null) return;
+            ViewFullSizePhoto fullsize = new ViewFullSizePhoto(pictureBox2.Image);
+            fullsize.ShowDialog();
+
+        }
+
+        private void button30_Click(object sender, EventArgs e)
+        {
+            if (label25.Text == "")
+            {
+                MessageBox.Show("Введите номер или считайте штрихкод читателя!");
+                return;
+            }
+            ReaderVO reader = new ReaderVO(int.Parse(label25.Text));
+
+            ChangeComment cc = new ChangeComment(reader);
+            cc.ShowDialog();
+
+        }
+
+        
+
+       
+
+      
 
 
 
@@ -3873,6 +4603,12 @@ namespace Circulation
 
 
 
+
+
+        //private void обращаемостьКнигОФТекущегоЗалаПоPINЗаПериодToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+
+       // }
 
 
 
