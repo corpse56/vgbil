@@ -25,9 +25,12 @@ using BookForOrder;
 using Itenso.Rtf;
 using Itenso.Rtf.Support;
 using System.Web.Configuration;
-using ExportBJ_XML.ValueObjects;
 using ExportBJ_XML.classes.BJ;
-
+using ExportBJ_XML.ValueObjects;
+using ExportBJ_XML.classes.DB;
+using LibflClassLibrary.ExportToVufind.classes.BJ;
+using LibflClassLibrary.ExportToVufind.classes;
+using ExportBJ_XML.classes;
 public partial class _Default : System.Web.UI.Page
 {
     public SqlConnection ZCon;
@@ -81,7 +84,17 @@ public partial class _Default : System.Web.UI.Page
         foreach (DataRow r in table.Rows)
         {
             BJBookInfo book = BJBookInfo.GetBookInfoByPIN(Convert.ToInt32(r["IDMAIN"]), "BJVVV");
-            basket.Add(book);
+            for (int j = book.Exemplars.Count - 1; j >= 0; j-- )
+            {
+                if (book.Exemplars[j].Fields["921$c"].ToLower() == "списано")
+                {
+                    book.Exemplars.RemoveAt(j);
+                }
+            }
+            if (book.Exemplars.Count != 0)
+            {
+                basket.Add(book);
+            }
         }
         DataTable dataSource = ConvertListToDataTable(basket);
         gwBasket.DataSource = dataSource;
@@ -93,6 +106,7 @@ public partial class _Default : System.Web.UI.Page
         ((BoundField)gwBasket.Columns[5]).DataField = "inv";
         ((BoundField)gwBasket.Columns[6]).DataField = "metka";
         ((BoundField)gwBasket.Columns[7]).DataField = "status";
+        ((BoundField)gwBasket.Columns[10]).DataField = "IDDATA";
         gwBasket.DataBind();
     }
     static DataTable ConvertListToDataTable(List<BJBookInfo> basket)
@@ -116,6 +130,7 @@ public partial class _Default : System.Web.UI.Page
         table.Columns[5].ColumnName = "inv";
         table.Columns[6].ColumnName = "metka";
         table.Columns[7].ColumnName = "status";
+        table.Columns[8].ColumnName = "IDDATA";
         // Add rows.
         int j = 0;
         foreach (BJBookInfo book in basket)
@@ -123,7 +138,7 @@ public partial class _Default : System.Web.UI.Page
             j++;
             foreach (ExemplarInfo exemplar in book.Exemplars)
             {
-                string location = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];
+                string location = KeyValueMapping.UnifiedLocationAccess.GetValueOrDefault(exemplar.Fields["899$a"].ToString(), "не указано");
                 StringBuilder Status = new StringBuilder();
                 if ((location == "Книгохранение") )
                 {
@@ -142,15 +157,15 @@ public partial class _Default : System.Web.UI.Page
                 {
                 }
                 DataRow row = table.NewRow();
-                row[0] = book.ID;
-                row[1] = j;
-                row[2] = book.RTF;
-                row[3] = book.Fields["200$a"].ToString();
-                row[4] = book.Fields["700$a"].ToString();
-                row[5] = exemplar.Fields["899$p"].ToString();
-                row[6] = exemplar.Fields["899$x"].ToString();
-                row[7] = Status.ToString();//
-                row[10] = exemplar.IdData;
+                row["IDMAIN"] = book.ID;
+                row["num"] = j;
+                row["RTF"] = book.RTF;
+                row["title"] = book.Fields["200$a"].ToString();
+                row["avtor"] = book.Fields["700$a"].ToString();
+                row["inv"] = exemplar.Fields["899$p"].ToString();
+                row["metka"] = exemplar.Fields["899$x"].ToString();
+                row["status"] = Status.ToString();//
+                row["IDDATA"] = exemplar.IdData;
                 table.Rows.Add(row);
             }
         }
@@ -166,23 +181,55 @@ public partial class _Default : System.Web.UI.Page
         switch (e.CommandName)
         {
             case "del":
+                DelFromBasket(CurReader.ID, argument);
                 break;
             case "ord":
+                CreateOrd(CurReader.ID, argument);
                 break;
         }
-
-
+        ShowBasketTable();
+        
     }
-   
+    private void DelFromBasket(string idreader, string idmain)
+    {
+        SqlCommand command = new SqlCommand();
+        ZCon.Open();
+        command = new SqlCommand("delete from Reservation_E..Orders where IDREADER = @IDREADER and IDMAIN = @IDMAIN", ZCon);
+        command.Parameters.Add("IDREADER", SqlDbType.Int).Value = int.Parse(idreader);
+        command.Parameters.Add("IDMAIN", SqlDbType.Int).Value = int.Parse(idmain);
+        command.ExecuteNonQuery();
+        ZCon.Close();
+    }
+    private void CreateOrd(string idreader,string iddata)
+    {
+        ExemplarInfo exemplar = ExemplarInfo.GetExemplarByIdData(int.Parse(iddata), "BJVVV");
+        SqlCommand command = new SqlCommand();
+        ZCon.Open();
+        command = new SqlCommand("insert into Reservation_E..Basket (ID_Reader, ID_Book_EC, Status, Start_Date, InvNumer,  Form_Date,    IDDATA)"+
+                                                                    " @IDREADER, @IDMAIN,     0,      getdate(), @INV, getdate(), @IDDATA", ZCon);
+        command.Parameters.Add("IDREADER", SqlDbType.Int).Value = int.Parse(idreader);
+        command.Parameters.Add("IDMAIN", SqlDbType.Int).Value = exemplar.IDMAIN;
+        command.Parameters.Add("INV", SqlDbType.NVarChar).Value = exemplar.Fields["899$p"].ToString();
+        command.Parameters.Add("IDDATA", SqlDbType.Int).Value = exemplar.IdData;
+        command.ExecuteNonQuery();
+        ZCon.Close();
+    }
+        
     protected void gwBasket_DataBound(object sender, EventArgs e)
     {
+
+        //мержим строки
         for (int i = gwBasket.Rows.Count - 1; i > 0; i--)
         {
             GridViewRow row = gwBasket.Rows[i];
             GridViewRow previousRow = gwBasket.Rows[i - 1];
 
-            for (int j = 1; j <= 4; j++)//мержим заглавие, автора, бибописание и номер.
+            for (int j = 1; j <= 9; j++)//мержим заглавие, автора, бибописание и номер.
             {
+                if ((j != 1) && (j != 2) && (j != 3) && (j != 4) && (j != 9))//мержим только эти колонки
+                {
+                    continue;
+                }
                 if (row.Cells[0].Text == previousRow.Cells[0].Text)
                 {
                     if (previousRow.Cells[j].RowSpan == 0)
@@ -203,17 +250,7 @@ public partial class _Default : System.Web.UI.Page
     }
     protected void gwBasket_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        //if (e.Row.RowType == DataControlRowType.DataRow)
-        //{
-        //    if (e.Row.RowIndex % 4 == 0)
-        //    {
-        //        e.Row.Cells[0].Attributes.Add("rowspan", "4");
-        //    }
-        //    else
-        //    {
-        //        e.Row.Cells[0].Visible = false;
-        //    }
-        //}
+       
     }
 
     protected void Button2_Click(object sender, EventArgs e)

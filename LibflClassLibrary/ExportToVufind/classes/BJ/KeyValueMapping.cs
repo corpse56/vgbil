@@ -7,7 +7,7 @@ namespace ExportBJ_XML.classes.BJ
 {
     public static class KeyValueMapping
     {
-        //это нужно превратить в словарь
+        
 
         public static readonly Dictionary<string, string> UnifiedLocation = new Dictionary<string, string> 
         { 

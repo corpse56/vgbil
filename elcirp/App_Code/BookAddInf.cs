@@ -322,7 +322,7 @@ public class BookAddInfBJ : BookAddInf
                 result = idmain;
                 break;
         }
-        return @"BJVVV\"+@result[0] + @"\" + result[1] + result[2] + result[3] + @"\" + result[4] + result[5] + result[6] + @"\";
+        return @"BJVVV\"+@result[0] + @"\" + result[1] + result[2] + result[3] + @"\" + result[4] + result[5] + result[6] + @"\JPEG_HQ\";
     }
 }
 public class BookAddInfRED : BookAddInf

@@ -13,6 +13,7 @@ using System.Drawing;
 using ExportBJ_XML.classes.BJ;
 using ExportBJ_XML.ValueObjects;
 using ExportBJ_XML.classes.DB;
+using LibflClassLibrary.ExportToVufind.classes;
 using LibflClassLibrary.ExportToVufind.classes.BJ;
 
 namespace ExportBJ_XML.classes

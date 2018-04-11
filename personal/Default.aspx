@@ -98,29 +98,33 @@
 
                                         <asp:BoundField HeaderText="Статус" >
                                         <HeaderStyle BackColor="Silver" />
+                                            <ItemStyle Width="200px" />
                                         </asp:BoundField>
 
                                         <asp:TemplateField HeaderText="Заказ" >
                                         <HeaderStyle BackColor="Silver" />
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="lbdelete" runat="server" CommandName="ord" 
-                                                    Text="Заказать"  CommandArgument='<%#Eval("IDDATA")%>' >
+                                                <asp:LinkButton ID="lbOrd" runat="server" CommandName="ord" 
+                                                    Text="Заказать"  CommandArgument='<%#Eval("IDDATA")%>'  >
                                                 </asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        
                                         <asp:TemplateField HeaderText="Удаление" >
                                         <HeaderStyle BackColor="Silver" />
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="lbdelete" runat="server" CommandName="del" 
+                                                <asp:LinkButton ID="lbDelete" runat="server" CommandName="del"  
                                                     Text="Удалить"  CommandArgument='<%#Eval("IDMAIN")%>' >
                                                 </asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        
                                         <asp:BoundField
                                          DataField="IDDATA" >
                                             <HeaderStyle CssClass="hiddencol" />
                                             <ItemStyle CssClass="hiddencol" />
-                                        </asp:BoundField>                                        
+                                        </asp:BoundField>   
+                                                                             
                                     </Columns>
 
                                     

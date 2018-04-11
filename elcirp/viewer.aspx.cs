@@ -64,7 +64,7 @@ public partial class viewer : System.Web.UI.Page
             {
                 DropDownList1.SelectedIndex = 0;
             }
-            SlideShowExtender1.ContextKey = GetPath() + DropDownList1.SelectedItem.Text;
+            SlideShowExtender1.ContextKey = GetPath() + DropDownList1.SelectedItem.Text + @"\JPEG_HQ\";
 
         }
         else
@@ -119,7 +119,7 @@ public partial class viewer : System.Web.UI.Page
         }
         this.number = DropDownList1.SelectedItem.ToString();
 
-        SlideShowExtender1.ContextKey = GetPath()+DropDownList1.SelectedItem.Text+"\\";
+        SlideShowExtender1.ContextKey = GetPath()+DropDownList1.SelectedItem.Text+@"\JPEG_HQ\";
         
 
        

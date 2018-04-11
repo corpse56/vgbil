@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace ExportBJ_XML.classes
 {
-    static class Extensions
+    public static class Extensions
     {
         public static bool In<T>(this T item, params T[] items)
         {
