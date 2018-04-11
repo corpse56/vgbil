@@ -98,84 +98,7 @@ namespace ExportBJ_XML
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //pearson.GetPearsonSourceData();
-            
-            //XDocument xdoc = XDocument.Load(@"f:\import\bjvvv.xml");
-            //var books = xdoc.Descendants("doc");
-            //var dublicates = xdoc
-            //            .Descendants("doc")
-            //            .GroupBy(g => (string)g.Attribute("id"))
-            //            .Where(g => g.Count() > 1)
-            //            .Select(g => g.Key);
-            //textBox1.Text = "";
-
-
-
-            //string text = "Tendances dans l'economie mondiale; &#x0; 23/ Conseil scientifique hongrois d'economie mondaile";
-            //XElement x = new XElement("bb",text);
-            //string xmlText = SecurityElement.Escape(text);
-
-            //Exporter exr = new Exporter(this);
-            //exr.ExportSingleRecord("BJVVV", 1449315);
-            //test.GetBookStatusRequest sdds = new ExportBJ_XML.test.GetBookStatusRequest();
-            //test.ServiceSoapClient cli = new ExportBJ_XML.test.ServiceSoapClient();
-            //string[] nnn = new string[13];
-            //nnn[0] = "REDKOSTJ_1397";
-            //nnn[1] = "BJVVV_1299980";
-            //nnn[2] = "BJVVV_1301198";
-            //nnn[3] = "BJVVV_1299121";
-            //nnn[4] = "BJVVV_1304618";
-            //nnn[5] = "BJVVV_1375197";
-            //nnn[6] = "BJVVV_1186227";
-            //nnn[7] = "BJVVV_1130210";
-            //nnn[8] = "BJVVV_128956";
-            //nnn[9] = "BJVVV_1375197";
-            //nnn[10] = "BJVVV_137519788";
-            //nnn[11] = "BJVVV_1375199";
-            //nnn[12] = "REDKOSTJ_1397";
-
-            
-
-
-
-
-
-
-            //test.ArrayOfString arr = new ExportBJ_XML.test.ArrayOfString();
-            //arr.Add(nnn[0]);
-            //arr.Add(nnn[1]);
-            //arr.Add(nnn[2]);
-            //arr.Add(nnn[3]);
-            //arr.Add(nnn[4]);
-            //arr.Add(nnn[5]);
-            //arr.Add(nnn[6]);
-            //arr.Add(nnn[7]);
-            //arr.Add(nnn[8]);
-            //arr.Add(nnn[9]);
-            //arr.Add(nnn[10]);
-            //arr.Add(nnn[11]);
-            //arr.Add(nnn[12]);
-            //string res = cli.GetBookStatus(arr);
-
-            //SqlDataAdapter da = new SqlDataAdapter();
-
-            //da = new SqlDataAdapter();
-            //da.InsertCommand = new SqlCommand();
-            //da.InsertCommand.Connection = new SqlConnection();
-            //da.InsertCommand.Connection.ConnectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
-            //da.InsertCommand.Connection.Open();
-            //StreamReader sr = new StreamReader(@"f:\Lib_100S30708.txt");
-            //string account;
-            //while (sr.Peek() >= 0)
-            //{
-            //    account = sr.ReadLine();
-            //    da.InsertCommand.Parameters.Clear();
-            //    da.InsertCommand.Parameters.AddWithValue("login", account.Split(',')[0]);
-            //    da.InsertCommand.Parameters.AddWithValue("pwd", account.Split(',')[1]);
-            //    da.InsertCommand.CommandText = "insert into LITRES..ACCOUNTS (LRLOGIN,LRPWD,CREATED) values (@login, @pwd, getdate())";
-            //    da.InsertCommand.ExecuteNonQuery();
-            //}
-            //da.InsertCommand.Connection.Close();
+           
             
         }
 
@@ -257,11 +180,11 @@ namespace ExportBJ_XML
         {
             StartTimer();
 
+            bjvvv.Export();
+            redkostj.Export();
             bjacc.Export();
             bjfcc.Export();
             bjscc.Export();
-            bjvvv.Export();
-            redkostj.Export();
             //brit_sovet.Export();
             //pearson.GetPearsonSourceData();
             //pearson.Export();

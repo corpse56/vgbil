@@ -38,6 +38,7 @@ namespace ExportBJ_XML.QueriesText
                     " left join " + this.Fund + "..MAIN C on A.IDMAIN = C.ID " +
                     " left join " + this.Fund + "..FIELDS F on A.MNFIELD = F.MNFIELD and A.MSFIELD = F.MSFIELD " +
                     " where A.IDMAIN = @idmain " +
+                    " and not exists (select 1 from " + this.Fund + "..DATAEXT EXTR where EXTR.IDMAIN = @idmain and EXTR.MNFIELD = 899 and EXTR.MSFIELD = '$x' and lower(EXTR.SORT) = 'э') " +
                     " order by A.IDMAIN, A.IDDATA";
             }
         }
@@ -51,7 +52,13 @@ namespace ExportBJ_XML.QueriesText
                            " where A.MNFIELD = 10 and A.MSFIELD = '$b' and A.IDDATA = @iddata";
             }
         }
-
+        public string IMPORT_CLARIFY_101a
+        {
+            get
+            {
+                return " select NAME from " + this.Fund + "..LIST_1 where ID = @IDINLIST"; 
+            }
+        }
         public string IMPORT_CLARIFY_517a
         {
             get
@@ -132,7 +139,7 @@ namespace ExportBJ_XML.QueriesText
                 return " select * from " + this.Fund + "..DATAEXT A" +
                         " left join " + this.Fund + "..DATAEXT B on A.IDDATA = B.IDDATA " +
                         " left join " + this.Fund + "..DATAEXTPLAIN C on C.IDDATAEXT = B.ID " +
-                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv" +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and C.PLAIN = @inv" +
                         " and not exists (select 1 from " + this.Fund + "..DATAEXT C where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')";
             }
         }

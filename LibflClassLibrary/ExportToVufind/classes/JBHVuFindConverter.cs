@@ -15,69 +15,69 @@ namespace ExportBJ_XML.classes
     {
         public override void Export()
         {
-            /////////////////////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////// JBH  /////////////////////////////////////////////////////
-            /////////////////////////////////////////////////////////////////////////////////////////////
-            string allFields = "";
-            _objXmlWriter = XmlTextWriter.Create(@"F:\import\jbh.xml");
-            _exportDocument = new XmlDocument();
-            XmlNode decalrationNode = _exportDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
-            _exportDocument.AppendChild(decalrationNode);
-            decalrationNode.WriteTo(_objXmlWriter);
+            ///////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////// JBH  /////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////
+            //string allFields = "";
+            //_objXmlWriter = XmlTextWriter.Create(@"F:\import\jbh.xml");
+            //_exportDocument = new XmlDocument();
+            //XmlNode decalrationNode = _exportDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
+            //_exportDocument.AppendChild(decalrationNode);
+            //decalrationNode.WriteTo(_objXmlWriter);
 
-            _root = _exportDocument.CreateElement("add");
-            _exportDocument.AppendChild(_root);
-            _objXmlWriter.WriteStartElement("add");
+            //_root = _exportDocument.CreateElement("add");
+            //_exportDocument.AppendChild(_root);
+            //_objXmlWriter.WriteStartElement("add");
 
-            _doc = _exportDocument.CreateElement("doc");
+            //_doc = _exportDocument.CreateElement("doc");
 
-            string[] JHB = File.ReadAllLines(@"f:\jbh_source.txt");
+            //string[] JHB = File.ReadAllLines(@"f:\jbh_source.txt");
 
-            int cnt = 1;
-            List<string> Languages2 = new List<string>();
-            List<string> Languages3 = new List<string>();
-            string FieldCode = "";
-            string CurrentId = "";
-            string FieldNumber = "";
-            string FieldValue = "";
-            foreach (string line in JHB)
-            {
-                if (line == string.Empty)
-                {
-                    continue;
-                }
-                if (line.Length == 6)//закончилась предыдущая запись
-                {
-                    cnt++;
-                    _doc.WriteTo(_objXmlWriter);
-                    _doc = _exportDocument.CreateElement("doc");
-                    VuFindConverterEventArgs args = new VuFindConverterEventArgs();
-                    args.RecordId = "JHB_" + CurrentId;
-                    OnRecordExported(args);
-                    CurrentId = line;
-                    continue;
-                }
+            //int cnt = 1;
+            //List<string> Languages2 = new List<string>();
+            //List<string> Languages3 = new List<string>();
+            //string FieldCode = "";
+            //string CurrentId = "";
+            //string FieldNumber = "";
+            //string FieldValue = "";
+            //foreach (string line in JHB)
+            //{
+            //    if (line == string.Empty)
+            //    {
+            //        continue;
+            //    }
+            //    if (line.Length == 6)//закончилась предыдущая запись
+            //    {
+            //        cnt++;
+            //        _doc.WriteTo(_objXmlWriter);
+            //        _doc = _exportDocument.CreateElement("doc");
+            //        VuFindConverterEventArgs args = new VuFindConverterEventArgs();
+            //        args.RecordId = "JHB_" + CurrentId;
+            //        OnRecordExported(args);
+            //        CurrentId = line;
+            //        continue;
+            //    }
 
-                FieldCode = line.Substring(0, line.IndexOf("/"));
-                FieldNumber = line.Substring(line.IndexOf("/"), line.IndexOf(":"));
-                switch (FieldCode)
-                {
-                    case "#101":
-                        FieldValue = line.Substring(line.IndexOf("_"));
-                        Languages3.Add(FieldValue);
-                        break;
-                    case "#102":
-                        FieldValue = line.Substring(line.IndexOf("_"));
-                        Languages2.Add(FieldValue);
-                        break;
-                }
-            }
+            //    FieldCode = line.Substring(0, line.IndexOf("/"));
+            //    FieldNumber = line.Substring(line.IndexOf("/"), line.IndexOf(":"));
+            //    switch (FieldCode)
+            //    {
+            //        case "#101":
+            //            FieldValue = line.Substring(line.IndexOf("_"));
+            //            Languages3.Add(FieldValue);
+            //            break;
+            //        case "#102":
+            //            FieldValue = line.Substring(line.IndexOf("_"));
+            //            Languages2.Add(FieldValue);
+            //            break;
+            //    }
+            //}
 
-            _doc.WriteTo(_objXmlWriter);
-            _doc = _exportDocument.CreateElement("doc");
-            VuFindConverterEventArgs arg = new VuFindConverterEventArgs();
-            arg.RecordId = "JHB_" + CurrentId;
-            OnRecordExported(arg);
+            //_doc.WriteTo(_objXmlWriter);
+            //_doc = _exportDocument.CreateElement("doc");
+            //VuFindConverterEventArgs arg = new VuFindConverterEventArgs();
+            //arg.RecordId = "JHB_" + CurrentId;
+            //OnRecordExported(arg);
 
 
         }

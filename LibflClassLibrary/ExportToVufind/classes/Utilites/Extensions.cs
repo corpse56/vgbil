@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.IO;
+using System.Linq.Expressions;
 
 namespace ExportBJ_XML.classes
 {
@@ -109,6 +110,12 @@ namespace ExportBJ_XML.classes
             TValue value;
             return dictionary.TryGetValue(key, out value) ? value : defaultValue;
         }
+
+        public static string GetMemberName<T, TValue>(Expression<Func<T, TValue>> memberAccess)
+        {
+            return ((MemberExpression)memberAccess.Body).Member.Name;
+        }
+
        
     }
 }

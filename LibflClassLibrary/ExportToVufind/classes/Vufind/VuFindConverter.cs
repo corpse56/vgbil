@@ -22,11 +22,6 @@ namespace ExportBJ_XML.classes
             }
         }
         private string _fund = "unknown";
-        protected XmlWriter _objXmlWriter;
-        protected XmlDocument _exportDocument;
-        protected XmlNode _doc;
-        protected XmlNode _root;
-
 
         public event EventHandler RecordExported;
         //public event EventHandler<VuFindConverterEventArgs> OnDatabaseTimeout;
@@ -53,17 +48,7 @@ namespace ExportBJ_XML.classes
             }
         }
 
-        public void AddField(string name, string val)
-        {
-            XmlNode field = _exportDocument.CreateElement("field");
-            XmlAttribute att = _exportDocument.CreateAttribute("name");
-            att.Value = name;
-            field.Attributes.Append(att);
-            field.InnerText = SecurityElement.Escape(val);
-            val = Extensions.XmlCharacterWhitelist(val);
-            field.InnerText = val;
-            _doc.AppendChild(field);
-        }
+       
 
         public static string GetFundId(string fund)
         {

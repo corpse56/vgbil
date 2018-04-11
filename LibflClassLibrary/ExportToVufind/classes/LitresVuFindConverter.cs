@@ -8,6 +8,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Net;
 using ExportBJ_XML.classes.BJ;
+using LibflClassLibrary.ExportToVufind.classes.BJ;
 
 namespace ExportBJ_XML.classes
 {
@@ -18,16 +19,17 @@ namespace ExportBJ_XML.classes
             /////////////////////////////////////////////////////////////////////////////////////////////*/
             //////////////////////////////////LITRES/////////////////////////////////////////////////////
             /////////////////////////////////////////////////////////////////////////////////////////////
-            _objXmlWriter = XmlTextWriter.Create(@"F:\import\litres.xml");
-            _exportDocument = new XmlDocument();
-            XmlNode decalrationNode = _exportDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
-            _exportDocument.AppendChild(decalrationNode);
-            decalrationNode.WriteTo(_objXmlWriter);
-            _root = _exportDocument.CreateElement("add");
-            _exportDocument.AppendChild(_root);
-            _objXmlWriter.WriteStartElement("add");
-            _doc = _exportDocument.CreateElement("doc");
+            //_objXmlWriter = XmlTextWriter.Create(@"F:\import\litres.xml");
+            //_exportDocument = new XmlDocument();
+            //XmlNode decalrationNode = _exportDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
+            //_exportDocument.AppendChild(decalrationNode);
+            //decalrationNode.WriteTo(_objXmlWriter);
+            //_root = _exportDocument.CreateElement("add");
+            //_exportDocument.AppendChild(_root);
+            //_objXmlWriter.WriteStartElement("add");
+            //_doc = _exportDocument.CreateElement("doc");
 
+            VufindXMLWriter vfWriter = new VufindXMLWriter("litres");
 
 
             XDocument xdoc = XDocument.Load(@"f:\litres_source.xml");
@@ -46,6 +48,7 @@ namespace ExportBJ_XML.classes
             int cnt = 1;
             string current = "";
             StringBuilder work = new StringBuilder();
+            VufindDoc vfDoc = new VufindDoc();
             foreach (XElement elt in books)
             {
                 current = elt.Attribute("id").Value;
@@ -53,29 +56,26 @@ namespace ExportBJ_XML.classes
                 {
                     continue;
                 }
+                vfDoc = new VufindDoc();
                 if (elt.Element("title-info") != null)
                 {
                     if (elt.Element("title-info").Element("book-title") != null)
                     {
-                        AddField("title", elt.Element("title-info").Element("book-title").Value);
-                        AddField("title_short", elt.Element("title-info").Element("book-title").Value);
-                        AddField("title_sort", elt.Element("title-info").Element("book-title").Value);
+                        vfDoc.title.Add(elt.Element("title-info").Element("book-title").Value);
+                        vfDoc.title_short.Add(elt.Element("title-info").Element("book-title").Value);
+                        vfDoc.title_sort.Add(elt.Element("title-info").Element("book-title").Value);
                     }
                 }
                 else
                 {
-                    AddField("title", "Заглавие не найдено");
-                    AddField("title_short", "Заглавие не найдено");
+                    vfDoc.title.Add("Заглавие не найдено");
+                    vfDoc.title_short.Add("Заглавие не найдено");
                 }
 
-                //if (elt.Element("document-info").Element("src-url") != null)
-                //{
-                //    AddField("HyperLink", elt.Element("document-info").Element("src-url").Value);
-                //}
                 work.Length = 0;
                 work.Append(@"http://al.litres.ru/").Append(elt.Attribute("id").Value);
                 string hypLink = work.ToString();
-                AddField("HyperLink", hypLink);
+                vfDoc.HyperLink.Add(hypLink);
                 work.Length = 0;
                 if (elt.Element("title-info") != null)
                 {
@@ -95,16 +95,16 @@ namespace ExportBJ_XML.classes
                         }
                     }
                 }
-                AddField("author", work.ToString());
+                vfDoc.author.Add(work.ToString());
                 if (work.ToString() != string.Empty)
                 {
                     if (work.ToString()[0] == '(')
                     {
-                        AddField("author_sort", work.ToString());
+                        vfDoc.author_sort.Add(work.ToString());
                     }
                     else
                     {
-                        AddField("author_sort", work.ToString().Substring(1));
+                        vfDoc.author_sort.Add(work.ToString().Substring(1));
                     }
                 }
 
@@ -120,7 +120,7 @@ namespace ExportBJ_XML.classes
                         work.Append(elt.Element("title-info").Element("annotation").Value);
                     }
                 }
-                AddField("Annotation", work.ToString());
+                vfDoc.Annotation.Add(work.ToString());
                 work.Length = 0;
 
                 if (elt.Element("publish-info") != null)
@@ -130,7 +130,7 @@ namespace ExportBJ_XML.classes
                         work.Append(elt.Element("publish-info").Element("year").Value);
                     }
                 }
-                AddField("publishDate", work.ToString());
+                vfDoc.publishDate.Add(work.ToString());
                 work.Length = 0;
 
                 if (elt.Element("publish-info") != null)
@@ -140,7 +140,7 @@ namespace ExportBJ_XML.classes
                         work.Append(elt.Element("publish-info").Element("city").Value);
                     }
                 }
-                AddField("PlaceOfPublication", work.ToString());
+                vfDoc.PlaceOfPublication.Add(work.ToString());
                 work.Length = 0;
 
                 if (elt.Element("publish-info") != null)
@@ -150,7 +150,7 @@ namespace ExportBJ_XML.classes
                         work.Append(elt.Element("publish-info").Element("publisher").Value);
                     }
                 }
-                AddField("publisher", work.ToString());
+                vfDoc.publisher.Add(work.ToString());
                 work.Length = 0;
 
                 if (elt.Element("publish-info") != null)
@@ -160,7 +160,7 @@ namespace ExportBJ_XML.classes
                         work.Append(elt.Element("publish-info").Element("isbn").Value);
                     }
                 }
-                AddField("isbn", work.ToString());
+                vfDoc.isbn.Add(work.ToString());
                 work.Length = 0;
 
                 if (elt.Element("title-info") != null)
@@ -170,7 +170,7 @@ namespace ExportBJ_XML.classes
                         work.Append(GetLitresLanguageRus(elt.Element("title-info").Element("lang").Value));
                     }
                 }
-                AddField("language", work.ToString());
+                vfDoc.language.Add(work.ToString());
                 work.Length = 0;
                 if (elt.Element("genres") != null)
                 {
@@ -179,8 +179,8 @@ namespace ExportBJ_XML.classes
                         work.Append(elt.Element("genres").Element("genre").Attribute("title").Value);
                     }
                 }
-                AddField("genre", work.ToString());
-                AddField("genre_facet", work.ToString());
+                vfDoc.genre.Add(work.ToString());
+                vfDoc.genre_facet.Add(work.ToString());
                 work.Length = 0;
 
                 //описание экземпляра Litres
@@ -215,17 +215,15 @@ namespace ExportBJ_XML.classes
                 writer.WriteEndObject();
 
 
-                AddField("MethodOfAccess", "4002");
-                AddField("Location", "2040");
-                AddField("Exemplar", sb.ToString());
-                AddField("id", "Litres_" + elt.Attribute("id").Value);
-                AddField("fund", "5007");
-                AddField("Level", "Монография");
-                AddField("format", "3012");
+                vfDoc.MethodOfAccess.Add("4002");
+                vfDoc.Location.Add("2040");
+                vfDoc.ExemplarsJSON = sb.ToString();
+                vfDoc.id = "Litres_" + elt.Attribute("id").Value;
+                vfDoc.fund = "5007";
+                vfDoc.Level = "Монография";
+                vfDoc.format.Add("3012");
 
-
-                _doc.WriteTo(_objXmlWriter);
-                _doc = _exportDocument.CreateElement("doc");
+                vfWriter.AppendVufindDoc(vfDoc);
                 //OnRecordExported
                 cnt++;
                 VuFindConverterEventArgs args = new VuFindConverterEventArgs();
@@ -233,8 +231,7 @@ namespace ExportBJ_XML.classes
                 OnRecordExported(args);
             }
 
-            _objXmlWriter.Flush();
-            _objXmlWriter.Close();
+            vfWriter.FinishWriting();
         }
 
 

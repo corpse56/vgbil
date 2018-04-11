@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Xml.Linq;
 using System.Net;
 using ExportBJ_XML.classes.BJ;
+using LibflClassLibrary.ExportToVufind.classes.BJ;
 
 namespace ExportBJ_XML.classes
 {
@@ -19,15 +20,7 @@ namespace ExportBJ_XML.classes
             /////////////////////////////////////////////////////////////////////////////////////////////
             //////////////////////////////////Pearson////////////////////////////////////////////////////
             /////////////////////////////////////////////////////////////////////////////////////////////
-            _objXmlWriter = XmlTextWriter.Create(@"F:\import\pearson.xml");
-            _exportDocument = new XmlDocument();
-            XmlNode decalrationNode = _exportDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
-            _exportDocument.AppendChild(decalrationNode);
-            decalrationNode.WriteTo(_objXmlWriter);
-            _root = _exportDocument.CreateElement("add");
-            _exportDocument.AppendChild(_root);
-            _objXmlWriter.WriteStartElement("add");
-            _doc = _exportDocument.CreateElement("doc");
+            VufindXMLWriter vfWriter = new VufindXMLWriter("pearson");
 
             string Pearson = File.ReadAllText(@"f:/pearson_source.json");
 
@@ -36,26 +29,37 @@ namespace ExportBJ_XML.classes
             string tmp = desPearson.First["licensePackage"].ToString();
             tmp = desPearson.First["catalog"]["options"]["Supported platforms"].ToString();
             int cnt = 1;
+            VufindDoc vfDoc = new VufindDoc();
             foreach (JToken token in desPearson)
             {
-                AddField("title", token["catalog"]["title"]["default"].ToString());
-                AddField("title_short", token["catalog"]["title"]["default"].ToString());
-                AddField("title_sort", token["catalog"]["title"]["default"].ToString());
-                AddField("author", token["catalog"]["options"]["Authors"].ToString());
-                AddField("author_sort", token["catalog"]["options"]["Authors"].ToString());
-                AddField("Country", token["catalog"]["options"]["Country of publication"].ToString());
-                AddField("publisher", token["catalog"]["options"]["Publisher"].ToString());
-                AddField("publishDate", token["catalog"]["options"]["Publishing date"].ToString().Split('.')[2]);
-                AddField("isbn", token["catalog"]["options"]["ISBN"].ToString());
-                AddField("Volume", token["catalog"]["options"]["Number of pages"].ToString());
-                AddField("Annotation", token["catalog"]["options"]["Desk"].ToString() + " ; " +
+                vfDoc = new VufindDoc();
+                vfDoc.title.Add(token["catalog"]["title"]["default"].ToString());
+                vfDoc.title_short.Add(token["catalog"]["title"]["default"].ToString());
+                vfDoc.title_sort.Add(token["catalog"]["title"]["default"].ToString());
+                vfDoc.author.Add(token["catalog"]["options"]["Authors"].ToString());
+                vfDoc.author_sort.Add(token["catalog"]["options"]["Authors"].ToString());
+
+                vfDoc.Country.Add(token["catalog"]["options"]["Country of publication"].ToString());
+                
+                vfDoc.publisher.Add(token["catalog"]["options"]["Publisher"].ToString());
+                vfDoc.publishDate.Add(token["catalog"]["options"]["Publishing date"].ToString().Split('.')[2]);
+                vfDoc.isbn.Add(token["catalog"]["options"]["ISBN"].ToString());
+
+                vfDoc.Volume.Add(token["catalog"]["options"]["Number of pages"].ToString());
+
+                vfDoc.Annotation.Add(token["catalog"]["options"]["Desk"].ToString() + " ; " +
                                               token["catalog"]["description"]["default"].ToString());
-                AddField("genre", token["catalog"]["options"]["Subject"].ToString());
-                AddField("genre_facet", token["catalog"]["options"]["Subject"].ToString());
-                AddField("topic", token["catalog"]["options"]["Catalogue section"].ToString());
-                AddField("topic_facet", token["catalog"]["options"]["Catalogue section"].ToString());
-                AddField("collection", token["catalog"]["options"]["Collection"].ToString());
-                AddField("language", token["catalog"]["options"]["Language"].ToString());
+                
+                vfDoc.genre.Add(token["catalog"]["options"]["Subject"].ToString());
+                vfDoc.genre_facet.Add(token["catalog"]["options"]["Subject"].ToString());
+                
+                vfDoc.topic.Add(token["catalog"]["options"]["Catalogue section"].ToString());
+                
+                vfDoc.topic_facet.Add(token["catalog"]["options"]["Catalogue section"].ToString());
+                
+                vfDoc.collection.Add(token["catalog"]["options"]["Collection"].ToString());
+                
+                vfDoc.language.Add(token["catalog"]["options"]["Language"].ToString());
 
 
                 //описание экземпляра Пирсон
@@ -89,18 +93,17 @@ namespace ExportBJ_XML.classes
                 writer.WriteEndObject();
 
 
-                AddField("MethodOfAccess", "4002");
-                AddField("Location", "2041");
-                AddField("Exemplar", sb.ToString());
-                AddField("id", "Pearson_" + token["id"].ToString());
-                AddField("HyperLink", "https://ebooks.libfl.ru/product/" + token["id"].ToString() );
-                AddField("fund", "5008");
-                AddField("Level", "Монография");
-                AddField("format", "3012");
+                vfDoc.MethodOfAccess.Add("4002");
+                vfDoc.Location.Add("2041");
+                vfDoc.ExemplarsJSON = sb.ToString();
+                vfDoc.id = "Pearson_" + token["id"].ToString();
+                vfDoc.HyperLink.Add("https://ebooks.libfl.ru/product/" + token["id"].ToString());
+                vfDoc.fund = "5008";
+                vfDoc.Level = "Монография";
+                vfDoc.format.Add("3012");
 
-
-                _doc.WriteTo(_objXmlWriter);
-                _doc = _exportDocument.CreateElement("doc");
+                vfWriter.AppendVufindDoc(vfDoc);
+                
 
                 //OnRecordExported
                 cnt++;
@@ -108,8 +111,7 @@ namespace ExportBJ_XML.classes
                 args.RecordId = "Pearson_" + token["id"].ToString();
                 OnRecordExported(args);
             }
-            _objXmlWriter.Flush();
-            _objXmlWriter.Close();
+            vfWriter.FinishWriting();
         }
 
         public override void ExportSingleRecord(int idmain)

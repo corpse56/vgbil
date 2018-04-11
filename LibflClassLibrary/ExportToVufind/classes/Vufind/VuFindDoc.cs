@@ -7,10 +7,107 @@ using ExportBJ_XML.ValueObjects;
 
 namespace ExportBJ_XML.classes
 {
-    public class VuFindDoc
+    public class VufindDoc
     {
-        public VuFindDoc() { }
+        public VufindDoc() 
+        {
+            this.AccompayingMaterial = new VufindField();
+            this.AccompayingMaterialLanguage = new VufindField();
+            this.AdditionalBibRecord = new VufindField();
+            this.Annotation = new VufindField();
+            this.Another_author_AF_all = new VufindField();
+            this.Another_title = new VufindField();
+            this.Another_title_AF_All = new VufindField();
+            this.author = new VufindField();
+            this.Author_another_chart = new VufindField();
+            this.author_corporate = new VufindField();
+            this.author_corporate_role = new VufindField();
+            this.author_role = new VufindField();
+            this.author_sort = new VufindField();
+            this.author_variant = new VufindField();
+            this.author2 = new VufindField();
+            this.author2_role = new VufindField();
+            this.BasicTitleLanguage = new VufindField();
+            this.CanceledISSN = new VufindField();
+            this.CatalogerNote = new VufindField();
+            this.collection = new VufindField();
+            this.Collective_author_all = new VufindField();
+            this.Country = new VufindField();
+            this.description = new VufindField();
+            this.Dimensions = new VufindField();
+            this.DirectoryNote = new VufindField();
+            this.EditionType = new VufindField();
+            this.Editor = new VufindField();
+            this.Editor_AF_all = new VufindField();
+            this.Editor_role = new VufindField();
+            this.format = new VufindField();
+            this.genre = new VufindField();
+            this.genre_facet = new VufindField();
+            this.GeoNamePlaceOfPublication = new VufindField();
+            this.GeoNamePlaceOfPublication_AF_All  = new VufindField();
+            this.HyperLink  = new VufindField();
+            this.id = "";
+            this.IllustrationMaterial  = new VufindField();
+            this.Illustrations  = new VufindField();
+            this.IncorrectISBN  = new VufindField();
+            this.IncorrectISSN  = new VufindField();
+            this.Info_pertaining_title  = new VufindField();
+            this.Info_title_alt  = new VufindField();
+            this.IntermediateTranslateLanguage  = new VufindField();
+            this.isbn  = new VufindField();
+            this.issn  = new VufindField();
+            this.language  = new VufindField();
+            this.Language_title_alt  = new VufindField();
+            this.Level  = "";
+            this.Level_id  = "";
+            this.Location  = new VufindField();
+            this.MethodOfAccess  = new VufindField();
+            this.NumberInSeries  = new VufindField();
+            this.NumberInSubseries  = new VufindField();
+            this.Organization_nature  = new VufindField();
+            this.OwnerExemplar  = new VufindField();
+            this.OwnerOrganization  = new VufindField();
+            this.OwnerOrganization_AF_All  = new VufindField();
+            this.OwnerPerson  = new VufindField();
+            this.OwnerPerson_AF_All  = new VufindField();
+            this.Ownership  = new VufindField();
+            this.Parallel_title  = new VufindField();
+            this.Part_number  = new VufindField();
+            this.Part_title  = new VufindField();
+            this.PlaceOfPublication  = new VufindField();
+            this.PlaceOfPublication_AF_All  = new VufindField();
+            this.PlacingCipher  = new VufindField();
+            this.Printing  = new VufindField();
+            this.PrintingHouse  = new VufindField();
+            this.PrintingHouse_AF_All  = new VufindField();
+            this.Publication_info  = new VufindField();
+            this.publishDate  = new VufindField();
+            this.publisher  = new VufindField();
+            this.Responsibility_statement  = new VufindField();
+            this.SummaryLanguage  = new VufindField();
+            this.TableOfContentsLanguage  = new VufindField();
+            this.title  = new VufindField();
+            this.title_alt  = new VufindField();
+            this.title_alt  = new VufindField();
+            this.Title_another_chart  = new VufindField();
+            this.Title_same_author  = new VufindField();
+            this.title_short  = new VufindField();
+            this.title_sort  = new VufindField();
+            this.Title_unified  = new VufindField();
+            this.TitlePageLanguage  = new VufindField();
+            this.topic  = new VufindField();
+            this.topic_facet  = new VufindField();
+            this.Unified_Caption  = new VufindField();
+            this.Unified_Caption_AF_All  = new VufindField();
+            this.Volume  = new VufindField();
+            this.ExemplarsJSON = "";
+        }
 
+        public string id ;
+        public string fund ;
+        public string allfields ;
+        public string Level ;
+        public string Level_id;
         public VufindField title { get; set; }
         public VufindField title_short { get; set; }
         public VufindField title_sort { get; set; }
@@ -31,6 +128,7 @@ namespace ExportBJ_XML.classes
         public VufindField publishDate { get; set; }
         public VufindField publisher { get; set; }
         public VufindField title_alt { get; set; }
+        public VufindField collection { get; set; }
 
         public VufindField PlaceOfPublication { get; set; }
         public VufindField Title_another_chart { get; set; }
@@ -84,6 +182,7 @@ namespace ExportBJ_XML.classes
         public VufindField DirectoryNote { get; set; }
         public VufindField AdditionalBibRecord { get; set; }
         public VufindField HyperLink { get; set; }
+        public VufindField topic { get; set; }
         public VufindField topic_facet { get; set; }
         public VufindField OwnerPerson { get; set; }
         public VufindField OwnerPerson_AF_All { get; set; }
@@ -93,8 +192,11 @@ namespace ExportBJ_XML.classes
         public VufindField OwnerExemplar { get; set; }
         public VufindField IllustrationMaterial { get; set; }
 
+        public VufindField Location { get; set; }
+        public VufindField PlacingCipher { get; set; }
+        public VufindField MethodOfAccess { get; set; }
         public List<ExemplarInfo> Exemplars = new List<ExemplarInfo>();
-
+        public string ExemplarsJSON;
 
     }
 }

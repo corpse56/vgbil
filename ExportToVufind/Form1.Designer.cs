@@ -367,7 +367,7 @@
             // 
             // btnGetJBHSource
             // 
-            this.btnGetJBHSource.Location = new System.Drawing.Point(12, 439);
+            this.btnGetJBHSource.Location = new System.Drawing.Point(12, 440);
             this.btnGetJBHSource.Name = "btnGetJBHSource";
             this.btnGetJBHSource.Size = new System.Drawing.Size(111, 23);
             this.btnGetJBHSource.TabIndex = 17;

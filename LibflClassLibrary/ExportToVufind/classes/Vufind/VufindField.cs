@@ -7,9 +7,18 @@ namespace ExportBJ_XML.classes.BJ.Vufind
 {
     public class VufindField
     {
-         private List<string> _valueList;
+        private List<string> _valueList;
+        public List<string> ValueList
+        {
+            get
+            {
+                return _valueList;
+            }
+        }
+        public string FieldName;
 
-         public VufindField()
+
+        public VufindField()
         {
             _valueList = new List<string>();
         }
@@ -30,5 +39,6 @@ namespace ExportBJ_XML.classes.BJ.Vufind
             return (result.Length == 0) ? result.ToString() : result.ToString().Remove(result.Length - 2);
 
         }
+
     }
 }

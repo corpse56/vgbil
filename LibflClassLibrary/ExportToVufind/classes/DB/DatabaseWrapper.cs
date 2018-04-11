@@ -312,5 +312,17 @@ namespace ExportBJ_XML.classes.DB
                 return this.ExecuteSelectQuery(dataAdapter);
             }
         }
+
+        internal DataTable Clarify_101a(int IDINLIST)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IMPORT_CLARIFY_101a, connection);
+                dataAdapter.SelectCommand.Parameters.Add("IDINLIST", SqlDbType.Int).Value = IDINLIST;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
     }
 }

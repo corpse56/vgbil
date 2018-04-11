@@ -13,6 +13,7 @@ using System.Drawing;
 using ExportBJ_XML.classes.BJ;
 using ExportBJ_XML.ValueObjects;
 using ExportBJ_XML.classes.DB;
+using LibflClassLibrary.ExportToVufind.classes.BJ;
 
 namespace ExportBJ_XML.classes
 {
@@ -28,22 +29,11 @@ namespace ExportBJ_XML.classes
         private int _lastID = 1;
         private DatabaseWrapper dbWrapper;
         private List<string> errors = new List<string>();
-
+        private VufindXMLWriter writer;
         public override void Export()
         {
-
-            _objXmlWriter = XmlTextWriter.Create(@"F:\import\"+Fund.ToLower()+".xml");
-
-            _exportDocument = new XmlDocument();
-            XmlNode decalrationNode = _exportDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
-            _exportDocument.AppendChild(decalrationNode);
-            decalrationNode.WriteTo(_objXmlWriter);
-
-            _root = _exportDocument.CreateElement("add");
-            _exportDocument.AppendChild(_root);
-            _objXmlWriter.WriteStartElement("add");
-
-            _doc = _exportDocument.CreateElement("doc");
+            writer = new VufindXMLWriter(this.Fund);
+            writer.StartVufindXML();
             /////////////////////////////////////////////////////////////////////////////////////////////
             //////////////////////////////////BJVVV/////////////////////////////////////////////////////
             /////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +45,7 @@ namespace ExportBJ_XML.classes
         {
             int step = 1;
             int MaxIDMAIN = GetMaxIDMAIN();
-            
+            VufindDoc vfDoc = new VufindDoc();
             for (int i = previous; i < MaxIDMAIN; i += step)
             {
                 _lastID = i;
@@ -63,62 +53,42 @@ namespace ExportBJ_XML.classes
                 if (record.Rows.Count == 0) continue;
                 try
                 {
-                    int check = CreateBJDoc( record );
-                    if (check == 1) continue;
+                    vfDoc = CreateVufindDoc( record );
+                    if (vfDoc == null) continue;
                 }
                 catch (Exception ex)
                 {
                     errors.Add(this.Fund + "_" + i);
-                    _doc = _exportDocument.CreateElement("doc");
                     continue;
                 }
 
-                _doc.WriteTo(_objXmlWriter);
-                _doc = _exportDocument.CreateElement("doc");
+                writer.AppendVufindDoc(vfDoc);
 
                 VuFindConverterEventArgs args = new VuFindConverterEventArgs();
                 args.RecordId = this.Fund + "_" + i;
                 OnRecordExported(args);
             }
-
-            _objXmlWriter.Flush();
-            _objXmlWriter.Close();
+            writer.FinishWriting();
             File.WriteAllLines(@"f:\import\importErrors\" + this.Fund + "Errors.txt", errors.ToArray());
 
         }
         public override void ExportSingleRecord( int idmain )
         {
-            _objXmlWriter = XmlTextWriter.Create(@"F:\import\singleRecords\" + this.Fund + "_" + idmain + ".xml");
+            VufindXMLWriter writer = new VufindXMLWriter(this.Fund);
+            VufindDoc vfDoc = new VufindDoc();
 
-            _exportDocument = new XmlDocument();
-            XmlNode decalrationNode = _exportDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
-            _exportDocument.AppendChild(decalrationNode);
-            decalrationNode.WriteTo(_objXmlWriter);
-
-            _root = _exportDocument.CreateElement("add");
-            _exportDocument.AppendChild(_root);
-            _objXmlWriter.WriteStartElement("add");
-
-            _doc = _exportDocument.CreateElement("doc");
-            /////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////TEST/////////////////////////////////////////////////////
-            /////////////////////////////////////////////////////////////////////////////////////////////
-            DataTable table = dbWrapper.GetBJRecord(idmain);
-            int check = CreateBJDoc( table );
-            if (check == 1) return;
-            _doc.WriteTo(_objXmlWriter);
-            _doc = _exportDocument.CreateElement("doc");
-            _objXmlWriter.Flush();
-            _objXmlWriter.Close();
+            DataTable record = dbWrapper.GetBJRecord(idmain); 
+            vfDoc = CreateVufindDoc(record);
+            writer.WriteSingleRecord(vfDoc);
         }
 
-        private int CreateBJDoc( DataTable BJBook )
+        public VufindDoc CreateVufindDoc( DataTable BJBook )
         {
             int currentIDMAIN = (int)BJBook.Rows[0]["IDMAIN"];
             string level = BJBook.Rows[0]["Level"].ToString();
             string level_id = BJBook.Rows[0]["level_id"].ToString();
             int lev_id = int.Parse(level_id);
-            if (lev_id < 0) return 1;
+            if (lev_id < 0) return null;
             string allFields = "";
             AuthoritativeFile AF_all = new AuthoritativeFile();
             bool wasTitle = false;//встречается ошибка: два заглавия в одном пине
@@ -127,7 +97,10 @@ namespace ExportBJ_XML.classes
             DataTable clarify;
             string query = "";
             string Annotation = "";
-            string CarrierCode = "";
+            int CarrierCode;
+            VufindDoc result = new VufindDoc();
+
+
             //BJBookInfo book = new BJBookInfo();
             foreach (DataRow r in BJBook.Rows)
             {
@@ -138,50 +111,63 @@ namespace ExportBJ_XML.classes
                     //=======================================================================Родные поля вуфайнд=======================
                     case "200$a":
                         if (wasTitle) break;
-                        AddField("title", r["PLAIN"].ToString());
-                        AddField("title_short", r["PLAIN"].ToString());
-                        AddField("title_sort", r["SORT"].ToString());
+                        //AddField("title", r["PLAIN"].ToString());
+                        //AddField("title_short", r["PLAIN"].ToString());
+                        //AddField("title_sort", r["SORT"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
+                        result.title.Add(r["PLAIN"].ToString());
+                        result.title_short.Add(r["PLAIN"].ToString());
+                        result.title_sort.Add(r["SORT"].ToString());
                         wasTitle = true;
                         break;
                     case "700$a":
-                        AddField("author", r["PLAIN"].ToString());
+                        //AddField("author", r["PLAIN"].ToString());
+                        result.author.Add(r["PLAIN"].ToString());
                         if (!wasAuthor)
                         {
-                            AddField("author_sort", r["SORT"].ToString());
+                            //AddField("author_sort", r["SORT"].ToString());
+                            result.author_sort.Add(r["SORT"].ToString());
                         }
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         wasAuthor = true;
                         //забрать все варианты написания автора из авторитетного файла и вставить в скрытое, но поисковое поле
                         break;
                     case "701$a":
-                        AddField("author2", r["PLAIN"].ToString());
+                        //AddField("author2", r["PLAIN"].ToString());
+                        result.author2.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "710$a":
-                        AddField("author_corporate", r["PLAIN"].ToString());
+                        //AddField("author_corporate", r["PLAIN"].ToString());
+                        result.author_corporate.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "710$4":
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
-                        AddField("author_corporate_role", r["PLAIN"].ToString());
+                        //AddField("author_corporate_role", r["PLAIN"].ToString());
+                        result.author_corporate_role.Add(r["PLAIN"].ToString());
                         break;
                     case "700$4":
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
-                        AddField("author_role", r["PLAIN"].ToString());
+                        //AddField("author_role", r["PLAIN"].ToString());
+                        result.author_role.Add(r["PLAIN"].ToString());
                         break;
                     case "701$4":
-                        AddField("author2_role", r["PLAIN"].ToString());
+                        //AddField("author2_role", r["PLAIN"].ToString());
+                        result.author2_role.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "921$a":
-                        CarrierCode = GetCarrierCode(r["PLAIN"].ToString());
-                        AddField("format", CarrierCode);
+                        CarrierCode = KeyValueMapping.CarrierNameToCode.GetValueOrDefault(r["PLAIN"].ToString(), 3001);
+                        //AddField("format", CarrierCode);
+                        result.format.Add(CarrierCode.ToString());
                        // book.Fields.AddField(CarrierCode, (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "922$e":
-                        AddField("genre", r["PLAIN"].ToString());
-                        AddField("genre_facet", r["PLAIN"].ToString());
+                        //AddField("genre", r["PLAIN"].ToString());
+                        //AddField("genre_facet", r["PLAIN"].ToString());
+                        result.genre.Add(r["PLAIN"].ToString());
+                        result.genre_facet.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "10$a":
@@ -191,33 +177,38 @@ namespace ExportBJ_XML.classes
                         {
                             add = r["PLAIN"].ToString() + " (" + clarify.Rows[0]["PLAIN"].ToString() + ")";
                         }
-                        AddField("isbn", add);
+                        //AddField("isbn", add);
+                        result.isbn.Add(add);
                         //book.Fields.AddField(add, (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "11$a":
-                        AddField("issn", r["PLAIN"].ToString());
+                        //AddField("issn", r["PLAIN"].ToString());
+                        result.issn.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "101$a":
-                        query = " select NAME from " + this.Fund + "..LIST_1 " + " where ID = " + r["IDINLIST"].ToString();
-                        clarify = dbWrapper.Clarify_10a((int)r["IDDATA"]);
+                        clarify = dbWrapper.Clarify_101a((int)r["IDINLIST"]);
                         if (clarify.Rows.Count == 0)
                         {
-                            AddField("language", r["PLAIN"].ToString());
+                            //AddField("language", r["PLAIN"].ToString());
+                            result.language.Add(r["PLAIN"].ToString());
                          //   book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         }
                         else
                         {
-                            AddField("language", clarify.Rows[0]["NAME"].ToString());
+                            //AddField("language", clarify.Rows[0]["NAME"].ToString());
+                            result.language.Add(clarify.Rows[0]["NAME"].ToString());
                           //  book.Fields.AddField(clarify.Rows[0]["NAME"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         }
                         break;
                     case "2100$d":
-                        AddField("publishDate", r["PLAIN"].ToString());
+                        //AddField("publishDate", r["PLAIN"].ToString());
+                        result.publishDate.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "210$c":
-                        AddField("publisher", r["PLAIN"].ToString());
+                        //AddField("publisher", r["PLAIN"].ToString());
+                        result.publisher.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "517$a":
@@ -226,122 +217,150 @@ namespace ExportBJ_XML.classes
                         fieldValue = (clarify.Rows.Count != 0) ?
                             "(" + clarify.Rows[0]["PLAIN"].ToString() + ")" + r["PLAIN"].ToString() :
                             r["PLAIN"].ToString();
-                        AddField("title_alt", fieldValue);
+
+                        //AddField("title_alt", fieldValue);
+                        result.title_alt.Add(fieldValue);
                         //book.Fields.AddField(fieldValue, (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         //нужно специальным образом обрабатывать
                         break;
                     //=======================================================================добавленные в индекс=======================
                     case "210$a":
-                        AddField("PlaceOfPublication", r["PLAIN"].ToString());
+                        //AddField("PlaceOfPublication", r["PLAIN"].ToString());
+                        result.PlaceOfPublication.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "200$6":
-                        AddField("Title_another_chart", r["PLAIN"].ToString());
+                        //AddField("Title_another_chart", r["PLAIN"].ToString());
+                        result.Title_another_chart.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "200$b":
-                        AddField("Title_same_author", r["PLAIN"].ToString());
+                        //AddField("Title_same_author", r["PLAIN"].ToString());
+                        result.Title_same_author.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "200$d":
-                        AddField("Parallel_title", r["PLAIN"].ToString());
+                        //AddField("Parallel_title", r["PLAIN"].ToString());
+                        result.Parallel_title.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "200$e":
-                        AddField("Info_pertaining_title", r["PLAIN"].ToString());
+                        //AddField("Info_pertaining_title", r["PLAIN"].ToString());
+                        result.Info_pertaining_title.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "200$f":
-                        AddField("Responsibility_statement", r["PLAIN"].ToString());
+                        //AddField("Responsibility_statement", r["PLAIN"].ToString());
+                        result.Responsibility_statement.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "200$h":
-                        AddField("Part_number", r["PLAIN"].ToString());
+                        //AddField("Part_number", r["PLAIN"].ToString());
+                        result.Part_number.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "200$i":
-                        AddField("Part_title", r["PLAIN"].ToString());
+                        //AddField("Part_title", r["PLAIN"].ToString());
+                        result.Part_title.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "200$z":
-                        AddField("Language_title_alt", r["PLAIN"].ToString());
+                        //AddField("Language_title_alt", r["PLAIN"].ToString());
+                        result.Language_title_alt.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "500$a":
-                        AddField("Title_unified", r["PLAIN"].ToString());
+                        //AddField("Title_unified", r["PLAIN"].ToString());
+                        result.Title_unified.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
-                    case "500$3":
+                    case "500$3"://$3 is deprecated!!!
                         AF_all = GetAFAll( (int)r["AFLINKID"], "AFHEADERVAR");
-                        AddField("Title_unified", AF_all.ToString());
+                        //AddField("Title_unified", AF_all.ToString());
+                        result.Title_unified.Add(AF_all.ToString());
                        // book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "517$e":
-                        AddField("Info_title_alt", r["PLAIN"].ToString());
+                        //AddField("Info_title_alt", r["PLAIN"].ToString());
+                        result.Info_title_alt.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "517$z":
-                        AddField("Language_title_alt", r["PLAIN"].ToString());
+                        //AddField("Language_title_alt", r["PLAIN"].ToString());
+                        result.Language_title_alt.Add(r["PLAIN"].ToString());
                         break;
                     case "700$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
                         foreach (string av in AF_all.AFValues)
                         {
-                            AddField("author_variant", av);//хранить но не отображать
+                            //AddField("author_variant", av);//хранить но не отображать
+                            result.author_variant.Add(av);
                         }
                        // book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "701$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
-                        AddField("Another_author_AF_all", AF_all.ToString());//хранить но не отображать
+                        //AddField("Another_author_AF_all", AF_all.ToString());//хранить но не отображать
+                        result.Another_author_AF_all.Add(AF_all.ToString());//хранить но не отображать
                        // book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "501$a":
-                        AddField("Another_title", r["PLAIN"].ToString());
+                        //AddField("Another_title", r["PLAIN"].ToString());
+                        result.Another_title.Add(r["PLAIN"].ToString());
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "501$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFHEADERVAR");
-                        AddField("Another_title_AF_All", AF_all.ToString());
+                        //AddField("Another_title_AF_All", AF_all.ToString());
+                        result.Another_title_AF_All.Add(AF_all.ToString());
                         //book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "503$a":
-                        AddField("Unified_Caption", r["PLAIN"].ToString());
+                        //AddField("Unified_Caption", r["PLAIN"].ToString());
+                        result.Unified_Caption.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "503$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFHEADERVAR");
-                        AddField("Unified_Caption_AF_All", AF_all.ToString());
+                        //AddField("Unified_Caption_AF_All", AF_all.ToString());
+                        result.Unified_Caption_AF_All.Add(AF_all.ToString());
                       //  book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "700$6":
-                        AddField("Author_another_chart", r["PLAIN"].ToString());
+                        //AddField("Author_another_chart", r["PLAIN"].ToString());
+                        result.Author_another_chart.Add(r["PLAIN"].ToString());
                       //  book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "702$a":
-                        AddField("Editor", r["PLAIN"].ToString());
+                        //AddField("Editor", r["PLAIN"].ToString());
+                        result.Editor.Add(r["PLAIN"].ToString());
                      //   book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "702$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
-                        AddField("Editor_AF_all", AF_all.ToString());
+                        //AddField("Editor_AF_all", AF_all.ToString());
+                        result.Editor_AF_all.Add(AF_all.ToString());
                        // book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "702$4":
-                        AddField("Editor_role", r["PLAIN"].ToString());
+                        //AddField("Editor_role", r["PLAIN"].ToString());
+                        result.Editor_role.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "710$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
-                        AddField("Collective_author_all", AF_all.ToString());
+                        //AddField("Collective_author_all", AF_all.ToString());
+                        result.Collective_author_all.Add(AF_all.ToString());
                        // book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "710$9":
-                        AddField("Organization_nature", r["PLAIN"].ToString());
+                        //AddField("Organization_nature", r["PLAIN"].ToString());
+                        result.Organization_nature.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "11$9":
-                        AddField("Printing", r["PLAIN"].ToString());
+                        //AddField("Printing", r["PLAIN"].ToString());
+                        result.Printing.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "205$a":
@@ -366,90 +385,111 @@ namespace ExportBJ_XML.classes
                         {
                             PublicationInfo += "; " + rr["PLAIN"].ToString();
                         }
-                        AddField("Publication_info", PublicationInfo);
+                        //AddField("Publication_info", PublicationInfo);
+                        result.Publication_info.Add(PublicationInfo);
                       //  book.Fields.AddField(PublicationInfo, (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "921$b":
-                        AddField("EditionType", r["PLAIN"].ToString());
+                        //AddField("EditionType", r["PLAIN"].ToString());
+                        result.EditionType.Add(r["PLAIN"].ToString());
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "102$a":
-                        AddField("Country", r["PLAIN"].ToString());
+                        //AddField("Country", r["PLAIN"].ToString());
+                        result.Country.Add(r["PLAIN"].ToString());
                       //  book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "210$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
-                        AddField("PlaceOfPublication_AF_All", AF_all.ToString());
+                        //AddField("PlaceOfPublication_AF_All", AF_all.ToString());
+                        result.PlaceOfPublication.Add(AF_all.ToString());
                       //  book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "2110$g":
-                        AddField("PrintingHouse", r["PLAIN"].ToString());
+                        //AddField("PrintingHouse", r["PLAIN"].ToString());
+                        result.PrintingHouse.Add(r["PLAIN"].ToString()); 
                        // book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "2110$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
-                        AddField("PrintingHouse_AF_All", AF_all.ToString());
+                        //AddField("PrintingHouse_AF_All", AF_all.ToString());
+                        result.PrintingHouse_AF_All.Add(AF_all.ToString());
                        // book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "2111$e":
-                        AddField("GeoNamePlaceOfPublication", r["PLAIN"].ToString());
+                        //AddField("GeoNamePlaceOfPublication", r["PLAIN"].ToString());
+                        result.GeoNamePlaceOfPublication.Add(r["PLAIN"].ToString());
                      //   book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "2111$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFGEOVAR");
-                        AddField("GeoNamePlaceOfPublication_AF_All", AF_all.ToString());
+                        //AddField("GeoNamePlaceOfPublication_AF_All", AF_all.ToString());
+                        result.GeoNamePlaceOfPublication_AF_All.Add(AF_all.ToString());
                      //   book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "10$z":
-                        AddField("IncorrectISBN", r["PLAIN"].ToString());
+                        //AddField("IncorrectISBN", r["PLAIN"].ToString());
+                        result.IncorrectISBN.Add(r["PLAIN"].ToString()); 
                      //   book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "11$z":
-                        AddField("IncorrectISSN", r["PLAIN"].ToString());
+                        //AddField("IncorrectISSN", r["PLAIN"].ToString());
+                        result.IncorrectISSN.Add(r["PLAIN"].ToString());
                       //  book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "11$y":
-                        AddField("CanceledISSN", r["PLAIN"].ToString());
+                        //AddField("CanceledISSN", r["PLAIN"].ToString());
+                        result.CanceledISSN.Add(r["PLAIN"].ToString());
                       //  book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "101$b":
-                        AddField("IntermediateTranslateLanguage", r["PLAIN"].ToString());
+                        //AddField("IntermediateTranslateLanguage", r["PLAIN"].ToString());
+                        result.IntermediateTranslateLanguage.Add(r["PLAIN"].ToString());
                      //   book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "101$d":
-                        AddField("SummaryLanguage", r["PLAIN"].ToString());
+                        //AddField("SummaryLanguage", r["PLAIN"].ToString());
+                        result.SummaryLanguage.Add(r["PLAIN"].ToString());
                      //   book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "101$e":
-                        AddField("TableOfContentsLanguage", r["PLAIN"].ToString());
+                        //AddField("TableOfContentsLanguage", r["PLAIN"].ToString());
+                        result.TableOfContentsLanguage.Add(r["PLAIN"].ToString()); 
                      //   book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "101$f":
-                        AddField("TitlePageLanguage", r["PLAIN"].ToString());
+                        //AddField("TitlePageLanguage", r["PLAIN"].ToString());
+                        result.TitlePageLanguage.Add(r["PLAIN"].ToString());
                      //   book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "101$g":
-                        AddField("BasicTitleLanguage", r["PLAIN"].ToString());
+                        //AddField("BasicTitleLanguage", r["PLAIN"].ToString());
+                        result.BasicTitleLanguage.Add(r["PLAIN"].ToString()); 
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "101$i":
-                        AddField("AccompayingMaterialLanguage", r["PLAIN"].ToString());
+                        //AddField("AccompayingMaterialLanguage", r["PLAIN"].ToString());
+                        result.AccompayingMaterialLanguage.Add(r["PLAIN"].ToString());
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "215$a":
-                        AddField("Volume", r["PLAIN"].ToString());
+                        //AddField("Volume", r["PLAIN"].ToString());
+                        result.Volume.Add(r["PLAIN"].ToString());
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "215$b":
-                        AddField("Illustrations", r["PLAIN"].ToString());
+                        //AddField("Illustrations", r["PLAIN"].ToString());
+                        result.Illustrations.Add(r["PLAIN"].ToString());
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "215$c":
-                        AddField("Dimensions", r["PLAIN"].ToString());
+                        //AddField("Dimensions", r["PLAIN"].ToString());
+                        result.Dimensions.Add(r["PLAIN"].ToString()); 
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "215$d":
-                        AddField("AccompayingMaterial", r["PLAIN"].ToString());
+                        //AddField("AccompayingMaterial", r["PLAIN"].ToString());
+                        result.AccompayingMaterial.Add(r["PLAIN"].ToString()); 
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "225$a":
@@ -459,11 +499,13 @@ namespace ExportBJ_XML.classes
                    //     book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "225$h":
-                        AddField("NumberInSeries", r["PLAIN"].ToString());
+                        //AddField("NumberInSeries", r["PLAIN"].ToString());
+                        result.NumberInSeries.Add(r["PLAIN"].ToString()); 
                   //      book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "225$v":
-                        AddField("NumberInSubseries", r["PLAIN"].ToString());
+                        //AddField("NumberInSubseries", r["PLAIN"].ToString());
+                        result.NumberInSubseries.Add(r["PLAIN"].ToString()); 
                    //     book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "300$a":
@@ -482,19 +524,23 @@ namespace ExportBJ_XML.classes
                    //     book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "830$a":
-                        AddField("CatalogerNote", r["PLAIN"].ToString());
+                        //AddField("CatalogerNote", r["PLAIN"].ToString());
+                        result.CatalogerNote.Add(r["PLAIN"].ToString());
                    //     book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "831$a":
-                        AddField("DirectoryNote", r["PLAIN"].ToString());
+                        //AddField("DirectoryNote", r["PLAIN"].ToString());
+                        result.DirectoryNote.Add(r["PLAIN"].ToString());
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "924$a":
-                        AddField("AdditionalBibRecord", r["PLAIN"].ToString());
+                        //AddField("AdditionalBibRecord", r["PLAIN"].ToString());
+                        result.AdditionalBibRecord.Add(r["PLAIN"].ToString());
                    //     book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "940$a":
-                        AddField("HyperLink", r["PLAIN"].ToString());
+                        //AddField("HyperLink", r["PLAIN"].ToString());
+                        result.HyperLink.Add(r["PLAIN"].ToString()); 
                    //     book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "606$a"://"""""" • """"""
@@ -506,65 +552,81 @@ namespace ExportBJ_XML.classes
                             TPR += rr["VALUE"].ToString() + " • ";
                         }
                         TPR = TPR.Substring(0, TPR.Length - 2);
-                        AddField("topic", TPR);
-                        AddField("topic_facet", TPR);
+                        //AddField("topic", TPR);
+                        //AddField("topic_facet", TPR);
+                        result.topic.Add(TPR);
+                        result.topic_facet.Add(TPR);
                    //     book.Fields.AddField(TPR, (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "3000$a":
-                        AddField("OwnerPerson", r["PLAIN"].ToString());
+                        //AddField("OwnerPerson", r["PLAIN"].ToString());
+                        result.OwnerPerson.Add(r["PLAIN"].ToString());
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "3000$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
-                        AddField("OwnerPerson_AF_All", AF_all.ToString());
+                        //AddField("OwnerPerson_AF_All", AF_all.ToString());
+                        result.OwnerPerson_AF_All.Add(AF_all.ToString());
                    //     book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "3001$a":
-                        AddField("OwnerOrganization", r["PLAIN"].ToString());
+                        //AddField("OwnerOrganization", r["PLAIN"].ToString());
+                        result.OwnerOrganization.Add(r["PLAIN"].ToString());
                    //     book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "3001$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
-                        AddField("OwnerOrganization_AF_All", AF_all.ToString());
+                        //AddField("OwnerOrganization_AF_All", AF_all.ToString());
+                        result.OwnerOrganization_AF_All.Add(AF_all.ToString());
                     //    book.Fields.AddField(r["AFLINKID"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString(), AF_all);
                         break;
                     case "3002$a":
-                        AddField("Ownership", r["PLAIN"].ToString());
+                        //AddField("Ownership", r["PLAIN"].ToString());
+                        result.Ownership.Add(r["PLAIN"].ToString()); 
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "3003$a":
-                        AddField("OwnerExemplar", r["PLAIN"].ToString());
+                        //AddField("OwnerExemplar", r["PLAIN"].ToString());
+                        result.OwnerExemplar.Add(r["PLAIN"].ToString());
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "3200$a":
-                        AddField("IllustrationMaterial", r["PLAIN"].ToString());
+                        //AddField("IllustrationMaterial", r["PLAIN"].ToString());
+                        result.IllustrationMaterial.Add(r["PLAIN"].ToString());
                     //    book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                 }
 
             }
-            AddField("id", this.Fund + "_" + currentIDMAIN);
+            //AddField("id", this.Fund + "_" + currentIDMAIN);
+            result.id = this.Fund + "_" + currentIDMAIN;
            // book.ID = this.Fund + "_" + currentIDMAIN;
             string rusFund = GetFundId(this.Fund);
 
-            AddField("fund", rusFund);
-            AddField("allfields", allFields);
-            AddField("Level", level);
-            AddField("Level_id", level_id);
-            AddField("Annotation", Annotation);
+            //AddField("fund", rusFund);
+            result.fund = rusFund;
+            //AddField("allfields", allFields);
+            result.allfields = allFields;
+            //AddField("Level", level);
+            result.Level = level;
+            //AddField("Level_id", level_id);
+            result.Level_id = level_id;
+            //AddField("Annotation", Annotation);
+            result.Annotation.Add(Annotation);
 
             if (description != "")
             {
-                AddField("description", description);
+                //AddField("description", description);
+                result.description.Add(description);
             }
 
-            AddExemplarFields(currentIDMAIN, _exportDocument, this.Fund);
+            AddExemplarFields(currentIDMAIN, result, this.Fund);
 
-            return 0;
+            return result;
         }
 
 
-        private void AddExemplarFields(int idmain, XmlDocument _exportDocument, string fund)
+        private void AddExemplarFields(int idmain, VufindDoc result, string fund)
         {
 
             DataTable table = dbWrapper.GetAllExemplars(idmain);
@@ -623,7 +685,8 @@ namespace ExportBJ_XML.classes
 
                             int LocationCode = KeyValueMapping.UnifiedLocationCode.GetValueOrDefault(UL, 2999);
                             writer.WriteValue(LocationCode);
-                            AddField("Location", UL);
+                            //AddField("Location", UL);
+                            result.Location.Add(UL);
 
                             //f_899a = r["PLAIN"].ToString();
                             //bjExemplar.Fields.AddField(LocationCode.ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
@@ -673,7 +736,8 @@ namespace ExportBJ_XML.classes
                             break;
                         case "899$j":
                             //Exemplar += "Расстановочный шифр:" + r["PLAIN"].ToString() + "#";
-                            AddField("PlacingCipher", r["PLAIN"].ToString());
+                            //AddField("PlacingCipher", r["PLAIN"].ToString());
+                            result.PlacingCipher.Add(r["PLAIN"].ToString());
                             writer.WritePropertyName("exemplar_placing_cipher");
                             writer.WriteValue(r["PLAIN"].ToString());
                             //bjExemplar.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
@@ -701,7 +765,7 @@ namespace ExportBJ_XML.classes
                         case "921$a":
                             //Exemplar += "Носитель:" + r["PLAIN"].ToString() + "#";
                             writer.WritePropertyName("exemplar_carrier");
-                            CarrierCode = GetCarrierCode(r["PLAIN"].ToString());
+                            CarrierCode = KeyValueMapping.CarrierNameToCode.GetValueOrDefault(r["PLAIN"].ToString(), 3001).ToString();
                             writer.WriteValue(CarrierCode);
                             //f_921a = r["PLAIN"].ToString();
                             //bjExemplar.Fields.AddField(CarrierCode, (int)r["MNFIELD"], r["MSFIELD"].ToString());
@@ -837,7 +901,8 @@ namespace ExportBJ_XML.classes
 
 
                 
-                AddField("MethodOfAccess", bjExemplar.ExemplarAccess.MethodOfAccess.ToString());
+                //AddField("MethodOfAccess", bjExemplar.ExemplarAccess.MethodOfAccess.ToString());
+                result.MethodOfAccess.Add(bjExemplar.ExemplarAccess.MethodOfAccess.ToString());
                 writer.WritePropertyName("exemplar_access");
                 writer.WriteValue(bjExemplar.ExemplarAccess.Access);
                 writer.WritePropertyName("exemplar_access_group");
@@ -898,7 +963,8 @@ namespace ExportBJ_XML.classes
 
                 }
                 writer.WriteEndObject();
-                AddField("MethodOfAccess", "4002");
+                //AddField("MethodOfAccess", "4002");
+                result.MethodOfAccess.Add("4002");
 
                 //определить структуру, в которую полностью запись ложится и здесь её проверять, чтобы правильно вычисляемые поля проставить.
             }
@@ -906,45 +972,11 @@ namespace ExportBJ_XML.classes
             writer.Flush();
             writer.Close();
 
-            AddField("Exemplar", sb.ToString());
-        }
-
-        private string GetCarrierCode(string CarrierName)
-        {
-            switch (CarrierName)
-            {
-                case "Аудиокассета":
-                    return "3000";
-                case "Бумага":
-                    return "3001";
-                case "Видеокассета":
-                    return "3002";
-                case "Грампластинка":
-                    return "3003";
-                case "Дискета":
-                    return "3004";
-                case "Комплект(бумага+)":
-                    return "3005";
-                case "Магнитная лента":
-                    return "3006";
-                case "Микрофильм":
-                    return "3007";
-                case "Микрофиша":
-                    return "3008";
-                case "СD/DVD":
-                    return "3009";
-                case "Слайд":
-                    return "3010";
-                case "Электронная копия":
-                    return "3011";
-                case "Электронное издание":
-                    return "3012";
-            }
-            return "3001";
+            //AddField("Exemplar", sb.ToString());
+            result.ExemplarsJSON = sb.ToString();
         }
 
 
-      
         public override void ExportCovers()
         {
             StringBuilder sb = new StringBuilder();
@@ -990,55 +1022,53 @@ namespace ExportBJ_XML.classes
 
         private void AddHierarchyFields(int ParentPIN, int CurrentPIN)
         {
-            string query = " select * from " + this.Fund + "..DATAEXT " +
-                               " where IDMAIN = " + ParentPIN;
-            DataTable table = dbWrapper.GetBJRecord(ParentPIN);
-            int TopHierarchyId = GetTopId( ParentPIN );
-            AddField("hierarchy_top_id", this.Fund + "_" + TopHierarchyId);
+            //DataTable table = dbWrapper.GetBJRecord(ParentPIN);
+            //int TopHierarchyId = GetTopId( ParentPIN );
+            //AddField("hierarchy_top_id", this.Fund + "_" + TopHierarchyId);
 
-            table = dbWrapper.GetTitle(TopHierarchyId);
-            if (table.Rows.Count != 0)
-            {
-                string hierarchy_top_title = table.Rows[0]["PLAIN"].ToString();
-                AddField("hierarchy_top_title", hierarchy_top_title);
-            }
-            AddField("hierarchy_parent_id", this.Fund + "_" + ParentPIN);
+            //table = dbWrapper.GetTitle(TopHierarchyId);
+            //if (table.Rows.Count != 0)
+            //{
+            //    string hierarchy_top_title = table.Rows[0]["PLAIN"].ToString();
+            //    AddField("hierarchy_top_title", hierarchy_top_title);
+            //}
+            //AddField("hierarchy_parent_id", this.Fund + "_" + ParentPIN);
 
-            table = dbWrapper.GetTitle(ParentPIN);
-            if (table.Rows.Count != 0)
-            {
-                string hierarchy_parent_title = table.Rows[0]["PLAIN"].ToString();
-                AddField("hierarchy_parent_title", hierarchy_parent_title);
-            }
+            //table = dbWrapper.GetTitle(ParentPIN);
+            //if (table.Rows.Count != 0)
+            //{
+            //    string hierarchy_parent_title = table.Rows[0]["PLAIN"].ToString();
+            //    AddField("hierarchy_parent_title", hierarchy_parent_title);
+            //}
 
-            bool metka = false;
-            foreach (XmlNode n in _doc.ChildNodes)
-            {
-                if (n.Attributes["name"].Value == "is_hierarchy_id")
-                {
-                    metka = true;
-                }
-            }
-            if (!metka)
-            {
-                AddField("is_hierarchy_id", this.Fund + "_" + CurrentPIN);//пометка о том, что это серия
-            }
+            //bool metka = false;
+            //foreach (XmlNode n in _doc.ChildNodes)
+            //{
+            //    if (n.Attributes["name"].Value == "is_hierarchy_id")
+            //    {
+            //        metka = true;
+            //    }
+            //}
+            //if (!metka)
+            //{
+            //    AddField("is_hierarchy_id", this.Fund + "_" + CurrentPIN);//пометка о том, что это серия
+            //}
 
-            table = dbWrapper.GetTitle(CurrentPIN);
-            if (table.Rows.Count != 0)
-            {
-                string is_hierarchy_title = table.Rows[0]["PLAIN"].ToString();
+            //table = dbWrapper.GetTitle(CurrentPIN);
+            //if (table.Rows.Count != 0)
+            //{
+            //    string is_hierarchy_title = table.Rows[0]["PLAIN"].ToString();
 
-                metka = false;
-                foreach (XmlNode n in _doc.ChildNodes)
-                {
-                    if (n.Attributes["name"].Value == "is_hierarchy_id")
-                    {
-                        metka = true;
-                    }
-                }
-                if (!metka) AddField("is_hierarchy_title", is_hierarchy_title);
-            }
+            //    metka = false;
+            //    foreach (XmlNode n in _doc.ChildNodes)
+            //    {
+            //        if (n.Attributes["name"].Value == "is_hierarchy_id")
+            //        {
+            //            metka = true;
+            //        }
+            //    }
+            //    if (!metka) AddField("is_hierarchy_title", is_hierarchy_title);
+            //}
         }
         private int GetTopId(int ParentPIN)
         {

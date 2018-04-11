@@ -59,7 +59,7 @@ namespace ExportBJ_XML.ValueObjects
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
             }
             exemplar.ExemplarAccess = ExemplarInfo.GetExemplarAccess(exemplar);
-            exemplar.IsAlligat = dbw.IsAlligat(exemplar.IdData);
+            //exemplar.IsAlligat = dbw.IsAlligat(exemplar.IdData).Rows.Count;
             return exemplar;
         }
         public static ExemplarInfo GetExemplarByIdData(int iddata, string fund)
@@ -83,7 +83,7 @@ namespace ExportBJ_XML.ValueObjects
 
             ExemplarAccessInfo access = new ExemplarAccessInfo();
             //сначала суперусловия
-            if (exemplar.Fields["899$x"].ToString().Contains("э"))
+            if (exemplar.Fields["899$x"].ToString().ToLower().Contains("э"))
             {
                 access.Access = 1016;
                 access.MethodOfAccess = 4005;
@@ -208,9 +208,17 @@ namespace ExportBJ_XML.ValueObjects
                 case "REDKOSTJ":
                     if (exemplar.Fields["482$a"].ToLower() != "")
                     {
-                        access.Access = 1015;
                         ExemplarInfo Convolute = ExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
-                        access.MethodOfAccess = Convolute.ExemplarAccess.MethodOfAccess;
+                        if (Convolute == null)
+                        {
+                            access.Access = 1999;
+                            access.MethodOfAccess = 4999;
+                        }
+                        else
+                        {
+                            access.Access = Convolute.ExemplarAccess.Access;
+                            access.MethodOfAccess = Convolute.ExemplarAccess.MethodOfAccess;
+                        }
 
                     }
                     if (exemplar.Fields["899$a"].ToLower().Contains("зал"))
