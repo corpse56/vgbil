@@ -30,7 +30,7 @@ namespace ExportBJ_XML.classes.DB
             {
                 try
                 {
-                    da.Fill(ds, "t");
+                    int cnt = da.Fill(ds, "t");
                     break;
                 }
                 catch (SqlException ex)
@@ -288,18 +288,7 @@ namespace ExportBJ_XML.classes.DB
             }
         }
 
-        internal DataTable IsIssuedOrOrderedEmployee(int IDMAIN, int IDDATA)
-        {
-            string connectionString = AppSettings.ConnectionString;
-            DataSet ds = new DataSet();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_ISSUED_OR_ORDERED_EMPLOYEE, connection);
-                dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = IDMAIN;
-                dataAdapter.SelectCommand.Parameters.Add("iddata", SqlDbType.Int).Value = IDDATA;
-                return this.ExecuteSelectQuery(dataAdapter);
-            }
-        }
+
 
         internal DataTable IsAlligat(int IDDATA)
         {
@@ -321,6 +310,55 @@ namespace ExportBJ_XML.classes.DB
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IMPORT_CLARIFY_101a, connection);
                 dataAdapter.SelectCommand.Parameters.Add("IDINLIST", SqlDbType.Int).Value = IDINLIST;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+        internal DataTable IsIssuedOrOrderedEmployee(int IDMAIN, int IDDATA)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_ISSUED_OR_ORDERED_EMPLOYEE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = IDMAIN;
+                dataAdapter.SelectCommand.Parameters.Add("iddata", SqlDbType.Int).Value = IDDATA;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+        internal DataTable IsSelfIssuedOrOrderedEmployee(int IDDATA, int IDMAIN, int IdReader)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_SELF_ISSUED_OR_ORDERED_EMPLOYEE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = IDMAIN;
+                dataAdapter.SelectCommand.Parameters.Add("iddata", SqlDbType.Int).Value = IDDATA;
+                dataAdapter.SelectCommand.Parameters.Add("idreader", SqlDbType.Int).Value = IdReader;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
+        internal DataTable IsIssuedToReader(int iddata)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_ISSUED_TO_READER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("iddata", SqlDbType.Int).Value = iddata;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
+        internal DataTable GetEmployeeStatus(int idmain)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_EMPLOYEE_STATUS, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = idmain;
                 return this.ExecuteSelectQuery(dataAdapter);
             }
         }

@@ -44,7 +44,7 @@ public partial class _Default : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        ZCon = new SqlConnection(WebConfigurationManager.ConnectionStrings["Zakaz"].ConnectionString);
         CurReader = new ReaderLib(this.User.Identity.Name, Request["id"]);
         string ip = Server.MachineName;
 
@@ -58,7 +58,6 @@ public partial class _Default : System.Web.UI.Page
 
             DABasket = new SqlDataAdapter();
             DABasket.DeleteCommand = new SqlCommand();
-            ZCon = new SqlConnection(WebConfigurationManager.ConnectionStrings["Zakaz"].ConnectionString);
             DABasket.DeleteCommand.Connection = ZCon;
             ZCon.Open();
             DABasket.DeleteCommand.CommandText = "delete A from Reservation_E..Basket A, Reservation_E..Basket B WHERE (A.ID > B.ID) AND (A.IDMAIN=B.IDMAIN) and A.IDREADER=B.IDREADER";
@@ -75,9 +74,12 @@ public partial class _Default : System.Web.UI.Page
     {
         DABasket = new SqlDataAdapter();
         DABasket.SelectCommand = new SqlCommand();
-        ZCon = new SqlConnection(WebConfigurationManager.ConnectionStrings["Zakaz"].ConnectionString);
         DABasket.SelectCommand.Connection = ZCon;
-        DABasket.SelectCommand.CommandText = "select * from Reservation_E..Basket where IDREADER = " + CurReader.ID;
+        DABasket.SelectCommand.CommandText = " with F0 as (" +
+                                             " select IDMAIN IDMAIN from Reservation_E..Basket where IDREADER = " + CurReader.ID +
+                                             " union all" +
+                                             " select ID_Book_EC IDMAIN from Reservation_E..Orders where ID_Reader = " + CurReader.ID +
+                                             ") select distinct IDMAIN from F0 order by IDMAIN";//сортируем по IDMAIN чтобы все были в одном порядке
         DataTable table = new DataTable();
         int i = DABasket.Fill(table);
         List<BJBookInfo> basket = new List<BJBookInfo>();
@@ -107,15 +109,17 @@ public partial class _Default : System.Web.UI.Page
         ((BoundField)gwBasket.Columns[6]).DataField = "metka";
         ((BoundField)gwBasket.Columns[7]).DataField = "status";
         ((BoundField)gwBasket.Columns[10]).DataField = "IDDATA";
+        ((BoundField)gwBasket.Columns[11]).DataField = "StatusCode";
+        ((BoundField)gwBasket.Columns[12]).DataField = "StatusNameInBase";
         gwBasket.DataBind();
     }
-    static DataTable ConvertListToDataTable(List<BJBookInfo> basket)
+    DataTable ConvertListToDataTable(List<BJBookInfo> basket)
     {
         // New table.
         DataTable table = new DataTable();
-
+        
         // Get max columns.
-        int columns = 9;
+        int columns = 11;
 
         // Add columns.
         for (int i = 0; i < columns; i++)
@@ -131,6 +135,8 @@ public partial class _Default : System.Web.UI.Page
         table.Columns[6].ColumnName = "metka";
         table.Columns[7].ColumnName = "status";
         table.Columns[8].ColumnName = "IDDATA";
+        table.Columns[9].ColumnName = "StatusCode";
+        table.Columns[10].ColumnName = "StatusNameInBase";
         // Add rows.
         int j = 0;
         foreach (BJBookInfo book in basket)
@@ -140,21 +146,45 @@ public partial class _Default : System.Web.UI.Page
             {
                 string location = KeyValueMapping.UnifiedLocationAccess.GetValueOrDefault(exemplar.Fields["899$a"].ToString(), "не указано");
                 StringBuilder Status = new StringBuilder();
+                int StatusCode = 0;
                 if ((location == "Книгохранение") )
                 {
-                    Status.Append("Нажмите ссылку \"Заказать\"");
+                    Status.Append("Книга свободна. Для получения нажмите ссылку \"Заказать\"");
+                    StatusCode = 1;
                 }
                 else if (location == "Служебные подразделения")
                 {
-                    Status.Append("Экземпляр находится в службном подразделении. Попробуйте заказать позже.");
+                    Status.Append("Экземпляр находится в служебном подразделении. Попробуйте заказать позже.");
+                    StatusCode = 2;
                 }
                 else
                 {
                     Status.AppendFormat("Книга находится в открытом доступе в зале {0}.", location);
+                    StatusCode = 3;
                 }
-
-                if (exemplar.IsIssuedOrOrderedEmployee())
+                
+                if (exemplar.IsSelfIssuedOrOrderedEmployee(int.Parse(CurReader.ID)))
                 {
+                    Status = new StringBuilder();
+                    Status.Append("Книга уже заказана вами.");
+                    StatusCode = 5;
+                }
+                else if (exemplar.IsIssuedOrOrderedEmployee())
+                {
+                    Status = new StringBuilder();
+                    Status.Append("Книга уже заказана другим сотрудником.");
+                    StatusCode = 4;
+                }
+                else if (exemplar.IsIssuedToReader())
+                {
+                    Status = new StringBuilder();
+                    Status.Append("Книга заказана/выдана другому читателю.");
+                    StatusCode = 6;
+                }
+                string StatusNameInBase = "";
+                if (StatusCode == 5)
+                {
+                    StatusNameInBase = exemplar.GetEmployeeStatus();
                 }
                 DataRow row = table.NewRow();
                 row["IDMAIN"] = book.ID;
@@ -166,6 +196,8 @@ public partial class _Default : System.Web.UI.Page
                 row["metka"] = exemplar.Fields["899$x"].ToString();
                 row["status"] = Status.ToString();//
                 row["IDDATA"] = exemplar.IdData;
+                row["StatusCode"] = StatusCode;
+                row["StatusNameInBase"] = StatusNameInBase;
                 table.Rows.Add(row);
             }
         }
@@ -184,7 +216,8 @@ public partial class _Default : System.Web.UI.Page
                 DelFromBasket(CurReader.ID, argument);
                 break;
             case "ord":
-                CreateOrd(CurReader.ID, argument);
+                int idmain = CreateOrd(CurReader.ID, argument);
+                DelFromBasket(CurReader.ID, idmain.ToString());
                 break;
         }
         ShowBasketTable();
@@ -194,25 +227,26 @@ public partial class _Default : System.Web.UI.Page
     {
         SqlCommand command = new SqlCommand();
         ZCon.Open();
-        command = new SqlCommand("delete from Reservation_E..Orders where IDREADER = @IDREADER and IDMAIN = @IDMAIN", ZCon);
+        command = new SqlCommand("delete from Reservation_E..Basket where IDREADER = @IDREADER and IDMAIN = @IDMAIN", ZCon);
         command.Parameters.Add("IDREADER", SqlDbType.Int).Value = int.Parse(idreader);
         command.Parameters.Add("IDMAIN", SqlDbType.Int).Value = int.Parse(idmain);
         command.ExecuteNonQuery();
         ZCon.Close();
     }
-    private void CreateOrd(string idreader,string iddata)
+    private int CreateOrd(string idreader,string iddata)
     {
         ExemplarInfo exemplar = ExemplarInfo.GetExemplarByIdData(int.Parse(iddata), "BJVVV");
         SqlCommand command = new SqlCommand();
         ZCon.Open();
-        command = new SqlCommand("insert into Reservation_E..Basket (ID_Reader, ID_Book_EC, Status, Start_Date, InvNumer,  Form_Date,    IDDATA)"+
-                                                                    " @IDREADER, @IDMAIN,     0,      getdate(), @INV, getdate(), @IDDATA", ZCon);
+        command = new SqlCommand("insert into Reservation_E..Orders (ID_Reader, ID_Book_EC, Status, Start_Date, InvNumber,  Form_Date,    IDDATA, ID_Book_CC, Duration) "+
+                                                            "values (@IDREADER, @IDMAIN,     0,      getdate(), @INV, getdate(), @IDDATA          ,  0,          4    )", ZCon);
         command.Parameters.Add("IDREADER", SqlDbType.Int).Value = int.Parse(idreader);
         command.Parameters.Add("IDMAIN", SqlDbType.Int).Value = exemplar.IDMAIN;
         command.Parameters.Add("INV", SqlDbType.NVarChar).Value = exemplar.Fields["899$p"].ToString();
         command.Parameters.Add("IDDATA", SqlDbType.Int).Value = exemplar.IdData;
         command.ExecuteNonQuery();
         ZCon.Close();
+        return exemplar.IDMAIN;
     }
         
     protected void gwBasket_DataBound(object sender, EventArgs e)
@@ -250,7 +284,31 @@ public partial class _Default : System.Web.UI.Page
     }
     protected void gwBasket_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-       
+        if (e.Row.RowIndex == -1) return;
+        int StatusCode = int.Parse(e.Row.Cells[11].Text);
+        switch (StatusCode)
+        {
+            case 1://"Нажмите ссылку \"Заказать\""
+                break;
+            case 2://"Экземпляр находится в службном подразделении. Попробуйте заказать позже."
+                e.Row.Cells[8].Text = "";
+                break;
+            case 3://"Книга находится в открытом доступе в зале {0}.", location);
+                e.Row.Cells[8].Text = "";
+                break;
+            case 4://Книга уже заказана другим сотрудником.
+                e.Row.Cells[8].Text = "";
+                break;
+            case 5://"Книга уже заказана вами."
+                e.Row.Cells[8].Text = e.Row.Cells[7].Text;
+                e.Row.Cells[7].Text = e.Row.Cells[12].Text;
+                e.Row.Cells[9].Text = "Нельзя удалить книгу с активным заказом";
+                break;
+            case 6://"Книга заказана/выдана другому читателю."
+                e.Row.Cells[8].Text = "";
+                break;
+        }
+        
     }
 
     protected void Button2_Click(object sender, EventArgs e)
@@ -373,12 +431,7 @@ public partial class _Default : System.Web.UI.Page
                     //}
                     ////в будущем тут надо вставить проверку, а не на руках ли у читателя этот экземпляр. ну это после того как программу для кафедры сделаю
 
-                    //if (b.IsAlreadyInOrder(selectedInv.inv))
-                    //{
-                    //    cell.Text = "Книга уже заказана Вами. Вы не можете заказать книгу второй раз.";
-                    //    cell.ForeColor = Color.Red;
-                    //    Checkboxes[i].Visible = false;
-                    //}
+                    
                     //string Limitations = selectedInv.GetLimitation(0,2);
                     //if (Limitations != "")
                     //{

@@ -67,11 +67,12 @@ namespace ExportBJ_XML.ValueObjects
             }
             
             table = dbw.GetRTF(pin);
-            RichTextBox rtb = new RichTextBox();
             if (table.Rows.Count != 0)
             {
+                RichTextBox rtb = new RichTextBox();
                 rtb.Rtf = table.Rows[0][0].ToString();
                 result.RTF = rtb.Text;
+                rtb.Dispose();
             }
             return result;
         }

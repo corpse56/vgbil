@@ -1,6 +1,0 @@
-<Connections>
-    <Reader>Provider=Microsoft.Jet.OLEDB.4.0;Data Source=D:\\backup\\d\\from_perhaps_bad_disk\\progs\\circulation\\Readers.mdb</Reader>
-    <Zakaz>Data Source=192.168.4.25,1443;Initial Catalog=Reservation_E;Persist Security Info=True;User ID=Sasha;Password=Corpse536</Zakaz>
-    <BJVVV>Data Source=192.168.4.25,1443;Initial Catalog=BJVVV;Persist Security Info=True;User ID=Sasha;Password=Corpse536</BJVVV>
-    <FourthFloorNewPeriodica>zeb</FourthFloorNewPeriodica>	
-</Connections>

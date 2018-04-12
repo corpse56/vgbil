@@ -203,6 +203,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpDgtPeriodic", "UpDgtPerio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WriteOff", "WriteOff\WriteOff.csproj", "{F4BF294F-6A92-4846-B187-E76EC3B0FF32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookkeepingForOrder", "BookkeepingForOrder\BookkeepingForOrder.csproj", "{8E095F25-7A1B-468C-B2B4-37CC7CDAC308}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -317,6 +319,10 @@ Global
 		{F4BF294F-6A92-4846-B187-E76EC3B0FF32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4BF294F-6A92-4846-B187-E76EC3B0FF32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4BF294F-6A92-4846-B187-E76EC3B0FF32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E095F25-7A1B-468C-B2B4-37CC7CDAC308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E095F25-7A1B-468C-B2B4-37CC7CDAC308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E095F25-7A1B-468C-B2B4-37CC7CDAC308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E095F25-7A1B-468C-B2B4-37CC7CDAC308}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -72,7 +72,7 @@ namespace BookkeepingForOrder
             //num = this.printFont.Height;
             //pd.PrinterSettings.PrinterName = "Zebra  TLP2844";
             //pd.PrinterSettings.PrinterName = "HP LaserJet 5000 Series PCL 5";
-            
+            //pd.PrinterSettings.PrinterName = "HP Universal Printing PCL 6 2055";
             pd.DefaultPageSettings.PaperSize = new PaperSize("rdr", 315, 490);
 
             pd.PrintPage += new PrintPageEventHandler(pd_PrintPage);

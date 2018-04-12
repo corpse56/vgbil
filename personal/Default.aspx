@@ -123,6 +123,18 @@
                                          DataField="IDDATA" >
                                             <HeaderStyle CssClass="hiddencol" />
                                             <ItemStyle CssClass="hiddencol" />
+                                        </asp:BoundField> 
+                                          
+                                        
+                                        <asp:BoundField> 
+                                            <HeaderStyle CssClass="hiddencol" />
+                                            <ItemStyle CssClass="hiddencol" />
+                                        </asp:BoundField>   
+
+                                        
+                                        <asp:BoundField>
+                                            <HeaderStyle CssClass="hiddencol" />
+                                            <ItemStyle CssClass="hiddencol" />
                                         </asp:BoundField>   
                                                                              
                                     </Columns>

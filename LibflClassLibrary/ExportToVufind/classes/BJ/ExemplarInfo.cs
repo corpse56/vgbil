@@ -343,5 +343,44 @@ namespace ExportBJ_XML.ValueObjects
                     return false;
             }
         }
+
+        public bool IsSelfIssuedOrOrderedEmployee(int IdReader)
+        {
+            switch (this.Fund)
+            {
+                case "BJVVV":
+                    DatabaseWrapper dbw = new DatabaseWrapper(this.Fund);
+                    DataTable table = dbw.IsSelfIssuedOrOrderedEmployee(this.IdData, this.IDMAIN, IdReader);
+                    return (table.Rows.Count == 0) ? false : true;
+                default:
+                    return false;
+            }
+        }
+
+        public bool IsIssuedToReader()
+        {
+            switch (this.Fund)
+            {
+                case "BJVVV":
+                    DatabaseWrapper dbw = new DatabaseWrapper(this.Fund);
+                    DataTable table = dbw.IsIssuedToReader(this.IdData);
+                    return (table.Rows.Count == 0) ? false : true;
+                default:
+                    return false;
+            }
+        }
+
+        public string GetEmployeeStatus()
+        {
+            switch (this.Fund)
+            {
+                case "BJVVV":
+                    DatabaseWrapper dbw = new DatabaseWrapper(this.Fund);
+                    DataTable table = dbw.GetEmployeeStatus(this.IDMAIN);
+                    return (table.Rows.Count == 0) ? "" : table.Rows[0][0].ToString();
+                default:
+                    return "";
+            }
+        }
     }
 }

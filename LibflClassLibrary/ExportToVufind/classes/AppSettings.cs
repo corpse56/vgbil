@@ -13,6 +13,7 @@ namespace ExportBJ_XML.classes
             get
             {
                 string connectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
+                //string connectionString = @"Data Source=127.0.0.1\SQL2008R2;Integrated Security=True;Connect Timeout=1200";
 
                 return connectionString;
             }

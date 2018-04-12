@@ -220,14 +220,7 @@ namespace ExportBJ_XML.QueriesText
                                " where IDMAIN = @idmain";
             }
         }
-        public string IS_ISSUED_OR_ORDERED_EMPLOYEE
-        {
-            get
-            {
-                return " select * from Reservation_E..Orders A " +
-                               " where IDDATA = @iddata";
-            }
-        }
+
         public string IS_ALLIGAT//запрос не дописан
         {
             get
@@ -240,6 +233,43 @@ namespace ExportBJ_XML.QueriesText
                                " where IDDATA = @iddata";
             }
         }
+        public string IS_ISSUED_OR_ORDERED_EMPLOYEE
+        {
+            get
+            {
+                return " select * from Reservation_E..Orders A " +
+                               " where IDDATA = @iddata";
+            }
+        }
+        public string IS_SELF_ISSUED_OR_ORDERED_EMPLOYEE
+        {
+            get
+            {
+                return " select * from Reservation_E..Orders A " +
+                               " where ID_Book_EC = @idmain and ID_Reader = @idreader and IDDATA = @iddata";
+            }
+        }
+
+        public string IS_ISSUED_TO_READER
+        {
+            get
+            {
+                return " select * from Reservation_O..Orders A " +
+                               " where IDDATA = @iddata and Status not in (8,10,11)";
+            }
+        }
+
+        public string GET_EMPLOYEE_STATUS
+        {
+            get
+            {
+                return  " select B.Name from Reservation_E..Orders A " +
+                        " left join Reservation_E..Status B on A.Status = B.ID" +
+                        " where ID_Book_EC = @idmain";
+            }
+        }
+
+        
     }
 
 
