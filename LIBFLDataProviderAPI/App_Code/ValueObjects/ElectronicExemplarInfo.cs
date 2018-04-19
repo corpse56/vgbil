@@ -33,7 +33,8 @@ namespace DataProviderAPI.ValueObjects
         public int HeightFirstFile;
         public bool IsExistsLQ;
         public bool IsExistsHQ;
-
+        public string Path_HQ;
+        public string Path_LQ;
 
 
 

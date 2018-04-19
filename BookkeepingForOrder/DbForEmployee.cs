@@ -365,7 +365,7 @@ namespace BookkeepingForOrder
                 " Reservation_R.dbo.GetSHIFRBJVVVINVIDDATA(O.InvNumber,inv.IDDATA) shifr , " +
                 "  O.ID_Reader as idr,   " +
                 " cast(fio.NumberReader as nvarchar)+'; ' + fio.FamilyName +' '+ fio.[Name]+' ' + ISNULL(fio.FatherName,'')  dp, " +
-                " cast(fio.NumberReader as nvarchar) fio, O.Start_Date startd, O.INOTE note, yaz.PLAIN yaz " +
+                " cast(fio.NumberReader as nvarchar) fio, O.Start_Date startd, O.INOTE note, yaz.PLAIN yaz, gizd.PLAIN gizd " +
                 " from Reservation_O.." + this.OrdTableType + " O  " +
                 " join BJVVV..DATAEXTPLAIN inv on O.InvNumber COLLATE Cyrillic_General_CI_AI = inv.PLAIN and inv.IDMAIN = ISNULL(O.ALGIDM,O.ID_Book_EC) " +
                 " left join BJVVV..DATAEXT dzag on ISNULL(O.ALGIDM,O.ID_Book_EC) = dzag.IDMAIN and dzag.MNFIELD = 200 and dzag.MSFIELD = '$a'  " +
@@ -375,6 +375,8 @@ namespace BookkeepingForOrder
               " left join BJVVV..DATAEXT davt on davt.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 700 and B.MSFIELD = '$a')" +
                 " left join BJVVV..DATAEXTPLAIN avt on davt.ID = avt.IDDATAEXT  " +
                 " left join BJVVV..DATAEXT dmhran on ISNULL(O.ALGIDM,O.ID_Book_EC) = dmhran.IDMAIN and dmhran.IDDATA = inv.IDDATA and dmhran.MNFIELD = 899 and dmhran.MSFIELD = '$a'  " +
+                " left join BJVVV..DATAEXT mizd on mizd.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 210 and B.MSFIELD = '$a')" +
+                "left join BJVVV..DATAEXTPLAIN gizd on mizd.ID = gizd.IDDATAEXT  " +
                 " left JOIN BJVVV..DATAEXTPLAIN MHRANshort on dmhran.ID = MHRANshort.IDDATAEXT  " +
                 " left join BJVVV..LIST_8 mhran on dmhran.IDINLIST = mhran.ID   " +
                 " left join Readers..Main fio on O.ID_Reader = fio.NumberReader " +

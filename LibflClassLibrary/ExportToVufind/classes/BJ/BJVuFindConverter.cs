@@ -227,7 +227,23 @@ namespace ExportBJ_XML.classes
                     //=======================================================================добавленные в индекс=======================
                     case "210$a":
                         //AddField("PlaceOfPublication", r["PLAIN"].ToString());
-                        result.PlaceOfPublication.Add(r["PLAIN"].ToString());
+                        string SpecialDataProcessing = r["PLAIN"].ToString();
+                        if (SpecialDataProcessing == "-")
+                        {
+                            //просто пропускаем
+                        }
+                        else if (SpecialDataProcessing == "М.")
+                        {
+                            result.PlaceOfPublication.Add("Москва");
+                        }
+                        else if (SpecialDataProcessing == "М.:")
+                        {
+                            result.PlaceOfPublication.Add("Москва");
+                        }
+                        else
+                        {
+                            result.PlaceOfPublication.Add(SpecialDataProcessing);
+                        }
                         //book.Fields.AddField(r["PLAIN"].ToString(), (int)r["MNFIELD"], r["MSFIELD"].ToString());
                         break;
                     case "200$6":
@@ -928,6 +944,10 @@ namespace ExportBJ_XML.classes
                 //Exemplar += "Гиперссылка: " + ds.Tables["t"].Rows[0]["PLAIN"].ToString() + " #";
                 writer.WritePropertyName("exemplar_hyperlink");
                 writer.WriteValue(table.Rows[0]["PLAIN"].ToString());
+
+                writer.WritePropertyName("exemplar_hyperlink_newviewer");
+                writer.WriteValue("/Bookreader/Viewer?bookID="+result.id+"&view_mode=HQ");
+                result.HyperLinkNewViewer.Add("/Bookreader/Viewer?bookID=" + result.id + "&view_mode=HQ");
 
                 DataTable hyperLinkTable = dbWrapper.GetBookScanInfo(IDMAIN);
                 bool ForAllReader = false;

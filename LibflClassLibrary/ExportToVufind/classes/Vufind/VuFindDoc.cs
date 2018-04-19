@@ -45,7 +45,8 @@ namespace ExportBJ_XML.classes
             this.genre_facet = new VufindField();
             this.GeoNamePlaceOfPublication = new VufindField();
             this.GeoNamePlaceOfPublication_AF_All  = new VufindField();
-            this.HyperLink  = new VufindField();
+            this.HyperLink = new VufindField();
+            this.HyperLinkNewViewer = new VufindField();
             this.id = "";
             this.IllustrationMaterial  = new VufindField();
             this.Illustrations  = new VufindField();
@@ -182,6 +183,7 @@ namespace ExportBJ_XML.classes
         public VufindField DirectoryNote { get; set; }
         public VufindField AdditionalBibRecord { get; set; }
         public VufindField HyperLink { get; set; }
+        public VufindField HyperLinkNewViewer { get; set; }
         public VufindField topic { get; set; }
         public VufindField topic_facet { get; set; }
         public VufindField OwnerPerson { get; set; }

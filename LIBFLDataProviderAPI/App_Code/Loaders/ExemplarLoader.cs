@@ -84,12 +84,13 @@ namespace DataProviderAPI.Loaders
                 }
                 DirectoryInfo hq = new DirectoryInfo(_directoryPath + @"\JPEG_HQ");
                 result.IsExistsHQ = (hq.Exists) ? true : false;
+                result.Path_HQ = (hq.Exists) ? hq.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/") : null;
 
                 DirectoryInfo lq = new DirectoryInfo(_directoryPath + @"\JPEG_LQ");
                 result.IsExistsLQ = (lq.Exists) ? true : false;
-                
-                
-                fi = di.GetFiles("*.jpg").OrderBy(f => f.LastWriteTime).ToArray(); //сортируем по дате изменения. именно в таком порядке они сканировались. а вообще вопрос непростой, поскольку попадаются файлы, выпадающие из этого условия
+                result.Path_LQ = (lq.Exists)? lq.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/") : null;
+
+                fi = hq.GetFiles("*.jpg").OrderBy(f => f.LastWriteTime).ToArray(); //сортируем по дате изменения. именно в таком порядке они сканировались. а вообще вопрос непростой, поскольку попадаются файлы, выпадающие из этого условия
                 
                 foreach (FileInfo f in fi)
                 {

@@ -69,7 +69,6 @@ namespace BookkeepingForOrder
                 case "…Хран… Сектор книгохранения - Абонемент":
                     {
                         pd.PrinterSettings.PrinterName = "Zebra TLP2844 CDD";
-                        //pd.PrinterSettings.PrinterName = "HP Universal Printing PCL 6 2055";
                         
                         break;
                     }
@@ -80,6 +79,8 @@ namespace BookkeepingForOrder
             //num = this.printFont.Height;
             //pd.PrinterSettings.PrinterName = "Zebra TLP2844";
             //pd.PrinterSettings.PrinterName = "HP LaserJet 5000 Series PCL 5";
+            //pd.PrinterSettings.PrinterName = "HP Universal Printing PCL 6 2055";
+
             F1.SqlDA.SelectCommand = new SqlCommand();
             F1.SqlDA.SelectCommand.Connection = F1.SqlCon;
             F1.SqlDA.SelectCommand.CommandText = "select * from Readers..Main where NumberReader = " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
