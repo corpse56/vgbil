@@ -11,6 +11,7 @@ using System.Net;
 using System.Drawing;
 using Newtonsoft.Json;
 using DataProviderAPI.ValueObjects;
+using ExportBJ_XML.classes;
 
 
 
@@ -36,7 +37,8 @@ namespace DataProviderAPI.Loaders
         private string _baseName;
         public ExemplarInfo GetExemplarInfoByIdData(int IDDATA)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
+            string connectionString = AppSettings.BookStatusConnection;
             string queryText = new BJExemplarQueries(this.BaseName).GET_EXEMPLAR_BY_IDDATA;
             DataTable result = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(queryText, connectionString);
@@ -65,9 +67,13 @@ namespace DataProviderAPI.Loaders
         public ElectronicExemplarInfo GetElectronicExemplarInfo(string id)
         //временно получаем так, пока не будут проинвентаризированы электронные копии
         {
-            string ip = ConfigurationManager.ConnectionStrings["IPAddressFileServer"].ConnectionString;
-            string login = ConfigurationManager.ConnectionStrings["LoginFileServer"].ConnectionString;
-            string pwd = ConfigurationManager.ConnectionStrings["PasswordFileServer"].ConnectionString;
+
+            //string ip = ConfigurationManager.ConnectionStrings["IPAddressFileServer"].ConnectionString;
+            string ip = AppSettings.IPAddressFileServer;
+            //string login = ConfigurationManager.ConnectionStrings["LoginFileServer"].ConnectionString;
+            string login = AppSettings.LoginFileServer;
+            //string pwd = ConfigurationManager.ConnectionStrings["PasswordFileServer"].ConnectionString;
+            string pwd = AppSettings.PasswordFileServer;
             string _directoryPath = @"\\" + ip + @"\BookAddInf\";
 
             ElectronicExemplarInfo result = new ElectronicExemplarInfo(-1);//пока что так мы создаем электронный экземпляр
@@ -82,11 +88,11 @@ namespace DataProviderAPI.Loaders
                 {
                     return null;//каталога с картинками страниц не существует
                 }
-                DirectoryInfo hq = new DirectoryInfo(_directoryPath + @"\JPEG_HQ");
+                DirectoryInfo hq = new DirectoryInfo(_directoryPath + @"\JPEG_HQ\");
                 result.IsExistsHQ = (hq.Exists) ? true : false;
                 result.Path_HQ = (hq.Exists) ? hq.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/") : null;
 
-                DirectoryInfo lq = new DirectoryInfo(_directoryPath + @"\JPEG_LQ");
+                DirectoryInfo lq = new DirectoryInfo(_directoryPath + @"\JPEG_LQ\");
                 result.IsExistsLQ = (lq.Exists) ? true : false;
                 result.Path_LQ = (lq.Exists)? lq.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/") : null;
 
@@ -96,9 +102,27 @@ namespace DataProviderAPI.Loaders
                 {
                     result.JPGFiles.Add(f.Name);
                 }
-                result.Path = di.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/");
+                FileInfo coverPath = new FileInfo(_directoryPath + @"\JPEG_AB\cover.jpg");
+                result.Path_Cover = (coverPath.Exists) ? coverPath.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/") : null;
+                //di.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/");
 
             }
+            //string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
+            string connectionString = AppSettings.BookStatusConnection;
+            string queryText = new BJExemplarQueries(this.BaseName).GET_ELECTRONIC_EXEMPLAR_BOOKADDINF;
+            DataTable table = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(queryText, connectionString);
+            da.SelectCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = id.Substring(id.LastIndexOf("_") + 1);
+            da.Fill(table);
+            result.ForAllReader = (bool)table.Rows[0]["ForAllReader"];
+
+
+            da.SelectCommand.CommandText = new BJExemplarQueries(this.BaseName).GET_ELECTRONIC_EXEMPLAR_STATUS;
+            table = new DataTable();
+            int cnt = da.Fill(table);
+            result.Status = (cnt > 0) ? "unavailable" : "available";
+
+
             Image img = Image.FromFile(fi[0].FullName);
             result.WidthFirstFile = img.Width;
             result.HeightFirstFile = img.Height;

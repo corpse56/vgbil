@@ -67,6 +67,35 @@ namespace DataProviderAPI.Queries
                         "where A.IDDATA = @IDDATA";
             }
         }
+        public string GET_ELECTRONIC_EXEMPLAR_BOOKADDINF
+        {
+            get
+            {
+                return "select * from BookAddInf..ScanInfo where IDBook = @IDMAIN and IDbase = " + this.GetIDBaseBookAddInfScanInfo(); 
+            }
+        }
+        public string GET_ELECTRONIC_EXEMPLAR_STATUS
+        {
+            get
+            {
+
+                return
+                        "select 1 from Reservation_R..ELISSUED A where IDMAIN = @IDMAIN and BASE = " + this.GetIDBaseBookAddInfScanInfo();
+            }
+        }
+        private string GetIDBaseBookAddInfScanInfo()
+        {
+            switch (this._dbName)
+            {
+                case "BJVVV":
+                    return "1";
+                case "REDKOSTJ":
+                    return "2";
+                default:
+                    return "unknown";
+            }
+        }
+
     }
     public class ReaderQueries
     {

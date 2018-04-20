@@ -20,7 +20,7 @@ namespace DataProviderAPI.ValueObjects
 
         }
 
-        public string Path;
+        public string Path_Cover;
         public List<string> JPGFiles = new List<string>();
         public int CountJPG
         {
@@ -35,6 +35,9 @@ namespace DataProviderAPI.ValueObjects
         public bool IsExistsHQ;
         public string Path_HQ;
         public string Path_LQ;
+
+        public bool ForAllReader;
+        public string Status = "";
 
 
 

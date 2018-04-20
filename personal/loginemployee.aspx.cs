@@ -264,7 +264,7 @@ public static class CurrentCultureInfo
                                 InsertSession(CurReader);
                             FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
                             Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type="+rtype.ToString()+"&litres=" + litres);
-
+                            
                         }
                     }
 
@@ -340,7 +340,15 @@ public static class CurrentCultureInfo
                     if ((CurReader.idSession != null) && (CurReader.idSession != string.Empty))
                         InsertSession(CurReader);
                     FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
-                    Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type="+rtype.ToString()+"&litres="+litres);
+                    string RedirectUrl = Request["ReturnUrl"];
+                    if (RedirectUrl.Contains("OrderElCopy"))
+                    {
+                        Response.Redirect(RedirectUrl + "&idreader=" + CurReader.ID + "&type=" + rtype.ToString() + "&litres=" + litres);
+                    }
+                    else
+                    {
+                        Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + rtype.ToString() + "&litres=" + litres);
+                    }
 
                 }
 

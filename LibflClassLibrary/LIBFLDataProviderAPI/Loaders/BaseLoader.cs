@@ -5,6 +5,7 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Data;
 using System.Configuration;
+using ExportBJ_XML.classes;
 
 
 namespace DataProviderAPI.Loaders
@@ -25,8 +26,9 @@ namespace DataProviderAPI.Loaders
 
         public DataTable SelectQuery(string queryText)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
-
+            //string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
+            string connectionString = AppSettings.ConnectionString;
+            
             DataTable result = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(queryText, connectionString);
             //da.SelectCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = 
@@ -36,7 +38,8 @@ namespace DataProviderAPI.Loaders
 
         public int UpdateQuery(string queryText)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
+            string connectionString = AppSettings.ConnectionString;
 
             SqlConnection connection = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand(queryText, connection);

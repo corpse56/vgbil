@@ -6,7 +6,7 @@ using System.Text;
 namespace ExportBJ_XML.classes
 {
     
-    class AppSettings
+    public class AppSettings
     {
         static public string ConnectionString
         {
@@ -18,6 +18,91 @@ namespace ExportBJ_XML.classes
                 return connectionString;
             }
         }
+        static public string IPAddressFileServer
+        {
+            get
+            {
+                string connectionString = "192.168.4.30";
+                return connectionString;
+            }
+        }
+        static public string LoginFileServer
+        {
+            get
+            {
+                string connectionString = "BJStor01\\imgview";
+                return connectionString;
+            }
+        }
+        static public string PasswordFileServer
+        {
+            get
+            {
+                string connectionString = "Image_123Viewer";
+                return connectionString;
+            }
+        }
+        static public string BookStatusConnection
+        {
+            get
+            {
+                string connectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=OpacBJ;Password=BJ_Opac;Connection Timeout = 1200";
+                return connectionString;
+            }
+        }
+        static public string ReadersConnection_Basket
+        {
+            get
+            {
+                string connectionString = "Data Source=192.168.4.7;Initial Catalog=TECHNOLOG_VVV;Persist Security Info=True;User ID=EmplOrd;Password=Employee_Order;Connection Timeout = 1200";
+                return connectionString;
+            }
+        }
+        static public string ReadersConnection_OnlyRead
+        {
+            get
+            {
+                string connectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Readers;Persist Security Info=True;User ID=Readers_Read;Password=Read_Only;Connection Timeout = 1200";
+                return connectionString;
+            }
+        }
+        static public string ReadersConnection_OnlyReadWrite
+        {
+            get
+            {
+                string connectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Readers;Persist Security Info=True;User ID=Read_RW;Password=Read_onlyReadWrite;Connect Timeout=1200";
+                return connectionString;
+            }
+        }
+        static public string ExternalElectronicBookViewer
+        {
+            get
+            {
+                string connectionString = "http://opac.libfl.ru/elcir/viewer.aspx";
+                return connectionString;
+            }
+        }
+        static public string IndoorElectronicBookViewer
+        {
+            get
+            {
+                string connectionString = "http://192.168.3.191/elcir/viewer.aspx";
+                return connectionString;
+            }
+        }
+    //<add key="ExternalElectronicBookViewer" value="http://opac.libfl.ru/elcir/viewer.aspx"/>
+    //<add key="IndoorElectronicBookViewer" value="http://192.168.3.191/elcir/viewer.aspx"/>
+
+
+
+    //<add name="ReadersConnection_OnlyRead" providerName="System.Data.SqlClient" connectionString="Data Source=192.168.4.25,1443;Initial Catalog=Readers;Persist Security Info=True;User ID=Readers_Read;Password=Read_Only;Connection Timeout = 1200"/>
+    //<add name="ReadersConnection_OnlyReadWrite" providerName="System.Data.SqlClient" connectionString="Data Source=192.168.4.25,1443;Initial Catalog=Readers;Persist Security Info=True;User ID=Read_RW;Password=Read_onlyReadWrite;Connect Timeout=1200"/>
+    //<add name="ReadersConnection_Basket" providerName="System.Data.SqlClient" connectionString="Data Source=192.168.4.7;Initial Catalog=TECHNOLOG_VVV;Persist Security Info=True;User ID=EmplOrd;Password=Employee_Order;Connection Timeout = 1200"/>
+    //<add name="BookStatusConnection" providerName="System.Data.SqlClient" connectionString="Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=OpacBJ;Password=BJ_Opac;Connection Timeout = 1200"/>
+    //<add name="IPAddressFileServer" providerName="System.Data.SqlClient" connectionString="192.168.4.30"/>
+    //<add name="LoginFileServer" providerName="System.Data.SqlClient" connectionString="BJStor01\\imgview"/>
+    //<add name="PasswordFileServer" providerName="System.Data.SqlClient" connectionString="Image_123Viewer"/>
+
     }
     
 }

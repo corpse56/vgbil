@@ -141,7 +141,7 @@ namespace Elcir
             da.SelectCommand.Parameters["vkey"].Value = this.ViewKey;
 
             da.SelectCommand.CommandText = "select * from Reservation_R..ELISSUED where IDMAIN = @idbook and IDREADER = @idr and R_TYPE = @rtype and VIEWKEY = @vkey and BASE = @idbase" +
-                            " and cast(cast(getdate() as nvarchar(11)) as datetime) between DATEISSUE and DATERETURN";
+                            " and getdate() between DATEISSUE and DATERETURN";
             ds = new DataSet();
             int i = da.Fill(ds, "t");
             if (i == 0) return false; else return true;

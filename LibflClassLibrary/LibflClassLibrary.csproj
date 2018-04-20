@@ -97,6 +97,18 @@
     <Compile Include="ExportToVufind\classes\Vufind\VuFindConverterEventArgs.cs" />
     <Compile Include="ExportToVufind\classes\Vufind\VuFindDoc.cs" />
     <Compile Include="ExportToVufind\classes\Vufind\VufindField.cs" />
+    <Compile Include="LIBFLDataProviderAPI\Loaders\BaseLoader.cs" />
+    <Compile Include="LIBFLDataProviderAPI\Loaders\BJBookLoader.cs" />
+    <Compile Include="LIBFLDataProviderAPI\Loaders\DBProperties.cs" />
+    <Compile Include="LIBFLDataProviderAPI\Loaders\ExemplarLoader.cs" />
+    <Compile Include="LIBFLDataProviderAPI\NetworkConnection.cs" />
+    <Compile Include="LIBFLDataProviderAPI\Queries\QueriesText.cs" />
+    <Compile Include="LIBFLDataProviderAPI\ToStringJsonConverter.cs" />
+    <Compile Include="LIBFLDataProviderAPI\ValueObjects\BJField.cs" />
+    <Compile Include="LIBFLDataProviderAPI\ValueObjects\BookInfo.cs" />
+    <Compile Include="LIBFLDataProviderAPI\ValueObjects\ElectronicExemplarInfo.cs" />
+    <Compile Include="LIBFLDataProviderAPI\ValueObjects\ExemplarInfo.cs" />
+    <Compile Include="LIBFLDataProviderAPI\ValueObjects\ReaderInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

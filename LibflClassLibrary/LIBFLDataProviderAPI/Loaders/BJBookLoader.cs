@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using DataProviderAPI.Queries;
 using System.Configuration;
 using DataProviderAPI.ValueObjects;
+using ExportBJ_XML.classes;
 
 
 namespace DataProviderAPI.Loaders
@@ -32,7 +33,8 @@ namespace DataProviderAPI.Loaders
 
         public BookInfo GetBJBookByID(int iDMAIN)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
+            string connectionString = AppSettings.ConnectionString;
             string queryText = new BJBookQueries(this.BaseName).GET_BOOK_BY_IDMAIN;
             DataTable result = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(queryText, connectionString);
@@ -86,7 +88,8 @@ namespace DataProviderAPI.Loaders
         }
         public BookInfo GetBJBookByINV(string invNumber)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
+            string connectionString = AppSettings.BookStatusConnection;
             string queryText = new BJBookQueries(this.BaseName).GET_IDMAIN_BY_INVNUMBER;
             DataTable result = new DataTable();
             SqlDataAdapter da = new SqlDataAdapter(queryText, connectionString);

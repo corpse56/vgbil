@@ -96,6 +96,7 @@ EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "LIBFLDataProviderAPI", "LIBFLDataProviderAPI\", "{2AED174A-26E4-4D64-B043-5E0B34513106}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
+		ProjectReferences = "{CA4020F7-B048-4DFA-9E13-3E04DB83B093}|LibflClassLibrary.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/LIBFLDataProviderAPI"
 		Debug.AspNetCompiler.PhysicalPath = "LIBFLDataProviderAPI\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\LIBFLDataProviderAPI\"
