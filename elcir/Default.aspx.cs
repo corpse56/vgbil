@@ -104,8 +104,8 @@ public partial class _Default : System.Web.UI.Page
             lEBook.Visible = false;
             hlEBook.Visible = true;
             //hlEBook.NavigateUrl = "~/viewer.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
-            //hlEBook.NavigateUrl = @"http:\\opac.libfl.ru\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
-            hlEBook.NavigateUrl = @"http://localhost:12588\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
+            hlEBook.NavigateUrl = @"http:\\opac.libfl.ru\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
+            //hlEBook.NavigateUrl = @"http://localhost:12588\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
             
         }
         else

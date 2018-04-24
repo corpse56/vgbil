@@ -18,7 +18,12 @@ public partial class OrderElCopy : System.Web.UI.Page
     {
         string IDMAIN = Request["pin"];
         string IDBASE = Request["idbase"];
+
         string IDReader = Request["idreader"];
+        if (IDReader == null)
+        {
+            IDReader = User.Identity.Name;
+        }
         //string vkey = Request["vkey"];
         string BaseName = (IDBASE == "1")? "BJVVV" : "REDKOSTJ";
 
@@ -47,21 +52,28 @@ public partial class OrderElCopy : System.Web.UI.Page
         }
         else
         {
-            Book b = new Book(IDMAIN);
-            InvOfBook inv = new InvOfBook();
-            inv.inv = "Электронная копия";
-            inv.IDMAIN = IDMAIN;
-            b.Ord(inv, 30, DateTime.Now, int.Parse(IDReader), (reader.IsRemoteReader)? 1 : 0 );//заказали книгу автоматически
 
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = new SqlConnection(AppSettings.ConnectionString);
             cmd.CommandText = "select * from Reservation_R..ELISSUED where IDREADER = "+IDReader+" and IDMAIN = "+IDMAIN;
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable table = new DataTable();
-            da.Fill(table);
+            int cnt = da.Fill(table);
+
+            if (cnt == 0)
+            {
+                Book b = new Book(IDMAIN);
+                InvOfBook inv = new InvOfBook();
+                inv.inv = "Электронная копия";
+                inv.IDMAIN = IDMAIN;
+                b.Ord(inv, 30, DateTime.Now, int.Parse(IDReader), (reader.IsRemoteReader) ? 1 : 0);//заказали книгу автоматически
+            }
+
+            table = new DataTable();
+            cnt = da.Fill(table);
 
             string ViewKey = table.Rows[0]["VIEWKEY"].ToString();
-            string redirect = ElBookViewerServer + "?pin=" + IDMAIN + "&idbase=1&idr=" + IDReader + "&vkey=" + ViewKey;
+            string redirect = ElBookViewerServer + "?pin=" + IDMAIN + "&idbase=1&idr=" + IDReader + "&vkey=" + Server.UrlEncode(ViewKey);
             Response.Redirect(redirect);
 
             //добавим в заказы и на просмотровщик направим

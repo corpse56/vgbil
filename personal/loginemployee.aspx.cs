@@ -160,6 +160,8 @@ public static class CurrentCultureInfo
         {
             SqlConnection.ClearAllPools();
             SqlDataAdapter DA;
+            string RedirectUrl = "";
+
 
             //для входа под любым читателем. не забывать закомментироват
             //CurReader.ID = "173968";
@@ -263,8 +265,11 @@ public static class CurrentCultureInfo
                             if ((CurReader.idSession != null) && (CurReader.idSession != string.Empty))
                                 InsertSession(CurReader);
                             FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
-                            Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type="+rtype.ToString()+"&litres=" + litres);
-                            
+                            //Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type="+rtype.ToString()+"&litres=" + litres);
+                            RedirectUrl = "persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + rtype.ToString() + "&litres=" + litres;
+
+                            RedirectWithCookie(RedirectUrl, CurReader);
+
                         }
                     }
 
@@ -339,76 +344,36 @@ public static class CurrentCultureInfo
                     //CurReader.idSession = CreateSession();
                     if ((CurReader.idSession != null) && (CurReader.idSession != string.Empty))
                         InsertSession(CurReader);
-                    FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
-                    string RedirectUrl = Request["ReturnUrl"];
-                    if (RedirectUrl.Contains("OrderElCopy"))
+                    FormsAuthentication.RedirectFromLoginPage(CurReader.ID, true);
+                    string RedirectUrlCheck = (Request["ReturnUrl"] == null) ? string.Empty : Request["ReturnUrl"];
+
+                    if (RedirectUrlCheck.Contains("OrderElCopy"))
                     {
-                        Response.Redirect(RedirectUrl + "&idreader=" + CurReader.ID + "&type=" + rtype.ToString() + "&litres=" + litres);
+                        //Response.Redirect(RedirectUrlCheck + "&idreader=" + CurReader.ID + "&type=" + rtype.ToString() + "&litres=" + litres);
+                        RedirectUrl = RedirectUrlCheck + "&idreader=" + CurReader.ID + "&type=" + rtype.ToString() + "&litres=" + litres;
+                        RedirectWithCookie(RedirectUrl, CurReader);
                     }
                     else
                     {
-                        Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + rtype.ToString() + "&litres=" + litres);
+                        //Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + rtype.ToString() + "&litres=" + litres);
+                        RedirectUrl = "persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + rtype.ToString() + "&litres=" + litres;
+                        RedirectWithCookie(RedirectUrl, CurReader);
                     }
-
                 }
-
             }
-            //if (RadioButton3.Checked)
-            //{
-            //    SqlDataAdapter DA = new SqlDataAdapter();
-            //    DA.SelectCommand = new SqlCommand();
-            //    DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/BJVVV"));
-            //    DA.SelectCommand.Parameters.Add("login", SqlDbType.NVarChar);
-            //    DA.SelectCommand.Parameters.Add("pass", SqlDbType.NVarChar);
+        }
 
-            //    Int32 login;
-            //    int i;
-            //    DataSet usr;
-            //    //if (!Int32.TryParse(Login1.UserName.ToLower(), out login))
-            //    //{
-            //     //   return;
-            //    //}
-            //    DA.SelectCommand.Parameters["login"].Value = Login1.UserName;
-            //    DA.SelectCommand.Parameters["pass"].Value = Login1.Password;
+        private void RedirectWithCookie(string RedirectUrl, Reader CurReader)
+        {
+            HttpCookie cookie = new HttpCookie("personal_reader_login");
+            cookie.Expires = DateTime.Now.AddHours(1);
+            cookie.Value = CurReader.ID;
+            cookie.Path = "/";
+            cookie.HttpOnly = true;
+            Response.Cookies.Add(cookie);
+            Response.SetCookie(cookie);
 
-
-            //    DA.SelectCommand.CommandText = "select * from Readers..RemoteMain " +
-            //                                   " where [LiveEmail] = @login ";//and lower(Password) = @pass";
-
-            //    usr = new DataSet();
-            //    i = DA.Fill(usr);
-            //    if (i == 0)
-            //    {//нет такого читателя
-            //        return;
-            //    }
-            //}
-                //if (i > 0)
-                //{
-
-
-                //    string pass = HashPass(Login1.Password, usr.Tables[0].Rows[0]["WordReg"].ToString());
-                //    //DA.SelectCommand.Parameters["login"].Value = login;
-                //    DA.SelectCommand.Parameters["pass"].Value = pass;
-                //    DA.SelectCommand.CommandText = "select * from Readers..RemoteMain " +
-                //                                   " where [LiveEmail] = @login and Password = @pass";
-                //    usr = new DataSet();
-                //    i = DA.Fill(usr,"t");
-                //    if (i == 0)
-                //    {
-                //        return;
-                //    }
-
-                //    CurReader.ID = usr.Tables["t"].Rows[0]["NumberReader"].ToString();
-                //    CurReader.SetReaderType(1);
-                //    //CurReader.idSession = CreateSession();
-                //    if ((CurReader.idSession != null) && (CurReader.idSession != string.Empty))
-                //        InsertSession(CurReader);
-                //    FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
-                //    Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type=1&litres="+litres);
-
-                //}
-            
-
+            Response.Redirect(RedirectUrl);
         }
         public String HashPass(String strPassword, String strSol)
         {

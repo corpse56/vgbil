@@ -494,9 +494,9 @@ namespace InvOfBookForOrder
             }
             if ((DateTime.Now.DayOfWeek == DayOfWeek.Saturday) || (DateTime.Now.DayOfWeek == DayOfWeek.Sunday))
             {
-                if ((DateTime.Now.Date == new DateTime(2017, 4, 22)))
+                if ((DateTime.Now.Date == new DateTime(2018, 4, 21)))
                 {
-                    if ((DateTime.Now.Hour >= 23) && (DateTime.Now.Minute >= 30))//библионочь
+                    if ((DateTime.Now.Hour >= 19) && (DateTime.Now.Minute >= 50))//библионочь
                     {
                         return "на сегодня приём заказов окончен. Выберите другую дату.";
                     }
@@ -506,7 +506,7 @@ namespace InvOfBookForOrder
                     }
                 }
                 else
-                if ((DateTime.Now.Hour >= 18) && (DateTime.Now.Minute >= 30))//выходные
+                if ((DateTime.Now.Hour >= 17) && (DateTime.Now.Minute >= 30))//выходные
                 {
                     return "на сегодня приём заказов окончен. Выберите другую дату.";
                 }
