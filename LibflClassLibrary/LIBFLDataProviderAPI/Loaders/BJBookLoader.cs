@@ -69,7 +69,7 @@ namespace DataProviderAPI.Loaders
             ExemplarLoader loader = new ExemplarLoader(this._baseName);
             foreach (int iddata in ExemplarIdDataList)
             {
-                ExemplarInfo ei = loader.GetExemplarInfoByIdData(iddata);
+                ExemplarInfoAPI ei = loader.GetExemplarInfoByIdData(iddata);
                 bi.Exemplars.Add(ei);
             }
             //проверим есть ли электронный экземпляр. если есть, то добавим его. пока только так можно определить электронный экземпляр. когда они проинвентаризируются, будет создаваться сам в предыдущем цикле
@@ -80,7 +80,7 @@ namespace DataProviderAPI.Loaders
             int IsHyperlinkExists = da.Fill(result);
             if (IsHyperlinkExists > 0)
             {
-                ExemplarInfo ei = new ExemplarInfo(-1);//пока для всех электронных будет -1
+                ExemplarInfoAPI ei = new ExemplarInfoAPI(-1);//пока для всех электронных будет -1
                 ei = loader.GetElectronicExemplarInfo(this._baseName + "_" + iDMAIN.ToString());
                 bi.Exemplars.Add(ei);
             }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Text;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 /// <summary>
 /// Сводное описание для BookInfo
@@ -29,10 +30,9 @@ namespace DataProviderAPI.ValueObjects
 
         #region Экземпляры книги
 
-        public List<ExemplarInfo> Exemplars = new List<ExemplarInfo>();
+        public List<ExemplarInfoAPI> Exemplars = new List<ExemplarInfoAPI>();
 
         #endregion
-
 
 
     }

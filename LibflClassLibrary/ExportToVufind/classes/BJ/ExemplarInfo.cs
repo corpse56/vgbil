@@ -36,7 +36,7 @@ namespace ExportBJ_XML.ValueObjects
         public int ConvolutePin { get; set; }
         public int ConvoluteIdData { get; set; }
 
-
+        public DateTime Created; //для новых поступлений. Дата присвоения инвентарного номера.
 
         public BJFields Fields = new BJFields();
 
@@ -51,16 +51,19 @@ namespace ExportBJ_XML.ValueObjects
             {
                 return null;
             }
-            ExemplarInfo exemplar = new ExemplarInfo((int)table.Rows[0]["IDDATA"]);
-            exemplar.IDMAIN = (int)table.Rows[0]["IDMAIN"];
-            exemplar.Fund = fund;
-            foreach (DataRow row in table.Rows)
-            {
-                exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
-            }
-            exemplar.ExemplarAccess = ExemplarInfo.GetExemplarAccess(exemplar);
-            //exemplar.IsAlligat = dbw.IsAlligat(exemplar.IdData).Rows.Count;
+            ExemplarInfo exemplar = ExemplarInfo.GetExemplarByIdData((int)table.Rows[0]["IDDATA"], fund);
             return exemplar;
+                
+            //    new ExemplarInfo((int)table.Rows[0]["IDDATA"]);
+            //exemplar.IDMAIN = (int)table.Rows[0]["IDMAIN"];
+            //exemplar.Fund = fund;
+            //foreach (DataRow row in table.Rows)
+            //{
+            //    exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+            //}
+            //exemplar.ExemplarAccess = ExemplarInfo.GetExemplarAccess(exemplar);
+            ////exemplar.IsAlligat = dbw.IsAlligat(exemplar.IdData).Rows.Count;
+            //return exemplar;
         }
         public static ExemplarInfo GetExemplarByIdData(int iddata, string fund)
         {
@@ -71,7 +74,27 @@ namespace ExportBJ_XML.ValueObjects
             exemplar.Fund = fund;
             foreach (DataRow row in table.Rows)
             {
+                if (fund == "BJACC")
+                {
+                    if (row["MNFIELD"].ToString() + row["MSFIELD"].ToString() == "899$w")//в американской базе нет инвентарных номеров. берем штрихкод
+                    {
+                        exemplar.Created = (DateTime)row["Created"];
+                    }
+                }
+                else
+                {
+                    if (row["MNFIELD"].ToString() + row["MSFIELD"].ToString() == "899$p")//в остальных есть и берём дату создания поля инвентарный номер
+                    {
+                        exemplar.Created = (DateTime)row["Created"];
+                    }
+                }
+                if (row["MNFIELD"].ToString() + row["MSFIELD"].ToString() == "899$a")
+                {
+                    exemplar.Fields.AddField(row["NAME"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString()); //местонахождение берём из LIST_8, а не из DATAEXTPLAIN, потому что в поле PLAIN меняются некоторые символы
+                    continue;
+                }
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+
             }
             exemplar.ExemplarAccess = ExemplarInfo.GetExemplarAccess(exemplar);
 
@@ -85,7 +108,7 @@ namespace ExportBJ_XML.ValueObjects
             //сначала суперусловия
             if (exemplar.Fields["899$x"].ToString().ToLower().Contains("э"))
             {
-                access.Access = 1016;
+                access.Access = 1020;//такого в таблице нет. это только здесь. означает экстремистскую литературу.
                 access.MethodOfAccess = 4005;
                 return access;
             }
@@ -93,13 +116,19 @@ namespace ExportBJ_XML.ValueObjects
             switch (exemplar.Fund)
             {
                 case "BJVVV":
-                    if ((exemplar.Fields["899$b"].ToLower() == "абонемент") && (!exemplar.Fields["899$a"].ToLower().Contains("книгохране")))
+                    if ((exemplar.Fields["899$b"].ToLower() == "абонемент") && (!exemplar.Fields["899$a"].ToLower().Contains("книгохране")) && (exemplar.Fields["899$a"].ToLower().Contains("абонем")))
                     {
                         access.Access = 1006;
                         access.MethodOfAccess = 4001;
                         return access;
                     }
-                    else if ((exemplar.Fields["899$b"].ToLower() == "абонемент") && (exemplar.Fields["899$a"].ToLower().Contains("книгохране")))
+                    else if ((exemplar.Fields["899$b"].ToLower() == "абонемент") && (exemplar.Fields["899$a"].ToLower().Contains("книгохране")) && (exemplar.Fields["899$a"].ToLower().Contains("абонем")))
+                    {
+                        access.Access = 1000;
+                        access.MethodOfAccess = 4001;
+                        return access;
+                    }
+                    else if ((exemplar.Fields["899$a"].ToLower().Contains("книгохране")) && (exemplar.Fields["899$a"].ToLower().Contains("абонем")))
                     {
                         access.Access = 1000;
                         access.MethodOfAccess = 4001;
@@ -115,12 +144,6 @@ namespace ExportBJ_XML.ValueObjects
                     {
                         access.Access = 1006;
                         access.MethodOfAccess = 4001;
-                        return access;
-                    }
-                    else if ((exemplar.Fields["921$c"].ToString() != "Для выдачи") && (exemplar.Fields["921$c"].ToString() != "Выставка"))
-                    {
-                        access.Access = 1013;
-                        access.MethodOfAccess = 4005;
                         return access;
                     }
                     else if (exemplar.Fields["921$c"].ToString() == "Для выдачи")
@@ -149,57 +172,68 @@ namespace ExportBJ_XML.ValueObjects
                         access.MethodOfAccess = 4000;
                         return access;
                     }
+                    else if ((exemplar.Fields["921$c"].ToString() != "Для выдачи") && 
+                             (exemplar.Fields["921$c"].ToString() != "Выставка") && 
+                             (exemplar.Fields["921$c"].ToString() != "Перевод в другой фонд"))
+                    {
+                        access.Access = 1013;
+                        access.MethodOfAccess = 4005;
+                        return access;
+                    }
                     else if (
-                        (
-                        (exemplar.Fields["899$b"].ToLower() == "спв") || (!exemplar.Fields["921$a"].ToLower().Contains("бумага"))
-                        )
-                        && (exemplar.Fields["899$a"].ToLower().Contains("книгохране"))
-                        )
+                                
+                                    (exemplar.Fields["899$b"].ToLower() == "спв") || (!exemplar.Fields["921$a"].ToLower().Contains("бумага"))        
+                                &&
+                                    (exemplar.Fields["899$a"].ToLower().Contains("книгохране"))
+                            )
                     {
                         access.Access = 1012;
                         access.MethodOfAccess = 4000;
                         return access;
                     }
-                    else if (exemplar.Fields["921$d"].ToString() == "Эл. свободный доступ")
-                    {
-                        access.Access = 1001;
-                        access.MethodOfAccess = 4002;
-                        return access;
-                    }
-                    else if (exemplar.Fields["921$d"].ToString() == "Эл. через личный кабинет")
-                    {
-                        access.Access = 1002;
-                        access.MethodOfAccess = 4002;
-                        return access;
-                    }
-                    else if (exemplar.Fields["921$d"].ToString() == "Эл. только в библиотеке")
-                    {
-                        access.Access = 1003;
-                        access.MethodOfAccess = 4003;
-                        return access;
-                    }
-                    else if (exemplar.Fields["921$d"].ToString() == "На усмотрение сотрудника")
-                    {
-                        access.Access = 1010;
-                        access.MethodOfAccess = 4005;
-                        return access;
-                    }
-                    else if (exemplar.Fields["921$d"].ToString() == "Ограниченный доступ")
-                    {
-                        access.Access = 1016;
-                        access.MethodOfAccess = 4005;
-                        return access;
-                    }
+                    //else if (exemplar.Fields["921$d"].ToString() == "Эл. свободный доступ")
+                    //{
+                    //    access.Access = 1001;
+                    //    access.MethodOfAccess = 4002;
+                    //    return access;
+                    //}
+                    //else if (exemplar.Fields["921$d"].ToString() == "Эл. через личный кабинет")
+                    //{
+                    //    access.Access = 1002;
+                    //    access.MethodOfAccess = 4002;
+                    //    return access;
+                    //}
+                    //else if (exemplar.Fields["921$d"].ToString() == "Эл. только в библиотеке")
+                    //{
+                    //    access.Access = 1003;
+                    //    access.MethodOfAccess = 4003;
+                    //    return access;
+                    //}
+                    //else if (exemplar.Fields["921$d"].ToString() == "На усмотрение сотрудника")
+                    //{
+                    //    access.Access = 1010;
+                    //    access.MethodOfAccess = 4005;
+                    //    return access;
+                    //}
+                    //else if (exemplar.Fields["921$d"].ToString() == "Ограниченный доступ")
+                    //{
+                    //    access.Access = 1016;
+                    //    access.MethodOfAccess = 4005;
+                    //    return access;
+                    //}
                     else if (exemplar.Fields["482$a"].ToLower() != "")
                     {
-                        access.Access = 1015;
                         ExemplarInfo Convolute = ExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
-                        access.MethodOfAccess = Convolute.ExemplarAccess.MethodOfAccess;
+                        if (Convolute != null)
+                        {
+                            access.MethodOfAccess = Convolute.ExemplarAccess.MethodOfAccess;
+                            access.Access = Convolute.ExemplarAccess.Access;
+                        }
                     }
                     else
                     {
-                        access.Access = 1010;
-                        access.MethodOfAccess = 4999;
+                        access.Access = 1999;
+                        access.MethodOfAccess = 4005;
                     }
 
 
@@ -236,40 +270,46 @@ namespace ExportBJ_XML.ValueObjects
                         access.Access = 1013;
                         access.MethodOfAccess = 4005;
                     }
-                    else if (exemplar.Fields["921$d"].ToString() == "Эл. свободный доступ")
+                    //else if (exemplar.Fields["921$d"].ToString() == "Эл. свободный доступ")
+                    //{
+                    //    access.Access = 1001;
+                    //    access.MethodOfAccess = 4002;
+                    //    return access;
+                    //}
+                    //else if (exemplar.Fields["921$d"].ToString() == "Эл. через личный кабинет")
+                    //{
+                    //    access.Access = 1002;
+                    //    access.MethodOfAccess = 4002;
+                    //    return access;
+                    //}
+                    //else if (exemplar.Fields["921$d"].ToString() == "Эл. только в библиотеке")
+                    //{
+                    //    access.Access = 1003;
+                    //    access.MethodOfAccess = 4003;
+                    //    return access;
+                    //}
+                    //else if (exemplar.Fields["921$d"].ToString() == "На усмотрение сотрудника")
+                    //{
+                    //    access.Access = 1010;
+                    //    access.MethodOfAccess = 4005;
+                    //    return access;
+                    //}
+                    //else if (exemplar.Fields["921$d"].ToString() == "Ограниченный доступ")
+                    //{
+                    //    access.Access = 1016;
+                    //    access.MethodOfAccess = 4005;
+                    //    return access;
+                    //}
+                    else if (exemplar.Fields["921$c"].ToString() == "Выставка")
                     {
-                        access.Access = 1001;
-                        access.MethodOfAccess = 4002;
-                        return access;
-                    }
-                    else if (exemplar.Fields["921$d"].ToString() == "Эл. через личный кабинет")
-                    {
-                        access.Access = 1002;
-                        access.MethodOfAccess = 4002;
-                        return access;
-                    }
-                    else if (exemplar.Fields["921$d"].ToString() == "Эл. только в библиотеке")
-                    {
-                        access.Access = 1003;
-                        access.MethodOfAccess = 4003;
-                        return access;
-                    }
-                    else if (exemplar.Fields["921$d"].ToString() == "На усмотрение сотрудника")
-                    {
-                        access.Access = 1010;
-                        access.MethodOfAccess = 4005;
-                        return access;
-                    }
-                    else if (exemplar.Fields["921$d"].ToString() == "Ограниченный доступ")
-                    {
-                        access.Access = 1016;
-                        access.MethodOfAccess = 4005;
+                        access.Access = 1011;
+                        access.MethodOfAccess = 4000;
                         return access;
                     }
                     else
                     {
-                        access.Access = 1010;
-                        access.MethodOfAccess = 4999;
+                        access.Access = 1999;
+                        access.MethodOfAccess = 4005;
                     }
                     break;
                 case "BJACC":
@@ -290,8 +330,8 @@ namespace ExportBJ_XML.ValueObjects
                     //access.MethodOfAccess = 4000;
                     break;
                 default:
-                    access.Access = 1010;
-                    access.MethodOfAccess = 4999;
+                    access.Access = 1999;
+                    access.MethodOfAccess = 4005;
                     break;
             }
 

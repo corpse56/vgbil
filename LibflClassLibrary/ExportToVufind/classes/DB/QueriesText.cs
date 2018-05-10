@@ -128,6 +128,7 @@ namespace ExportBJ_XML.QueriesText
             {
                 return " select * from " + this.Fund + "..DATAEXT A" +
                         " left join " + this.Fund + "..DATAEXTPLAIN B on B.IDDATAEXT = A.ID " +
+                        " left join BJVVV..LIST_8 C on A.MNFIELD = 899 and A.MSFIELD = '$a' and A.IDINLIST = C.ID "+
                         " where A.IDDATA = @iddata";
             }
         }

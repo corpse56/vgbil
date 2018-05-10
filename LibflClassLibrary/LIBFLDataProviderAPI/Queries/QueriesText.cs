@@ -67,6 +67,23 @@ namespace DataProviderAPI.Queries
                         "where A.IDDATA = @IDDATA";
             }
         }
+        public string GET_EXEMPLAR_ISSUE_INFO
+        {
+            get
+            {
+                return
+                        "select IDREADER, DATE_RET from Reservation_R..ISSUED_OF where IDDATA = @iddata";
+            }
+        }
+        public string GET_ELECTRONIC_EXEMPLAR_ISSUE_INFO
+        {
+            get
+            {
+                return
+                        "select IDREADER, DATERETURN from Reservation_R..ELISSUED where IDMAIN = @idmain and BASE = 1";
+            }
+        }
+
         public string GET_ELECTRONIC_EXEMPLAR_BOOKADDINF
         {
             get

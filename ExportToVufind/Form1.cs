@@ -98,7 +98,19 @@ namespace ExportBJ_XML
 
         private void button2_Click(object sender, EventArgs e)
         {
-           
+            XDocument xdoc = XDocument.Load(@"f:\litres_source.xml");
+            XmlWriter writ = XmlTextWriter.Create(@"F:\litres_example.xml");
+            var books = xdoc.Descendants("updated-book").Take(50);
+            writ.WriteStartElement("litresBooks");
+            foreach (XElement elt in books)
+            {
+                elt.WriteTo(writ);
+            }
+
+            writ.Flush();
+            writ.WriteEndElement();
+            writ.Close();
+
             
         }
 
@@ -186,10 +198,10 @@ namespace ExportBJ_XML
             bjfcc.Export();
             bjscc.Export();
             //brit_sovet.Export();
-            //pearson.GetPearsonSourceData();
-            //pearson.Export();
-            //litres.GetLitresSourceData();
-            //litres.Export();
+            litres.GetLitresSourceData();
+            litres.Export();
+            pearson.GetPearsonSourceData();
+            pearson.Export();
             //period.Export();
 
             StopTimer();
@@ -352,6 +364,11 @@ namespace ExportBJ_XML
             //просто конвертируем РТФ в обычный текст
             jbh.GetSource();
 
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+        
         }
 
 

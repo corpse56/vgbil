@@ -102,6 +102,7 @@ namespace ExportBJ_XML.classes
             this.Unified_Caption_AF_All  = new VufindField();
             this.Volume  = new VufindField();
             this.ExemplarsJSON = "";
+            //this.NewArrivals = "";
         }
 
         public string id ;
@@ -193,12 +194,57 @@ namespace ExportBJ_XML.classes
         public VufindField Ownership { get; set; }
         public VufindField OwnerExemplar { get; set; }
         public VufindField IllustrationMaterial { get; set; }
-
+        public DateTime? NewArrivals;
+        
         public VufindField Location { get; set; }
         public VufindField PlacingCipher { get; set; }
         public VufindField MethodOfAccess { get; set; }
         public List<ExemplarInfo> Exemplars = new List<ExemplarInfo>();
         public string ExemplarsJSON;
+
+
+
+        //специальная обработка 
+        //перед записью в файл экспорта нужно вызвать этот метод
+        //1. Фасетные поля. Если фасетное поле пустое, то вставлять <нет данных>
+        //это касается только фасетных полей.
+        //2. ещё что-то
+        public void SpecialProcessing()
+        {
+            //========================================================================PlaceOfPublication=========================
+            string SpecialDataProcessing = this.PlaceOfPublication.ToString();
+            if ((SpecialDataProcessing == "-") || (SpecialDataProcessing == string.Empty))
+            {
+                this.PlaceOfPublication = new VufindField("<нет данных>");
+            }
+            else if (SpecialDataProcessing == "М.")
+            {
+                this.PlaceOfPublication = new VufindField("Москва");
+            }
+            else if (SpecialDataProcessing == "М.:")
+            {
+                this.PlaceOfPublication = new VufindField("Москва");
+            }
+            //========================================================================Location=========================
+            SpecialDataProcessing = this.Location.ToString();
+            if (SpecialDataProcessing == string.Empty)
+            {
+                this.Location = new VufindField("<нет данных>");
+            }
+            //======================================================================Language======================================
+            SpecialDataProcessing = this.language.ToString();
+            if (SpecialDataProcessing == string.Empty)
+            {
+                this.language = new VufindField("<нет данных>");
+            }
+            //======================================================================Author======================================
+            SpecialDataProcessing = this.author.ToString();
+            if (SpecialDataProcessing == string.Empty)
+            {
+                this.author = new VufindField("<нет данных>");
+            }
+
+        }
 
     }
 }

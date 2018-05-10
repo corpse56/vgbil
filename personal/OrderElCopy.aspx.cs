@@ -12,6 +12,8 @@ using InvOfBookForOrder;
 using DataProviderAPI.ValueObjects;
 using System.Data.SqlClient;
 using System.Data;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 public partial class OrderElCopy : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -19,38 +21,45 @@ public partial class OrderElCopy : System.Web.UI.Page
         string IDMAIN = Request["pin"];
         string IDBASE = Request["idbase"];
 
-        string IDReader = Request["idreader"];
+        string IDReader = Request.QueryString["idreader"];
+
         if (IDReader == null)
         {
             IDReader = User.Identity.Name;
+            Response.Write("User.Identity.Name" + IDReader);
+        }
+        else
+        {
+            Response.Write("Request" + IDReader);
         }
         //string vkey = Request["vkey"];
         string BaseName = (IDBASE == "1")? "BJVVV" : "REDKOSTJ";
 
         LibflAPI.ServiceSoapClient api = new LibflAPI.ServiceSoapClient();
-        LibflAPI.ReaderInfo reader = api.GetUser(IDReader);
+        LibflAPI.ReaderInfo reader;
+        try
+        {
+            reader = api.GetUser(IDReader);
+        }
+        catch
+        {
+            Response.Write(IDReader);
+            return;
+        }
 
 
         ExemplarLoader loader = new ExemplarLoader(BaseName);
-        DataProviderAPI.ValueObjects.ElectronicExemplarInfo exemplar = loader.GetElectronicExemplarInfo(BaseName + "_" + IDMAIN);
+        DataProviderAPI.ValueObjects.ElectronicExemplarInfoAPI exemplar = loader.GetElectronicExemplarInfo(BaseName + "_" + IDMAIN);
         
-        string HostName = HttpContext.Current.Server.MachineName;
-        string ElBookViewerServer = "";
-        if (HostName == "VGBIL-OPAC")
-        {
-            ElBookViewerServer = AppSettings.ExternalElectronicBookViewer;
-        }
-        else
-        {
-            ElBookViewerServer = AppSettings.IndoorElectronicBookViewer;
-        }
 
-        if (exemplar.ForAllReader)
+
+        if (exemplar.ForAllReader)//открытый БЕЗ авторского права
         {
-            string redirect = ElBookViewerServer + "?pin=" + IDMAIN + "&idbase=1&idr=" + IDReader;
-            Response.Redirect(redirect);
+            
+            RedirectToNewViewer(IDMAIN, true,"", IDReader);
+
         }
-        else
+        else    //ЗАКРЫТЫЕ АВТОРСКИМ ПРАВОМ
         {
 
             SqlCommand cmd = new SqlCommand();
@@ -73,15 +82,71 @@ public partial class OrderElCopy : System.Web.UI.Page
             cnt = da.Fill(table);
 
             string ViewKey = table.Rows[0]["VIEWKEY"].ToString();
-            string redirect = ElBookViewerServer + "?pin=" + IDMAIN + "&idbase=1&idr=" + IDReader + "&vkey=" + Server.UrlEncode(ViewKey);
-            Response.Redirect(redirect);
+            RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
 
+        }
             //добавим в заказы и на просмотровщик направим
             //string redirect = ElBookViewerServer + "?pin=" + row["idm"].ToString() + "&idbase=1&idr=" + row["idr"].ToString() + "&type=" + row["rtype"]
             //    + "&vkey=" + HttpUtility.UrlEncode(row["vkey"].ToString()) + "\" Target = \"_blank\">Просмотр</a>";
+    }
+
+    private void RedirectToNewViewer(string IDMAIN, bool ForAllReader, string vkey, string IDReader)
+    {
+        string HostName = HttpContext.Current.Server.MachineName;
+        string ElBookViewerServer = "";
+        if (HostName == "VGBIL-OPAC")
+        {
+            ElBookViewerServer = AppSettings.ExternalElectronicBookViewer;
         }
-        
+        else
+        {
+            ElBookViewerServer = AppSettings.IndoorElectronicBookViewer;
+        }    
+        string redirect;
+        if (ForAllReader)
+        {
+            redirect = ElBookViewerServer + "?pin=" + IDMAIN + "&idbase=1&idr=" + IDReader;
+        }
+        else
+        {
+            redirect = ElBookViewerServer + "?pin=" + IDMAIN + "&idbase=1&idr=" + IDReader + "&vkey=" + Server.UrlEncode(vkey);
+        }
 
-
+        if (HttpContext.Current.Server.MachineName == "VGBIL-OPAC")
+        {
+            bool IsExistsLQ = GetIsExistsLQ(IDMAIN);
+            if (IsExistsLQ)
+            {
+                Response.Redirect(@"http://catalog.libfl.ru/Bookreader/Viewer?bookID=BJVVV_" + IDMAIN + "&view_mode=LQ");
+            }
+            else
+            {
+                Response.Redirect(@"http://catalog.libfl.ru/Bookreader/Viewer?bookID=BJVVV_" + IDMAIN + "&view_mode=HQ");
+            }
+        }
+        else
+        {
+            Response.Redirect(redirect);
+        }
+    }
+    private bool GetIsExistsLQ(string IDMAIN)
+    {
+        LibflAPI.ServiceSoapClient api = new LibflAPI.ServiceSoapClient();
+        string book = api.GetBookInfoByID("BJVVV_" + IDMAIN);
+        JObject jbook = JObject.Parse(book);
+        JArray Exemplars = (JArray)jbook["Exemplars"];
+        bool IsExistsLQ = false;
+        foreach (JToken exm in Exemplars)
+        {
+            if (exm["IsElectronicCopy"].ToString().ToLower() == "false")
+            {
+                continue;
+            }
+            if (exm["IsExistsLQ"].ToString().ToLower() == "true")
+            {
+                IsExistsLQ = true;
+            }
+        }
+        return IsExistsLQ;
     }
 }

@@ -330,11 +330,11 @@ public partial class GetHavingElectronicCopy : System.Web.UI.Page
         }
         if (rm.BAZA == "BJVVV")
         {
-            path = "/mnt/fs-share/BJVVV/" + path[0] + @"/" + path[1] + path[2] + path[3] + @"/" + path[4] + path[5] + path[6];
+            path = "/mnt/fs-share/BJVVV/" + path[0] + @"/" + path[1] + path[2] + path[3] + @"/" + path[4] + path[5] + path[6] + @"/PDF_A";
         }
         else
         {
-            path = "/mnt/fs-share/REDKOSTJ/" + path[0] + @"/" + path[1] + path[2] + path[3] + @"/" + path[4] + path[5] + path[6];
+            path = "/mnt/fs-share/REDKOSTJ/" + path[0] + @"/" + path[1] + path[2] + path[3] + @"/" + path[4] + path[5] + path[6] + @"/PDF_A";
         }
         if (ForAllReader)
         {

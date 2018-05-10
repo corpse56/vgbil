@@ -13,6 +13,8 @@ using System.Data.SqlClient;
 using System.Xml;
 using System.IO;
 using Elcir;
+using ExportBJ_XML.classes;
+using Newtonsoft.Json.Linq;
 
 public partial class _Default : System.Web.UI.Page 
 {
@@ -42,6 +44,8 @@ public partial class _Default : System.Web.UI.Page
         {
             Panel1.Visible = false;
             Panel2.Visible = true;
+            pInfo.Visible = false;
+            pURL.Visible = false;
             lError.Text = "Неверные входные данные!";
             return;
         }
@@ -51,11 +55,13 @@ public partial class _Default : System.Web.UI.Page
             {
                 Panel1.Visible = false;
                 Panel2.Visible = true;
+                pInfo.Visible = false;
+                pURL.Visible = false;
                 lError.Text = "Неверные входные данные!";
                 return;
             }
         }
-        
+        lPIN.Text = "Номер издания (PIN): "+IDMAIN;
         if (idb == 1)
         {
             try
@@ -74,10 +80,12 @@ public partial class _Default : System.Web.UI.Page
             {
                 Panel1.Visible = false;
                 Panel2.Visible = true;
+                pInfo.Visible = false;
+                pURL.Visible = false;
                 lError.Text = "Не найдено в базе!";
                 return;
             }
-
+            lSource.Text = "Источник: Основной фонд";
         }
         else
         {
@@ -95,36 +103,38 @@ public partial class _Default : System.Web.UI.Page
             {
                 Panel1.Visible = false;
                 Panel2.Visible = true;
+                pInfo.Visible = false;
+                pURL.Visible = false;
                 lError.Text = "Не найдено в базе!";
                 return;
             }
+            lSource.Text = "Источник: Фонд редкой книги";
+
         }
         if (bai.EBook)
         {
-            lEBook.Visible = false;
+            //lEBook.Visible = false;
             hlEBook.Visible = true;
-            //hlEBook.NavigateUrl = "~/viewer.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
-            hlEBook.NavigateUrl = @"http:\\opac.libfl.ru\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
-            //hlEBook.NavigateUrl = @"http://localhost:12588\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
-            
+            hlEBook.NavigateUrl = GetRedirectUrlNewViewer();
         }
         else
         {
             hlEBook.Visible = false;
-            lEBook.Visible = true;
-            lEBook.Text = "Электронная копия отсутствует!";
+            //lEBook.Visible = true;
+            //lEBook.Text = "Электронная копия отсутствует!";
         }
         if (bai.ForAllReaders)
         {
-            lAccess.Text = "Не защищено авторским правом.";
+            Response.Redirect(GetRedirectUrlNewViewer());
+            //lAccess.Text = "Не защищено авторским правом.";
         }
         else
         {
-            lAccess.Text = "Защищено авторским правом. Для просмотра электронной копии документа вернитесь на страницу <a href=\"http://opac.libfl.ru/\">электронного каталога</a> и закажите его через личный кабинет.";
+            //lAccess.Text = "Защищено авторским правом. Для просмотра электронной копии документа вернитесь на страницу <a href=\"http://opac.libfl.ru/\">электронного каталога</a> и закажите его через личный кабинет.";
         }
         if (bai.OldBook)
         {
-            lAccess.Text += " Документ можно просмотреть только в электронном виде, так как он ветхий.";
+            //lAccess.Text += " Документ можно просмотреть только в электронном виде, так как он ветхий.";
         }
         else
         {
@@ -133,6 +143,56 @@ public partial class _Default : System.Web.UI.Page
         lTitle.Text = "Заглавие: " +bai.GetTitle();
         lAuthor.Text = "Автор: " +(((bai.GetAuthor()=="") || (bai.GetAuthor()==null)) ? "<нет>" :bai.GetAuthor());
 
+
+
+    }
+    private string GetRedirectUrlNewViewer()
+    {
+        string result = "";
+        if (HttpContext.Current.Server.MachineName == "VGBIL-OPAC")
+        {
+            result = @"http:\\opac.libfl.ru\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
+        }
+        else
+        {
+            result = @"http:\\192.168.3.128\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
+        }
+        if (bai.ForAllReaders)
+        {
+            bool IsExistsLQ = GetIsExistsLQ(IDMAIN);
+            if (IsExistsLQ)
+            {
+                result = @"http://catalog.libfl.ru/Bookreader/Viewer?bookID=BJVVV_" + IDMAIN + "&view_mode=LQ";
+            }
+            else
+            {
+                result = @"http://catalog.libfl.ru/Bookreader/Viewer?bookID=BJVVV_" + IDMAIN + "&view_mode=HQ";
+            }
+            //hlEBook.NavigateUrl = @"http:\\192.168.3.128\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
+        }
+
+        return result;
+        //hlEBook.NavigateUrl = @"http://localhost:12588\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
+    }
+    private bool GetIsExistsLQ(string IDMAIN)
+    {
+        LibflAPI.ServiceSoapClient api = new LibflAPI.ServiceSoapClient();
+        string book = api.GetBookInfoByID("BJVVV_" + IDMAIN);
+        JObject jbook = JObject.Parse(book);
+        JArray Exemplars = (JArray)jbook["Exemplars"];
+        bool IsExistsLQ = false;
+        foreach (JToken exm in Exemplars)
+        {
+            if (exm["IsElectronicCopy"].ToString().ToLower() == "false")
+            {
+                continue;
+            }
+            if (exm["IsExistsLQ"].ToString().ToLower() == "true")
+            {
+                IsExistsLQ = true;
+            }
+        }
+        return IsExistsLQ;
     }
 
 

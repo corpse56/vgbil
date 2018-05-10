@@ -17,6 +17,8 @@ using System.Reflection;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 public partial class loginemployee : System.Web.UI.Page
 {
@@ -129,6 +131,9 @@ public static class CurrentCultureInfo
         string litres = "";
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
+
             //mname == "VGBIL-OPAC";
             //if (Server.MachineName == "VGBIL-OPAC")
             if (Server.MachineName == "VGBIL-OPAC")
@@ -266,8 +271,7 @@ public static class CurrentCultureInfo
                                 InsertSession(CurReader);
                             FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
                             //Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type="+rtype.ToString()+"&litres=" + litres);
-                            RedirectUrl = "persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + rtype.ToString() + "&litres=" + litres;
-
+                            RedirectUrl = GetRedirectURL();
                             RedirectWithCookie(RedirectUrl, CurReader);
 
                         }
@@ -345,35 +349,52 @@ public static class CurrentCultureInfo
                     if ((CurReader.idSession != null) && (CurReader.idSession != string.Empty))
                         InsertSession(CurReader);
                     FormsAuthentication.RedirectFromLoginPage(CurReader.ID, true);
-                    string RedirectUrlCheck = (Request["ReturnUrl"] == null) ? string.Empty : Request["ReturnUrl"];
 
-                    if (RedirectUrlCheck.Contains("OrderElCopy"))
-                    {
-                        //Response.Redirect(RedirectUrlCheck + "&idreader=" + CurReader.ID + "&type=" + rtype.ToString() + "&litres=" + litres);
-                        RedirectUrl = RedirectUrlCheck + "&idreader=" + CurReader.ID + "&type=" + rtype.ToString() + "&litres=" + litres;
-                        RedirectWithCookie(RedirectUrl, CurReader);
-                    }
-                    else
-                    {
-                        //Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + rtype.ToString() + "&litres=" + litres);
-                        RedirectUrl = "persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + rtype.ToString() + "&litres=" + litres;
-                        RedirectWithCookie(RedirectUrl, CurReader);
-                    }
+                    RedirectUrl = GetRedirectURL();
+                    RedirectWithCookie(RedirectUrl, CurReader);
+
                 }
             }
+        }
+
+        private string GetRedirectURL()
+        {
+            string RedirectUrlCheck = (Request["ReturnUrl"] == null) ? string.Empty : Request["ReturnUrl"];
+            string RedirectUrl = "";
+            if (RedirectUrlCheck.Contains("OrderElCopy"))
+            {
+                //Response.Redirect(RedirectUrlCheck + "&idreader=" + CurReader.ID + "&type=" + rtype.ToString() + "&litres=" + litres);
+                RedirectUrl = RedirectUrlCheck + "&idreader=" + CurReader.ID + "&type=" + CurReader.ReaderType.ToString() + "&litres=" + litres;
+                //RedirectUrl = @"http://localhost:12588/perosnal/OrderElCopy.aspx" + "&idreader=" + CurReader.ID + "&type=" + rtype.ToString() + "&litres=" + litres;
+                RedirectWithCookie(RedirectUrl, CurReader);
+            }
+            else if (RedirectUrlCheck.Contains("Bookreader"))
+            {
+                RedirectUrl = RedirectUrlCheck;
+                RedirectWithCookie(RedirectUrl, CurReader);
+            }
+            else
+            {
+                //Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + rtype.ToString() + "&litres=" + litres);
+                RedirectUrl = ResolveUrl("~/persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + CurReader.ReaderType.ToString() + "&litres=" + litres);
+                RedirectWithCookie(RedirectUrl, CurReader);
+            }
+            return RedirectUrl;
         }
 
         private void RedirectWithCookie(string RedirectUrl, Reader CurReader)
         {
             HttpCookie cookie = new HttpCookie("personal_reader_login");
             cookie.Expires = DateTime.Now.AddHours(1);
-            cookie.Value = CurReader.ID;
+            cookie.Value = HashReaderId(CurReader.ID);
             cookie.Path = "/";
             cookie.HttpOnly = true;
+            cookie.Domain = "libfl.ru";
             Response.Cookies.Add(cookie);
             Response.SetCookie(cookie);
-
-            Response.Redirect(RedirectUrl);
+            //Session.Add("IDReaderLoggedIn", CurReader.ID);
+            Response.Write(RedirectUrl);
+            Response.Redirect(RedirectUrl, true);
         }
         public String HashPass(String strPassword, String strSol)
         {
@@ -390,6 +411,22 @@ public static class CurrentCultureInfo
             }
             return strHashPass;
         }
+        public String HashReaderId(String ReaderId)
+        {
+            String strHashPass = String.Empty;
+            byte[] bytes = Encoding.UTF8.GetBytes(ReaderId + "www.libfl.ru");
+            //создаем объект для получения средст шифрования 
+            SHA256CryptoServiceProvider CSP = new SHA256CryptoServiceProvider();
+            //вычисляем хеш-представление в байтах 
+            byte[] byteHash = CSP.ComputeHash(bytes);
+            //формируем одну цельную строку из массива 
+            foreach (byte b in byteHash)
+            {
+                strHashPass += string.Format("{0:x2}",b);
+            }
+            return strHashPass;
+        }
+
         private void InsertSession(Reader r)
         {
             SqlDataAdapter DA = new SqlDataAdapter();

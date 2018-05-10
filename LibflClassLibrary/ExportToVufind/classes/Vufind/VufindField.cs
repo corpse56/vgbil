@@ -7,6 +7,17 @@ namespace ExportBJ_XML.classes.BJ.Vufind
 {
     public class VufindField
     {
+        public VufindField()
+        {
+            _valueList = new List<string>();
+        }
+        public VufindField(string InitValue)
+        {
+            _valueList = new List<string>();
+            this.Add(InitValue);
+        }
+
+
         private List<string> _valueList;
         public List<string> ValueList
         {
@@ -16,12 +27,6 @@ namespace ExportBJ_XML.classes.BJ.Vufind
             }
         }
         public string FieldName;
-
-
-        public VufindField()
-        {
-            _valueList = new List<string>();
-        }
 
         public void Add(string value)
         {

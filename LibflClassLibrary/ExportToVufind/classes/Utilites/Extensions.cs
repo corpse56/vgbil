@@ -5,6 +5,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Linq.Expressions;
+using System.Security.Cryptography;
 
 namespace ExportBJ_XML.classes
 {
@@ -116,6 +117,31 @@ namespace ExportBJ_XML.classes
             return ((MemberExpression)memberAccess.Body).Member.Name;
         }
 
+        public static string HashReaderId(string ReaderId)
+        {
+            String strHashPass = String.Empty;
+            byte[] bytes = Encoding.UTF8.GetBytes(ReaderId + "www.libfl.ru");
+            //создаем объект для получения средст шифрования 
+            SHA256CryptoServiceProvider CSP = new SHA256CryptoServiceProvider();
+            //вычисляем хеш-представление в байтах 
+            byte[] byteHash = CSP.ComputeHash(bytes);
+            //формируем одну цельную строку из массива 
+            foreach (byte b in byteHash)
+            {
+                strHashPass += string.Format("{0:x2}", b);
+            }
+            return strHashPass;
+        }
+
+        public static string RemoveSpecialCharactersFromString(string input)
+        {
+            string WithoutSpecialCharacters = input;
+            char[] arr = WithoutSpecialCharacters.ToCharArray();
+            arr = Array.FindAll<char>(arr, (c => (char.IsLetterOrDigit(c)
+                                                  || char.IsWhiteSpace(c)
+                                                  || c == '-')));
+            return WithoutSpecialCharacters = new string(arr);
+        }
        
     }
 }

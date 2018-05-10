@@ -21,7 +21,7 @@ namespace ExportBJ_XML.classes
             //////////////////////////////////Pearson////////////////////////////////////////////////////
             /////////////////////////////////////////////////////////////////////////////////////////////
             VufindXMLWriter vfWriter = new VufindXMLWriter("pearson");
-
+            vfWriter.StartVufindXML();
             string Pearson = File.ReadAllText(@"f:/pearson_source.json");
 
             JArray desPearson = (JArray)JsonConvert.DeserializeObject(Pearson);
@@ -30,37 +30,54 @@ namespace ExportBJ_XML.classes
             tmp = desPearson.First["catalog"]["options"]["Supported platforms"].ToString();
             int cnt = 1;
             VufindDoc vfDoc = new VufindDoc();
+            StringBuilder AllFields = new StringBuilder();
             foreach (JToken token in desPearson)
             {
                 vfDoc = new VufindDoc();
                 vfDoc.title.Add(token["catalog"]["title"]["default"].ToString());
+                AllFields.AppendFormat(" {0}", vfDoc.title);
                 vfDoc.title_short.Add(token["catalog"]["title"]["default"].ToString());
                 vfDoc.title_sort.Add(token["catalog"]["title"]["default"].ToString());
                 vfDoc.author.Add(token["catalog"]["options"]["Authors"].ToString());
+                AllFields.AppendFormat(" {0}", vfDoc.author);
                 vfDoc.author_sort.Add(token["catalog"]["options"]["Authors"].ToString());
 
                 vfDoc.Country.Add(token["catalog"]["options"]["Country of publication"].ToString());
-                
+                AllFields.AppendFormat(" {0}", vfDoc.Country);
+
                 vfDoc.publisher.Add(token["catalog"]["options"]["Publisher"].ToString());
+                AllFields.AppendFormat(" {0}", vfDoc.publisher);
+
                 vfDoc.publishDate.Add(token["catalog"]["options"]["Publishing date"].ToString().Split('.')[2]);
+                AllFields.AppendFormat(" {0}", vfDoc.publishDate);
+
                 vfDoc.isbn.Add(token["catalog"]["options"]["ISBN"].ToString());
+                AllFields.AppendFormat(" {0}", vfDoc.isbn);
 
                 vfDoc.Volume.Add(token["catalog"]["options"]["Number of pages"].ToString());
+                AllFields.AppendFormat(" {0}", vfDoc.Volume);
 
                 vfDoc.Annotation.Add(token["catalog"]["options"]["Desk"].ToString() + " ; " +
                                               token["catalog"]["description"]["default"].ToString());
-                
+                AllFields.AppendFormat(" {0}", vfDoc.Annotation);
+
                 vfDoc.genre.Add(token["catalog"]["options"]["Subject"].ToString());
+                AllFields.AppendFormat(" {0}", vfDoc.genre);
                 vfDoc.genre_facet.Add(token["catalog"]["options"]["Subject"].ToString());
                 
                 vfDoc.topic.Add(token["catalog"]["options"]["Catalogue section"].ToString());
-                
+                AllFields.AppendFormat(" {0}", vfDoc.topic);
+
                 vfDoc.topic_facet.Add(token["catalog"]["options"]["Catalogue section"].ToString());
                 
                 vfDoc.collection.Add(token["catalog"]["options"]["Collection"].ToString());
-                
-                vfDoc.language.Add(token["catalog"]["options"]["Language"].ToString());
+                AllFields.AppendFormat(" {0}", vfDoc.collection);
 
+                vfDoc.language.Add(token["catalog"]["options"]["Language"].ToString());
+                AllFields.AppendFormat(" {0}", vfDoc.language);
+
+
+                vfDoc.allfields = AllFields.ToString();
 
                 //описание экземпляра Пирсон
                 StringBuilder sb = new StringBuilder();
@@ -87,14 +104,14 @@ namespace ExportBJ_XML.classes
                 writer.WritePropertyName("exemplar_id");
                 writer.WriteValue("ebook");
                 writer.WritePropertyName("exemplar_location");
-                writer.WriteValue("2024");
+                writer.WriteValue("2042");
 
                 writer.WriteEndObject();
                 writer.WriteEndObject();
 
 
                 vfDoc.MethodOfAccess.Add("4002");
-                vfDoc.Location.Add("2041");
+                vfDoc.Location.Add("2042");
                 vfDoc.ExemplarsJSON = sb.ToString();
                 vfDoc.id = "Pearson_" + token["id"].ToString();
                 vfDoc.HyperLink.Add("https://ebooks.libfl.ru/product/" + token["id"].ToString());

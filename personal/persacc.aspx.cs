@@ -18,6 +18,7 @@ using Itenso.Rtf;
 using Itenso.Rtf.Support;
 using System.Web;
 using System.Configuration;
+using Newtonsoft.Json.Linq;
 
 public partial class persacc : System.Web.UI.Page
 {
@@ -55,6 +56,8 @@ public partial class persacc : System.Web.UI.Page
         {
             FormsAuthentication.SignOut();
             FormsAuthentication.RedirectToLoginPage();
+            Response.Cookies.Clear();
+            Session.Remove("IDReaderLoggedIn");
             Response.Redirect("loginemployee.aspx");
         }
 
@@ -1826,15 +1829,29 @@ public partial class persacc : System.Web.UI.Page
             string ElBookViewerServer = "";
             if (HostName == "VGBIL-OPAC")
             {
-                ElBookViewerServer = ConfigurationManager.AppSettings["ExternalElectronicBookViewer"];
+                bool IsExistsLQ = GetIsExistsLQ(row["idm"].ToString());
+                string redirectUrl = "";
+                if (IsExistsLQ)
+                {
+                    redirectUrl = @"http://catalog.libfl.ru/Bookreader/Viewer?bookID=BJVVV_" + row["idm"].ToString() + "&view_mode=LQ";
+                }
+                else
+                {
+                    redirectUrl = @"http://catalog.libfl.ru/Bookreader/Viewer?bookID=BJVVV_" + row["idm"].ToString() + "&view_mode=HQ";
+                }
+                tc.Text = "<a href=\"" + redirectUrl + "?pin=" + row["idm"].ToString() + "&idbase=1&idr=" + row["idr"].ToString() + "&type=" + row["rtype"]
+                    + "&vkey=" + HttpUtility.UrlEncode(row["vkey"].ToString()) + "\" Target = \"_blank\">Просмотр</a>";
+
+                //ElBookViewerServer = ConfigurationManager.AppSettings["ExternalElectronicBookViewer"];
             }
             else
             {
                 ElBookViewerServer = ConfigurationManager.AppSettings["IndoorElectronicBookViewer"];
+                tc.Text = "<a href=\"" + ElBookViewerServer + "?pin=" + row["idm"].ToString() + "&idbase=1&idr=" + row["idr"].ToString() + "&type=" + row["rtype"]
+                    + "&vkey=" + HttpUtility.UrlEncode(row["vkey"].ToString()) + "\" Target = \"_blank\">Просмотр</a>";
             }
 
-            tc.Text = "<a href=\""+ElBookViewerServer+"?pin=" + row["idm"].ToString() + "&idbase=1&idr=" + row["idr"].ToString() +"&type="+row["rtype"]
-                + "&vkey=" + HttpUtility.UrlEncode(row["vkey"].ToString()) + "\" Target = \"_blank\">Просмотр</a>";
+
             //tc.Text += "      " + HostName + " "+HostName1+" " + ElBookViewerServer;
             tr.Cells.Add(tc);
             tc = new TableCell();
@@ -1848,6 +1865,26 @@ public partial class persacc : System.Web.UI.Page
 
             tEBook.Rows.Add(tr);
         }
+    }
+    private bool GetIsExistsLQ(string IDMAIN)
+    {
+        LibflAPI.ServiceSoapClient api = new LibflAPI.ServiceSoapClient();
+        string book = api.GetBookInfoByID("BJVVV_" + IDMAIN);
+        JObject jbook = JObject.Parse(book);
+        JArray Exemplars = (JArray)jbook["Exemplars"];
+        bool IsExistsLQ = false;
+        foreach (JToken exm in Exemplars)
+        {
+            if (exm["IsElectronicCopy"].ToString().ToLower() == "false")
+            {
+                continue;
+            }
+            if (exm["IsExistsLQ"].ToString().ToLower() == "true")
+            {
+                IsExistsLQ = true;
+            }
+        }
+        return IsExistsLQ;
     }
     private void FillEBOOK_HST(DataTable t)
     {
@@ -1993,6 +2030,7 @@ public partial class persacc : System.Web.UI.Page
             {
                 if ((reader.Session != string.Empty) && (reader.Session != null))
                     DeleteSession(reader);
+                Response.Cookies.Clear();
                 FormsAuthentication.SignOut();
                 Response.Redirect("loginemployee.aspx");
             }

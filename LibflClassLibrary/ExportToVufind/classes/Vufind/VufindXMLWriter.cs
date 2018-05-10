@@ -43,6 +43,8 @@ namespace LibflClassLibrary.ExportToVufind.classes.BJ
         }
         public void WriteSingleRecord(VufindDoc vfDoc)
         {
+            vfDoc.SpecialProcessing();
+
             _objXmlWriter = XmlTextWriter.Create(@"F:\import\singleRecords\"+ vfDoc.id + ".xml");
 
             _exportDocument = new XmlDocument();
@@ -59,8 +61,8 @@ namespace LibflClassLibrary.ExportToVufind.classes.BJ
             this.AppendVufindDoc(vfDoc);
 
 
-            _doc.WriteTo(_objXmlWriter);
-            _doc = _exportDocument.CreateElement("doc");
+            //_doc.WriteTo(_objXmlWriter);
+            //_doc = _exportDocument.CreateElement("doc");
             _objXmlWriter.Flush();
             _objXmlWriter.Close();
         }
@@ -77,6 +79,7 @@ namespace LibflClassLibrary.ExportToVufind.classes.BJ
         }
         public void AppendVufindDoc(VufindDoc vfDoc)
         {
+            vfDoc.SpecialProcessing();
             Type vfDocType = typeof(VufindDoc);
             foreach (PropertyInfo propertyInfo in vfDocType.GetProperties())
             {
@@ -97,6 +100,18 @@ namespace LibflClassLibrary.ExportToVufind.classes.BJ
                 {
                     AddField("Exemplar", fieldInfo.GetValue(vfDoc).ToString());
                     continue;
+                }
+                if (fieldInfo.Name == "NewArrivals")
+                {
+                    if (fieldInfo.GetValue(vfDoc) != null)
+                    {
+                        AddField(fieldInfo.Name, ((DateTime)fieldInfo.GetValue(vfDoc)).ToString("yyyy-MM-ddThh:mm:ssZ"));
+                        continue;
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
 
                 AddField(fieldInfo.Name, fieldInfo.GetValue(vfDoc).ToString());

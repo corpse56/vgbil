@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 
 namespace DataProviderAPI.ValueObjects
@@ -9,9 +11,10 @@ namespace DataProviderAPI.ValueObjects
     /// <summary>
     /// Сводное описание для ExemplarInfo
     /// </summary>
-    public class ExemplarInfo
+
+    public class ExemplarInfoAPI
     {
-        public ExemplarInfo(int idData)
+        public ExemplarInfoAPI(int idData)
         {
             this._iddata = idData;
         }
@@ -38,8 +41,11 @@ namespace DataProviderAPI.ValueObjects
         //для электронных экземпдяров
         public bool IsElectronicCopy = false;
 
+        //для информации о выдаче
+        public bool IsIssued { get; set; }
+        public string IDReaderTooked { get; set; }
+        public string DateReturn { get; set; }
 
-        //public ElectronicExemplarInfo ElectronicCopyInfo;
 
 
     }

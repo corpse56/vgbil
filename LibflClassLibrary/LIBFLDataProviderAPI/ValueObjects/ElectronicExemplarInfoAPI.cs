@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace DataProviderAPI.ValueObjects
 {
     /// <summary>
     /// Сводное описание для ElectronicExemplarInfo
     /// </summary>
-
-    public class ElectronicExemplarInfo : ExemplarInfo  //наследуем этот класс от  ExemplarInfo
+    /// 
+    public class ElectronicExemplarInfoAPI : ExemplarInfoAPI  //наследуем этот класс от  ExemplarInfo
     {
 
-        public ElectronicExemplarInfo(int idData)
+        public ElectronicExemplarInfoAPI(int idData)
             : base(idData)
         {
 

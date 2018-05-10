@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Net;
 using ExportBJ_XML.classes.BJ;
 using LibflClassLibrary.ExportToVufind.classes.BJ;
+using System.Globalization;
 
 namespace ExportBJ_XML.classes
 {
@@ -19,20 +20,12 @@ namespace ExportBJ_XML.classes
             /////////////////////////////////////////////////////////////////////////////////////////////*/
             //////////////////////////////////LITRES/////////////////////////////////////////////////////
             /////////////////////////////////////////////////////////////////////////////////////////////
-            //_objXmlWriter = XmlTextWriter.Create(@"F:\import\litres.xml");
-            //_exportDocument = new XmlDocument();
-            //XmlNode decalrationNode = _exportDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
-            //_exportDocument.AppendChild(decalrationNode);
-            //decalrationNode.WriteTo(_objXmlWriter);
-            //_root = _exportDocument.CreateElement("add");
-            //_exportDocument.AppendChild(_root);
-            //_objXmlWriter.WriteStartElement("add");
-            //_doc = _exportDocument.CreateElement("doc");
 
             VufindXMLWriter vfWriter = new VufindXMLWriter("litres");
-
+            vfWriter.StartVufindXML();
 
             XDocument xdoc = XDocument.Load(@"f:\litres_source.xml");
+            //XDocument xdoc = XDocument.Load(@"f:\litres_example.xml");
 
 
             var removedBooks = xdoc.Descendants("removed-book");
@@ -48,6 +41,7 @@ namespace ExportBJ_XML.classes
             int cnt = 1;
             string current = "";
             StringBuilder work = new StringBuilder();
+            StringBuilder AllFields = new StringBuilder();
             VufindDoc vfDoc = new VufindDoc();
             foreach (XElement elt in books)
             {
@@ -57,19 +51,30 @@ namespace ExportBJ_XML.classes
                     continue;
                 }
                 vfDoc = new VufindDoc();
+                DateTime outTry;
+                //string tmp = elt.Attribute("created").Value;
+                //2008-01-28 17:43:24
+
+                if (DateTime.TryParseExact(elt.Attribute("created").Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out outTry))
+                {
+                    vfDoc.NewArrivals = outTry;
+                }
                 if (elt.Element("title-info") != null)
                 {
                     if (elt.Element("title-info").Element("book-title") != null)
                     {
+                        string WithoutSpecialCharacters = Extensions.RemoveSpecialCharactersFromString(elt.Element("title-info").Element("book-title").Value);
                         vfDoc.title.Add(elt.Element("title-info").Element("book-title").Value);
                         vfDoc.title_short.Add(elt.Element("title-info").Element("book-title").Value);
-                        vfDoc.title_sort.Add(elt.Element("title-info").Element("book-title").Value);
+                        vfDoc.title_sort.Add(WithoutSpecialCharacters);
+                        AllFields.AppendFormat(" {0}", elt.Element("title-info").Element("book-title").Value);
                     }
                 }
                 else
                 {
                     vfDoc.title.Add("Заглавие не найдено");
                     vfDoc.title_short.Add("Заглавие не найдено");
+                    vfDoc.title_sort.Add(Extensions.RemoveSpecialCharactersFromString("Заглавие не найдено"));
                 }
 
                 work.Length = 0;
@@ -95,10 +100,20 @@ namespace ExportBJ_XML.classes
                         }
                     }
                 }
-                vfDoc.author.Add(work.ToString());
+                if (work.ToString().Trim() == string.Empty)
+                {
+                    vfDoc.author.Add("<нет данных>");
+                }
+                else
+                {
+                    vfDoc.author.Add(work.ToString());
+                }
+                AllFields.AppendFormat(" {0}", work.ToString());
+
                 if (work.ToString() != string.Empty)
                 {
-                    if (work.ToString()[0] == '(')
+
+                    if (work.ToString()[0] != '(')
                     {
                         vfDoc.author_sort.Add(work.ToString());
                     }
@@ -121,6 +136,7 @@ namespace ExportBJ_XML.classes
                     }
                 }
                 vfDoc.Annotation.Add(work.ToString());
+                AllFields.AppendFormat(" {0}", work.ToString());
                 work.Length = 0;
 
                 if (elt.Element("publish-info") != null)
@@ -131,6 +147,7 @@ namespace ExportBJ_XML.classes
                     }
                 }
                 vfDoc.publishDate.Add(work.ToString());
+                AllFields.AppendFormat(" {0}", work.ToString());
                 work.Length = 0;
 
                 if (elt.Element("publish-info") != null)
@@ -141,6 +158,7 @@ namespace ExportBJ_XML.classes
                     }
                 }
                 vfDoc.PlaceOfPublication.Add(work.ToString());
+                AllFields.AppendFormat(" {0}", work.ToString());
                 work.Length = 0;
 
                 if (elt.Element("publish-info") != null)
@@ -151,6 +169,7 @@ namespace ExportBJ_XML.classes
                     }
                 }
                 vfDoc.publisher.Add(work.ToString());
+                AllFields.AppendFormat(" {0}", work.ToString());
                 work.Length = 0;
 
                 if (elt.Element("publish-info") != null)
@@ -161,6 +180,7 @@ namespace ExportBJ_XML.classes
                     }
                 }
                 vfDoc.isbn.Add(work.ToString());
+                AllFields.AppendFormat(" {0}", work.ToString());
                 work.Length = 0;
 
                 if (elt.Element("title-info") != null)
@@ -171,16 +191,19 @@ namespace ExportBJ_XML.classes
                     }
                 }
                 vfDoc.language.Add(work.ToString());
+                AllFields.AppendFormat(" {0}", work.ToString());
                 work.Length = 0;
                 if (elt.Element("genres") != null)
                 {
                     if (elt.Element("genres").Element("genre") != null)
                     {
                         work.Append(elt.Element("genres").Element("genre").Attribute("title").Value);
+
                     }
                 }
                 vfDoc.genre.Add(work.ToString());
                 vfDoc.genre_facet.Add(work.ToString());
+                AllFields.AppendFormat(" {0}", work.ToString());
                 work.Length = 0;
 
                 //описание экземпляра Litres
@@ -209,20 +232,24 @@ namespace ExportBJ_XML.classes
                 writer.WritePropertyName("exemplar_id");
                 writer.WriteValue("ebook");//вообще это iddata, но тут любой можно,поскольку всегда свободно
                 writer.WritePropertyName("exemplar_location");
-                writer.WriteValue("Интернет");
+                writer.WriteValue("2042");
 
                 writer.WriteEndObject();
                 writer.WriteEndObject();
 
 
                 vfDoc.MethodOfAccess.Add("4002");
-                vfDoc.Location.Add("2040");
+                vfDoc.Location.Add("2042");
+                AllFields.AppendFormat(" {0}", "Интернет");
                 vfDoc.ExemplarsJSON = sb.ToString();
                 vfDoc.id = "Litres_" + elt.Attribute("id").Value;
                 vfDoc.fund = "5007";
                 vfDoc.Level = "Монография";
                 vfDoc.format.Add("3012");
 
+
+                vfDoc.allfields = AllFields.ToString();
+                AllFields.Length = 0;
                 vfWriter.AppendVufindDoc(vfDoc);
                 //OnRecordExported
                 cnt++;
@@ -336,7 +363,7 @@ namespace ExportBJ_XML.classes
             request.ServicePoint.ConnectionLimit = 24;
 
             HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
+            //response.Close();
             XDocument xdoc = XDocument.Load(new StreamReader(response.GetResponseStream()));
 
             //читать простым текстом по частям

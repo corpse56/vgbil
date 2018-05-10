@@ -35,7 +35,7 @@ namespace DataProviderAPI.Loaders
             }
         }
         private string _baseName;
-        public ExemplarInfo GetExemplarInfoByIdData(int IDDATA)
+        public ExemplarInfoAPI GetExemplarInfoByIdData(int IDDATA)
         {
             //string connectionString = ConfigurationManager.ConnectionStrings["BookStatusConnection"].ConnectionString;
             string connectionString = AppSettings.BookStatusConnection;
@@ -44,7 +44,7 @@ namespace DataProviderAPI.Loaders
             SqlDataAdapter da = new SqlDataAdapter(queryText, connectionString);
             da.SelectCommand.Parameters.Add("IDDATA", SqlDbType.Int).Value = IDDATA;
             da.Fill(result);
-            ExemplarInfo ei = new ExemplarInfo(IDDATA);
+            ExemplarInfoAPI ei = new ExemplarInfoAPI(IDDATA);
             string fieldCode;
             foreach (DataRow row in result.Rows)
             {
@@ -62,9 +62,24 @@ namespace DataProviderAPI.Loaders
                         break;
                 }
             }
+            queryText = new BJExemplarQueries(this.BaseName).GET_EXEMPLAR_ISSUE_INFO;
+            da.SelectCommand.CommandText = queryText;
+            result.Clear();
+            int cnt = da.Fill(result);
+            if (cnt == 0)
+            {
+                ei.IsIssued = false;
+            }
+            else
+            {
+                ei.IsIssued = true;
+                ei.IDReaderTooked = Extensions.HashReaderId(result.Rows[0]["IDREADER"].ToString());
+                ei.DateReturn = ((DateTime)result.Rows[0]["DATE_RET"]).ToString("dd.MM.yyyy");
+            }
+
             return ei;
         }
-        public ElectronicExemplarInfo GetElectronicExemplarInfo(string id)
+        public ElectronicExemplarInfoAPI GetElectronicExemplarInfo(string id)
         //временно получаем так, пока не будут проинвентаризированы электронные копии
         {
 
@@ -76,12 +91,12 @@ namespace DataProviderAPI.Loaders
             string pwd = AppSettings.PasswordFileServer;
             string _directoryPath = @"\\" + ip + @"\BookAddInf\";
 
-            ElectronicExemplarInfo result = new ElectronicExemplarInfo(-1);//пока что так мы создаем электронный экземпляр
+            ElectronicExemplarInfoAPI result = new ElectronicExemplarInfoAPI(-1);//пока что так мы создаем электронный экземпляр
             //когда появится инвентаризация электронных копий, то сюда надо вставить получение инфы об электронной копии
             FileInfo[] fi;
             using (new NetworkConnection(_directoryPath, new NetworkCredential("BJStor01\\imgview", "Image_123Viewer")))
             {
-                _directoryPath = @"\\" + ip + @"\BookAddInf\" + ElectronicExemplarInfo.GetPathToElectronicCopy(id);
+                _directoryPath = @"\\" + ip + @"\BookAddInf\" + ElectronicExemplarInfoAPI.GetPathToElectronicCopy(id);
                 
                 DirectoryInfo di = new DirectoryInfo(_directoryPath);
                 if (!di.Exists)
@@ -127,6 +142,23 @@ namespace DataProviderAPI.Loaders
             result.WidthFirstFile = img.Width;
             result.HeightFirstFile = img.Height;
             result.IsElectronicCopy = true;
+
+            queryText = new BJExemplarQueries(this.BaseName).GET_ELECTRONIC_EXEMPLAR_ISSUE_INFO;
+            da.SelectCommand.CommandText = queryText;
+            table.Clear();
+            cnt = da.Fill(table);
+            if (cnt == 0)
+            {
+                result.IsIssued = false;
+            }
+            else
+            {
+                result.IsIssued = true;
+                result.IDReaderTooked = Extensions.HashReaderId(table.Rows[0]["IDREADER"].ToString());
+                result.DateReturn = ((DateTime)table.Rows[0]["DATERETURN"]).ToString("dd.MM.yyyy");
+            }
+
+
             return result;
             //return JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented);
         }

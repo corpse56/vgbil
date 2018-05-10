@@ -47,7 +47,15 @@
     <h3>
         <asp:Label ID="lAuthor" runat="server" Text="Label"></asp:Label>
     </h3>
-    <table cellpadding="0" cellspacing = "0" >
+    <p/>
+    <h3>
+        <asp:Label ID="lSource" runat="server" Text="Label"></asp:Label>
+    </h3>
+    <p/>
+    <h3>
+        <asp:Label ID="lPIN" runat="server" Text="Label"></asp:Label>
+    </h3>
+<%--    <table cellpadding="0" cellspacing = "0" >
         <tr>
             <th >
                 Сведение
@@ -88,15 +96,7 @@
                 Информационный лист отсутствует
             </td>
         </tr>
-        <tr>
-            <td>
-                Электронная копия
-            </td>
-            <td>
-                <asp:Label ID="lEBook" runat="server" Text="Электронная копия отсутствует"></asp:Label>
-                <asp:HyperLink ID="hlEBook" runat="server" NavigateUrl ="~/viewer.aspx" Visible = "false">Просмотр</asp:HyperLink>
-            </td>
-        </tr>
+        
         <tr>
             <td>
                 Доступ
@@ -106,12 +106,37 @@
                 
             </td>
         </tr>
-    </table>
+    </table>--%>
     </div>
     </asp:Panel>
     <asp:Panel ID="Panel2" runat="server" Visible = "false">
         <asp:Label ID="lError" runat="server" Text="Неверные входные данные!"></asp:Label>
     </asp:Panel>
+    
+    <br />
+    <br />
+    <asp:Panel ID="pInfo" runat="server" Visible = "true" Font-Size = "Large">
+
+        <asp:Label ID="Label1" runat="server" Text="Вам будет открыт доступ на 30 календарных дней, после этого периода произойдет автоматический возврат книги (доступ прекратится). При необходимости можно повторно получить доступ. На период Вашего доступа к книге бумажный вариант будет считаться выданным, а доступ к электронной копии будет закрыт для других читателей."></asp:Label>
+        <p><br />
+        <asp:Label ID="Label2" runat="server" Text="В течении периода доступа (30 дней) ссылка на книгу будет доступна в Вашем личном кабинете."></asp:Label>
+        <p><br />
+        <asp:Label ID="Label3" runat="server" Text="Для перехода к просмотру издания Вам необходимо авторизоваться в личном кабинете нажав на ссылку ниже. Успешная авторизация означает, что Вы соглашаетесь и гарантируете соблюдение правил доступа к электронным ресурсам Библиотеки иностранной литературы."></asp:Label>
+        
+      
+        
+        
+    </asp:Panel>
+    
+    <asp:Panel ID="pURL" runat="server" Visible = "true">
+     
+                
+            
+<%--                <asp:Label ID="lEBook" runat="server" Text="Электронная копия отсутствует" Font-Size = "Large"></asp:Label>
+--%>                <asp:HyperLink ID="hlEBook" runat="server" NavigateUrl ="~/viewer.aspx" Visible = "false" Font-Size = "Large">Перейти к авторизации и просмотру</asp:HyperLink>
+           
+    </asp:Panel>
+    
     </form>
 </body>
 </html>

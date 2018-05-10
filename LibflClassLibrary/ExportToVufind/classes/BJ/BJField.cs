@@ -51,6 +51,8 @@ namespace ExportBJ_XML.ValueObjects
 
         public int MNFIELD {get; set;}
         public string MSFIELD { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Changed { get; set; }
 
         public string FieldCode
         {
