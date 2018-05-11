@@ -409,15 +409,28 @@ namespace CirculationACC
         
         private void Statistics_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-           
-            //if (label19.Text.Contains("просроч") || label19.Text.Contains("нарушит"))
-            //foreach (DataGridViewRow r in Statistics.Rows)
-            //{
-            //    if (r.Cells[10].Value.ToString() == "true")
-            //    {
-            //        r.DefaultCellStyle.BackColor = Color.Yellow;
-            //    }
-            //}
+
+            if (label19.Text.Contains("просроч"))
+            {
+                foreach (DataGridViewRow r in Statistics.Rows)
+                {
+                    if (r.Cells[10].Value.ToString() == "true")
+                    {
+                        r.DefaultCellStyle.BackColor = Color.Yellow;
+                    }
+                }
+            }
+            if (label19.Text.Contains("нарушит"))
+            {
+                foreach (DataGridViewRow r in Statistics.Rows)
+                {
+                    object value = r.Cells[5].Value;
+                    if (Convert.ToBoolean(value) == true)
+                    {
+                        r.DefaultCellStyle.BackColor = Color.Yellow;
+                    }
+                }
+            }
             autoinc(Statistics);
             
         }
@@ -466,51 +479,87 @@ namespace CirculationACC
 
         private void button12_Click(object sender, EventArgs e)
         {
-            if (Statistics.Rows.Count == 0)
-            {
-                MessageBox.Show("Нечего экспортировать!");
-                return;
-            }
-            string strExport = "";
-            //Loop through all the columns in DataGridView to Set the 
-            //Column Heading
+            DataTable dt = (DataTable)Statistics.DataSource;
+
+            StringBuilder fileContent = new StringBuilder();
+
             foreach (DataGridViewColumn dc in Statistics.Columns)
             {
-                strExport += dc.HeaderText.Replace(";", " ") + "  ; ";
+                fileContent.Append(dc.HeaderText + ";");
             }
-            strExport = strExport.Substring(0, strExport.Length - 3) + Environment.NewLine.ToString();
-            //Loop through all the row and append the value with 3 spaces
-            foreach (DataGridViewRow dr in Statistics.Rows)
+
+            fileContent.Replace(";", System.Environment.NewLine, fileContent.Length - 1, 1);
+
+
+
+            foreach (DataRow dr in dt.Rows)
             {
-                foreach (DataGridViewCell dc in dr.Cells)
+
+                foreach (var column in dr.ItemArray)
                 {
-                    if (dc.Value != null)
-                    {
-                        strExport += dc.FormattedValue.ToString().Replace(";", " ") + " ;  ";
-                    }
+                    fileContent.Append("\"" + column.ToString() + "\";");
                 }
-                strExport += Environment.NewLine.ToString();
+
+                fileContent.Replace(";", System.Environment.NewLine, fileContent.Length - 1, 1);
             }
-            strExport = strExport.Substring(0, strExport.Length - 3) + Environment.NewLine.ToString() + Environment.NewLine.ToString() + DateTime.Now.ToString("dd.MM.yyyy") + "  номер сотрудника " + this.EmpID + " - " + this.textBox1.Text;
-            //Create a TextWrite object to write to file, select a file name with .csv extention
+
             string tmp = label19.Text + "_" + DateTime.Now.ToString("hh:mm:ss.nnn") + ".csv";
             tmp = label19.Text + "_" + DateTime.Now.Ticks.ToString() + ".csv";
             SaveFileDialog sd = new SaveFileDialog();
             sd.Title = "Сохранить в файл";
             sd.Filter = "csv files (*.csv)|*.csv";
             sd.FilterIndex = 1;
-            TextWriter tw;
             sd.FileName = tmp;
             if (sd.ShowDialog() == DialogResult.OK)
             {
-                tmp = sd.FileName;
-                tw = new System.IO.StreamWriter(tmp, false, Encoding.UTF8);
-                //Write the Text to file
-                //tw.Encoding = Encoding.Unicode;
-                tw.Write(strExport);
-                //Close the Textwrite
-                tw.Close();
+                System.IO.File.WriteAllText(sd.FileName, fileContent.ToString(), Encoding.UTF8);
             }
+
+            //if (Statistics.Rows.Count == 0)
+            //{
+            //    MessageBox.Show("Нечего экспортировать!");
+            //    return;
+            //}
+            //string strExport = "";
+            ////Loop through all the columns in DataGridView to Set the 
+            ////Column Heading
+            //foreach (DataGridViewColumn dc in Statistics.Columns)
+            //{
+            //    strExport += dc.HeaderText.Replace(";", " ") + "  ; ";
+            //}
+            //strExport = strExport.Substring(0, strExport.Length - 3) + Environment.NewLine.ToString();
+            ////Loop through all the row and append the value with 3 spaces
+            //foreach (DataGridViewRow dr in Statistics.Rows)
+            //{
+            //    foreach (DataGridViewCell dc in dr.Cells)
+            //    {
+            //        if (dc.Value != null)
+            //        {
+            //            strExport += dc.FormattedValue.ToString().Replace(";", " ") + " ;  ";
+            //        }
+            //    }
+            //    strExport += Environment.NewLine.ToString();
+            //}
+            //strExport = strExport.Substring(0, strExport.Length - 3) + Environment.NewLine.ToString() + Environment.NewLine.ToString() + DateTime.Now.ToString("dd.MM.yyyy") + "  номер сотрудника " + this.EmpID + " - " + this.textBox1.Text;
+            ////Create a TextWrite object to write to file, select a file name with .csv extention
+            //string tmp = label19.Text + "_" + DateTime.Now.ToString("hh:mm:ss.nnn") + ".csv";
+            //tmp = label19.Text + "_" + DateTime.Now.Ticks.ToString() + ".csv";
+            //SaveFileDialog sd = new SaveFileDialog();
+            //sd.Title = "Сохранить в файл";
+            //sd.Filter = "csv files (*.csv)|*.csv";
+            //sd.FilterIndex = 1;
+            //TextWriter tw;
+            //sd.FileName = tmp;
+            //if (sd.ShowDialog() == DialogResult.OK)
+            //{
+            //    tmp = sd.FileName;
+            //    tw = new System.IO.StreamWriter(tmp, false, Encoding.UTF8);
+            //    //Write the Text to file
+            //    //tw.Encoding = Encoding.Unicode;
+            //    tw.Write(strExport);
+            //    //Close the Textwrite
+            //    tw.Close();
+            //}
         }
 
         public string emul;
@@ -852,6 +901,10 @@ namespace CirculationACC
             Statistics.Columns[3].Width = 100;
             Statistics.Columns[4].HeaderText = "Фонд";
             Statistics.Columns[4].Width = 150;
+            Statistics.Columns[5].HeaderText = "Тематика";
+            Statistics.Columns[5].Width = 150;
+            Statistics.Columns[6].HeaderText = "Стеллаж";
+            Statistics.Columns[6].Width = 150;
 
             button12.Enabled = true;
         }

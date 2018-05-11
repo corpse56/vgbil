@@ -60,7 +60,10 @@ namespace CirculationACC
                 " left join BJACC..DATAEXTPLAIN C on C.IDDATAEXT = CC.ID" +
                 " left join BJACC..DATAEXTPLAIN D on D.IDDATAEXT = DD.ID" +
                 " left join BJACC..DATAEXTPLAIN E on E.IDDATAEXT = EE.ID" +
-                " left join Reservation_R..ISSUED_ACC_ACTIONS EM on EM.IDISSUED_ACC = A.IDREADER and EM.IDACTION = 4" + // 4 - это ACTIONTYPE = сотрудник отослал емаил
+                " left join Reservation_R..ISSUED_ACC_ACTIONS EM on EM.ID = (select top 1 ID from Reservation_R..ISSUED_ACC_ACTIONS Z "+
+                                                                            " where Z.IDISSUED_ACC = A.IDREADER and Z.IDACTION = 4 " + // 4 - это ACTIONTYPE = сотрудник отослал емаил
+                                                                            " order by ID desc) "+
+                                                                            //" and Z.ID = (select max(ID) from Reservation_R..ISSUED_ACC_ACTIONS ZZ where ZZ.IDISSUED_ACC = A.IDREADER and ZZ.IDACTION = 4))" +
                            " and EM.ID = (select max(z.ID) from Reservation_R..ISSUED_ACC_ACTIONS z where z.IDISSUED_ACC = A.IDREADER and z.IDACTION = 4)" +
                 " left join BJACC..DATAEXT INV on A.IDDATA = INV.IDDATA and INV.MNFIELD = 899 and INV.MSFIELD = '$w'" +
                 " where A.IDSTATUS = 1 and A.DATE_RETURN < getdate() " +
@@ -77,7 +80,9 @@ namespace CirculationACC
                 " left join BJVVV..DATAEXTPLAIN C on C.IDDATAEXT = CC.ID" +
                 " left join BJVVV..DATAEXTPLAIN D on D.IDDATAEXT = DD.ID" +
                 " left join BJVVV..DATAEXTPLAIN E on E.IDDATAEXT = EE.ID" +
-                " left join Reservation_R..ISSUED_ACC_ACTIONS EM on EM.IDISSUED_ACC = A.IDREADER and EM.IDACTION = 4" + // 4 - это ACTIONTYPE = сотрудник отослал емаил
+                " left join Reservation_R..ISSUED_ACC_ACTIONS EM on EM.ID = (select top 1 ID from Reservation_R..ISSUED_ACC_ACTIONS Z " +
+                                                                            " where Z.IDISSUED_ACC = A.IDREADER and Z.IDACTION = 4 " + // 4 - это ACTIONTYPE = сотрудник отослал емаил
+                                                                            " order by ID desc) " +
                 " left join BJVVV..DATAEXT INV on A.IDDATA = INV.IDDATA and INV.MNFIELD = 899 and INV.MSFIELD = '$w'" +
                 " where A.IDSTATUS = 6 and A.DATE_RETURN < getdate()";
             DS = new DataSet();
@@ -119,27 +124,37 @@ namespace CirculationACC
         {
             DA.SelectCommand.CommandText =
                                 "select 1 ID, C.PLAIN collate cyrillic_general_ci_ai tit,D.PLAIN  collate cyrillic_general_ci_ai avt," +
-                " INV.SORT  collate cyrillic_general_ci_ai inv, 'Центр Американской Культуры' fund" +
+                " INV.SORT  collate cyrillic_general_ci_ai inv, 'Центр Американской Культуры' fund, TEMAP.PLAIN tema, POLKAP.PLAIN polka " +
                 " from BJACC..MAIN A" +
                 " left join BJACC..DATAEXT CC on A.ID = CC.IDMAIN and CC.MNFIELD = 200 and CC.MSFIELD = '$a'" +
-                " left join BJACC..DATAEXT DD on A.ID = DD.IDMAIN and DD.MNFIELD = 700 and DD.MSFIELD = '$a'" +
+                " left join BJACC..DATAEXT DD on DD.ID = (select top 1 Z.ID from BJACC..DATAEXT Z where A.ID = Z.IDMAIN and Z.MNFIELD = 700 and Z.MSFIELD = '$a')" +
                 " left join BJACC..DATAEXTPLAIN C on C.IDDATAEXT = CC.ID" +
                 " left join BJACC..DATAEXTPLAIN D on D.IDDATAEXT = DD.ID" +
                 " left join BJACC..DATAEXT INV on A.ID = INV.IDMAIN and INV.MNFIELD = 899 and INV.MSFIELD = '$w'" +
                 " left join BJACC..DATAEXT klass on INV.IDDATA = klass.IDDATA and klass.MNFIELD = 921 and klass.MSFIELD = '$c' " +
+                " left join BJACC..DATAEXT polka on INV.IDDATA = polka.IDDATA and polka.MNFIELD = 899 and polka.MSFIELD = '$c' " +
+                " left join BJACC..DATAEXTPLAIN POLKAP on POLKAP.IDDATAEXT = polka.ID" +
+                " left join BJACC..DATAEXT TEMA on A.ID = TEMA.IDMAIN and TEMA.MNFIELD = 922 and TEMA.MSFIELD = '$e'" +
+                " left join BJACC..DATAEXTPLAIN TEMAP on TEMAP.IDDATAEXT = TEMA.ID" +
                 " where INV.SORT is not null "+//and klass.SORT='Длявыдачи'" +
+                
                 " union all " +
+
                 "select 1 ID,C.PLAIN  collate cyrillic_general_ci_ai tit,D.PLAIN  collate cyrillic_general_ci_ai avt," +
-                " INV.SORT  collate cyrillic_general_ci_ai inv, 'Основной фонд' fund " +
-                " from BJVVV..MAIN A" +
+                " INV.SORT  collate cyrillic_general_ci_ai inv, 'Основной фонд' fund , TEMAP.PLAIN tema, POLKAP.PLAIN polka " +
+                " from BJVVV..MAIN A " +
                 " left join BJVVV..DATAEXT CC on A.ID = CC.IDMAIN and CC.MNFIELD = 200 and CC.MSFIELD = '$a'" +
-                " left join BJVVV..DATAEXT DD on A.ID = DD.IDMAIN and DD.MNFIELD = 700 and DD.MSFIELD = '$a'" +
+                " left join BJVVV..DATAEXT DD on DD.ID = (select top 1 Z.ID from BJVVV..DATAEXT Z where A.ID = Z.IDMAIN and Z.MNFIELD = 700 and Z.MSFIELD = '$a')" +
                 " left join BJVVV..DATAEXTPLAIN C on C.IDDATAEXT = CC.ID" +
                 " left join BJVVV..DATAEXTPLAIN D on D.IDDATAEXT = DD.ID" +
                 " left join BJVVV..DATAEXT INV on A.ID = INV.IDMAIN and INV.MNFIELD = 899 and INV.MSFIELD = '$w'" +
                 " left join BJVVV..DATAEXT klass on INV.IDDATA = klass.IDDATA and klass.MNFIELD = 921 and klass.MSFIELD = '$c' " +
+                " left join BJVVV..DATAEXT polka on INV.IDDATA = polka.IDDATA and polka.MNFIELD = 899 and polka.MSFIELD = '$c' " +
+                " left join BJVVV..DATAEXTPLAIN POLKAP on POLKAP.IDDATAEXT = polka.ID" +
+                " left join BJVVV..DATAEXT TEMA on A.ID = TEMA.IDMAIN and TEMA.MNFIELD = 922 and TEMA.MSFIELD = '$e'" +
+                " left join BJVVV..DATAEXTPLAIN TEMAP on TEMAP.IDDATAEXT = TEMA.ID" +
                 " left join BJVVV..DATAEXT FF on INV.IDDATA = FF.IDDATA and FF.MNFIELD = 899 and FF.MSFIELD = '$a'" +
-                " where INV.SORT is not null  and FF.IDINLIST = 60 ";//and klass.SORT='Длявыдачи'";
+                " where INV.SORT is not null  and FF.IDINLIST = 52 ";//and klass.SORT='Длявыдачи'";
             //спросить какой класс издания для них считается нормальным
 
             DS = new DataSet();
