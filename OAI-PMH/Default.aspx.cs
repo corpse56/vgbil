@@ -867,6 +867,10 @@ public partial class _Default : System.Web.UI.Page
         {
             
             XmlNode RecordNode = AppendRecordNode(xmlDoc,r["IDMAIN"].ToString(),r["BAZA"].ToString(),Convert.ToDateTime(r["datestamp"]),ListRecords);
+            if (RecordNode == null)
+            {
+                continue;
+            }
             ListRecords.AppendChild(RecordNode);
 
         }
@@ -926,7 +930,7 @@ public partial class _Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            convertError();
+            //convertError();
             return null;
 
         }

@@ -7,12 +7,13 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using System.Data;
 using System.Data.SqlClient;
+using LibflClassLibrary;
 
 public partial class GetHavingElectronicCopy : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        
         XmlDocument xmlDoc = new XmlDocument();
         XmlNode rootNode = xmlDoc.CreateElement("OAI-PMH");
         XmlAttribute attribute = xmlDoc.CreateAttribute("xmlns");

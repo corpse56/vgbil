@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetReaderInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NumberReader" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReaderInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReaderInfoResult" type="tns:ReaderInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ReaderInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FamilyName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FatherName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DateBirth" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsRemoteReader" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="BarCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DateRegistration" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DateReRegistration" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="MobileTelephone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="WorkDepartment" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="HashedPassword" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Salt" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NumberReader" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Authorize">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthorizeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthorizeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HashPass">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strSol" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HashPassResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HashPassResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLoginType">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLoginTypeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLoginTypeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserResult" type="tns:ReaderInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertIntoBasket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PIN" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="IDSession" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertIntoBasketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="InsertIntoBasketResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertArrayIntoBasket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PINs" type="tns:ArrayOfInt" />
+            <s:element minOccurs="0" maxOccurs="1" name="IDSession" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InsertArrayIntoBasketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="InsertArrayIntoBasketResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExemplarStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDDATA" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="BaseName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExemplarStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExemplarStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBookStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookInfoByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookInfoByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBookInfoByIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookInfoByInvNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="invNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="baseName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBookInfoByInvNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBookInfoByInvNumberResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangePWD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="number" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="pwd" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangePWDResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetReaderInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReaderInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetReaderInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReaderInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthorizeSoapIn">
+    <wsdl:part name="parameters" element="tns:Authorize" />
+  </wsdl:message>
+  <wsdl:message name="AuthorizeSoapOut">
+    <wsdl:part name="parameters" element="tns:AuthorizeResponse" />
+  </wsdl:message>
+  <wsdl:message name="HashPassSoapIn">
+    <wsdl:part name="parameters" element="tns:HashPass" />
+  </wsdl:message>
+  <wsdl:message name="HashPassSoapOut">
+    <wsdl:part name="parameters" element="tns:HashPassResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLoginTypeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLoginType" />
+  </wsdl:message>
+  <wsdl:message name="GetLoginTypeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLoginTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUser" />
+  </wsdl:message>
+  <wsdl:message name="GetUserSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertIntoBasketSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertIntoBasket" />
+  </wsdl:message>
+  <wsdl:message name="InsertIntoBasketSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertIntoBasketResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertArrayIntoBasketSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertArrayIntoBasket" />
+  </wsdl:message>
+  <wsdl:message name="InsertArrayIntoBasketSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertArrayIntoBasketResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExemplarStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExemplarStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetExemplarStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExemplarStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBookStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBookStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetBookStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBookStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBookInfoByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBookInfoByID" />
+  </wsdl:message>
+  <wsdl:message name="GetBookInfoByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBookInfoByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBookInfoByInvNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBookInfoByInvNumber" />
+  </wsdl:message>
+  <wsdl:message name="GetBookInfoByInvNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBookInfoByInvNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="ChangePWDSoapIn">
+    <wsdl:part name="parameters" element="tns:ChangePWD" />
+  </wsdl:message>
+  <wsdl:message name="ChangePWDSoapOut">
+    <wsdl:part name="parameters" element="tns:ChangePWDResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="GetReaderInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Возвращает информацию о пользователе. Если пользователь не найден или входной параметр имеет неправильный формат, генерируется исключение.</wsdl:documentation>
+      <wsdl:input message="tns:GetReaderInfoSoapIn" />
+      <wsdl:output message="tns:GetReaderInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Authorize">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Возвращает true при успешной авторизации. Во всех остальных случаях генерируется исключение. Если пользователь не найден или входной параметр имеет неправильный формат, генерируется исключение. Возможные исключения:  
+1. "Читатель не найден." Означает, что читатель не найден в базе ни по номеру читательского билета, ни по номеру социальной карты, ни по email. 
+2. "Таких Email найдено больше одного! Введите номер читателя!"  В базе имеет 250 повторяющихся email. Введен email из этого списка.  Невозможно идентифицировать. В этом случае читателя придётся попросить указать номер читательского билета в качестве логина. 
+3. "Неверный пароль." Означает, что читатель найден, но введён неверный пароль.</wsdl:documentation>
+      <wsdl:input message="tns:AuthorizeSoapIn" />
+      <wsdl:output message="tns:AuthorizeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HashPass">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Принимает пароль и соль. Возвращает хэш пароля</wsdl:documentation>
+      <wsdl:input message="tns:HashPassSoapIn" />
+      <wsdl:output message="tns:HashPassSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLoginType">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Получить тип логина. Возвращает NumberReader, если введён номер читательского билета.  Возвращает SocialCardNumber если введён номер социальной карты. Возвращает Email если введён Email.  В остальных случаях возвращает NotDefined.</wsdl:documentation>
+      <wsdl:input message="tns:GetLoginTypeSoapIn" />
+      <wsdl:output message="tns:GetLoginTypeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUser">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Возвращает информацию о пользователе. Если пользователь не найден или входной параметр имеет неправильный формат, генерируется исключение. </wsdl:documentation>
+      <wsdl:input message="tns:GetUserSoapIn" />
+      <wsdl:output message="tns:GetUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertIntoBasket">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Вставляет пин BJVVV в корзину личного кабинета. Генерирует исключение, если есть ошибки подключения к БД. Если PIN пустой - генерируется исключение. Если IDSession пустой - генерируется исключение. Возвращает true если операция прошла успешно.  </wsdl:documentation>
+      <wsdl:input message="tns:InsertIntoBasketSoapIn" />
+      <wsdl:output message="tns:InsertIntoBasketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertArrayIntoBasket">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Вставляет массив пинов BJVVV в корзину личного кабинета. Генерирует исключение, если есть ошибки подключения к БД. Если PIN пустой - генерируется исключение. Если IDSession пустой - генерируется исключение. Возвращает true если операция прошла успешно.  </wsdl:documentation>
+      <wsdl:input message="tns:InsertArrayIntoBasketSoapIn" />
+      <wsdl:output message="tns:InsertArrayIntoBasketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExemplarStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Получает статус экземпляра книги по инвентарному номеру. Принимает IDDATA и идентификатор базы. BJVVV - основной фонд, BRIT_SOVET - фонд британского совета, BJACC - Амекриканский культурный центр, BJFCC - французский культурный центр, BJSCC - Центр славянской культуры</wsdl:documentation>
+      <wsdl:input message="tns:GetExemplarStatusSoapIn" />
+      <wsdl:output message="tns:GetExemplarStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBookStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Получает статус книги по id. Принимает ID книги из VuFind.</wsdl:documentation>
+      <wsdl:input message="tns:GetBookStatusSoapIn" />
+      <wsdl:output message="tns:GetBookStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBookInfoByID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Информация о книге по id книги. Принимает id книги из VuFind. (например BJVVV_123456)</wsdl:documentation>
+      <wsdl:input message="tns:GetBookInfoByIDSoapIn" />
+      <wsdl:output message="tns:GetBookInfoByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBookInfoByInvNumber">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Информация о книге по инвентарному номеру. Принимает строку с инвентарным номером (например 123456фр) и имя базы (например BJVVV или REDKOSTJ)</wsdl:documentation>
+      <wsdl:input message="tns:GetBookInfoByInvNumberSoapIn" />
+      <wsdl:output message="tns:GetBookInfoByInvNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangePWD">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Меняет пароль читателю.</wsdl:documentation>
+      <wsdl:input message="tns:ChangePWDSoapIn" />
+      <wsdl:output message="tns:ChangePWDSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetReaderInfo">
+      <soap:operation soapAction="http://tempuri.org/GetReaderInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Authorize">
+      <soap:operation soapAction="http://tempuri.org/Authorize" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HashPass">
+      <soap:operation soapAction="http://tempuri.org/HashPass" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLoginType">
+      <soap:operation soapAction="http://tempuri.org/GetLoginType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUser">
+      <soap:operation soapAction="http://tempuri.org/GetUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertIntoBasket">
+      <soap:operation soapAction="http://tempuri.org/InsertIntoBasket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertArrayIntoBasket">
+      <soap:operation soapAction="http://tempuri.org/InsertArrayIntoBasket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExemplarStatus">
+      <soap:operation soapAction="http://tempuri.org/GetExemplarStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookStatus">
+      <soap:operation soapAction="http://tempuri.org/GetBookStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookInfoByID">
+      <soap:operation soapAction="http://tempuri.org/GetBookInfoByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookInfoByInvNumber">
+      <soap:operation soapAction="http://tempuri.org/GetBookInfoByInvNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePWD">
+      <soap:operation soapAction="http://tempuri.org/ChangePWD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetReaderInfo">
+      <soap12:operation soapAction="http://tempuri.org/GetReaderInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Authorize">
+      <soap12:operation soapAction="http://tempuri.org/Authorize" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HashPass">
+      <soap12:operation soapAction="http://tempuri.org/HashPass" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLoginType">
+      <soap12:operation soapAction="http://tempuri.org/GetLoginType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUser">
+      <soap12:operation soapAction="http://tempuri.org/GetUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertIntoBasket">
+      <soap12:operation soapAction="http://tempuri.org/InsertIntoBasket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertArrayIntoBasket">
+      <soap12:operation soapAction="http://tempuri.org/InsertArrayIntoBasket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExemplarStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetExemplarStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetBookStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookInfoByID">
+      <soap12:operation soapAction="http://tempuri.org/GetBookInfoByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBookInfoByInvNumber">
+      <soap12:operation soapAction="http://tempuri.org/GetBookInfoByInvNumber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePWD">
+      <soap12:operation soapAction="http://tempuri.org/ChangePWD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="http://opac.libfl.ru/LIBFLDataProviderAPI/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="http://opac.libfl.ru/LIBFLDataProviderAPI/Service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

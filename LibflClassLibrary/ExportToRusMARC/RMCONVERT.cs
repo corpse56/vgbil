@@ -36,16 +36,18 @@ public class RMCONVERT
     public RMCONVERT(string baza)
     {
         this.BAZA = baza;
-        conbase03 = new SqlConnection(XmlConnections.GetConnection("/Connections/base03"));
-        conbase01 = new SqlConnection(XmlConnections.GetConnection("/Connections/base01"));
+        //conbase03 = new SqlConnection(XmlConnections.GetConnection("/Connections/base03"));
+        //conbase01 = new SqlConnection(XmlConnections.GetConnection("/Connections/base01"));
+        conbase03 = new SqlConnection("Data Source=192.168.4.25,1443;Initial Catalog=EXPORTNEB;Persist Security Info=True;User ID=OAIUSER;Password=User_OAI;Connection Timeout = 1200");
+        conbase01 = new SqlConnection("Data Source=192.168.4.7;Initial Catalog=TECHNOLOG_VVV;Persist Security Info=True;User ID=OAIUSER;Password=User_OAI;Connection Timeout = 1200");
         da = new SqlDataAdapter();
     }
     void Main(string[] args)
     {
         try
         {
-            conbase03 = new SqlConnection(XmlConnections.GetConnection("/Connections/base03"));
-            conbase01 = new SqlConnection(XmlConnections.GetConnection("/Connections/base01"));
+            conbase03 = new SqlConnection("Data Source=192.168.4.25,1443;Initial Catalog=EXPORTNEB;Persist Security Info=True;User ID=OAIUSER;Password=User_OAI;Connection Timeout = 1200");
+            conbase01 = new SqlConnection("Data Source=192.168.4.7;Initial Catalog=TECHNOLOG_VVV;Persist Security Info=True;User ID=OAIUSER;Password=User_OAI;Connection Timeout = 1200");
         }
         catch (Exception ex)
         {

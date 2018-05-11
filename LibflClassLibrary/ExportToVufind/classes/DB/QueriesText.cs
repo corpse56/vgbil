@@ -118,7 +118,7 @@ namespace ExportBJ_XML.QueriesText
                 return " select distinct A.IDMAIN, A.IDDATA from " + this.Fund + "..DATAEXT A" +
                             " left join " + this.Fund + "..DATAEXTPLAIN B on B.IDDATAEXT = A.ID " +
                             " where A.IDMAIN = @idmain and (A.MNFIELD = 899 and A.MSFIELD = '$p' or A.MNFIELD = 899 and A.MSFIELD = '$a' or A.MNFIELD = 899 and A.MSFIELD = '$w') " +
-                            " and not exists (select 1 from BJVVV..DATAEXT C where C.IDDATA = A.IDDATA and C.MNFIELD = 921 and C.MSFIELD = '$c' and C.SORT = 'Списано')";
+                            " and not exists (select 1 from "  +this.Fund + "..DATAEXT C where C.IDDATA = A.IDDATA and C.MNFIELD = 921 and C.MSFIELD = '$c' and C.SORT = 'Списано')";
             }
         }
 
@@ -128,7 +128,7 @@ namespace ExportBJ_XML.QueriesText
             {
                 return " select * from " + this.Fund + "..DATAEXT A" +
                         " left join " + this.Fund + "..DATAEXTPLAIN B on B.IDDATAEXT = A.ID " +
-                        " left join BJVVV..LIST_8 C on A.MNFIELD = 899 and A.MSFIELD = '$a' and A.IDINLIST = C.ID "+
+                        " left join " + this.Fund + "..LIST_8 C on A.MNFIELD = 899 and A.MSFIELD = '$a' and A.IDINLIST = C.ID " +
                         " where A.IDDATA = @iddata";
             }
         }
