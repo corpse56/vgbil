@@ -301,28 +301,34 @@ public class BookAddInfBJ : BookAddInf
         switch (idmain.Length)
         {
             case 1:
-                result = "000000" + idmain;
+                result = "00000000" + idmain;
                 break;
             case 2:
-                result = "00000" + idmain;
+                result = "0000000" + idmain;
                 break;
             case 3:
-                result = "0000" + idmain;
+                result = "000000" + idmain;
                 break;
             case 4:
-                result = "000" + idmain;
+                result = "00000" + idmain;
                 break;
             case 5:
-                result = "00" + idmain;
+                result = "0000" + idmain;
                 break;
             case 6:
-                result = "0" + idmain;
+                result = "000" + idmain;
                 break;
             case 7:
+                result = "00" + idmain;
+                break;
+            case 8:
+                result = "0" + idmain;
+                break;
+            case 9:
                 result = idmain;
                 break;
         }
-        return @"BJVVV\"+@result[0] + @"\" + result[1] + result[2] + result[3] + @"\" + result[4] + result[5] + result[6] + @"\JPEG_HQ\";
+        return @"BJVVV\" + @result[0] + @result[1] + @result[2] + @"\" + result[3] + result[4] + result[5] + @"\" + result[6] + result[7] + result[8] + @"\JPEG_HQ\";
     }
 }
 public class BookAddInfRED : BookAddInf
@@ -388,27 +394,33 @@ public class BookAddInfRED : BookAddInf
         switch (idmain.Length)
         {
             case 1:
-                result = "000000" + idmain;
+                result = "00000000" + idmain;
                 break;
             case 2:
-                result = "00000" + idmain;
+                result = "0000000" + idmain;
                 break;
             case 3:
-                result = "0000" + idmain;
+                result = "000000" + idmain;
                 break;
             case 4:
-                result = "000" + idmain;
+                result = "00000" + idmain;
                 break;
             case 5:
-                result = "00" + idmain;
+                result = "0000" + idmain;
                 break;
             case 6:
-                result = "0" + idmain;
+                result = "000" + idmain;
                 break;
             case 7:
+                result = "00" + idmain;
+                break;
+            case 8:
+                result = "0" + idmain;
+                break;
+            case 9:
                 result = idmain;
                 break;
         }
-        return @"REDKOSTJ\"+@result[0] + @"\" + result[1] + result[2] + result[3] + @"\" + result[4] + result[5] + result[6] + @"\";
+        return @"REDKOSTJ\" + @result[0] + @result[1] + @result[2] + @"\" + result[3] + result[4] + result[5] + @"\" + result[6] + result[7] + result[8] + @"\";
     }
 }

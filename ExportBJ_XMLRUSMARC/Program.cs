@@ -362,31 +362,37 @@ namespace ExportBJ_XMLRUSMARC
             switch (path.Length)
             {
                 case 1:
-                    path = "000000" + path;
+                    path = "00000000" + path;
                     break;
                 case 2:
-                    path = "00000" + path;
+                    path = "0000000" + path;
                     break;
                 case 3:
-                    path = "0000" + path;
+                    path = "000000" + path;
                     break;
                 case 4:
-                    path = "000" + path;
+                    path = "00000" + path;
                     break;
                 case 5:
-                    path = "00" + path;
+                    path = "0000" + path;
                     break;
                 case 6:
+                    path = "000" + path;
+                    break;
+                case 7:
+                    path = "00" + path;
+                    break;
+                case 8:
                     path = "0" + path;
                     break;
             }
             if (rm.BAZA == "BJVVV")
             {
-                path = "/mnt/fs-share/BJVVV/" + path[0] + @"/" + path[1] + path[2] + path[3] + @"/" + path[4] + path[5] + path[6] + @"/PDF_A";
+                path = "/mnt/fs-share/BJVVV/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
             }
             else
             {
-                path = "/mnt/fs-share/REDKOSTJ/" + path[0] + @"/" + path[1] + path[2] + path[3] + @"/" + path[4] + path[5] + path[6] + @"/PDF_A";
+                path = "/mnt/fs-share/REDKOSTJ/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
             }
             if (ForAllReader)
             {

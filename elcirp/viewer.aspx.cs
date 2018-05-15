@@ -195,21 +195,27 @@ public partial class viewer : System.Web.UI.Page
         switch (pin.Length)
         {
             case 1:
-                pin = "000000" + pin;
+                pin = "00000000" + pin;
                 break;
             case 2:
-                pin = "00000" + pin;
+                pin = "0000000" + pin;
                 break;
             case 3:
-                pin = "0000" + pin;
+                pin = "000000" + pin;
                 break;
             case 4:
-                pin = "000" + pin;
+                pin = "00000" + pin;
                 break;
             case 5:
-                pin = "00" + pin;
+                pin = "0000" + pin;
                 break;
             case 6:
+                pin = "000" + pin;
+                break;
+            case 7:
+                pin = "00" + pin;
+                break;
+            case 8:
                 pin = "0" + pin;
                 break;
         }
