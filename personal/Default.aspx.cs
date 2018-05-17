@@ -64,6 +64,7 @@ public partial class _Default : System.Web.UI.Page
             //удаляем дубликаты из корзины перед входом
             int i = DABasket.DeleteCommand.ExecuteNonQuery();
             ZCon.Close();
+            Label2.Text = CurReader.Name + " Отдел: " + CurReader.Dep;
         }
 
         ShowBasketTable();
@@ -76,10 +77,10 @@ public partial class _Default : System.Web.UI.Page
         DABasket.SelectCommand = new SqlCommand();
         DABasket.SelectCommand.Connection = ZCon;
         DABasket.SelectCommand.CommandText = " with F0 as (" +
-                                             " select IDMAIN IDMAIN from Reservation_E..Basket where IDREADER = " + CurReader.ID +
+                                             " select ID, IDMAIN IDMAIN from Reservation_E..Basket where IDREADER = " + CurReader.ID +
                                              " union all" +
-                                             " select ID_Book_EC IDMAIN from Reservation_E..Orders where ID_Reader = " + CurReader.ID +
-                                             ") select distinct IDMAIN from F0 order by IDMAIN";//сортируем по IDMAIN чтобы все были в одном порядке
+                                             " select 1 ID, ID_Book_EC IDMAIN from Reservation_E..Orders where ID_Reader = " + CurReader.ID +
+                                             ") select distinct IDMAIN,ID  from F0 order by ID desc";//сортируем по IDMAIN чтобы все были в одном порядке
         DataTable table = new DataTable();
         int i = DABasket.Fill(table);
         List<BJBookInfo> basket = new List<BJBookInfo>();
@@ -111,6 +112,7 @@ public partial class _Default : System.Web.UI.Page
         ((BoundField)gwBasket.Columns[10]).DataField = "IDDATA";
         ((BoundField)gwBasket.Columns[11]).DataField = "StatusCode";
         ((BoundField)gwBasket.Columns[12]).DataField = "StatusNameInBase";
+        ((BoundField)gwBasket.Columns[13]).DataField = "Rack";
         gwBasket.DataBind();
     }
     DataTable ConvertListToDataTable(List<BJBookInfo> basket)
@@ -119,7 +121,7 @@ public partial class _Default : System.Web.UI.Page
         DataTable table = new DataTable();
         
         // Get max columns.
-        int columns = 11;
+        int columns = 12;
 
         // Add columns.
         for (int i = 0; i < columns; i++)
@@ -137,6 +139,7 @@ public partial class _Default : System.Web.UI.Page
         table.Columns[8].ColumnName = "IDDATA";
         table.Columns[9].ColumnName = "StatusCode";
         table.Columns[10].ColumnName = "StatusNameInBase";
+        table.Columns[11].ColumnName = "Rack";
         // Add rows.
         int j = 0;
         foreach (BJBookInfo book in basket)
@@ -147,7 +150,7 @@ public partial class _Default : System.Web.UI.Page
                 string location = KeyValueMapping.UnifiedLocationAccess.GetValueOrDefault(exemplar.Fields["899$a"].ToString(), "не указано");
                 StringBuilder Status = new StringBuilder();
                 int StatusCode = 0;
-                if ((location == "Книгохранение") )
+                if ((location == "Книгохранение") || (location == "Книгохранение - Абонемент"))
                 {
                     Status.Append("Книга свободна. Для получения нажмите ссылку \"Заказать\"");
                     StatusCode = 1;
@@ -192,12 +195,13 @@ public partial class _Default : System.Web.UI.Page
                 row["RTF"] = book.RTF;
                 row["title"] = book.Fields["200$a"].ToString();
                 row["avtor"] = book.Fields["700$a"].ToString();
-                row["inv"] = exemplar.Fields["899$p"].ToString();
+                row["inv"] = (exemplar.Fields["899$x"].ToString() ==string.Empty) ? exemplar.Fields["899$p"].ToString() : exemplar.Fields["899$p"].ToString() + "\nметка: "+exemplar.Fields["899$x"].ToString();;
                 row["metka"] = exemplar.Fields["899$x"].ToString();
                 row["status"] = Status.ToString();//
                 row["IDDATA"] = exemplar.IdData;
                 row["StatusCode"] = StatusCode;
                 row["StatusNameInBase"] = StatusNameInBase;
+                row["Rack"] = exemplar.Fields["899$c"].ToString();
                 table.Rows.Add(row);
             }
         }

@@ -41,7 +41,9 @@
           <tr>
           <td>
             <div style="width:100%;text-align:center" >
-                <asp:Label ID="Label1" runat="server" Text="Личный кабинет сотрудника" Font-Bold="True" Font-Size = "Large" Width="265px"></asp:Label>
+                <asp:Label ID="Label1" runat="server" Text="Личный кабинет сотрудника" Font-Bold="True" Font-Size = "Large" ></asp:Label>
+                <br />
+                <asp:Label ID="Label2" runat="server" Text="" Font-Bold="True" Font-Size = "Large" ></asp:Label>
             </div>
             <br />
           </td>
@@ -92,7 +94,7 @@
                                         <HeaderStyle BackColor="Silver" />
                                         </asp:BoundField>
 
-                                        <asp:BoundField HeaderText="Инв. метка" >
+                                        <asp:BoundField HeaderText="Инв. метка" Visible = "False" >
                                         <HeaderStyle BackColor="Silver" />
                                         </asp:BoundField>
 
@@ -132,10 +134,15 @@
                                         </asp:BoundField>   
 
                                         
-                                        <asp:BoundField>
+                                        <asp:BoundField HeaderText="Статус">
                                             <HeaderStyle CssClass="hiddencol" />
                                             <ItemStyle CssClass="hiddencol" />
                                         </asp:BoundField>   
+                                        
+                                        <asp:BoundField HeaderText="Стеллаж" >
+                                        <HeaderStyle BackColor="Silver" />
+                                            <ItemStyle Width="200px" />
+                                        </asp:BoundField>
                                                                              
                                     </Columns>
 
