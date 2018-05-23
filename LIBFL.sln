@@ -210,6 +210,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookkeepingForOrder", "Book
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportBJ_XMLRUSMARC", "ExportBJ_XMLRUSMARC\ExportBJ_XMLRUSMARC.csproj", "{500FC7F2-E39F-484A-8BE4-FD272C31ED42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VufindIncrementUpdate", "VufindIncrementUpdate\VufindIncrementUpdate.csproj", "{7B015118-F9E1-4607-8C94-35D175C691A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -332,6 +334,10 @@ Global
 		{500FC7F2-E39F-484A-8BE4-FD272C31ED42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{500FC7F2-E39F-484A-8BE4-FD272C31ED42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{500FC7F2-E39F-484A-8BE4-FD272C31ED42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B015118-F9E1-4607-8C94-35D175C691A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B015118-F9E1-4607-8C94-35D175C691A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B015118-F9E1-4607-8C94-35D175C691A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B015118-F9E1-4607-8C94-35D175C691A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

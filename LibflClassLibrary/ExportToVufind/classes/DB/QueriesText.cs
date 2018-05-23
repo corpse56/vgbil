@@ -270,7 +270,20 @@ namespace ExportBJ_XML.QueriesText
             }
         }
 
-        
+        public string GET_LAST_INCREMENT_DATE
+        {
+            get
+            {
+                return "select LastIncrement from EXPORTNEB..VufindIncrementUpdate where lower(BaseName) = lower(@base)";
+            }
+        }
+        public string SET_LAST_INCREMENT_DATE
+        {
+            get
+            {
+                return "update EXPORTNEB..VufindIncrementUpdate set LastIncrement = @LastIncrement where lower(BaseName) = lower(@base)";
+            }
+        }
     }
 
 

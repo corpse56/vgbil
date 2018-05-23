@@ -108,7 +108,7 @@ namespace ExportBJ_XML.classes
             int CarrierCode;
             VufindDoc result = new VufindDoc();
 
-
+#region field analyse
             //BJBookInfo book = new BJBookInfo();
             foreach (DataRow r in BJBook.Rows)
             {
@@ -446,6 +446,7 @@ namespace ExportBJ_XML.classes
                 }
 
             }
+#endregion
             result.id = this.Fund + "_" + currentIDMAIN;
             string rusFund = GetFundId(this.Fund);
 

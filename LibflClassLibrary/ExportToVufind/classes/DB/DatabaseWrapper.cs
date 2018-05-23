@@ -362,5 +362,33 @@ namespace ExportBJ_XML.classes.DB
                 return this.ExecuteSelectQuery(dataAdapter);
             }
         }
+
+        internal DataTable GetLastIncrementDate()
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_LAST_INCREMENT_DATE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("base", SqlDbType.Int).Value = this.Fund;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
+
+
+
+        internal DataTable SetLastIncrementDate(DateTime LastIncrement)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.SET_LAST_INCREMENT_DATE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("LastIncrement", SqlDbType.DateTime).Value = LastIncrement;
+                dataAdapter.SelectCommand.Parameters.Add("base", SqlDbType.Int).Value = this.Fund;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
     }
 }

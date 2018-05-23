@@ -76,6 +76,7 @@ public partial class viewer : System.Web.UI.Page
             //DropDownList1.Items.AddRange(di);
             string ip = XmlConnections.GetConnection("/Connections/img_ip");
             string _directoryPath = @"\\" + ip + @"\BookAddInf\" + GetPath();
+            string _directoryPathConnect = @"\\" + ip + @"\BookAddInf\";
             //_directoryPath = ValidPath(_directoryPath);
             DirectoryInfo path = new DirectoryInfo(_directoryPath);
             try
@@ -86,7 +87,7 @@ public partial class viewer : System.Web.UI.Page
             {
                 try
                 {
-                    using (new NetworkConnection(_directoryPath, new NetworkCredential("BJStor01\\imgview", "Image_123Viewer")))
+                    using (new NetworkConnection(_directoryPathConnect, new NetworkCredential("BJStor01\\imgview", "Image_123Viewer")))
                     {
                         di = path.GetDirectories().ToList();
                     }
@@ -185,7 +186,7 @@ public partial class viewer : System.Web.UI.Page
         //string idz = this.IDZ.ToString();
         //return @"PERIOD\" + ValidPath(GetFolderByIDZ(idz)) + @"\";
         string path = PINFormat(Request["pin"]);
-        path = @"PERIOD\" + path.Substring(0, 1) + @"\" + path.Substring(1, 3) + @"\" + path.Substring(4, 3) + @"\" + Request["year"] + @"\";
+        path = @"PERIOD\" + path.Substring(0, 3) + @"\" + path.Substring(3, 3) + @"\" + path.Substring(6, 3) + @"\" + Request["year"] + @"\";
 
         return path;
 

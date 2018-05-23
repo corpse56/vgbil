@@ -54,7 +54,7 @@ public partial class Login : System.Web.UI.Page
         int i = DA.Fill(res, "t");
 
 
-        Label1.Text = "Вы собираетесь поставить в очередь на оцифровку издание: <br/> <b>Автор:</b>&nbsp" + res.Tables["t"].Rows[0]["zag"].ToString() + ";&nbsp<b>Заглавие:</b>&nbsp" + res.Tables["t"].Rows[0]["avt"].ToString()+
+        Label1.Text = "Вы собираетесь поставить в очередь на оцифровку издание: <br/> <b>Автор:</b>&nbsp" + res.Tables["t"].Rows[0]["avt"].ToString() + ";&nbsp<b>Заглавие:</b>&nbsp" + res.Tables["t"].Rows[0]["zag"].ToString() +
             "<br/><br/> Для выполнения этого действия необходимо авторизоваться <br/>";
     }
     protected void RadioButton1_CheckedChanged(object sender, EventArgs e)

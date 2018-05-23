@@ -10,6 +10,8 @@ using System.Net;
 using ExportBJ_XML.classes.BJ;
 using LibflClassLibrary.ExportToVufind.classes.BJ;
 using System.Globalization;
+using ExportBJ_XML.classes.DB;
+using System.Data;
 
 namespace ExportBJ_XML.classes
 {
@@ -624,6 +626,9 @@ namespace ExportBJ_XML.classes
             }
 
         }
+
+
+
 
     }
 }
