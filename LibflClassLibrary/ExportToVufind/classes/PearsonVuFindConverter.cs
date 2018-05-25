@@ -146,7 +146,7 @@ namespace ExportBJ_XML.classes
             {
                 Uri uri = new Uri("https://storage.aggregion.com/api/files/" + token["catalog"]["cover"].ToString() + "/shared/data");
                 string str = uri.ToString();
-                Extensions.DownloadRemoteImageFile(uri.ToString(), @"f:\import\covers\pearson\" + token["id"].ToString()+@"\cover.jpg", @"f:\import\covers\pearson\" + token["id"].ToString());
+                Utilities.Extensions.DownloadRemoteImageFile(uri.ToString(), @"f:\import\covers\pearson\" + token["id"].ToString()+@"\cover.jpg", @"f:\import\covers\pearson\" + token["id"].ToString());
 
                 VuFindConverterEventArgs e = new VuFindConverterEventArgs();
                 e.RecordId = "pearson_"+token["id"].ToString();

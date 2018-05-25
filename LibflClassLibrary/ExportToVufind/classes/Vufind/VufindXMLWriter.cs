@@ -9,6 +9,7 @@ using ExportBJ_XML.classes.DB;
 using System.Security;
 using ExportBJ_XML.classes.BJ.Vufind;
 using System.Reflection;
+using Utilities;
 
 namespace LibflClassLibrary.ExportToVufind.classes.BJ
 {

@@ -370,7 +370,7 @@ namespace ExportBJ_XML.classes.DB
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_LAST_INCREMENT_DATE, connection);
-                dataAdapter.SelectCommand.Parameters.Add("base", SqlDbType.Int).Value = this.Fund;
+                dataAdapter.SelectCommand.Parameters.Add("base", SqlDbType.NVarChar).Value = this.Fund;
                 return this.ExecuteSelectQuery(dataAdapter);
             }
         }

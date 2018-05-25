@@ -6,6 +6,7 @@ using System.Net;
 using System.IO;
 using ExportBJ_XML.classes;
 using System.Xml.Linq;
+using Utilities;
 
 namespace LibflClassLibrary.ExportToVufind.classes.Vufind
 {
@@ -23,7 +24,7 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
             //string endpoint = checkpointDate.AddMonths(1).ToString("yyyy-MM-dd HH:mm:ss");
 
             string inputString = stamp + ":" + key + ":" + checkpoint;
-            string sha256 = ExportBJ_XML.classes.Extensions.sha256(inputString);
+            string sha256 = Utilities.Extensions.sha256(inputString);
 
 
             Uri apiUrl =

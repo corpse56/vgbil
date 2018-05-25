@@ -12,6 +12,7 @@ using System.Drawing;
 using Newtonsoft.Json;
 using DataProviderAPI.ValueObjects;
 using ExportBJ_XML.classes;
+using Utilities;
 
 
 

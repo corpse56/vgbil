@@ -6,7 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using InsertElectronicExemplarBJ.classes;
+using InsertElectronicExemplarBJ;
+using Utilities;
 
 namespace InsertElectronicExemplarBJ
 {
@@ -46,7 +47,7 @@ namespace InsertElectronicExemplarBJ
 
 
             ElectronicExemplarInserter ec = new ElectronicExemplarInserter(PIN, comboBox1.Text);
-            Log log = new Log();
+            Utilities.Log log = new Log();
             try
             {
                 ec.InsertElectronicExemplar(AccessType);

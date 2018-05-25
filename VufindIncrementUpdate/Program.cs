@@ -5,6 +5,9 @@ using System.Text;
 using ExportBJ_XML.classes;
 using System.Xml.Linq;
 using LibflClassLibrary.ExportToVufind.classes.Vufind;
+using Utilities;
+using System.Xml;
+using System.Net;
 
 namespace VufindIncrementUpdate
 {
@@ -12,15 +15,76 @@ namespace VufindIncrementUpdate
     {
         static void Main(string[] args)
         {
+
+            Log log = new Log();
+            log.WriteLog("Начало инкрементной загрузки Litres...");
             LitresVufindIndexUpdater litres = new LitresVufindIndexUpdater();
-            XDocument IncrementXML = litres.GetCurrentIncrement();
+
+            //получаем инкремент
+            XDocument IncrementXML = new XDocument();
+            try
+            {
+                //IncrementXML = litres.GetCurrentIncrement();
+            }
+            catch (Exception ex)
+            {
+                log.WriteLog("Загрузка инкремента завершилось неудачей. " + ex.Message);
+                log.Dispose();
+                Console.WriteLine("Error...");
+                Console.ReadKey();
+            }
+
+
+            IncrementXML = XDocument.Load(@"F:\increment_litres.xml");
+            //XmlWriter writ = XmlTextWriter.Create(@"F:\increment_litres.xml");
+            //IncrementXML.WriteTo(writ);
+            //writ.Flush();
+            //writ.Close();
+
+            //вычленияем удалённые записи и удаляем их из индекса
             var removedBooks = IncrementXML.Descendants("removed-book");
             List<string> removedBookIDs = new List<string>();
             foreach (XElement elt in removedBooks)
             {
-                removedBookIDs.Add(elt.Attribute("id").Value);
+                StringBuilder sb = new StringBuilder();
+                sb.AppendFormat("Litres_{0}", elt.Attribute("id").Value);
+                removedBookIDs.Add(sb.ToString());
             }
-            ...
+
+            //вычленияем изменённые записи и тоже удаляем их из индекса
+            removedBooks = IncrementXML.Descendants("updated-book");
+            foreach (XElement elt in removedBooks)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendFormat("Litres_{0}", elt.Attribute("id").Value);
+                removedBookIDs.Add(sb.ToString());
+            }
+
+            removedBookIDs.Clear();
+            removedBookIDs.Add("132123213213213213213213123");
+            try
+            {
+                litres.DeleteFromIndex(removedBookIDs);
+            }
+            catch (Exception ex)
+            {
+                log.WriteLog("Удаление завершилось неудачей. \n" + ex.Message);
+                log.Dispose();
+                Console.WriteLine("Error...");
+                Console.ReadKey();
+                return;
+            }
+            foreach (string elt in removedBookIDs)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendFormat("Запись {0} удалена из индекса", elt);
+                log.WriteLog(sb.ToString());
+            }
+            log.WriteLog("Завершено...");
+            log.Dispose();
+            Console.WriteLine("Done...");
+            Console.ReadKey();
+
         }
     }
 }

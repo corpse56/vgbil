@@ -12,7 +12,7 @@ using LibflClassLibrary.ExportToVufind.classes.BJ;
 using System.Globalization;
 using ExportBJ_XML.classes.DB;
 using System.Data;
-
+using Utilities;
 namespace ExportBJ_XML.classes
 {
     public class LitresVuFindConverter : VuFindConverter
@@ -65,7 +65,7 @@ namespace ExportBJ_XML.classes
                 {
                     if (elt.Element("title-info").Element("book-title") != null)
                     {
-                        string WithoutSpecialCharacters = Extensions.RemoveSpecialCharactersFromString(elt.Element("title-info").Element("book-title").Value);
+                        string WithoutSpecialCharacters = Utilities.Extensions.RemoveSpecialCharactersFromString(elt.Element("title-info").Element("book-title").Value);
                         vfDoc.title.Add(elt.Element("title-info").Element("book-title").Value);
                         vfDoc.title_short.Add(elt.Element("title-info").Element("book-title").Value);
                         vfDoc.title_sort.Add(WithoutSpecialCharacters);
@@ -76,7 +76,7 @@ namespace ExportBJ_XML.classes
                 {
                     vfDoc.title.Add("Заглавие не найдено");
                     vfDoc.title_short.Add("Заглавие не найдено");
-                    vfDoc.title_sort.Add(Extensions.RemoveSpecialCharactersFromString("Заглавие не найдено"));
+                    vfDoc.title_sort.Add(Utilities.Extensions.RemoveSpecialCharactersFromString("Заглавие не найдено"));
                 }
 
                 work.Length = 0;
@@ -328,7 +328,7 @@ namespace ExportBJ_XML.classes
                 fileName.Append(path).Append("cover.").Append(coverType);
                 
 
-                Extensions.DownloadRemoteImageFile(coverUrl, fileName.ToString(), path);
+                Utilities.Extensions.DownloadRemoteImageFile(coverUrl, fileName.ToString(), path);
 
                 VuFindConverterEventArgs e = new VuFindConverterEventArgs();
                 e.RecordId = "litres_" + elt.Attribute("id").Value;
@@ -347,7 +347,7 @@ namespace ExportBJ_XML.classes
             string endpoint = checkpointDate.AddMonths(1).ToString("yyyy-MM-dd HH:mm:ss");
 
             string inputString = stamp + ":" + key + ":" + checkpoint;
-            string sha256 = Extensions.sha256(inputString);
+            string sha256 = Utilities.Extensions.sha256(inputString);
 
 
             Uri apiUrl =

@@ -43,6 +43,7 @@
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -88,6 +89,7 @@
     <Compile Include="ExportToVufind\classes\BJ\ExemplarAccess.cs" />
     <Compile Include="ExportToVufind\classes\BJ\ExemplarInfo.cs" />
     <Compile Include="ExportToVufind\classes\BJ\KeyValueMapping.cs" />
+    <Compile Include="Utilites\Log.cs" />
     <Compile Include="ExportToVufind\classes\Vufind\LitresVufindIndexUpdater.cs" />
     <Compile Include="ExportToVufind\classes\Vufind\VufindIndexUpdater.cs" />
     <Compile Include="ExportToVufind\classes\Vufind\VufindXMLWriter.cs" />
@@ -98,7 +100,7 @@
     <Compile Include="ExportToVufind\classes\PearsonVuFindConverter.cs" />
     <Compile Include="ExportToVufind\classes\PeriodTreeLoader.cs" />
     <Compile Include="ExportToVufind\classes\PeriodVuFindConverter.cs" />
-    <Compile Include="ExportToVufind\classes\Utilites\Extensions.cs" />
+    <Compile Include="Utilites\Extensions.cs" />
     <Compile Include="ExportToVufind\classes\Vufind\VuFindConverter.cs" />
     <Compile Include="ExportToVufind\classes\Vufind\VuFindConverterEventArgs.cs" />
     <Compile Include="ExportToVufind\classes\Vufind\VuFindDoc.cs" />

@@ -16,6 +16,7 @@ using ExportBJ_XML.classes.DB;
 using LibflClassLibrary.ExportToVufind.classes;
 using LibflClassLibrary.ExportToVufind.classes.BJ;
 using System.Windows.Forms;
+using Utilities;
 
 namespace ExportBJ_XML.classes
 {

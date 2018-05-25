@@ -31,6 +31,8 @@ using ExportBJ_XML.classes.DB;
 using LibflClassLibrary.ExportToVufind.classes.BJ;
 using LibflClassLibrary.ExportToVufind.classes;
 using ExportBJ_XML.classes;
+using Utilities;
+
 public partial class _Default : System.Web.UI.Page
 {
     public SqlConnection ZCon;

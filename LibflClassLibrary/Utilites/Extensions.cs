@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 
-namespace ExportBJ_XML.classes
+namespace Utilities
 {
     public static class Extensions
     {

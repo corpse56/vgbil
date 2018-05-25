@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace InsertElectronicExemplarBJ.classes
+
+
+namespace Utilities
 {
-    class Log : IDisposable
+    public class Log : IDisposable
     {
         TextWriter _tw;
         public Log()
@@ -16,7 +18,9 @@ namespace InsertElectronicExemplarBJ.classes
 
         public void WriteLog(string record)
         {
-            _tw.WriteLine(record);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{0}    {1}", DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"), record);
+            _tw.WriteLine(sb.ToString());
         }
         
 
