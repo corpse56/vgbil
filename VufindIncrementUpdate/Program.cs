@@ -8,6 +8,7 @@ using LibflClassLibrary.ExportToVufind.classes.Vufind;
 using Utilities;
 using System.Xml;
 using System.Net;
+using LibflClassLibrary.ExportToVufind.classes.BJ;
 
 namespace VufindIncrementUpdate
 {
@@ -80,6 +81,31 @@ namespace VufindIncrementUpdate
                 sb.AppendFormat("Запись {0} удалена из индекса", elt);
                 log.WriteLog(sb.ToString());
             }
+
+            //теперь добавляем изменённые
+
+            IEnumerable<XElement> UpdatedBooks = IncrementXML.Descendants("updated-book");
+            LitresVuFindConverter converter = new LitresVuFindConverter();
+            foreach (XElement elt in UpdatedBooks)
+            {
+                VufindDoc doc = converter.CreateVufindDoc(elt);
+                try
+                {
+                    litres.AddToIndex(doc);
+                }
+                catch (Exception ex)
+                {
+                    log.WriteLog("Добавление в индекс завершилось неудачей.  \n" + ex.Message+ " Запись: "+doc.id);
+                    log.Dispose();
+                    Console.WriteLine("Error...");
+                    Console.ReadKey();
+                }
+            }
+            //writer.FinishWriting();
+
+
+
+
             log.WriteLog("Завершено...");
             log.Dispose();
             Console.WriteLine("Done...");

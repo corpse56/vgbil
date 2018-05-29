@@ -21,7 +21,8 @@ namespace ExportBJ_XML.classes
             //////////////////////////////////Pearson////////////////////////////////////////////////////
             /////////////////////////////////////////////////////////////////////////////////////////////
             VufindXMLWriter vfWriter = new VufindXMLWriter("pearson");
-            vfWriter.StartVufindXML();
+
+            vfWriter.StartVufindXML(@"F:\import\" + Fund.ToLower() + ".xml");
             string Pearson = File.ReadAllText(@"f:/pearson_source.json");
 
             JArray desPearson = (JArray)JsonConvert.DeserializeObject(Pearson);

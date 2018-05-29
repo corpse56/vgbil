@@ -17,241 +17,36 @@ namespace ExportBJ_XML.classes
 {
     public class LitresVuFindConverter : VuFindConverter
     {
-        public override void Export()
+        public override void Export()//полный начальный экспорт
         {
             /////////////////////////////////////////////////////////////////////////////////////////////*/
             //////////////////////////////////LITRES/////////////////////////////////////////////////////
             /////////////////////////////////////////////////////////////////////////////////////////////
 
             VufindXMLWriter vfWriter = new VufindXMLWriter("litres");
-            vfWriter.StartVufindXML();
+            vfWriter.StartVufindXML(@"F:\import\" + Fund.ToLower() + ".xml");
 
             XDocument xdoc = XDocument.Load(@"f:\litres_source.xml");
             //XDocument xdoc = XDocument.Load(@"f:\litres_example.xml");
 
 
-            var removedBooks = xdoc.Descendants("removed-book");
-            List<string> removedBookIDs = new List<string>();
-            foreach (XElement elt in removedBooks)
-            {
-                removedBookIDs.Add(elt.Attribute("id").Value);
-            }
+            //var removedBooks = xdoc.Descendants("removed-book");
+            //List<string> removedBookIDs = new List<string>();
+            //foreach (XElement elt in removedBooks)
+            //{
+            //    removedBookIDs.Add(elt.Attribute("id").Value);
+            //}
 
 
 
             var books = xdoc.Descendants("updated-book");
             int cnt = 1;
-            string current = "";
-            StringBuilder work = new StringBuilder();
-            StringBuilder AllFields = new StringBuilder();
+            
             VufindDoc vfDoc = new VufindDoc();
             foreach (XElement elt in books)
             {
-                current = elt.Attribute("id").Value;
-                if (removedBookIDs.Contains(current))
-                {
-                    continue;
-                }
-                vfDoc = new VufindDoc();
-                DateTime outTry;
-                //string tmp = elt.Attribute("created").Value;
-                //2008-01-28 17:43:24
+                vfDoc = CreateVufindDoc(elt);
 
-                if (DateTime.TryParseExact(elt.Attribute("created").Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out outTry))
-                {
-                    vfDoc.NewArrivals = outTry;
-                }
-                if (elt.Element("title-info") != null)
-                {
-                    if (elt.Element("title-info").Element("book-title") != null)
-                    {
-                        string WithoutSpecialCharacters = Utilities.Extensions.RemoveSpecialCharactersFromString(elt.Element("title-info").Element("book-title").Value);
-                        vfDoc.title.Add(elt.Element("title-info").Element("book-title").Value);
-                        vfDoc.title_short.Add(elt.Element("title-info").Element("book-title").Value);
-                        vfDoc.title_sort.Add(WithoutSpecialCharacters);
-                        AllFields.AppendFormat(" {0}", elt.Element("title-info").Element("book-title").Value);
-                    }
-                }
-                else
-                {
-                    vfDoc.title.Add("Заглавие не найдено");
-                    vfDoc.title_short.Add("Заглавие не найдено");
-                    vfDoc.title_sort.Add(Utilities.Extensions.RemoveSpecialCharactersFromString("Заглавие не найдено"));
-                }
-
-                work.Length = 0;
-                work.Append(@"http://al.litres.ru/").Append(elt.Attribute("id").Value);
-                string hypLink = work.ToString();
-                vfDoc.HyperLink.Add(hypLink);
-                work.Length = 0;
-                if (elt.Element("title-info") != null)
-                {
-                    if (elt.Element("title-info").Element("author") != null)
-                    {
-                        if (elt.Element("title-info").Element("author").Element("last-name") != null)
-                        {
-                            work.Append(elt.Element("title-info").Element("author").Element("last-name").Value).Append(" ");
-                        }
-                        if (elt.Element("title-info").Element("author").Element("first-name") != null)
-                        {
-                            work.Append(elt.Element("title-info").Element("author").Element("first-name").Value).Append(" ");
-                        }
-                        if (elt.Element("title-info").Element("author").Element("middle-name") != null)
-                        {
-                            work.Append(elt.Element("title-info").Element("author").Element("middle-name").Value);
-                        }
-                    }
-                }
-                if (work.ToString().Trim() == string.Empty)
-                {
-                    vfDoc.author.Add("<нет данных>");
-                }
-                else
-                {
-                    vfDoc.author.Add(work.ToString());
-                }
-                AllFields.AppendFormat(" {0}", work.ToString());
-
-                if (work.ToString() != string.Empty)
-                {
-
-                    if (work.ToString()[0] != '(')
-                    {
-                        vfDoc.author_sort.Add(work.ToString());
-                    }
-                    else
-                    {
-                        vfDoc.author_sort.Add(work.ToString().Substring(1));
-                    }
-                }
-
-                
-
-
-                work.Length = 0;
-
-                if (elt.Element("title-info") != null)
-                {
-                    if (elt.Element("title-info").Element("annotation") != null)
-                    {
-                        work.Append(elt.Element("title-info").Element("annotation").Value);
-                    }
-                }
-                vfDoc.Annotation.Add(work.ToString());
-                AllFields.AppendFormat(" {0}", work.ToString());
-                work.Length = 0;
-
-                if (elt.Element("publish-info") != null)
-                {
-                    if (elt.Element("publish-info").Element("year") != null)
-                    {
-                        work.Append(elt.Element("publish-info").Element("year").Value);
-                    }
-                }
-                vfDoc.publishDate.Add(work.ToString());
-                AllFields.AppendFormat(" {0}", work.ToString());
-                work.Length = 0;
-
-                if (elt.Element("publish-info") != null)
-                {
-                    if (elt.Element("publish-info").Element("city") != null)
-                    {
-                        work.Append(elt.Element("publish-info").Element("city").Value);
-                    }
-                }
-                vfDoc.PlaceOfPublication.Add(work.ToString());
-                AllFields.AppendFormat(" {0}", work.ToString());
-                work.Length = 0;
-
-                if (elt.Element("publish-info") != null)
-                {
-                    if (elt.Element("publish-info").Element("publisher") != null)
-                    {
-                        work.Append(elt.Element("publish-info").Element("publisher").Value);
-                    }
-                }
-                vfDoc.publisher.Add(work.ToString());
-                AllFields.AppendFormat(" {0}", work.ToString());
-                work.Length = 0;
-
-                if (elt.Element("publish-info") != null)
-                {
-                    if (elt.Element("publish-info").Element("isbn") != null)
-                    {
-                        work.Append(elt.Element("publish-info").Element("isbn").Value);
-                    }
-                }
-                vfDoc.isbn.Add(work.ToString());
-                AllFields.AppendFormat(" {0}", work.ToString());
-                work.Length = 0;
-
-                if (elt.Element("title-info") != null)
-                {
-                    if (elt.Element("title-info").Element("lang") != null)
-                    {
-                        work.Append(GetLitresLanguageRus(elt.Element("title-info").Element("lang").Value));
-                    }
-                }
-                vfDoc.language.Add(work.ToString());
-                AllFields.AppendFormat(" {0}", work.ToString());
-                work.Length = 0;
-                if (elt.Element("genres") != null)
-                {
-                    if (elt.Element("genres").Element("genre") != null)
-                    {
-                        work.Append(elt.Element("genres").Element("genre").Attribute("title").Value);
-
-                    }
-                }
-                vfDoc.genre.Add(work.ToString());
-                vfDoc.genre_facet.Add(work.ToString());
-                AllFields.AppendFormat(" {0}", work.ToString());
-                work.Length = 0;
-
-                //описание экземпляра Litres
-                StringBuilder sb = new StringBuilder();
-                StringWriter strwriter = new StringWriter(sb);
-                JsonWriter writer = new JsonTextWriter(strwriter);
-
-                writer.WriteStartObject();
-                writer.WritePropertyName("1");
-                writer.WriteStartObject();
-
-                writer.WritePropertyName("exemplar_carrier");
-                //writer.WriteValue("Электронная книга");
-                writer.WriteValue("3012");
-                writer.WritePropertyName("exemplar_access");
-                //writer.WriteValue("Для прочтения онлайн необходимо перейти по ссылке");
-                writer.WriteValue("1004");
-                writer.WritePropertyName("exemplar_access_group");
-                writer.WriteValue(KeyValueMapping.AccessCodeToGroup[1004]);
-
-                writer.WritePropertyName("exemplar_hyperlink");
-                writer.WriteValue(hypLink);
-
-                writer.WritePropertyName("exemplar_copyright");
-                writer.WriteValue("Да");
-                writer.WritePropertyName("exemplar_id");
-                writer.WriteValue("ebook");//вообще это iddata, но тут любой можно,поскольку всегда свободно
-                writer.WritePropertyName("exemplar_location");
-                writer.WriteValue("2042");
-
-                writer.WriteEndObject();
-                writer.WriteEndObject();
-
-
-                vfDoc.MethodOfAccess.Add("4002");
-                vfDoc.Location.Add("2042");
-                AllFields.AppendFormat(" {0}", "Интернет");
-                vfDoc.ExemplarsJSON = sb.ToString();
-                vfDoc.id = "Litres_" + elt.Attribute("id").Value;
-                vfDoc.fund = "5007";
-                vfDoc.Level = "Монография";
-                vfDoc.format.Add("3012");
-
-
-                vfDoc.allfields = AllFields.ToString();
-                AllFields.Length = 0;
                 vfWriter.AppendVufindDoc(vfDoc);
                 //OnRecordExported
                 cnt++;
@@ -263,6 +58,211 @@ namespace ExportBJ_XML.classes
             vfWriter.FinishWriting();
         }
 
+        public VufindDoc CreateVufindDoc(XElement elt)
+        {
+            StringBuilder AllFields = new StringBuilder();
+            StringBuilder work = new StringBuilder();
+            string current = elt.Attribute("id").Value;
+            //if (removedBookIDs.Contains(current))
+            //{
+            //    return null;
+            //}
+            VufindDoc vfDoc = new VufindDoc();
+            DateTime outTry;
+            //string tmp = elt.Attribute("created").Value;
+            //2008-01-28 17:43:24
+
+            if (DateTime.TryParseExact(elt.Attribute("created").Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out outTry))
+            {
+                vfDoc.NewArrivals = outTry;
+            }
+            if (elt.Element("title-info") != null)
+            {
+                if (elt.Element("title-info").Element("book-title") != null)
+                {
+                    string WithoutSpecialCharacters = Utilities.Extensions.RemoveSpecialCharactersFromString(elt.Element("title-info").Element("book-title").Value);
+                    vfDoc.title.Add(elt.Element("title-info").Element("book-title").Value);
+                    vfDoc.title_short.Add(elt.Element("title-info").Element("book-title").Value);
+                    vfDoc.title_sort.Add(WithoutSpecialCharacters);
+                    AllFields.AppendFormat(" {0}", elt.Element("title-info").Element("book-title").Value);
+                }
+            }
+            else
+            {
+                vfDoc.title.Add("Заглавие не найдено");
+                vfDoc.title_short.Add("Заглавие не найдено");
+                vfDoc.title_sort.Add(Utilities.Extensions.RemoveSpecialCharactersFromString("Заглавие не найдено"));
+            }
+
+            work.Length = 0;
+            work.Append(@"http://al.litres.ru/").Append(elt.Attribute("id").Value);
+            string hypLink = work.ToString();
+            vfDoc.HyperLink.Add(hypLink);
+            work.Length = 0;
+            if (elt.Element("title-info") != null)
+            {
+                if (elt.Element("title-info").Element("author") != null)
+                {
+                    if (elt.Element("title-info").Element("author").Element("last-name") != null)
+                    {
+                        work.Append(elt.Element("title-info").Element("author").Element("last-name").Value).Append(" ");
+                    }
+                    if (elt.Element("title-info").Element("author").Element("first-name") != null)
+                    {
+                        work.Append(elt.Element("title-info").Element("author").Element("first-name").Value).Append(" ");
+                    }
+                    if (elt.Element("title-info").Element("author").Element("middle-name") != null)
+                    {
+                        work.Append(elt.Element("title-info").Element("author").Element("middle-name").Value);
+                    }
+                }
+            }
+            if (work.ToString().Trim() == string.Empty)
+            {
+                vfDoc.author.Add("<нет данных>");
+            }
+            else
+            {
+                vfDoc.author.Add(work.ToString());
+            }
+            AllFields.AppendFormat(" {0}", work.ToString());
+
+            if (work.ToString() != string.Empty)
+            {
+                if (work.ToString()[0] != '(')
+                {
+                    vfDoc.author_sort.Add(work.ToString());
+                }
+                else
+                {
+                    vfDoc.author_sort.Add(work.ToString().Substring(1));
+                }
+            }
+            work.Length = 0;
+
+            if (elt.Element("title-info") != null)
+            {
+                if (elt.Element("title-info").Element("annotation") != null)
+                {
+                    work.Append(elt.Element("title-info").Element("annotation").Value);
+                }
+            }
+            vfDoc.Annotation.Add(work.ToString());
+            AllFields.AppendFormat(" {0}", work.ToString());
+            work.Length = 0;
+
+            if (elt.Element("publish-info") != null)
+            {
+                if (elt.Element("publish-info").Element("year") != null)
+                {
+                    work.Append(elt.Element("publish-info").Element("year").Value);
+                }
+            }
+            vfDoc.publishDate.Add(work.ToString());
+            AllFields.AppendFormat(" {0}", work.ToString());
+            work.Length = 0;
+
+            if (elt.Element("publish-info") != null)
+            {
+                if (elt.Element("publish-info").Element("city") != null)
+                {
+                    work.Append(elt.Element("publish-info").Element("city").Value);
+                }
+            }
+            vfDoc.PlaceOfPublication.Add(work.ToString());
+            AllFields.AppendFormat(" {0}", work.ToString());
+            work.Length = 0;
+
+            if (elt.Element("publish-info") != null)
+            {
+                if (elt.Element("publish-info").Element("publisher") != null)
+                {
+                    work.Append(elt.Element("publish-info").Element("publisher").Value);
+                }
+            }
+            vfDoc.publisher.Add(work.ToString());
+            AllFields.AppendFormat(" {0}", work.ToString());
+            work.Length = 0;
+
+            if (elt.Element("publish-info") != null)
+            {
+                if (elt.Element("publish-info").Element("isbn") != null)
+                {
+                    work.Append(elt.Element("publish-info").Element("isbn").Value);
+                }
+            }
+            vfDoc.isbn.Add(work.ToString());
+            AllFields.AppendFormat(" {0}", work.ToString());
+            work.Length = 0;
+
+            if (elt.Element("title-info") != null)
+            {
+                if (elt.Element("title-info").Element("lang") != null)
+                {
+                    work.Append(GetLitresLanguageRus(elt.Element("title-info").Element("lang").Value));
+                }
+            }
+            vfDoc.language.Add(work.ToString());
+            AllFields.AppendFormat(" {0}", work.ToString());
+            work.Length = 0;
+            if (elt.Element("genres") != null)
+            {
+                if (elt.Element("genres").Element("genre") != null)
+                {
+                    work.Append(elt.Element("genres").Element("genre").Attribute("title").Value);
+                }
+            }
+            vfDoc.genre.Add(work.ToString());
+            vfDoc.genre_facet.Add(work.ToString());
+            AllFields.AppendFormat(" {0}", work.ToString());
+            work.Length = 0;
+
+            //описание экземпляра Litres
+            StringBuilder sb = new StringBuilder();
+            StringWriter strwriter = new StringWriter(sb);
+            JsonWriter writer = new JsonTextWriter(strwriter);
+
+            writer.WriteStartObject();
+            writer.WritePropertyName("1");
+            writer.WriteStartObject();
+
+            writer.WritePropertyName("exemplar_carrier");
+            //writer.WriteValue("Электронная книга");
+            writer.WriteValue("3012");
+            writer.WritePropertyName("exemplar_access");
+            //writer.WriteValue("Для прочтения онлайн необходимо перейти по ссылке");
+            writer.WriteValue("1004");
+            writer.WritePropertyName("exemplar_access_group");
+            writer.WriteValue(KeyValueMapping.AccessCodeToGroup[1004]);
+
+            writer.WritePropertyName("exemplar_hyperlink");
+            writer.WriteValue(hypLink);
+
+            writer.WritePropertyName("exemplar_copyright");
+            writer.WriteValue("Да");
+            writer.WritePropertyName("exemplar_id");
+            writer.WriteValue("ebook");//вообще это iddata, но тут любой можно,поскольку всегда свободно
+            writer.WritePropertyName("exemplar_location");
+            writer.WriteValue("2042");
+
+            writer.WriteEndObject();
+            writer.WriteEndObject();
+
+
+            vfDoc.MethodOfAccess.Add("4002");
+            vfDoc.Location.Add("2042");
+            AllFields.AppendFormat(" {0}", "Интернет");
+            vfDoc.ExemplarsJSON = sb.ToString();
+            vfDoc.id = "Litres_" + elt.Attribute("id").Value;
+            vfDoc.fund = "5007";
+            vfDoc.Level = "Монография";
+            vfDoc.format.Add("3012");
+
+
+            vfDoc.allfields = AllFields.ToString();
+            //AllFields.Length = 0;
+            return vfDoc;
+        }
 
         public override void ExportSingleRecord(int idmain)
         {

@@ -134,13 +134,17 @@ namespace ExportBJ_XML.ValueObjects
                         access.MethodOfAccess = 4001;
                         return access;
                     }
-                    else if (exemplar.Fields["899$a"].ToLower().Contains("славянс") && (exemplar.Fields["899$b"].ToLower() != "вх"))
+                    else if (((exemplar.Fields["899$a"].ToLower().Contains("славянс")) || (exemplar.Fields["899$a"].ToLower().Contains("франко"))
+                            || (exemplar.Fields["899$a"].ToLower().Contains("детск")) || (exemplar.Fields["899$a"].ToLower().Contains("америка")))
+                            && (exemplar.Fields["899$b"].ToLower() != "вх"))
                     {
                         access.Access = 1007;
                         access.MethodOfAccess = 4000;
                         return access;
                     }
-                    else if (exemplar.Fields["899$a"].ToLower().Contains("славянс") && (exemplar.Fields["899$b"].ToLower() == "вх"))
+                    else if (((exemplar.Fields["899$a"].ToLower().Contains("славянс")) || (exemplar.Fields["899$a"].ToLower().Contains("франко")) 
+                            || (exemplar.Fields["899$a"].ToLower().Contains("детск")) || (exemplar.Fields["899$a"].ToLower().Contains("америка")))
+                            && (exemplar.Fields["899$b"].ToLower() == "вх"))
                     {
                         access.Access = 1006;
                         access.MethodOfAccess = 4001;

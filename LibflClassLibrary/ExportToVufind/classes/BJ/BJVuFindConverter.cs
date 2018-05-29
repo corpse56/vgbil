@@ -36,7 +36,7 @@ namespace ExportBJ_XML.classes
         public override void Export()
         {
             writer = new VufindXMLWriter(this.Fund);
-            writer.StartVufindXML();
+            writer.StartVufindXML(@"F:\import\" + Fund.ToLower() + ".xml");
             /////////////////////////////////////////////////////////////////////////////////////////////
             //////////////////////////////////BJVVV/////////////////////////////////////////////////////
             /////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,7 +104,6 @@ namespace ExportBJ_XML.classes
             bool wasAuthor = false;//был ли автор. если был, то сортировочное поле уже заполнено
             string description = "";//все 3хх поля
             DataTable clarify;
-            string query = "";
             string Annotation = "";
             int CarrierCode;
             VufindDoc result = new VufindDoc();
@@ -464,7 +463,7 @@ namespace ExportBJ_XML.classes
 
             AddExemplarFields(currentIDMAIN, result, this.Fund);
 
-            if (result.Exemplars.Count == 0)
+            if ((result.Exemplars.Count == 0))
             {
                 return null;
             }
@@ -477,8 +476,15 @@ namespace ExportBJ_XML.classes
         {
 
             DataTable table = dbWrapper.GetAllExemplars(idmain);
-            if (table.Rows.Count == 0) return;
-            int IDMAIN = (int)table.Rows[0]["IDMAIN"];
+            if (table.Rows.Count == 0)
+            {
+                DataTable IsElectronicCopyExists = dbWrapper.GetHyperLink(idmain);
+                if (IsElectronicCopyExists.Rows.Count == 0)
+                {
+                    return;//все списано и нет электронных копий
+                }
+            }
+            int IDMAIN = idmain;//(int)table.Rows[0]["IDMAIN"];
 
             StringBuilder sb = new StringBuilder();
             StringWriter sw = new StringWriter(sb);
@@ -522,6 +528,7 @@ namespace ExportBJ_XML.classes
 
                 //ExemplarInfo bjExemplar = new ExemplarInfo((int)iddata["IDDATA"]);
                 ExemplarInfo Convolute = null;
+                #region FieldAnalyse
                 foreach (DataRow r in exemplar.Rows)
                 {
                     string code = r["MNFIELD"].ToString() + r["MSFIELD"].ToString();
@@ -674,6 +681,7 @@ namespace ExportBJ_XML.classes
                     }
 
                 }
+                #endregion
                 //Exemplar += "exemplar_id:" + ds.Tables["t"].Rows[0]["IDDATA"].ToString() + "#";
                 writer.WritePropertyName("exemplar_id");
                 writer.WriteValue(iddata["IDDATA"].ToString());
@@ -774,7 +782,8 @@ namespace ExportBJ_XML.classes
             writer.WriteEndObject();
             writer.Flush();
             writer.Close();
-
+            ElectronicExemplarInfo ElExemplar = new ElectronicExemplarInfo(-1);//фейковый электронный экземпляр
+            result.Exemplars.Add(ElExemplar);
             result.ExemplarsJSON = sb.ToString();
             if (ExemplarsCreatedDateList.Count != 0)
             {

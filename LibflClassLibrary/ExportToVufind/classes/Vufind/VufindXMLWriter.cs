@@ -24,14 +24,15 @@ namespace LibflClassLibrary.ExportToVufind.classes.BJ
         public VufindXMLWriter(string fund)
         {
             this.Fund = fund;
+            _exportDocument = new XmlDocument();
+
         }
 
 
-        public void StartVufindXML()
+        public void StartVufindXML(string path)
         {
-            _objXmlWriter = XmlTextWriter.Create(@"F:\import\" + Fund.ToLower() + ".xml");
+            _objXmlWriter = XmlTextWriter.Create(path);
 
-            _exportDocument = new XmlDocument();
             XmlNode decalrationNode = _exportDocument.CreateXmlDeclaration("1.0", "UTF-8", null);
             _exportDocument.AppendChild(decalrationNode);
             decalrationNode.WriteTo(_objXmlWriter);
@@ -67,7 +68,7 @@ namespace LibflClassLibrary.ExportToVufind.classes.BJ
             _objXmlWriter.Flush();
             _objXmlWriter.Close();
         }
-        private void AddField(string name, string val)
+        private XmlNode AddField(string name, string val)
         {
             XmlNode field = _exportDocument.CreateElement("field");
             XmlAttribute att = _exportDocument.CreateAttribute("name");
@@ -76,19 +77,28 @@ namespace LibflClassLibrary.ExportToVufind.classes.BJ
             field.InnerText = SecurityElement.Escape(val);
             val = Extensions.XmlCharacterWhitelist(val);
             field.InnerText = val;
-            _doc.AppendChild(field);
+            return field;
         }
         public void AppendVufindDoc(VufindDoc vfDoc)
         {
+            _doc = CreateXmlNode(vfDoc);
+            _doc.WriteTo(_objXmlWriter);
+            _doc = _exportDocument.CreateElement("doc");
+        }
+
+        public XmlNode CreateXmlNode(VufindDoc vfDoc)
+        {
             vfDoc.SpecialProcessing();
             Type vfDocType = typeof(VufindDoc);
+            XmlNode node;
             foreach (PropertyInfo propertyInfo in vfDocType.GetProperties())
             {
                 string pname = propertyInfo.Name;
                 VufindField vfField = (VufindField)propertyInfo.GetValue(vfDoc, null);
                 foreach (string val in vfField.ValueList)
                 {
-                    AddField(propertyInfo.Name, val);
+                    node = AddField(propertyInfo.Name, val);
+                    _doc.AppendChild(node);
                 }
             }
             foreach (FieldInfo fieldInfo in vfDocType.GetFields())
@@ -99,14 +109,16 @@ namespace LibflClassLibrary.ExportToVufind.classes.BJ
                 }
                 if (fieldInfo.Name == "ExemplarsJSON")
                 {
-                    AddField("Exemplar", fieldInfo.GetValue(vfDoc).ToString());
+                    node = AddField("Exemplar", fieldInfo.GetValue(vfDoc).ToString());
+                    _doc.AppendChild(node);
                     continue;
                 }
                 if (fieldInfo.Name == "NewArrivals")
                 {
                     if (fieldInfo.GetValue(vfDoc) != null)
                     {
-                        AddField(fieldInfo.Name, ((DateTime)fieldInfo.GetValue(vfDoc)).ToString("yyyy-MM-ddThh:mm:ssZ"));
+                        node = AddField(fieldInfo.Name, ((DateTime)fieldInfo.GetValue(vfDoc)).ToString("yyyy-MM-ddThh:mm:ssZ"));
+                        _doc.AppendChild(node);
                         continue;
                     }
                     else
@@ -115,11 +127,12 @@ namespace LibflClassLibrary.ExportToVufind.classes.BJ
                     }
                 }
 
-                AddField(fieldInfo.Name, fieldInfo.GetValue(vfDoc).ToString());
+                node = AddField(fieldInfo.Name, fieldInfo.GetValue(vfDoc).ToString());
+                _doc.AppendChild(node);
             }
-            _doc.WriteTo(_objXmlWriter);
-            _doc = _exportDocument.CreateElement("doc");
+            return _doc;
         }
+
         private void AddMultipleValueField(VufindField field)
         {
             foreach (string val in field.ValueList)

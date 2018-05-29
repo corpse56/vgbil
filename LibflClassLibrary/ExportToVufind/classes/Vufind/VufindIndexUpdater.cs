@@ -10,6 +10,9 @@ using System.IO;
 using System.Xml;
 using System.Security.Policy;
 using System.Web;
+using ExportBJ_XML.classes;
+using LibflClassLibrary.ExportToVufind.classes.BJ;
+using Newtonsoft.Json;
 
 
 namespace LibflClassLibrary.ExportToVufind.classes.Vufind
@@ -71,9 +74,6 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
 
             url = new Uri("http://192.168.56.31:8080/solr/biblio/update?stream.body=%3Ccommit/%3E");
             request = HttpWebRequest.Create(url) as HttpWebRequest;
-
-            
-            
             try
             {
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;//подтверждаем удаление
@@ -106,6 +106,47 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
             //}
 
         }
+
+        public void AddToIndex(VufindDoc vdoc)
+        {
+            
+            // To convert an XML node contained in string xml into a JSON string   
+            XmlDocument doc = new XmlDocument();
+            VufindXMLWriter writer = new VufindXMLWriter("");//создаём с пустым фондом для того, чтобы вызвать метод создания xml-формы документа вуфайнд. надо выносить эту логику в базовый класс или в класс VufindDoc
+            XmlNode node = writer.CreateXmlNode(vdoc);
+            doc.AppendChild(node);
+
+            string jsonText = JsonConvert.SerializeXmlNode(doc);
+
+            // To convert JSON text contained in string json into an XML node
+            //XmlDocument doc = JsonConvert.DeserializeXmlNode(json);
+
+
+            Uri url = new Uri("http://192.168.56.31:8080/solr/biblio/update?stream.body="+jsonText+"&commit=true");
+            HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
+            request.Timeout = 120000000;
+            request.KeepAlive = true;
+            request.ProtocolVersion = HttpVersion.Version10;
+            request.ServicePoint.ConnectionLimit = 24;
+
+
+            XDocument ResponseXML = new XDocument();
+            try
+            {
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)//посылаем запрос на удаление
+                {
+
+                }
+            }
+            catch (WebException ex)
+            {
+                ResponseXML = XDocument.Load(new StreamReader(ex.Response.GetResponseStream()));
+                throw new Exception(ResponseXML.ToString());
+            }
+
+
+        }
+
         public DateTime GetLastIncrementDate(string fund)
         {
             DatabaseWrapper db = new DatabaseWrapper(fund);
