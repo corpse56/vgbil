@@ -13,7 +13,7 @@ namespace Utilities
         TextWriter _tw;
         public Log()
         {
-            _tw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + @"_log.txt", true);
+            _tw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + @"_log.txt", true, Encoding.UTF8);
         }
 
         public void WriteLog(string record)

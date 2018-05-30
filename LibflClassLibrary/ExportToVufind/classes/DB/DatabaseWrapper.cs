@@ -378,16 +378,17 @@ namespace ExportBJ_XML.classes.DB
 
 
 
-        internal DataTable SetLastIncrementDate(DateTime LastIncrement)
+        internal void SetLastIncrementDate(DateTime LastIncrement)
         {
             string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.SET_LAST_INCREMENT_DATE, connection);
-                dataAdapter.SelectCommand.Parameters.Add("LastIncrement", SqlDbType.DateTime).Value = LastIncrement;
-                dataAdapter.SelectCommand.Parameters.Add("base", SqlDbType.Int).Value = this.Fund;
-                return this.ExecuteSelectQuery(dataAdapter);
+                SqlCommand command = new SqlCommand(BJQueries.SET_LAST_INCREMENT_DATE, connection);
+                command.Parameters.Add("LastIncrement", SqlDbType.DateTime).Value = LastIncrement;
+                command.Parameters.Add("base", SqlDbType.Int).Value = this.Fund;
+                connection.Open();
+                command.ExecuteNonQuery();
             }
         }
     }

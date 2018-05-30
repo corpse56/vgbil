@@ -18,7 +18,7 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
             DateTime CurrentDate = DateTime.Now;
             string stamp = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds.ToString();
             string key = "geqop45m))AZvb23zerhgjj76cvc##PFbbfqorptqskj";
-            DateTime LastIncrementDate = this.GetLastIncrementDate("litres");
+            DateTime LastIncrementDate = this.GetLastIncrementDate("Litres");
             DateTime checkpointDate = LastIncrementDate;
             string checkpoint = checkpointDate.ToString("yyyy-MM-dd HH:mm:ss");//"2017-01-01 00:00:00";
             //string endpoint = checkpointDate.AddMonths(1).ToString("yyyy-MM-dd HH:mm:ss");

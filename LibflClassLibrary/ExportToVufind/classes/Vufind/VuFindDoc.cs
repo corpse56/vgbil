@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using ExportBJ_XML.classes.BJ.Vufind;
 using ExportBJ_XML.ValueObjects;
+using System.Xml;
+using System.Reflection;
+using System.Security;
+using Utilities;
 
 namespace ExportBJ_XML.classes
 {
@@ -245,6 +249,75 @@ namespace ExportBJ_XML.classes
             }
 
         }
+
+
+        //создание XMLNode <doc> для экспорта
+        public XmlNode CreateExportXmlNode()
+        {
+            this.SpecialProcessing();
+            Type vfDocType = typeof(VufindDoc);
+            XmlDocument xmlDoc = new XmlDocument();
+            XmlNode node;
+            XmlNode result = xmlDoc.CreateElement("doc");
+            foreach (PropertyInfo propertyInfo in vfDocType.GetProperties())
+            {
+                string pname = propertyInfo.Name;
+                VufindField vfField = (VufindField)propertyInfo.GetValue(this, null);
+                foreach (string val in vfField.ValueList)
+                {
+                    node = AddXmlField(propertyInfo.Name, val);
+                    node = xmlDoc.ImportNode(node, true);
+                    result.AppendChild(node);
+                }
+            }
+            foreach (FieldInfo fieldInfo in vfDocType.GetFields())
+            {
+                if (fieldInfo.Name == "Exemplars")
+                {
+                    continue;
+                }
+                if (fieldInfo.Name == "ExemplarsJSON")
+                {
+                    node = AddXmlField("Exemplar", fieldInfo.GetValue(this).ToString());
+                    node = xmlDoc.ImportNode(node, true);
+                    result.AppendChild(node);
+                    continue;
+                }
+                if (fieldInfo.Name == "NewArrivals")
+                {
+                    if (fieldInfo.GetValue(this) != null)
+                    {
+                        node = AddXmlField(fieldInfo.Name, ((DateTime)fieldInfo.GetValue(this)).ToString("yyyy-MM-ddThh:mm:ssZ"));
+                        node = xmlDoc.ImportNode(node, true);
+                        result.AppendChild(node);
+                        continue;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                node = AddXmlField(fieldInfo.Name, fieldInfo.GetValue(this).ToString());
+                node = xmlDoc.ImportNode(node, true);
+                result.AppendChild(node);
+            }
+            return result;
+        }
+
+        private XmlNode AddXmlField(string name, string val)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            XmlNode field = xmlDoc.CreateElement("field");
+            XmlAttribute att = xmlDoc.CreateAttribute("name");
+            att.Value = name;
+            field.Attributes.Append(att);
+            field.InnerText = SecurityElement.Escape(val);
+            val = Extensions.XmlCharacterWhitelist(val);
+            field.InnerText = val;
+            return field;
+        }
+
 
     }
 }

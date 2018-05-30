@@ -37,25 +37,47 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
             if (IdList.Count == 0) return;
             StringBuilder address = new StringBuilder();
             StringBuilder query = new StringBuilder();
-            address.Append(@"http://192.168.56.31:8080/solr/biblio/update?stream.body=");
-            query.Append("%3Cdelete%3E");
+            address.Append(@"http://192.168.56.31:8080/solr/biblio/update");
+
+            //IdList = IdList.Take(5).ToList();
+            //IdList.Clear();
+            //IdList.Add("Litres_164927");
+            //IdList.Add("Litres_164928");
+            //IdList.Add("Litres_164929");
+
+
+            //query.Append("%3Cdelete%3E");
+            //foreach (string id in IdList)
+            //{
+            //    query.AppendFormat("%3Cquery%3Eid:{0}%3C/query%3E", id);
+            //}
+            //query.Append("%3C/delete%3E");
+
+            query.Append("<delete>");
             foreach (string id in IdList)
             {
-                query.AppendFormat("%3Cquery%3Eid:{0}%3C/query%3E", id);
+                query.AppendFormat("<query>id:{0}</query>", id);
             }
-            query.Append("%3C/delete%3E");
+            query.Append("</delete>");
 
-            address.Append(query.ToString());
+            //address.Append(query.ToString());
             Uri url = new Uri(address.ToString());
             
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;// | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
             request.Timeout = 120000000;
+            request.Method = "POST";
             request.KeepAlive = true;
             request.ProtocolVersion = HttpVersion.Version10;
             request.ServicePoint.ConnectionLimit = 24;
+            request.ContentType = "application/x-www-form-urlencoded";
 
+            byte[] postByteArray = System.Text.Encoding.UTF8.GetBytes("stream.body=" + query);
+            request.ContentLength = postByteArray.Length;
+            Stream postStream = request.GetRequestStream();
+            postStream.Write(postByteArray, 0, postByteArray.Length);
+            postStream.Close();
 
             XDocument ResponseXML = new XDocument();
             try
@@ -71,12 +93,11 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
                 throw new Exception(ResponseXML.ToString());
             }
 
-
             url = new Uri("http://192.168.56.31:8080/solr/biblio/update?stream.body=%3Ccommit/%3E");
             request = HttpWebRequest.Create(url) as HttpWebRequest;
             try
             {
-                HttpWebResponse response = request.GetResponse() as HttpWebResponse;//подтверждаем удаление
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;//подтверждаем удаление. подтверждение нужно посылать отдельным запросом.
                 ResponseXML = XDocument.Load(new StreamReader(response.GetResponseStream()));
             }
             catch (WebException ex)
@@ -84,27 +105,6 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
                 ResponseXML = XDocument.Load(new StreamReader(ex.Response.GetResponseStream()));
                 throw new Exception(ResponseXML.ToString());
             }
-
-
-            //здесь добавить анализ ответа
-            //Анализ ответа добавлять не нужно, поскольку если солару что-то не нравится, то в response будет ответ не 200, а другой и вывалится исключение. его ловим и передаём ответ солара для анализа наверх и записываем в лог
-            //var status = ResponseXML.Descendants("int");
-            //foreach (XElement elt in status)
-            //{
-            //    if (elt.Attribute("name") != null)
-            //    {
-            //        string sss = elt.Attribute("name").Value;
-            //        if (elt.Attribute("name").Value == "status")
-            //        {
-            //            string s = elt.Value;
-            //            if (elt.Value != "0")
-            //            {
-            //                throw new Exception("Ошибка Solr. " + ResponseXML.ToString());
-            //            }
-            //        }
-            //    }
-            //}
-
         }
 
         public void AddToIndex(VufindDoc vdoc)
@@ -112,30 +112,37 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
             
             // To convert an XML node contained in string xml into a JSON string   
             XmlDocument doc = new XmlDocument();
-            VufindXMLWriter writer = new VufindXMLWriter("");//создаём с пустым фондом для того, чтобы вызвать метод создания xml-формы документа вуфайнд. надо выносить эту логику в базовый класс или в класс VufindDoc
-            XmlNode node = writer.CreateXmlNode(vdoc);
-            doc.AppendChild(node);
 
-            string jsonText = JsonConvert.SerializeXmlNode(doc);
+            XmlNode RootNode = doc.CreateElement("add");
+            doc.AppendChild(RootNode);
 
-            // To convert JSON text contained in string json into an XML node
-            //XmlDocument doc = JsonConvert.DeserializeXmlNode(json);
+            XmlNode node = vdoc.CreateExportXmlNode();
+            node = doc.ImportNode(node, true);
+            RootNode.AppendChild(node);
+            
+            string xmlText = doc.InnerXml;
 
-
-            Uri url = new Uri("http://192.168.56.31:8080/solr/biblio/update?stream.body="+jsonText+"&commit=true");
+            //Uri url = new Uri("http://192.168.56.31:8080/solr/biblio/update?stream.body=" + xmlText + "&commit=true");
+            Uri url = new Uri("http://192.168.56.31:8080/solr/biblio/update?commit=true");
             HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
             request.Timeout = 120000000;
+            request.Method = "POST";
             request.KeepAlive = true;
             request.ProtocolVersion = HttpVersion.Version10;
             request.ServicePoint.ConnectionLimit = 24;
+            request.ContentType = "application/x-www-form-urlencoded";
 
-
+            byte[] postByteArray = System.Text.Encoding.UTF8.GetBytes("stream.body=" + xmlText);
+            request.ContentLength = postByteArray.Length;
+            Stream postStream = request.GetRequestStream();
+            postStream.Write(postByteArray, 0, postByteArray.Length);
+            postStream.Close();
             XDocument ResponseXML = new XDocument();
             try
             {
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)//посылаем запрос на удаление
                 {
-
+                    ResponseXML = XDocument.Load(new StreamReader(response.GetResponseStream()));
                 }
             }
             catch (WebException ex)
@@ -143,8 +150,6 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
                 ResponseXML = XDocument.Load(new StreamReader(ex.Response.GetResponseStream()));
                 throw new Exception(ResponseXML.ToString());
             }
-
-
         }
 
         public DateTime GetLastIncrementDate(string fund)
