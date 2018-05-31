@@ -32,15 +32,14 @@ namespace VufindIncrementUpdate
                 catch (Exception ex)
                 {
                     log.WriteLog("Загрузка инкремента завершилось неудачей. " + ex.Message);
-                    log.Dispose();
                     Console.WriteLine("Error...");
                     Console.ReadKey();
+                    return;
                 }
                 log.WriteLog("Загрузка инкремента Litres успешно завершена...");
                 Console.WriteLine("Загрузка инкремента Litres успешно завершена...");
 
-
-                //IncrementXML = XDocument.Load(@"F:\increment_litres.xml");//для отладки берём файл поменьше
+                //IncrementXML = XDocument.Load(@"f:\projects\LIBFL\VufindIncrementUpdate\bin\Debug\increment31.05.2018 01.10.xml");//для отладки 
 
                 //вычленияем удалённые записи и удаляем их из индекса
                 var removedBooks = IncrementXML.Descendants("removed-book");
@@ -53,16 +52,15 @@ namespace VufindIncrementUpdate
                 }
 
                 //вычленияем изменённые записи и тоже удаляем их из индекса. хотя по моему это необязятельно. если послать запись, которая уже есть, то она автоматически обновится. надо проверить
-                removedBooks = IncrementXML.Descendants("updated-book");
-                foreach (XElement elt in removedBooks)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    sb.AppendFormat("Litres_{0}", elt.Attribute("id").Value);
-                    removedBookIDs.Add(sb.ToString());
-                }
+                //так и есть - это необязательно. экономим время и пропускаем этот шаг
+                //removedBooks = IncrementXML.Descendants("updated-book");
+                //foreach (XElement elt in removedBooks)
+                //{
+                //    StringBuilder sb = new StringBuilder();
+                //    sb.AppendFormat("Litres_{0}", elt.Attribute("id").Value);
+                //    removedBookIDs.Add(sb.ToString());
+                //}
 
-                //removedBookIDs.Clear();
-                //removedBookIDs.Add("132123213213213213213213123");
                 try
                 {
                     litres.DeleteFromIndex(removedBookIDs);//удаляем сразу все одним запросом. 
@@ -70,7 +68,6 @@ namespace VufindIncrementUpdate
                 catch (Exception ex)
                 {
                     log.WriteLog("Удаление завершилось неудачей. \n" + ex.Message);
-                    log.Dispose();
                     Console.WriteLine("Error...");
                     Console.ReadKey();
                     return;
@@ -82,9 +79,8 @@ namespace VufindIncrementUpdate
                     log.WriteLog(sb.ToString());
                 }
 
-                //теперь добавляем изменённые
-
-                IEnumerable<XElement> UpdatedBooks = IncrementXML.Descendants("updated-book").Take(5);
+                //теперь добавляем новые и изменяем изменённые. Изменённые заменяться автоматически
+                IEnumerable<XElement> UpdatedBooks = IncrementXML.Descendants("updated-book");
                 LitresVuFindConverter converter = new LitresVuFindConverter();
                 foreach (XElement elt in UpdatedBooks)
                 {
@@ -100,18 +96,16 @@ namespace VufindIncrementUpdate
                     catch (Exception ex)
                     {
                         log.WriteLog("Добавление в индекс завершилось неудачей.  \n" + ex.Message + " Запись: " + doc.id);
-                        log.Dispose();
                         Console.WriteLine("Error...");
                         Console.ReadKey();
+                        return;
                     }
                 }
 
                 litres.SetLastIncrementDate("Litres");
 
-
-                log.WriteLog("Завершено...");
-                log.Dispose();
-                Console.WriteLine("Done...");
+                log.WriteLog("Завершено.");
+                Console.WriteLine("Done.");
                 Console.ReadKey();
             }
 

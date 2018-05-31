@@ -115,14 +115,13 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
 
             XmlNode RootNode = doc.CreateElement("add");
             doc.AppendChild(RootNode);
-
             XmlNode node = vdoc.CreateExportXmlNode();
             node = doc.ImportNode(node, true);
             RootNode.AppendChild(node);
-            
-            string xmlText = doc.InnerXml;
+            doc.AppendChild(RootNode);
 
-            //Uri url = new Uri("http://192.168.56.31:8080/solr/biblio/update?stream.body=" + xmlText + "&commit=true");
+            //doc.Load(AppDomain.CurrentDomain.BaseDirectory + @"increment31.05.2018 01.54.xml");//для отладки
+
             Uri url = new Uri("http://192.168.56.31:8080/solr/biblio/update?commit=true");
             HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
             request.Timeout = 120000000;
@@ -130,19 +129,26 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
             request.KeepAlive = true;
             request.ProtocolVersion = HttpVersion.Version10;
             request.ServicePoint.ConnectionLimit = 24;
-            request.ContentType = "application/x-www-form-urlencoded";
-
-            byte[] postByteArray = System.Text.Encoding.UTF8.GetBytes("stream.body=" + xmlText);
-            request.ContentLength = postByteArray.Length;
+            //request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = "application/xml";
+            
             Stream postStream = request.GetRequestStream();
-            postStream.Write(postByteArray, 0, postByteArray.Length);
+            doc.Save(postStream);
+            postStream.Flush();
             postStream.Close();
+            
             XDocument ResponseXML = new XDocument();
             try
             {
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)//посылаем запрос на удаление
                 {
-                    ResponseXML = XDocument.Load(new StreamReader(response.GetResponseStream()));
+                    using (Stream streamResponse = response.GetResponseStream())
+                    {
+                        using (StreamReader reader = new StreamReader(streamResponse, Encoding.UTF8))
+                        {
+                            ResponseXML = XDocument.Load(reader);
+                        }
+                    }
                 }
             }
             catch (WebException ex)

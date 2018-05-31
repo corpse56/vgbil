@@ -367,7 +367,7 @@ namespace ExportBJ_XML.classes
             HttpWebResponse response = request.GetResponse() as HttpWebResponse;
             //response.Close();
             XDocument xdoc = XDocument.Load(new StreamReader(response.GetResponseStream()));
-
+            
             //читать простым текстом по частям
             //using (Stream output = File.OpenWrite("litres.dat"))
             //using (Stream input = response.GetResponseStream())

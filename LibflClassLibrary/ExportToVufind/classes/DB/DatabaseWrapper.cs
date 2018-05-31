@@ -386,7 +386,7 @@ namespace ExportBJ_XML.classes.DB
             {
                 SqlCommand command = new SqlCommand(BJQueries.SET_LAST_INCREMENT_DATE, connection);
                 command.Parameters.Add("LastIncrement", SqlDbType.DateTime).Value = LastIncrement;
-                command.Parameters.Add("base", SqlDbType.Int).Value = this.Fund;
+                command.Parameters.Add("base", SqlDbType.NVarChar).Value = this.Fund;
                 connection.Open();
                 command.ExecuteNonQuery();
             }

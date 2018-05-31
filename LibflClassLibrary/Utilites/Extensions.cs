@@ -142,7 +142,13 @@ namespace Utilities
                                                   || c == '-')));
             return WithoutSpecialCharacters = new string(arr);
         }
-       
+        public static byte[] AppendTwoByteArrays(byte[] arrayA, byte[] arrayB)
+        {
+            byte[] outputBytes = new byte[arrayA.Length + arrayB.Length];
+            Buffer.BlockCopy(arrayA, 0, outputBytes, 0, arrayA.Length);
+            Buffer.BlockCopy(arrayB, 0, outputBytes, arrayA.Length, arrayB.Length);
+            return outputBytes;
+        }
     }
 }
 namespace System.Runtime.CompilerServices

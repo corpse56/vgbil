@@ -41,10 +41,18 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
             request.ProtocolVersion = HttpVersion.Version10;
             request.ServicePoint.ConnectionLimit = 24;
 
-            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
             //response.Close();
-            XDocument xdoc = XDocument.Load(new StreamReader(response.GetResponseStream()));
-
+            XDocument xdoc;
+            using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)//посылаем запрос на удаление
+            {
+                using (Stream streamResponse = response.GetResponseStream())
+                {
+                    using (StreamReader reader = new StreamReader(streamResponse, Encoding.UTF8))
+                    {
+                        xdoc = XDocument.Load(reader);
+                    }
+                }
+            }            
             return xdoc;
         }
 
