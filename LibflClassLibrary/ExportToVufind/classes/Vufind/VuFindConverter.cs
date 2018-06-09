@@ -49,7 +49,46 @@ namespace ExportBJ_XML.classes
             }
         }
 
-       
+        public static string GetCoverExportPath(string id)
+        {
+            string ID = id.Substring(id.LastIndexOf("_")+1);
+            string result = "";
+
+            switch (ID.Length)//настроено на семизначный, но в будущем будет 9-значный айдишник
+            {
+                case 1:
+                    result = "00000000" + ID;
+                    break;
+                case 2:
+                    result = "0000000" + ID;
+                    break;
+                case 3:
+                    result = "000000" + ID;
+                    break;
+                case 4:
+                    result = "00000" + ID;
+                    break;
+                case 5:
+                    result = "0000" + ID;
+                    break;
+                case 6:
+                    result = "000" + ID;
+                    break;
+                case 7:
+                    result = "00" + ID;
+                    break;
+                case 8:
+                    result = "0" + ID;
+                    break;
+                case 9:
+                    result = ID;
+                    break;
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.Append(result[0]).Append(result[1]).Append(result[2]).Append(@"\").Append(result[3]).Append(result[4]).Append(result[5]).Append(@"\").Append(result[6]).Append(result[7]).Append(result[8]).Append(@"\JPEG_AB\");
+            //string returnValue = result[0].ToString() + result[1].ToString() + result[2].ToString() + @"\" + result[3] + result[4] + result[5] + @"\" + result[6] + result[7] + result[8] + @"\JPEG_AB\";
+            return sb.ToString();
+        }
 
         public static string GetFundId(string fund)
         {

@@ -23,35 +23,15 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
 
         public abstract XDocument GetCurrentIncrement();
 
-
-//        curl http://dev.libfl.ru:8080/solr/biblio/update --data "<delete><query>id:BJVVV_1463041</query></delete>" -H "Content-type:text/xml; charset=utf-8"
-//        curl http://dev.libfl.ru:8080/solr/biblio/update --data "<commit/>" -H "Content-type:text/xml; charset=utf-8"
-//        curl http://dev.libfl.ru:8080/solr/biblio/update?commit=true -H "Content-Type: text/xml" --data-binary @f:\import\singleRecords\BJVVV_1463041.xml
-
         //curl http://192.168.56.31:8080/solr/biblio/update --data "<delete><query>id:BJVVV_1463041</query><query>id:BJVVV_1463040</query></delete>" -H "Content-type:text/xml; charset=utf-8"
         //curl http://192.168.56.31:8080/solr/biblio/update --data "<commit/>" -H "Content-type:text/xml; charset=utf-8"
-
-            
+       
         public void DeleteFromIndex(List<string> IdList)
         {
             if (IdList.Count == 0) return;
             StringBuilder address = new StringBuilder();
             StringBuilder query = new StringBuilder();
-            address.Append(@"http://192.168.56.31:8080/solr/biblio/update");
-
-            //IdList = IdList.Take(5).ToList();
-            //IdList.Clear();
-            //IdList.Add("Litres_164927");
-            //IdList.Add("Litres_164928");
-            //IdList.Add("Litres_164929");
-
-
-            //query.Append("%3Cdelete%3E");
-            //foreach (string id in IdList)
-            //{
-            //    query.AppendFormat("%3Cquery%3Eid:{0}%3C/query%3E", id);
-            //}
-            //query.Append("%3C/delete%3E");
+            address.Append(@"http://catalog.libfl.ru:8080/solr/biblio/update");
 
             query.Append("<delete>");
             foreach (string id in IdList)
@@ -93,7 +73,7 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
                 throw new Exception(ResponseXML.ToString());
             }
 
-            url = new Uri("http://192.168.56.31:8080/solr/biblio/update?stream.body=%3Ccommit/%3E");
+            url = new Uri("http://catalog.libfl.ru:8080/solr/biblio/update?stream.body=%3Ccommit/%3E");
             request = HttpWebRequest.Create(url) as HttpWebRequest;
             try
             {
@@ -107,22 +87,26 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
             }
         }
 
-        public void AddToIndex(VufindDoc vdoc)
+        public void AddToIndex(List<VufindDoc> vfDocList)
         {
             
             // To convert an XML node contained in string xml into a JSON string   
             XmlDocument doc = new XmlDocument();
-
             XmlNode RootNode = doc.CreateElement("add");
             doc.AppendChild(RootNode);
-            XmlNode node = vdoc.CreateExportXmlNode();
-            node = doc.ImportNode(node, true);
-            RootNode.AppendChild(node);
-            doc.AppendChild(RootNode);
+
+
+            foreach (VufindDoc vfdoc in vfDocList)
+            {
+                XmlNode node = vfdoc.CreateExportXmlNode();
+                node = doc.ImportNode(node, true);
+                RootNode.AppendChild(node);
+                //doc.AppendChild(RootNode);
+            }
 
             //doc.Load(AppDomain.CurrentDomain.BaseDirectory + @"increment31.05.2018 01.54.xml");//для отладки
 
-            Uri url = new Uri("http://192.168.56.31:8080/solr/biblio/update?commit=true");
+            Uri url = new Uri("http://catalog.libfl.ru:8080/solr/biblio/update?commit=true");
             HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
             request.Timeout = 120000000;
             request.Method = "POST";
@@ -160,14 +144,14 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
 
         public DateTime GetLastIncrementDate(string fund)
         {
-            DatabaseWrapper db = new DatabaseWrapper(fund);
+            BJDatabaseWrapper db = new BJDatabaseWrapper(fund);
             DataTable table = db.GetLastIncrementDate();
             return (DateTime)table.Rows[0][0];
         }
 
         public void SetLastIncrementDate(string fund)
         {
-            DatabaseWrapper db = new DatabaseWrapper(fund);
+            BJDatabaseWrapper db = new BJDatabaseWrapper(fund);
             db.SetLastIncrementDate(DateTime.Now.AddHours(-1));
         }
     }

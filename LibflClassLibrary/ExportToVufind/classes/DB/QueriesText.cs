@@ -284,8 +284,41 @@ namespace ExportBJ_XML.QueriesText
                 return "update EXPORTNEB..VufindIncrementUpdate set LastIncrement = @LastIncrement where lower(BaseName) = lower(@base)";
             }
         }
+        public string GET_BUSY_ELECTRONIC_EXEMPLAR_COUNT//вся редкая книга без авторского права, но в будущем надо всё равно для всех фондов сделать BASE
+        {
+            get
+            {
+                return "select ID from Reservation_R..ELISSUED where BASE = "+((this.Fund == "BJVVV")? "1" : "2")+" and IDMAIN = @IDMAIN";
+            }
+        }
+        public string GET_NEAREST_FREE_DATE_FOR_ELECTRONIC_ISSUE//вся редкая книга без авторского права, но в будущем надо всё равно для всех фондов сделать BASE
+        {
+            get
+            {
+                return "select min(DATERETURN) from Reservation_R..ELISSUED where BASE = " + ((this.Fund == "BJVVV") ? "1" : "2") + " and IDMAIN = @IDMAIN";
+            }
+        }        
+        
+
+
     }
 
-
+    public class Reader
+    {
+        public string GET_READER
+        {
+            get
+            {
+                return "select * from Readers..Main where NumberReader = @Id";
+            }
+        }
+        public string IS_FIVE_ELBOOKS_ISSUED
+        {
+            get
+            {
+                return "select * from Reservation_R..ELISSUED where IDREADER = @Id";
+            }
+        }
+    }
 
 }

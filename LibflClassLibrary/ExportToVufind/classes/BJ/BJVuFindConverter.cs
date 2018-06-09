@@ -26,11 +26,11 @@ namespace ExportBJ_XML.classes
         public BJVuFindConverter(string fund)
         {
             this.Fund = fund;
-            this.dbWrapper = new DatabaseWrapper(fund);
+            this.dbWrapper = new BJDatabaseWrapper(fund);
         }
 
         private int _lastID = 1;
-        private DatabaseWrapper dbWrapper;
+        private BJDatabaseWrapper dbWrapper;
         private List<string> errors = new List<string>();
         private VufindXMLWriter writer;
         public override void Export()

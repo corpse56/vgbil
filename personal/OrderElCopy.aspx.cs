@@ -26,7 +26,7 @@ public partial class OrderElCopy : System.Web.UI.Page
         if (IDReader == null)
         {
             IDReader = User.Identity.Name;
-            Response.Write("User.Identity.Name" + IDReader);
+            Response.Write("User.Identity.Name " + IDReader);
         }
         else
         {
@@ -36,10 +36,10 @@ public partial class OrderElCopy : System.Web.UI.Page
         string BaseName = (IDBASE == "1")? "BJVVV" : "REDKOSTJ";
 
         LibflAPI.ServiceSoapClient api = new LibflAPI.ServiceSoapClient();
-        LibflAPI.ReaderInfo reader;
+        LibflAPI.ReaderInfo readerAPI;
         try
         {
-            reader = api.GetUser(IDReader);
+            readerAPI = api.GetUser(IDReader);
         }
         catch
         {
@@ -62,6 +62,32 @@ public partial class OrderElCopy : System.Web.UI.Page
         else    //ЗАКРЫТЫЕ АВТОРСКИМ ПРАВОМ
         {
 
+            //Book b = new Book(IDMAIN);
+            
+            //if (this.IsFiveElBooksIssued(idr, rtype))
+            //{
+            //    return "Нельзя заказать больше 5 электронных книг! Сдайте какие-либо выданные Вам электронные копии на вкладке \"Электронные книги\" и повторите заказ! ";
+            //}
+            //if (this.IsELOrderedByCurrentReader(idr, rtype))
+            //{
+            //    return "Электронная копия этого документа уже выдана Вам!";
+            //}
+            //if (b.GetExemplarCount() - b.GetBusyExemplarCount() <= 0)
+            //{
+            //    return "Все экземпляры выданы. Нельзя выдать электронных экземпляров больше чем бумажных, так как это нарушит авторское право." +
+            //        " Ближайшая свободная дата " + b.GetNearestFreeDate().ToString("dd.MM.yyyy") + ". Попробуйте заказать в указанную дату.";
+
+            //}
+            //if (!this.IsDayPastAfterReturn(idr, rtype))
+            //{
+            //    return "Вы не можете заказать эту электронную копию, поскольку запрещено заказывать ту же копию, если не прошли сутки с момента её возврата. Попробуйте на следующий день.";
+            //}
+            //return "";
+
+
+
+
+
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = new SqlConnection(AppSettings.ConnectionString);
             cmd.CommandText = "select * from Reservation_R..ELISSUED where IDREADER = "+IDReader+" and IDMAIN = "+IDMAIN;
@@ -71,6 +97,15 @@ public partial class OrderElCopy : System.Web.UI.Page
 
             if (cnt == 0)
             {
+                BJBookInfo book = BJBookInfo.GetBookInfoByPIN(int.Parse(IDMAIN), BaseName);
+                LibflClassLibrary.Readers.ReaderInfo reader = LibflClassLibrary.Readers.ReaderInfo.GetReader(int.Parse(IDReader));
+                if (reader.IsFiveElBooksIssued())
+                {
+                    Label1.Text = "Нельзя взять более пяти электронных книг. Сдайте в личном кабинете любую электронную копию и попробуйте снова.";
+                    //здесь надо редирект куда-то делать или вставлять ссылку на переход куда-нибудь.
+                    return;
+                }
+
                 Book b = new Book(IDMAIN);
                 InvOfBook inv = new InvOfBook();
                 inv.inv = "Электронная копия";

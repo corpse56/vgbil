@@ -8,6 +8,7 @@ using ExportBJ_XML.classes.BJ;
 using ExportBJ_XML.classes.DB;
 using System.Data;
 using System.Windows.Forms;
+using DataProviderAPI.Loaders;
 
 /// <summary>
 /// Сводное описание для BookInfo
@@ -23,11 +24,10 @@ namespace ExportBJ_XML.ValueObjects
         public BJFields Fields = new BJFields();
 
         public string RTF;
-        //public string Title { get; set; }
-        //public BJField Author = new BJField();//700a,701a
-        //public BJField Annotation = new BJField();//
 
         public int ID { get; set; }
+
+        public string Fund {get;set;}
 
 
         #region Экземпляры книги
@@ -38,10 +38,11 @@ namespace ExportBJ_XML.ValueObjects
 
         public static BJBookInfo GetBookInfoByPIN(int pin, string fund)
         {
-            DatabaseWrapper dbw = new DatabaseWrapper(fund);
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetBJRecord(pin);
             BJBookInfo result = new BJBookInfo();
             result.ID = pin;
+            result.Fund = fund;
             ExemplarInfo exemplar = new ExemplarInfo(0);
             int CurrentIdData = 0;
             foreach (DataRow row in table.Rows)
@@ -79,10 +80,39 @@ namespace ExportBJ_XML.ValueObjects
 
         public static BJBookInfo GetBookInfoByInventoryNumber(string inv, string fund)
         {
-            DatabaseWrapper dbw = new DatabaseWrapper(fund);
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetExemplar(inv);
             BJBookInfo result = BJBookInfo.GetBookInfoByPIN((int)table.Rows[0]["IDMAIN"], fund);
             return result;
         }
+
+        //Если выданы все бумажные, то нельзя.
+        //Если электронных плюс бумажных выдач столько же сколько всего бумажных то нельзя.
+        //Если электронных выдач столько же сколько бумажных, то
+        public bool IsElBookAvailableForIssue()
+        {
+            if (this.Exemplars.Count - this.GetBusyExemplarCount() <= 0)
+            {
+                return "Все экземпляры выданы. Нельзя выдать электронных экземпляров больше чем бумажных, так как это нарушит авторское право." +
+                    " Ближайшая свободная дата " + b.GetNearestFreeDate().ToString("dd.MM.yyyy") + ". Попробуйте заказать в указанную дату.";
+
+            }
+        }
+        public int GetBusyExemplarCount()
+        {
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
+            DataTable table = dbw.GetBusyExemplarCount(this.ID);
+            return table.Rows.Count;
+        }
+
+        public DateTime GetNearestFreeDateForElectronicIssue()
+        {
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
+            DataTable table = dbw.GetNearestFreeDateForElectronicIssue(this.ID);
+            if (table.Rows.Count == 0) return DateTime.Today;
+            return (DateTime)table.Rows[0][0];
+        }
+
+
     }
 }

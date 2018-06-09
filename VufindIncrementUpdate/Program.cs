@@ -60,6 +60,8 @@ namespace VufindIncrementUpdate
                 //    sb.AppendFormat("Litres_{0}", elt.Attribute("id").Value);
                 //    removedBookIDs.Add(sb.ToString());
                 //}
+                Console.WriteLine("Начинаю удаление изъятых записей из индекса...");
+                log.WriteLog("Начинаю удаление изъятых записей из индекса...");
 
                 try
                 {
@@ -68,7 +70,7 @@ namespace VufindIncrementUpdate
                 catch (Exception ex)
                 {
                     log.WriteLog("Удаление завершилось неудачей. \n" + ex.Message);
-                    Console.WriteLine("Error...");
+                    Console.WriteLine("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.ReadKey();
                     return;
                 }
@@ -76,39 +78,49 @@ namespace VufindIncrementUpdate
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.AppendFormat("Запись {0} удалена из индекса", elt);
+                    Console.WriteLine(sb.ToString());
                     log.WriteLog(sb.ToString());
                 }
+                Console.WriteLine("Начинаю обновление записей...");
+                log.WriteLog("Начинаю обновление записей...");
 
                 //теперь добавляем новые и изменяем изменённые. Изменённые заменяться автоматически
                 IEnumerable<XElement> UpdatedBooks = IncrementXML.Descendants("updated-book");
                 LitresVuFindConverter converter = new LitresVuFindConverter();
+                List<VufindDoc> UpdatedBooksList = new List<VufindDoc>();
+                VufindDoc doc;
                 foreach (XElement elt in UpdatedBooks)
                 {
-                    VufindDoc doc = converter.CreateVufindDoc(elt);
-                    try
-                    {
-                        litres.AddToIndex(doc);
-                        StringBuilder sb = new StringBuilder();
-                        sb.AppendFormat("Запись {0} обновлена. ", doc.id);
-                        log.WriteLog(sb.ToString());
+                    doc = converter.CreateVufindDoc(elt);
+                    UpdatedBooksList.Add(doc);
+                }
 
-                    }
-                    catch (Exception ex)
-                    {
-                        log.WriteLog("Добавление в индекс завершилось неудачей.  \n" + ex.Message + " Запись: " + doc.id);
-                        Console.WriteLine("Error...");
-                        Console.ReadKey();
-                        return;
-                    }
+                    
+                try
+                {
+                    litres.AddToIndex(UpdatedBooksList);
+                }
+                catch (Exception ex)
+                {
+                    log.WriteLog("Добавление в индекс завершилось неудачей.  \n" + ex.Message);
+                    Console.WriteLine("Error...");
+                    Console.ReadKey();
+                    return;
+                }
+                foreach (VufindDoc vfdoc in UpdatedBooksList)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendFormat("Запись {0} обновлена. ", vfdoc.id);
+                    Console.WriteLine(sb.ToString());
+                    log.WriteLog(sb.ToString());
                 }
 
                 litres.SetLastIncrementDate("Litres");
 
                 log.WriteLog("Завершено.");
-                Console.WriteLine("Done.");
-                Console.ReadKey();
+                Console.WriteLine("Завершено.");
             }
-
+            Console.ReadKey();
         }
     }
 }

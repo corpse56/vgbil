@@ -45,7 +45,7 @@ namespace ExportBJ_XML.ValueObjects
 
         public static ExemplarInfo GetExemplarByInventoryNumber(string inv, string fund)
         {
-            DatabaseWrapper dbw = new DatabaseWrapper(fund);
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetExemplar(inv);
             if (table.Rows.Count == 0)
             {
@@ -67,7 +67,7 @@ namespace ExportBJ_XML.ValueObjects
         }
         public static ExemplarInfo GetExemplarByIdData(int iddata, string fund)
         {
-            DatabaseWrapper dbw = new DatabaseWrapper(fund);
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetExemplar(iddata);
             ExemplarInfo exemplar = new ExemplarInfo((int)table.Rows[0]["IDDATA"]);
             exemplar.IDMAIN = (int)table.Rows[0]["IDMAIN"];
@@ -214,6 +214,11 @@ namespace ExportBJ_XML.ValueObjects
                             access.MethodOfAccess = 4005;
                         }
                     }
+                    else if (exemplar.Fields["921$d"].ToLower() == "на усмотрение сотрудника")
+                    {
+                        access.Access = 1010;
+                        access.MethodOfAccess = 4005;
+                    }
                     else
                     {
                         access.Access = 1999;
@@ -330,7 +335,7 @@ namespace ExportBJ_XML.ValueObjects
             switch (this.Fund)
             {
                 case "BJVVV":
-                    DatabaseWrapper dbw = new DatabaseWrapper(this.Fund);
+                    BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
                     DataTable table = dbw.IsIssuedOrOrderedEmployee(this.IDMAIN, this.IdData);
                     return (table.Rows.Count == 0) ? false : true;
                 default:
@@ -343,7 +348,7 @@ namespace ExportBJ_XML.ValueObjects
             switch (this.Fund)
             {
                 case "BJVVV":
-                    DatabaseWrapper dbw = new DatabaseWrapper(this.Fund);
+                    BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
                     DataTable table = dbw.IsSelfIssuedOrOrderedEmployee(this.IdData, this.IDMAIN, IdReader);
                     return (table.Rows.Count == 0) ? false : true;
                 default:
@@ -356,7 +361,7 @@ namespace ExportBJ_XML.ValueObjects
             switch (this.Fund)
             {
                 case "BJVVV":
-                    DatabaseWrapper dbw = new DatabaseWrapper(this.Fund);
+                    BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
                     DataTable table = dbw.IsIssuedToReader(this.IdData);
                     return (table.Rows.Count == 0) ? false : true;
                 default:
@@ -369,7 +374,7 @@ namespace ExportBJ_XML.ValueObjects
             switch (this.Fund)
             {
                 case "BJVVV":
-                    DatabaseWrapper dbw = new DatabaseWrapper(this.Fund);
+                    BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
                     DataTable table = dbw.GetEmployeeStatus(this.IDMAIN);
                     return (table.Rows.Count == 0) ? "" : table.Rows[0][0].ToString();
                 default:

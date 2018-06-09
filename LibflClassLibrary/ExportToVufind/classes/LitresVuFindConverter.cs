@@ -270,7 +270,7 @@ namespace ExportBJ_XML.classes
         }
         public override void ExportCovers()
         {
-            //XDocument xdoc = XDocument.Load(@"f:\api_litres.xml");
+            //XDocument xdoc = XDocument.Load(@"f:\litres_example.xml");//для отладки
             XDocument xdoc = XDocument.Load(@"f:\litres_source.xml");
 
 
@@ -322,7 +322,8 @@ namespace ExportBJ_XML.classes
                 sb.Append(id[0]).Append(id[1]).Append("/").Append(id[2]).Append(id[3]).Append("/").Append(id[4]).Append(id[5]).Append("/").Append(id).Append(".bin.dir/").Append(id).Append(".cover.").Append(coverType);
                 string coverUrl = sb.ToString();
 
-                string path = @"f:\import\covers\litres\" + elt.Attribute("id").Value +@"\";
+                string NewPath = VuFindConverter.GetCoverExportPath("Litres_" + elt.Attribute("id").Value);
+                string path = @"f:\import\covers\LITRES1\" + NewPath;
 
                 StringBuilder fileName = new StringBuilder();
                 fileName.Append(path).Append("cover.").Append(coverType);

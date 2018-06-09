@@ -9,7 +9,11 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    
+        <asp:Panel ID="Panel1" runat="server" Visible = "false">
+            <asp:Label ID="Label1" runat="server" Text="Label" Font-Size="Large" ForeColor="Red">
+            
+            </asp:Label>
+        </asp:Panel>
     </div>
     </form>
 </body>
