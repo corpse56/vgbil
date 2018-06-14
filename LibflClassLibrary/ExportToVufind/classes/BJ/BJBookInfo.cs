@@ -9,6 +9,8 @@ using ExportBJ_XML.classes.DB;
 using System.Data;
 using System.Windows.Forms;
 using DataProviderAPI.Loaders;
+using System.Security.Cryptography;
+using DataProviderAPI.ValueObjects;
 
 /// <summary>
 /// Сводное описание для BookInfo
@@ -86,22 +88,11 @@ namespace ExportBJ_XML.ValueObjects
             return result;
         }
 
-        //Если выданы все бумажные, то нельзя.
-        //Если электронных плюс бумажных выдач столько же сколько всего бумажных то нельзя.
-        //Если электронных выдач столько же сколько бумажных, то
-        public bool IsElBookAvailableForIssue()
-        {
-            if (this.Exemplars.Count - this.GetBusyExemplarCount() <= 0)
-            {
-                return "Все экземпляры выданы. Нельзя выдать электронных экземпляров больше чем бумажных, так как это нарушит авторское право." +
-                    " Ближайшая свободная дата " + b.GetNearestFreeDate().ToString("dd.MM.yyyy") + ". Попробуйте заказать в указанную дату.";
-
-            }
-        }
-        public int GetBusyExemplarCount()
+       
+        public int GetBusyElectronicExemplarCount()
         {
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
-            DataTable table = dbw.GetBusyExemplarCount(this.ID);
+            DataTable table = dbw.GetBusyElectronicExemplarCount(this.ID);
             return table.Rows.Count;
         }
 
@@ -113,6 +104,54 @@ namespace ExportBJ_XML.ValueObjects
             return (DateTime)table.Rows[0][0];
         }
 
+        public bool IsOneDayPastAfterReturn(int IDREADER)
+        {
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
+            DataTable table = dbw.IsOneDayPastAfterReturn(this.ID,IDREADER);
 
+            foreach (DataRow r in table.Rows)
+            {
+                TimeSpan ts = (DateTime.Now.Date - (DateTime)r["DATERETURN"]);
+                if (ts.Days >= 1) return true; else return false;
+            }
+            return true;
+        }
+
+        public bool IsElectronicCopyIsuuedToReader(int IDREADER)
+        {
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
+            DataTable table = dbw.IsElectronicCopyIsuuedToReader(this.ID, IDREADER);
+            return (table.Rows.Count != 0)? true : false;
+        }
+
+        public string GetElectronicViewKeyForReader(int IDREADER)
+        {
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
+            DataTable table = dbw.GetElectronicViewKeyForReader(this.ID, IDREADER);
+            return table.Rows[0]["VIEWKEY"].ToString();
+        }
+
+      
+
+        public bool IsElectronicCopyIssued()
+        {
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
+            DataTable table = dbw.IsElectronicCopyIssued(this.ID);
+            return (table.Rows.Count != 0) ? true : false;
+        }
+
+       
+
+        public void IssueElectronicCopyToReader(int IDREADER)
+        {
+            ReaderInfo reader = ReaderInfo.GetReader(IDREADER);
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
+            byte[] random = new byte[20];
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(random); // The array is now filled with cryptographically strong random bytes.
+            string ViewKey = Convert.ToBase64String(random);
+            int IssuePeriodDays = 30;
+            dbw.IssueElectronicCopyToReader(this.ID, IssuePeriodDays, ViewKey, IDREADER, reader.TypeReader);
+        }
     }
 }

@@ -11,9 +11,9 @@
     <div>
         <asp:Panel ID="Panel1" runat="server" Visible = "false">
             <asp:Label ID="Label1" runat="server" Text="Label" Font-Size="Large" ForeColor="Red">
-            
             </asp:Label>
         </asp:Panel>
+        <asp:HyperLink ID="HyperLink1" runat="server" Font-Size="Large" NavigateUrl = "https://catalog.libfl.ru" Target = "_self">Вернуться в каталог</asp:HyperLink>
     </div>
     </form>
 </body>

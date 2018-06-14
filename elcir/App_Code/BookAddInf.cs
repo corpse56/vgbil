@@ -140,8 +140,8 @@ namespace Elcir
             da.SelectCommand.Parameters["rtype"].Value = this.R_TYPE;
             da.SelectCommand.Parameters["vkey"].Value = this.ViewKey;
 
-            da.SelectCommand.CommandText = "select * from Reservation_R..ELISSUED where IDMAIN = @idbook and IDREADER = @idr and R_TYPE = @rtype and VIEWKEY = @vkey and BASE = @idbase" +
-                            " and getdate() between DATEISSUE and DATERETURN";
+            da.SelectCommand.CommandText = "select * from Reservation_R..ELISSUED where IDMAIN = @idbook and IDREADER = @idr and R_TYPE = @rtype and VIEWKEY = @vkey and BASE = @idbase";// +
+                            //" and DATEADD(hour,1,getdate()) between DATEISSUE and DATERETURN";
             ds = new DataSet();
             int i = da.Fill(ds, "t");
             if (i == 0) return false; else return true;

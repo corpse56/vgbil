@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using LibflClassLibrary.Readers;
 
 
 namespace DataProviderAPI.ValueObjects
 {
+
+    public enum TypeReader { Local = 0, Remote = 1 };
+
+
     /// <summary>
     /// Сводное описание для ReaderInfo
     /// </summary>
@@ -24,11 +29,28 @@ namespace DataProviderAPI.ValueObjects
         public int WorkDepartment { get; set; }
         public string HashedPassword { get; set; }
         public string Salt { get; set; }
-        public string NumberReader { get; set; }
+        public int NumberReader { get; set; }
+        public TypeReader TypeReader;
+        
 
         public string GetRights()
         {
             return "Бесплатный абонемент";
+        }
+
+        public static ReaderInfo GetReader(int Id)
+        {
+            ReaderLoader loader = new ReaderLoader();
+            ReaderInfo result = loader.LoadReader(Id);
+            return result;
+        }
+
+
+        public bool IsFiveElBooksIssued()
+        {
+            ReaderLoader loader = new ReaderLoader();
+            bool result = loader.IsFiveElBooksIssued(this.NumberReader);
+            return result;
         }
     }
 }

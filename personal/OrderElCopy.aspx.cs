@@ -9,11 +9,11 @@ using DataProviderAPI.Loaders;
 using ExportBJ_XML.classes;
 using BookForOrder;
 using InvOfBookForOrder;
-using DataProviderAPI.ValueObjects;
 using System.Data.SqlClient;
 using System.Data;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using DataProviderAPI.ValueObjects;
 public partial class OrderElCopy : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -27,43 +27,35 @@ public partial class OrderElCopy : System.Web.UI.Page
         {
             IDReader = User.Identity.Name;
             Response.Write("User.Identity.Name " + IDReader);
-        }
-        else
-        {
-            Response.Write("Request" + IDReader);
-        }
-        //string vkey = Request["vkey"];
-        string BaseName = (IDBASE == "1")? "BJVVV" : "REDKOSTJ";
-
-        LibflAPI.ServiceSoapClient api = new LibflAPI.ServiceSoapClient();
-        LibflAPI.ReaderInfo readerAPI;
-        try
-        {
-            readerAPI = api.GetUser(IDReader);
-        }
-        catch
-        {
-            Response.Write(IDReader);
             return;
         }
+        //else
+        //{
+        //    Response.Write("Request" + IDReader);
+        //}
+        //string vkey = Request["vkey"];
+        string BaseName = (IDBASE == "1") ? "BJVVV" : "REDKOSTJ";
+
+
+        ReaderInfo readerAPI = ReaderInfo.GetReader(int.Parse(IDReader));
 
 
         ExemplarLoader loader = new ExemplarLoader(BaseName);
         DataProviderAPI.ValueObjects.ElectronicExemplarInfoAPI exemplar = loader.GetElectronicExemplarInfo(BaseName + "_" + IDMAIN);
-        
+
 
 
         if (exemplar.ForAllReader)//открытый БЕЗ авторского права
         {
-            
-            RedirectToNewViewer(IDMAIN, true,"", IDReader);
+
+            RedirectToNewViewer(IDMAIN, true, "", IDReader);
 
         }
         else    //ЗАКРЫТЫЕ АВТОРСКИМ ПРАВОМ
         {
 
             //Book b = new Book(IDMAIN);
-            
+
             //if (this.IsFiveElBooksIssued(idr, rtype))
             //{
             //    return "Нельзя заказать больше 5 электронных книг! Сдайте какие-либо выданные Вам электронные копии на вкладке \"Электронные книги\" и повторите заказ! ";
@@ -88,41 +80,69 @@ public partial class OrderElCopy : System.Web.UI.Page
 
 
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = new SqlConnection(AppSettings.ConnectionString);
-            cmd.CommandText = "select * from Reservation_R..ELISSUED where IDREADER = "+IDReader+" and IDMAIN = "+IDMAIN;
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataTable table = new DataTable();
-            int cnt = da.Fill(table);
 
-            if (cnt == 0)
+
+            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(int.Parse(IDMAIN), BaseName);
+            ReaderInfo reader = ReaderInfo.GetReader(int.Parse(IDReader));
+
+            if (!book.IsElectronicCopyIssued())//если книга не выдана никому, то проверяем ограничения, потом неявно выдаём и перенаправляем на вьювер
             {
-                BJBookInfo book = BJBookInfo.GetBookInfoByPIN(int.Parse(IDMAIN), BaseName);
-                LibflClassLibrary.Readers.ReaderInfo reader = LibflClassLibrary.Readers.ReaderInfo.GetReader(int.Parse(IDReader));
-                if (reader.IsFiveElBooksIssued())
+                if (CheckLimitations(book, reader))
                 {
-                    Label1.Text = "Нельзя взять более пяти электронных книг. Сдайте в личном кабинете любую электронную копию и попробуйте снова.";
-                    //здесь надо редирект куда-то делать или вставлять ссылку на переход куда-нибудь.
                     return;
                 }
-
-                Book b = new Book(IDMAIN);
-                InvOfBook inv = new InvOfBook();
-                inv.inv = "Электронная копия";
-                inv.IDMAIN = IDMAIN;
-                b.Ord(inv, 30, DateTime.Now, int.Parse(IDReader), (reader.IsRemoteReader) ? 1 : 0);//заказали книгу автоматически
+                book.IssueElectronicCopyToReader(reader.NumberReader);
+                string ViewKey = book.GetElectronicViewKeyForReader(reader.NumberReader);
+                RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
             }
-
-            table = new DataTable();
-            cnt = da.Fill(table);
-
-            string ViewKey = table.Rows[0]["VIEWKEY"].ToString();
-            RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
-
+            else
+            {
+                if (!book.IsElectronicCopyIsuuedToReader(reader.NumberReader))//если этому читателю не выдана эта книга, то проверяем ограничения
+                {
+                    if (CheckLimitations(book, reader))
+                    {
+                        return;
+                    }
+                    //если ограничения не сработали, то выдаём и перенаправляем
+                    book.IssueElectronicCopyToReader(reader.NumberReader);
+                    string ViewKey = book.GetElectronicViewKeyForReader(reader.NumberReader);
+                    RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
+                }
+                else//если этому читателю выдана эта книга
+                {
+                    string ViewKey = book.GetElectronicViewKeyForReader(reader.NumberReader);
+                    RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
+                }
+            }
         }
-            //добавим в заказы и на просмотровщик направим
-            //string redirect = ElBookViewerServer + "?pin=" + row["idm"].ToString() + "&idbase=1&idr=" + row["idr"].ToString() + "&type=" + row["rtype"]
-            //    + "&vkey=" + HttpUtility.UrlEncode(row["vkey"].ToString()) + "\" Target = \"_blank\">Просмотр</a>";
+    }
+
+    private bool CheckLimitations(BJBookInfo book, ReaderInfo reader)
+    {
+        
+        if (reader.IsFiveElBooksIssued())
+        {
+            Panel1.Visible = true;
+            Label1.Text = "Нельзя взять более пяти электронных книг. Сдайте в личном кабинете любую электронную книгу и попробуйте снова.";
+            HyperLink1.NavigateUrl = @"https://catalog.libfl.ru/Record/" + book.Fund + "_" + book.ID;
+            return true;
+        }
+        if (book.Exemplars.Count - book.GetBusyElectronicExemplarCount() <= 0)
+        {
+            Panel1.Visible = true;
+            Label1.Text = "Все экземпляры выданы. Нельзя выдать электронных экземпляров больше чем бумажных, так как это нарушит авторское право." +
+                        " Ближайшая свободная дата " + book.GetNearestFreeDateForElectronicIssue().ToString("dd.MM.yyyy") + ". Попробуйте заказать в указанную дату.";
+            HyperLink1.NavigateUrl = @"https://catalog.libfl.ru/Record/" + book.Fund + "_" + book.ID;
+            return true;
+        }
+        if (!book.IsOneDayPastAfterReturn(reader.NumberReader))
+        {
+            Panel1.Visible = true;
+            Label1.Text = "Вы не можете заказать эту электронную копию, поскольку запрещено заказывать ту же копию, если не прошли сутки с момента её возврата. Попробуйте на следующий день.";
+            HyperLink1.NavigateUrl = @"https://catalog.libfl.ru/Record/" + book.Fund + "_" + book.ID;
+            return true;
+        }
+        return false;
     }
 
     private void RedirectToNewViewer(string IDMAIN, bool ForAllReader, string vkey, string IDReader)

@@ -192,8 +192,8 @@ namespace ExportBJ_XML
         {
             StartTimer();
 
-            bjvvv.Export();
             redkostj.Export();
+            bjvvv.Export();
             bjacc.Export();
             bjfcc.Export();
             bjscc.Export();

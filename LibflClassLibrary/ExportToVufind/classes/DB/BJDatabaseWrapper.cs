@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Threading;
 using ExportBJ_XML.QueriesText;
 using LibflClassLibrary.ExportToVufind.classes.DB;
+using DataProviderAPI.ValueObjects;
 
 namespace ExportBJ_XML.classes.DB
 {
@@ -351,9 +352,6 @@ namespace ExportBJ_XML.classes.DB
             }
         }
 
-
-
-
         internal void SetLastIncrementDate(DateTime LastIncrement)
         {
             string connectionString = AppSettings.ConnectionString;
@@ -368,9 +366,7 @@ namespace ExportBJ_XML.classes.DB
             }
         }
 
-
-
-        internal DataTable GetBusyExemplarCount(int Id)
+        internal DataTable GetBusyElectronicExemplarCount(int Id)
         {
             string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
@@ -393,5 +389,75 @@ namespace ExportBJ_XML.classes.DB
                 return this.ExecuteSelectQuery(dataAdapter);
             }
         }
+
+        internal DataTable IsOneDayPastAfterReturn(int IDMAIN, int IDREADER)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_ONE_DAY_PAST_AFTER_RETURN, connection);
+                dataAdapter.SelectCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = IDMAIN;
+                dataAdapter.SelectCommand.Parameters.Add("IDREADER", SqlDbType.Int).Value = IDREADER;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
+        internal DataTable IsElectronicCopyIsuuedToReader(int IDMAIN, int IDREADER)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_ELECTRONIC_COPY_ISSUED_TO_READER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("IDREADER", SqlDbType.Int).Value = IDREADER;
+                dataAdapter.SelectCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = IDMAIN;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
+        internal DataTable GetElectronicViewKeyForReader(int IDMAIN, int IDREADER)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_ELECTRONIC_VIEWKEY_FOR_READER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("IDREADER", SqlDbType.Int).Value = IDREADER;
+                dataAdapter.SelectCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = IDMAIN;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
+        internal DataTable IsElectronicCopyIssued(int IDMAIN)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_ELECTRONIC_COPY_ISSUED, connection);
+                dataAdapter.SelectCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = IDMAIN;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
+        internal void IssueElectronicCopyToReader(int IDMAIN, int IssuePeriodDays, string ViewKey, int IDREADER, TypeReader ReaderType)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(BJQueries.ISSUE_ELECTRONIC_COPY_TO_READER, connection);
+                command.Parameters.Add("IDMAIN", SqlDbType.Int).Value = IDMAIN;
+                command.Parameters.Add("IssuePeriodDays", SqlDbType.Int).Value = IssuePeriodDays;
+                command.Parameters.Add("ViewKey", SqlDbType.NVarChar).Value = ViewKey;
+                command.Parameters.Add("IDREADER", SqlDbType.Int).Value = IDREADER;
+                command.Parameters.Add("DateReturn", SqlDbType.DateTime).Value = DateTime.Now.AddDays(IssuePeriodDays);
+                command.Parameters.Add("ReaderType", SqlDbType.Int).Value = (int)ReaderType;
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }        
     }
 }

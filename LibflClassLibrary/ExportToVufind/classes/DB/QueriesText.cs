@@ -297,10 +297,49 @@ namespace ExportBJ_XML.QueriesText
             {
                 return "select min(DATERETURN) from Reservation_R..ELISSUED where BASE = " + ((this.Fund == "BJVVV") ? "1" : "2") + " and IDMAIN = @IDMAIN";
             }
-        }        
+        }
+        public string IS_ONE_DAY_PAST_AFTER_RETURN
+        {
+            get
+            {
+                return "select top 1 * from Reservation_R..ELISSUED_HST where IDREADER = @IDREADER and IDMAIN = @IDMAIN and BASE = " + ((this.Fund == "BJVVV") ? "1" : "2") + " order by ID desc";
+            }
+        }
+        public string IS_ELECTRONIC_COPY_ISSUED_TO_READER
+        {
+            get
+            {
+                return "select * from Reservation_R..ELISSUED where IDREADER = @IDReader and IDMAIN = @IDMAIN and BASE = " + ((this.Fund == "BJVVV") ? "1" : "2");
+            }
+        }
+        public string GET_ELECTRONIC_VIEWKEY_FOR_READER
+        {
+            get
+            {
+                return "select * from Reservation_R..ELISSUED where IDREADER = @IDReader and IDMAIN = @IDMAIN and BASE = " + ((this.Fund == "BJVVV") ? "1" : "2") ;
+            }
+        }
+
+        public string IS_ELECTRONIC_COPY_ISSUED
+        {
+            get
+            {
+                return "select * from Reservation_R..ELISSUED where IDMAIN = @IDMAIN and BASE = " + ((this.Fund == "BJVVV") ? "1" : "2");
+            }
+        }
+        public string ISSUE_ELECTRONIC_COPY_TO_READER
+        {
+            get
+            {
+                
+                return "insert into Reservation_R..ELISSUED (IDMAIN,IDREADER,DATEISSUE,DATERETURN,   VIEWKEY,FORMDATE,             BASE,                              R_TYPE) values " +
+                                                         " (@IDMAIN,@IDREADER,getdate(),@DateReturn,@ViewKey,getdate(), " + ((this.Fund == "BJVVV") ? "1" : "2") + " ,@ReaderType)";
+            }
+        }
+
         
-
-
+        
+        
     }
 
     public class Reader

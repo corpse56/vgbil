@@ -688,35 +688,13 @@ namespace ExportBJ_XML.classes
 
                 ExemplarInfo bjExemplar = ExemplarInfo.GetExemplarByIdData((int)iddata["IDDATA"], this.Fund);
 
-                if (bjExemplar.Fields["482$a"].ToString() == string.Empty)//обычный экземпляр
-                {
-                    result.MethodOfAccess.Add(bjExemplar.ExemplarAccess.MethodOfAccess.ToString());
-                    writer.WritePropertyName("exemplar_access");
-                    writer.WriteValue(bjExemplar.ExemplarAccess.Access);
-                    writer.WritePropertyName("exemplar_access_group");
-                    writer.WriteValue(KeyValueMapping.AccessCodeToGroup[bjExemplar.ExemplarAccess.Access]);
-                    result.Exemplars.Add(bjExemplar);
-                }
-                else
-                {
-                    if (Convolute != null)//если книга аллигат и удалось найти конволют
-                    {
-                        result.MethodOfAccess.Add(Convolute.ExemplarAccess.MethodOfAccess.ToString());
-                        writer.WritePropertyName("exemplar_access");
-                        writer.WriteValue(Convolute.ExemplarAccess.Access);
-                        writer.WritePropertyName("exemplar_access_group");
-                        writer.WriteValue(KeyValueMapping.AccessCodeToGroup[Convolute.ExemplarAccess.Access]);
-                        result.Exemplars.Add(Convolute);
-                    }
-                    else//если книга аллигат, но нельзя найти конволют. Это и есть тип доступа 1016.
-                    {
-                        result.MethodOfAccess.Add("4005");
-                        writer.WritePropertyName("exemplar_access");
-                        writer.WriteValue("1999");
-                        writer.WritePropertyName("exemplar_access_group");
-                        writer.WriteValue(KeyValueMapping.AccessCodeToGroup[1999]);
-                    }
-                }
+                result.MethodOfAccess.Add(bjExemplar.ExemplarAccess.MethodOfAccess.ToString());
+                writer.WritePropertyName("exemplar_access");
+                writer.WriteValue(bjExemplar.ExemplarAccess.Access);
+                writer.WritePropertyName("exemplar_access_group");
+                writer.WriteValue(KeyValueMapping.AccessCodeToGroup[bjExemplar.ExemplarAccess.Access]);
+                result.Exemplars.Add(bjExemplar);
+
                 writer.WriteEndObject();
             }
 

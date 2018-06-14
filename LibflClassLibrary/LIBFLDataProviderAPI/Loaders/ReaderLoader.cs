@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ExportBJ_XML.classes.DB;
 using System.Data;
+using DataProviderAPI.ValueObjects;
 
 namespace LibflClassLibrary.Readers
 {
@@ -34,6 +35,12 @@ namespace LibflClassLibrary.Readers
                     case "DateBirth":
                         reader.DateBirth = (DateTime)row[col];
                         break;
+                    case "DateRegistration":
+                        reader.DateRegistration = (DateTime)row[col];
+                        break;
+                    case "DateReRegistration":
+                        reader.DateReRegistration = (DateTime)row[col];
+                        break;
                     case "Email":
                         reader.Email = row[col].ToString();
                         break;
@@ -50,8 +57,16 @@ namespace LibflClassLibrary.Readers
                         reader.MobileTelephone = row[col].ToString();
                         break;
                     case "TypeReader":
-                        reader.TypeReader = (TypeReader)row[col];
+                        reader.TypeReader = ((bool)row[col] == true) ? TypeReader.Remote : TypeReader.Local;
+                        reader.IsRemoteReader = (reader.TypeReader == TypeReader.Remote) ? true : false;//для апи
                         break;
+                    case "WordReg":
+                        reader.Salt = row[col].ToString();
+                        break;
+                    case "Password":
+                        reader.HashedPassword = row[col].ToString();
+                        break;
+
                 }
             }
             return reader;

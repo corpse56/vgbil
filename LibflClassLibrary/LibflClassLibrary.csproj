@@ -90,9 +90,8 @@
     <Compile Include="ExportToVufind\classes\BJ\ExemplarInfo.cs" />
     <Compile Include="ExportToVufind\classes\BJ\KeyValueMapping.cs" />
     <Compile Include="ExportToVufind\classes\DB\DatabaseWrapper.cs" />
-    <Compile Include="Readers\ReaderDatabaseWrapper.cs" />
-    <Compile Include="Readers\ReaderInfo.cs" />
-    <Compile Include="Readers\ReaderLoader.cs" />
+    <Compile Include="LIBFLDataProviderAPI\Loaders\ReaderDatabaseWrapper.cs" />
+    <Compile Include="LIBFLDataProviderAPI\Loaders\ReaderLoader.cs" />
     <Compile Include="Utilites\Log.cs" />
     <Compile Include="ExportToVufind\classes\Vufind\LitresVufindIndexUpdater.cs" />
     <Compile Include="ExportToVufind\classes\Vufind\VufindIndexUpdater.cs" />
@@ -136,6 +135,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Readers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -16,6 +16,7 @@ using System.IO;
 using System.Drawing;
 using DataProviderAPI.ValueObjects;
 using DataProviderAPI.Loaders;
+using LibflClassLibrary.Readers;
 
 
 
@@ -54,27 +55,6 @@ public class Service : System.Web.Services.WebService
     [WebMethod(Description = "Возвращает информацию о пользователе. Если пользователь не найден или входной параметр имеет неправильный формат, генерируется исключение.")]
     public ReaderInfo GetReaderInfo(string NumberReader)
     {
-        //int NumReader = 0;
-        //if (!int.TryParse(NumberReader, out NumReader))
-        //{
-        //    throw new Exception("\""+NumberReader+"\"  не является корректным номером читателя");
-        //}
-
-        //SqlDataAdapter da = new SqlDataAdapter();
-        //da.SelectCommand = new SqlCommand();
-        //da.SelectCommand.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ReadersConnection_OnlyRead"].ConnectionString);
-        //da.SelectCommand.Parameters.AddWithValue("NumberReader", NumberReader);
-        //da.SelectCommand.CommandText = "select FamilyName, Name, FatherName, DateBirth, TypeReader from Readers..Main where NumberReader = @NumberReader";
-        //DataSet ds = new DataSet();
-        //int cnt = da.Fill(ds);
-        //if (cnt == 0) throw new Exception("Читатель не найден!");
-        //ReaderInfo ri = new ReaderInfo();
-        //ri.FamilyName = ds.Tables[0].Rows[0]["FamilyName"].ToString();
-        //ri.Name = ds.Tables[0].Rows[0]["Name"].ToString();
-        //ri.FatherName = ds.Tables[0].Rows[0]["FatherName"].ToString();
-        //ri.DateBirth = (DateTime)ds.Tables[0].Rows[0]["DateBirth"];
-        //ri.IsRemoteReader = (bool)ds.Tables[0].Rows[0]["TypeReader"];
-        //return ri;
         return this.GetUser(NumberReader);
     }
 
@@ -350,34 +330,32 @@ public class Service : System.Web.Services.WebService
         if (cnt == 0) throw new Exception("Читатель не найден!");
         if (cnt > 1) throw new Exception("Таких Email найдено больше одного! Введите номер читателя!");
 
-        string Salt = ds.Tables[0].Rows[0]["WordReg"].ToString();
-
-        string HashedPwd = HashPass(ds.Tables[0].Rows[0]["Password"].ToString(), Salt);
 
 
-        ReaderInfo ri = new ReaderInfo();
-        ri.NumberReader = ds.Tables[0].Rows[0]["NumberReader"].ToString();
-        ri.FamilyName = ds.Tables[0].Rows[0]["FamilyName"].ToString();
-        ri.Name = ds.Tables[0].Rows[0]["Name"].ToString();
-        ri.FatherName = ds.Tables[0].Rows[0]["FatherName"].ToString();
-        ri.DateBirth = (DateTime)ds.Tables[0].Rows[0]["DateBirth"];
-        ri.IsRemoteReader = (bool)ds.Tables[0].Rows[0]["TypeReader"];
-        ri.BarCode = ds.Tables[0].Rows[0]["BarCode"].ToString();
-        ri.DateRegistration = (DateTime)ds.Tables[0].Rows[0]["DateRegistration"];
-        ri.DateReRegistration = (DateTime)ds.Tables[0].Rows[0]["DateReRegistration"];
-        ri.Email = ds.Tables[0].Rows[0]["Email"].ToString();
-        ri.HashedPassword = ds.Tables[0].Rows[0]["Password"].ToString();
-        ri.MobileTelephone = ds.Tables[0].Rows[0]["MobileTelephone"].ToString();
-        ri.Salt = ds.Tables[0].Rows[0]["WordReg"].ToString();
+        ReaderInfo ri = ReaderInfo.GetReader((int)ds.Tables[0].Rows[0]["NumberReader"]);
+
+        //ri.NumberReader = ds.Tables[0].Rows[0]["NumberReader"].ToString();
+        //ri.FamilyName = ds.Tables[0].Rows[0]["FamilyName"].ToString();
+        //ri.Name = ds.Tables[0].Rows[0]["Name"].ToString();
+        //ri.FatherName = ds.Tables[0].Rows[0]["FatherName"].ToString();
+        //ri.DateBirth = (DateTime)ds.Tables[0].Rows[0]["DateBirth"];
+        //ri.IsRemoteReader = (bool)ds.Tables[0].Rows[0]["TypeReader"];
+        //ri.BarCode = ds.Tables[0].Rows[0]["BarCode"].ToString();
+        //ri.DateRegistration = (DateTime)ds.Tables[0].Rows[0]["DateRegistration"];
+        //ri.DateReRegistration = (DateTime)ds.Tables[0].Rows[0]["DateReRegistration"];
+        //ri.Email = ds.Tables[0].Rows[0]["Email"].ToString();
+        //ri.HashedPassword = ds.Tables[0].Rows[0]["Password"].ToString();
+        //ri.MobileTelephone = ds.Tables[0].Rows[0]["MobileTelephone"].ToString();
+        //ri.Salt = ds.Tables[0].Rows[0]["WordReg"].ToString();
         
-        try
-        {
-            ri.WorkDepartment = Convert.ToInt32(ds.Tables[0].Rows[0]["WorkDepartment"]);
-        }
-        catch
-        {
-            ri.WorkDepartment = 0;
-        }
+        //try
+        //{
+        //    ri.WorkDepartment = Convert.ToInt32(ds.Tables[0].Rows[0]["WorkDepartment"]);
+        //}
+        //catch
+        //{
+        //    ri.WorkDepartment = 0;
+        //}
             
         return ri;
     }
