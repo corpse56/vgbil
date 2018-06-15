@@ -91,9 +91,36 @@ namespace CirculationACC
 
         public int ISSUE(int IDEMP)
         {
-            DBGeneral dbg = new DBGeneral();
-            return dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
 
+
+            DBGeneral dbg = new DBGeneral();
+
+            if (ScannedBook.FUND == Bases.BJACC)
+            {
+                dbg.IssueInHall(ScannedBook, ScannedReader, IDEMP);
+                return 0;
+            }
+            else
+            {
+                if ((ScannedReader.ReaderRights & Rights.EMPL) == Rights.EMPL)//если сотрудник выдаем сразу на дом
+                {
+                    dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
+                }
+                else
+                {
+                    if (ScannedBook.F899b == "ВХ")
+                    {
+                        dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
+                    }
+                    else
+                    {
+                        dbg.IssueInHall(ScannedBook, ScannedReader, IDEMP);
+
+                    }
+                }
+
+            }
+            return 0;
         }
 
         public void Prolong(int idiss, int days, int idemp)

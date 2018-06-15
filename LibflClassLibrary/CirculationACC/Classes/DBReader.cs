@@ -66,7 +66,7 @@ namespace CirculationACC
                                            " cast(cast(A.DATE_ISSUE as varchar(11)) as datetime) iss, " +
                                            " cast(cast(A.DATE_RETURN as varchar(11)) as datetime) ret , A.ID idiss, " +
                                            " A.IDREADER idr,E.PLAIN collate Cyrillic_general_ci_ai shifr , 'ЦАК'  fund, A.DATE_ISSUE " +
-                                           " ,Reservation_R.dbo.GetProlongedTimes(A.ID, 'BJACC') prolonged" +
+                                           " ,Reservation_R.dbo.GetProlongedTimes(A.ID, 'BJACC') prolonged, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome" +
                                            "  from Reservation_R..ISSUED_ACC A " +
                                            " left join Reservation_R..ISSUED_ACC_ACTIONS prolong on A.ID = prolong.IDISSUED_ACC and prolong.IDACTION = 3 " +
                                            " left join BJACC..DATAEXT tit on A.IDMAIN = tit.IDMAIN and tit.MNFIELD = 200 and tit.MSFIELD = '$a' " +
@@ -86,7 +86,7 @@ namespace CirculationACC
                                            " cast(cast(A.DATE_ISSUE as varchar(11)) as datetime) iss, " +
                                            " cast(cast(A.DATE_RETURN as varchar(11)) as datetime) ret , A.ID idiss, " +
                                            " A.IDREADER idr,E.PLAIN collate Cyrillic_general_ci_ai shifr, 'ОФ'  fund, A.DATE_ISSUE " +
-                                           " ,Reservation_R.dbo.GetProlongedTimes(A.ID, 'BJACC') prolonged" +
+                                           " ,Reservation_R.dbo.GetProlongedTimes(A.ID, 'BJACC') prolonged, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome" +
                                            "  from Reservation_R..ISSUED_ACC A " +
                                            " left join BJVVV..DATAEXT tit on A.IDMAIN = tit.IDMAIN and tit.MNFIELD = 200 and tit.MSFIELD = '$a' " +
                                            " left join BJVVV..DATAEXTPLAIN titp on tit.ID = titp.IDDATAEXT " +
@@ -249,6 +249,15 @@ namespace CirculationACC
                 DA.UpdateCommand.ExecuteNonQuery();
                 DA.UpdateCommand.Connection.Close();
             }
+        }
+
+        internal DataTable GetReaderRightsById(int ID)
+        {
+            DA.SelectCommand.CommandText =
+                "select * from Readers..ReaderRight where IDReader = " + ID;
+            DS = new DataSet();
+            int rr = DA.Fill(DS, "t");
+            return DS.Tables["t"];
         }
     }
 }

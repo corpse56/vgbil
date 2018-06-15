@@ -24,7 +24,7 @@ namespace CirculationACC
                 " left join BJACC..DATAEXTPLAIN D on D.IDDATAEXT = DD.ID" +
                 " left join BJACC..DATAEXTPLAIN E on E.IDDATAEXT = EE.ID" +
                 " left join BJACC..DATAEXT INV on A.IDDATA = INV.IDDATA and INV.MNFIELD = 899 and INV.MSFIELD = '$w'" +
-                " where A.IDSTATUS = 1 " +
+                " where A.IDSTATUS in (1,6) and A.BaseId = 1 " +
                 " union all " +
                 "select 1,C.PLAIN collate Cyrillic_general_ci_ai tit,D.PLAIN collate Cyrillic_general_ci_ai avt,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
                 " INV.SORT collate Cyrillic_general_ci_ai inv,A.DATE_ISSUE,A.DATE_RETURN," +
@@ -38,7 +38,8 @@ namespace CirculationACC
                 " left join BJVVV..DATAEXTPLAIN D on D.IDDATAEXT = DD.ID" +
                 " left join BJVVV..DATAEXTPLAIN E on E.IDDATAEXT = EE.ID" +
                 " left join BJVVV..DATAEXT INV on A.IDDATA = INV.IDDATA and INV.MNFIELD = 899 and INV.MSFIELD = '$w'" +
-                " where A.IDSTATUS = 6 "; DS = new DataSet();
+                " where A.IDSTATUS in (1,6) and A.BaseId = 2 ";
+            DS = new DataSet();
             DA.Fill(DS, "t");
             return DS.Tables["t"];
 

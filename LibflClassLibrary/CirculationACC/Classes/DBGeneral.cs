@@ -78,13 +78,14 @@ namespace CirculationACC
             DA.InsertCommand.Parameters.Add("DATE_RETURN", SqlDbType.DateTime);
             DA.InsertCommand.Parameters.Add("IDSTATUS", SqlDbType.Int);
             DA.InsertCommand.Parameters.Add("BaseId", SqlDbType.Int);
+            DA.InsertCommand.Parameters.Add("IsAtHome", SqlDbType.Bit).Value = true;
 
             DA.InsertCommand.Parameters["IDMAIN"].Value = ScannedBook.IDMAIN;
             DA.InsertCommand.Parameters["IDDATA"].Value = ScannedBook.IDDATA;
             DA.InsertCommand.Parameters["IDREADER"].Value = ScannedReader.ID;
             DA.InsertCommand.Parameters["DATE_ISSUE"].Value = DateTime.Now;
             DA.InsertCommand.Parameters["DATE_RETURN"].Value = DateTime.Now.AddDays(21);
-            DA.InsertCommand.Parameters["IDSTATUS"].Value = (ScannedBook.FUND == Bases.BJACC) ? 1 : 6;//1 - выдано из Центр Американской Культуры, 6 - выдано из основного фонда
+            DA.InsertCommand.Parameters["IDSTATUS"].Value = 1 ;//1 - на дом, 6 - в зал
             DA.InsertCommand.Parameters["BaseId"].Value = (ScannedBook.FUND == Bases.BJACC) ? 1 : 2;
             DA.InsertCommand.CommandText = "insert into Reservation_R..ISSUED_ACC (IDMAIN,IDDATA,IDREADER,DATE_ISSUE,DATE_RETURN,IDSTATUS,BaseId) values " +
                                             " (@IDMAIN,@IDDATA,@IDREADER,@DATE_ISSUE,@DATE_RETURN,@IDSTATUS,@BaseId);select scope_identity();";
@@ -169,7 +170,7 @@ namespace CirculationACC
                             " case when avtp.PLAIN IS null then '' else avtp.PLAIN + '; ' end + " +
                             " case when titp.PLAIN IS null then '' else titp.PLAIN end collate Cyrillic_general_ci_ai tit,  " +
                             " A.IDREADER idr,  " +
-                            " C.STATUSNAME st, 'ЦАК' fund  " +
+                            " C.STATUSNAME st, 'ЦАК' fund, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome  " +
                             "from Reservation_R..ISSUED_ACC_ACTIONS B  " +
                             " left join Reservation_R..ISSUED_ACC A on A.ID = B.IDISSUED_ACC  " +
                             " left join Reservation_R..STATUS_ISSUED_ACC C on B.IDACTION = C.ID  " +
@@ -187,7 +188,7 @@ namespace CirculationACC
                             " case when avtp.PLAIN IS null then '' else avtp.PLAIN + '; ' end + " +
                             " case when titp.PLAIN IS null then '' else titp.PLAIN end tit,  " +
                             " A.IDREADER idr,  " +
-                            " C.STATUSNAME st, 'ОФ' fund  " +
+                            " C.STATUSNAME st, 'ОФ' fund, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome  " +
                             "from Reservation_R..ISSUED_ACC_ACTIONS B  " +
                             " left join Reservation_R..ISSUED_ACC A on A.ID = B.IDISSUED_ACC  " +
                             " left join Reservation_R..STATUS_ISSUED_ACC C on B.IDACTION = C.ID  " +
@@ -370,6 +371,40 @@ namespace CirculationACC
                                            " where cast(cast(A.DATEATT as varchar(11)) as datetime) between " +
                                            " cast(cast(getdate() as varchar(11)) as datetime) and cast(cast(getdate() as varchar(11)) as datetime) ";
             return DA.Fill(DS);
+        }
+
+        internal void IssueInHall(BookVO ScannedBook, ReaderVO ScannedReader, int IDEMP)
+        {
+            DA.InsertCommand.Parameters.Clear();
+            DA.InsertCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = ScannedBook.IDMAIN;
+            DA.InsertCommand.Parameters.Add("IDDATA", SqlDbType.Int).Value = ScannedBook.IDDATA;
+            DA.InsertCommand.Parameters.Add("IDREADER", SqlDbType.Int).Value = ScannedReader.ID;
+            DA.InsertCommand.Parameters.Add("DATE_ISSUE", SqlDbType.DateTime).Value = DateTime.Now;
+            DA.InsertCommand.Parameters.Add("DATE_RETURN", SqlDbType.DateTime).Value = DateTime.Now;
+            DA.InsertCommand.Parameters.Add("IDSTATUS", SqlDbType.Int).Value = 6;//1 - выдано на дом, 6 - выдано в зал
+            DA.InsertCommand.Parameters.Add("BaseId", SqlDbType.Int).Value = (ScannedBook.FUND == Bases.BJACC) ? 1 : 2;
+            DA.InsertCommand.Parameters.Add("IsAtHome", SqlDbType.Bit).Value = false;
+
+            DA.InsertCommand.CommandText = "insert into Reservation_R..ISSUED_ACC (IDMAIN,IDDATA,IDREADER,DATE_ISSUE,DATE_RETURN,IDSTATUS,BaseId,IsAtHome) values " +
+                                            " (@IDMAIN,@IDDATA,@IDREADER,@DATE_ISSUE,@DATE_RETURN,@IDSTATUS,@BaseId,@IsAtHome);select scope_identity();";
+            DA.InsertCommand.Connection.Open();
+            object scope_id = DA.InsertCommand.ExecuteScalar();
+
+            DA.InsertCommand.Parameters.Clear();
+            DA.InsertCommand.Parameters.Add("IDACTION", SqlDbType.Int);
+            DA.InsertCommand.Parameters.Add("IDUSER", SqlDbType.Int);
+            DA.InsertCommand.Parameters.Add("IDISSUED_ACC", SqlDbType.Int);
+            DA.InsertCommand.Parameters.Add("DATEACTION", SqlDbType.DateTime);
+
+            DA.InsertCommand.Parameters["IDACTION"].Value = 6;//1 - выдано из центра американских культур, 6 - выдано из основного фонда
+            DA.InsertCommand.Parameters["IDUSER"].Value = IDEMP;
+            DA.InsertCommand.Parameters["IDISSUED_ACC"].Value = scope_id;
+            DA.InsertCommand.Parameters["DATEACTION"].Value = DateTime.Now;
+
+            DA.InsertCommand.CommandText = "insert into Reservation_R..ISSUED_ACC_ACTIONS (IDACTION,IDEMP,IDISSUED_ACC,DATEACTION) values " +
+                                            "(@IDACTION,@IDUSER,@IDISSUED_ACC,@DATEACTION)";
+            DA.InsertCommand.ExecuteNonQuery();
+            DA.InsertCommand.Connection.Close();
         }
     }
 }

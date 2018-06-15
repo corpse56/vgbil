@@ -183,8 +183,10 @@ namespace ExportBJ_XML.ValueObjects
                         return access;
                     }
                     else if ((exemplar.Fields["921$c"].ToString() != "Для выдачи") && 
-                             (exemplar.Fields["921$c"].ToString() != "Выставка") && 
-                             (exemplar.Fields["921$c"].ToString() != "Перевод в другой фонд"))
+                             (exemplar.Fields["921$c"].ToString() != "Выставка") &&
+                             (exemplar.Fields["921$c"].ToString() != "Перевод в другой фонд") &&
+                             (exemplar.Fields["921$c"].ToString() != "")
+                        )
                     {
                         access.Access = 1013;
                         access.MethodOfAccess = 4005;

@@ -12,19 +12,24 @@ namespace CirculationACC
         public string BAR;
         public string INV;
         public int IDDATA;
+        public int F899b_Id;
+        public string F899b;
+        public int F899a_Id;
+        public string F899a;
+        //===========
         public int IDMAIN;
         public string TITLE;
         public string AUTHOR;
         public int IDISSUED;
         public Bases FUND;
         public BookVO() { }
-        public BookVO(int IDMAIN, Bases fund)
-        {
-            DBBook dbb = new DBBook();
+        //public BookVO(int IDMAIN, Bases fund)
+        //{
+        //    DBBook dbb = new DBBook();
 
-            this.BookRecord = dbb.GetBookByIDMAIN(IDMAIN, fund);
-            this.IDMAIN = BookRecord[0].IDMAIN;
-        }
+        //    this.BookRecord = dbb.GetBookByIDMAIN(IDMAIN, fund);
+        //    this.IDMAIN = BookRecord[0].IDMAIN;
+        //}
 
         public BookVO(string BAR)
         {
@@ -66,7 +71,32 @@ namespace CirculationACC
             }
             this.IDISSUED = dbb.GetIDISSUED(this.IDDATA, this.FUND);
 
-            
+            iddata = from BJRecord x in BookRecord
+                     where x.IDDATA == this.IDDATA && x.MNFIELD == 899 && x.MSFIELD == "$b"
+                     select x;
+            if (iddata.Count() == 0)//поле 899b не заполнено.
+            {
+                this.F899b = "<нет>";
+            }
+            else
+            {
+                this.F899b = iddata.ToList()[0].PLAIN;
+                this.F899b_Id = iddata.ToList()[0].IDINLIST;
+            }
+
+            //метонахождение
+            iddata = from BJRecord x in BookRecord
+                     where x.IDDATA == this.IDDATA && x.MNFIELD == 899 && x.MSFIELD == "$a"
+                     select x;
+            if (iddata.Count() == 0)//поле 899a не заполнено.
+            {
+                this.F899a = "<нет>";
+            }
+            else
+            {
+                this.F899a = iddata.ToList()[0].PLAIN;
+                this.F899a_Id = iddata.ToList()[0].IDINLIST;
+            }
         }
 
         public List<BJRecord> BookRecord;
