@@ -330,6 +330,11 @@ namespace Circulation
                     return false;
                 }
             }
+            if ((book.get899b().ToLower() == "вх") && (this.F1.DepID == "22"))
+            {
+                book.klass = "Для выдачи";
+                book.RESPAN = book.rid;
+            }
 
             
             //if (book.ISIssuedAtHome)

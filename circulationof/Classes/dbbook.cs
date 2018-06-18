@@ -689,6 +689,18 @@ namespace Circulation
             return (c == 0) ? "" : DS.Tables[0].Rows[0]["note"].ToString();
 
         }
+        internal string get899b()
+        {
+            Conn.SQLDA.SelectCommand = new SqlCommand();
+            Conn.SQLDA.SelectCommand.CommandText = "select ISNULL(B.PLAIN,'') note from BJVVV..DATAEXT A " +
+                        " left join BJVVV..DATAEXTPLAIN B on A.ID = B.IDDATAEXT " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$b' and A.IDDATA = " + this.iddata;
+            Conn.SQLDA.SelectCommand.Connection = Conn.ZakazCon;
+            DataSet DS = new DataSet();
+            int c = Conn.SQLDA.Fill(DS, "t");
+            return (c == 0) ? "" : DS.Tables[0].Rows[0]["note"].ToString();
+
+        }
 
         internal string getFloor()
         {

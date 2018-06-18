@@ -14,7 +14,7 @@ namespace CirculationACC
         {
             DA.SelectCommand.CommandText = "select 1,C.PLAIN collate Cyrillic_general_ci_ai tit,D.PLAIN collate Cyrillic_general_ci_ai avt,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
                 " INV.SORT collate Cyrillic_general_ci_ai inv,A.DATE_ISSUE,A.DATE_RETURN," +
-                " (case when B.Email is null then 'false' else 'true' end) email, E.PLAIN collate Cyrillic_general_ci_ai shifr, 'ЦАК' fund" +
+                " (case when B.Email is null then 'false' else 'true' end) email, E.PLAIN collate Cyrillic_general_ci_ai shifr, 'ЦАК' fund, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome" +
                 " from Reservation_R..ISSUED_ACC A" +
                 " left join Readers..Main B on A.IDREADER = B.NumberReader" +
                 " left join BJACC..DATAEXT CC on A.IDMAIN = CC.IDMAIN and CC.MNFIELD = 200 and CC.MSFIELD = '$a'" +
@@ -28,7 +28,7 @@ namespace CirculationACC
                 " union all " +
                 "select 1,C.PLAIN collate Cyrillic_general_ci_ai tit,D.PLAIN collate Cyrillic_general_ci_ai avt,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
                 " INV.SORT collate Cyrillic_general_ci_ai inv,A.DATE_ISSUE,A.DATE_RETURN," +
-                " (case when B.Email is null then 'false' else 'true' end) email, E.PLAIN collate Cyrillic_general_ci_ai shifr, 'ОФ' fund" +
+                " (case when B.Email is null then 'false' else 'true' end) email, E.PLAIN collate Cyrillic_general_ci_ai shifr, 'ОФ' fund, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome" +
                 " from Reservation_R..ISSUED_ACC A" +
                 " left join Readers..Main B on A.IDREADER = B.NumberReader" +
                 " left join BJVVV..DATAEXT CC on A.IDMAIN = CC.IDMAIN and CC.MNFIELD = 200 and CC.MSFIELD = '$a'" +

@@ -116,6 +116,20 @@ namespace ExportBJ_XML.ValueObjects
             switch (exemplar.Fund)
             {
                 case "BJVVV":
+                    if (exemplar.Fields["482$a"].ToLower() != "")
+                    {
+                        ExemplarInfo Convolute = ExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
+                        if (Convolute != null)
+                        {
+                            access.MethodOfAccess = Convolute.ExemplarAccess.MethodOfAccess;
+                            access.Access = Convolute.ExemplarAccess.Access;
+                        }
+                        else
+                        {
+                            access.Access = 1017;
+                            access.MethodOfAccess = 4005;
+                        }
+                    } else
                     if ((exemplar.Fields["899$b"].ToLower() == "абонемент") && (!exemplar.Fields["899$a"].ToLower().Contains("книгохране")) && (exemplar.Fields["899$a"].ToLower().Contains("абонем")))
                     {
                         access.Access = 1006;
@@ -201,20 +215,6 @@ namespace ExportBJ_XML.ValueObjects
                         access.Access = 1012;
                         access.MethodOfAccess = 4000;
                         return access;
-                    }
-                    else if (exemplar.Fields["482$a"].ToLower() != "")
-                    {
-                        ExemplarInfo Convolute = ExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
-                        if (Convolute != null)
-                        {
-                            access.MethodOfAccess = Convolute.ExemplarAccess.MethodOfAccess;
-                            access.Access = Convolute.ExemplarAccess.Access;
-                        }
-                        else
-                        {
-                            access.Access = 1017;
-                            access.MethodOfAccess = 4005;
-                        }
                     }
                     else if (exemplar.Fields["921$d"].ToLower() == "на усмотрение сотрудника")
                     {

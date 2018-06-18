@@ -1269,8 +1269,14 @@ namespace Circulation
                 }
             }
 
-            if (((ReaderRecord.CanGetAtHome) && (this.DepID != "20") || BookRecord.getFloor().Contains("Абонемент")) && (!wantAbonementAlienRespanOrVistavka) && !homezal)//выдача домой
+            if (((  ((ReaderRecord.CanGetAtHome) && (this.DepID != "20")) || (BookRecord.getFloor().Contains("Абонемент")) )
+                    && (!wantAbonementAlienRespanOrVistavka) && !homezal)
+                    || ((BookRecord.get899b().ToLower() == "вх") && (this.DepID == "22")))    //выдача домой
             {
+
+
+
+
                 wantAbonementAlienRespanOrVistavka = false;
                 /*if ((BookRecord.getFloor() == "Зал абонементного обслуживания") && (BookRecord.klass == "ДП"))
                 {
@@ -1284,6 +1290,12 @@ namespace Circulation
                     }
 
                 }*/
+                if ((BookRecord.get899b().ToLower() == "вх") && (this.DepID == "22"))
+                {
+                    BookRecord.klass = "Для выдачи";
+                    BookRecord.RESPAN = "";
+                }
+
                 if (BookRecord.klass == "ДП")
                 {
                     //dbw.setBookForReaderHome(BookRecord, ReaderRecord);

@@ -46,7 +46,7 @@ namespace CirculationACC
                 return 1;
             }
             
-            if (ExpectedBar == 0)//если сейчас ожидается штрихкод книги
+            if (ExpectedBar == ExpectingAction.WaitingBook)//если сейчас ожидается штрихкод книги
             {
                 if (ScannedType == BARTYPE.Reader) //выяснить какой штрихкод сейчас считан: читатель или книга
                 {
