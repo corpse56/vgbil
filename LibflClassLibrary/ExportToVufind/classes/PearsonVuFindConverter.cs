@@ -147,6 +147,8 @@ namespace ExportBJ_XML.classes
                     }
                 }
 
+
+
                 vfDoc.allfields = AllFields.ToString();
 
                 //описание экземпляра Пирсон
