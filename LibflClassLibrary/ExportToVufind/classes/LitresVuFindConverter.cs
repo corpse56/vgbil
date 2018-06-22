@@ -17,6 +17,11 @@ namespace ExportBJ_XML.classes
 {
     public class LitresVuFindConverter : VuFindConverter
     {
+        public LitresVuFindConverter(string fund)
+        {
+            this.Fund = fund;
+        }
+
         public override void Export()//полный начальный экспорт
         {
             /////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -46,7 +51,6 @@ namespace ExportBJ_XML.classes
             foreach (XElement elt in books)
             {
                 vfDoc = CreateVufindDoc(elt);
-
                 vfWriter.AppendVufindDoc(vfDoc);
                 //OnRecordExported
                 cnt++;
@@ -71,6 +75,14 @@ namespace ExportBJ_XML.classes
             DateTime outTry;
             //string tmp = elt.Attribute("created").Value;
             //2008-01-28 17:43:24
+
+
+            string you_can_sell = elt.Attribute("you_can_sell").Value;
+            if (elt.Attribute("you_can_sell").Value == "0")
+            {
+                return null;
+            }
+
 
             if (DateTime.TryParseExact(elt.Attribute("created").Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out outTry))
             {
@@ -268,6 +280,66 @@ namespace ExportBJ_XML.classes
         {
             throw new NotImplementedException();
         }
+
+
+        public override void ExportSingleCover(object idRecord)
+        {
+            XElement elt = (XElement)idRecord;
+            string id = "";
+            if (elt.Attribute("file_id") != null)
+            {
+                id = elt.Attribute("file_id").Value;
+            }
+            else
+            {
+                return;
+            }
+            switch (id.Length)
+            {
+                case 0:
+                    id = "00000000";
+                    break;
+                case 1:
+                    id = "0000000" + id;
+                    break;
+                case 2:
+                    id = "000000" + id;
+                    break;
+                case 3:
+                    id = "00000" + id;
+                    break;
+                case 4:
+                    id = "0000" + id;
+                    break;
+                case 5:
+                    id = "000" + id;
+                    break;
+                case 6:
+                    id = "00" + id;
+                    break;
+                case 7:
+                    id = "0" + id;
+                    break;
+            }
+
+            StringBuilder sb = new StringBuilder("http://partnersdnld.litres.ru/static/bookimages/");
+            string coverType = (elt.Attribute("cover") == null) ? "jpg" : elt.Attribute("cover").Value;
+            sb.Append(id[0]).Append(id[1]).Append("/").Append(id[2]).Append(id[3]).Append("/").Append(id[4]).Append(id[5]).Append("/").Append(id).Append(".bin.dir/").Append(id).Append(".cover.").Append(coverType);
+            string coverUrl = sb.ToString();
+
+            string NewPath = VuFindConverter.GetCoverExportPath("Litres_" + elt.Attribute("id").Value);
+            string path = @"\\"+AppSettings.IPAddressFileServer + @"\BookAddInf\LITRES\" + NewPath;
+
+            StringBuilder fileName = new StringBuilder();
+            fileName.Append(path).Append("cover.").Append(coverType);
+            string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf";
+            using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
+            {
+                Utilities.Extensions.DownloadRemoteImageFile(coverUrl, fileName.ToString(), path);
+            }
+
+
+        }
         public override void ExportCovers()
         {
             //XDocument xdoc = XDocument.Load(@"f:\litres_example.xml");//для отладки
@@ -279,58 +351,12 @@ namespace ExportBJ_XML.classes
             {
                 //Uri url = new Uri("http://partnersdnld.litres.ru/static/bookimages/00/01/23/00012345.bin.dir/00012345.cover.jpg");
                 //Uri url = new Uri("http://partnersdnld.litres.ru/static/bookimages/21/10/35/21103582.bin.dir/21103582.cover.jpg");
-
-                string id = "";
-                if (elt.Attribute("file_id") != null)
+                string path = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf\LITRES\";
+                string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf\";
+                using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
                 {
-                    id = elt.Attribute("file_id").Value;
+                    this.ExportSingleCover(elt);
                 }
-                else
-                {
-                    continue;
-                }
-                switch (id.Length)
-                {
-                    case 0:
-                        id = "00000000";
-                        break;
-                    case 1:
-                        id = "0000000"+id;
-                        break;
-                    case 2:
-                        id = "000000"+id;
-                        break;
-                    case 3:
-                        id = "00000"+id;
-                        break;
-                    case 4:
-                        id = "0000"+id;
-                        break;
-                    case 5:
-                        id = "000"+id;
-                        break;
-                    case 6:
-                        id = "00"+id;
-                        break;
-                    case 7:
-                        id = "0"+id;
-                        break;
-                }
-
-                StringBuilder sb = new StringBuilder("http://partnersdnld.litres.ru/static/bookimages/");
-                string coverType = (elt.Attribute("cover") == null) ? "jpg" : elt.Attribute("cover").Value;
-                sb.Append(id[0]).Append(id[1]).Append("/").Append(id[2]).Append(id[3]).Append("/").Append(id[4]).Append(id[5]).Append("/").Append(id).Append(".bin.dir/").Append(id).Append(".cover.").Append(coverType);
-                string coverUrl = sb.ToString();
-
-                string NewPath = VuFindConverter.GetCoverExportPath("Litres_" + elt.Attribute("id").Value);
-                string path = @"f:\import\covers\LITRES1\" + NewPath;
-
-                StringBuilder fileName = new StringBuilder();
-                fileName.Append(path).Append("cover.").Append(coverType);
-                
-
-                Utilities.Extensions.DownloadRemoteImageFile(coverUrl, fileName.ToString(), path);
-
                 VuFindConverterEventArgs e = new VuFindConverterEventArgs();
                 e.RecordId = "litres_" + elt.Attribute("id").Value;
                 OnRecordExported(e);
@@ -627,6 +653,8 @@ namespace ExportBJ_XML.classes
             }
 
         }
+
+
 
 
 

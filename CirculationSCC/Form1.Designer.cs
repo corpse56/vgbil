@@ -54,6 +54,7 @@ namespace Circulation
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.bComment = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -76,13 +77,16 @@ namespace Circulation
             this.label18 = new System.Windows.Forms.Label();
             this.Statistics = new System.Windows.Forms.DataGridView();
             this.button7 = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label10 = new System.Windows.Forms.Label();
             this.sqlConnection1 = new System.Data.SqlClient.SqlConnection();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
-            this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.zAKAZBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.выданные нигиЌа“екущийћоментToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,11 +98,7 @@ namespace Circulation
             this.обращаемость нигToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.bComment = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
+            this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -112,10 +112,10 @@ namespace Circulation
             this.tabPage2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Statistics)).BeginInit();
+            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.zAKAZBindingSource)).BeginInit();
             this.contextMenuStrip2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label3
@@ -179,7 +179,7 @@ namespace Circulation
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(1185, 495);
+            this.tabPage1.Size = new System.Drawing.Size(1192, 524);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "ѕриЄм/выдача изданий";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -385,6 +385,16 @@ namespace Circulation
             this.tabPage4.Text = "‘ормул€р читател€";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // bComment
+            // 
+            this.bComment.Location = new System.Drawing.Point(951, 99);
+            this.bComment.Name = "bComment";
+            this.bComment.Size = new System.Drawing.Size(228, 27);
+            this.bComment.TabIndex = 23;
+            this.bComment.Text = " омментарий о читателе";
+            this.bComment.UseVisualStyleBackColor = true;
+            this.bComment.Click += new System.EventHandler(this.bComment_Click);
+            // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(771, 69);
@@ -413,7 +423,6 @@ namespace Circulation
             this.pictureBox2.Location = new System.Drawing.Point(593, 9);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(100, 114);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 20;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
@@ -554,7 +563,7 @@ namespace Circulation
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(1185, 495);
+            this.tabPage2.Size = new System.Drawing.Size(1192, 524);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "—правка";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -625,6 +634,47 @@ namespace Circulation
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.button5);
+            this.tabPage3.Controls.Add(this.label23);
+            this.tabPage3.Controls.Add(this.label21);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1192, 524);
+            this.tabPage3.TabIndex = 4;
+            this.tabPage3.Text = "”чЄт посещаемости";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(1096, 496);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(92, 24);
+            this.button5.TabIndex = 11;
+            this.button5.Text = "эмул€ци€";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(358, 335);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(425, 17);
+            this.label23.TabIndex = 10;
+            this.label23.Text = "—читайте штрихкод читател€, чтобы увеличить посещаемость";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label21.Location = new System.Drawing.Point(252, 131);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(668, 31);
+            this.label21.TabIndex = 9;
+            this.label21.Text = "Ќа сегодн€ посещаемость составл€ет: 0 человек(а)";
+            // 
             // timer1
             // 
             this.timer1.Interval = 750;
@@ -655,14 +705,6 @@ namespace Circulation
             this.sqlConnection1.ConnectionString = "Data Source=192.168.3.62;Initial Catalog=BRIT_SOVET;Persist Security Info=True;Us" +
                 "er ID=circulation;Password=circfull";
             this.sqlConnection1.FireInfoMessageEventOnUserErrors = false;
-            // 
-            // dataGridViewButtonColumn1
-            // 
-            this.dataGridViewButtonColumn1.HeaderText = "Ќарушение";
-            this.dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
-            this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewButtonColumn1.Width = 85;
             // 
             // contextMenuStrip2
             // 
@@ -742,56 +784,13 @@ namespace Circulation
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Text = "—писок нарушителей сроков пользовани€";
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Click += new System.EventHandler(this.списокЌарушителей—роковѕользовани€ToolStripMenuItem_Click);
             // 
-            // tabPage3
+            // dataGridViewButtonColumn1
             // 
-            this.tabPage3.Controls.Add(this.button5);
-            this.tabPage3.Controls.Add(this.label23);
-            this.tabPage3.Controls.Add(this.label21);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1192, 524);
-            this.tabPage3.TabIndex = 4;
-            this.tabPage3.Text = "”чЄт посещаемости";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // bComment
-            // 
-            this.bComment.Location = new System.Drawing.Point(951, 99);
-            this.bComment.Name = "bComment";
-            this.bComment.Size = new System.Drawing.Size(228, 27);
-            this.bComment.TabIndex = 23;
-            this.bComment.Text = " омментарий о читателе";
-            this.bComment.UseVisualStyleBackColor = true;
-            this.bComment.Click += new System.EventHandler(this.bComment_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(1096, 496);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(92, 24);
-            this.button5.TabIndex = 11;
-            this.button5.Text = "эмул€ци€";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(358, 335);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(425, 17);
-            this.label23.TabIndex = 10;
-            this.label23.Text = "—читайте штрихкод читател€, чтобы увеличить посещаемость";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label21.Location = new System.Drawing.Point(252, 131);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(668, 31);
-            this.label21.TabIndex = 9;
-            this.label21.Text = "Ќа сегодн€ посещаемость составл€ет: 0 человек(а)";
+            this.dataGridViewButtonColumn1.HeaderText = "Ќарушение";
+            this.dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
+            this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewButtonColumn1.Width = 85;
             // 
             // Form1
             // 
@@ -829,11 +828,11 @@ namespace Circulation
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Statistics)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.zAKAZBindingSource)).EndInit();
             this.contextMenuStrip2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

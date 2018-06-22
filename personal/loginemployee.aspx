@@ -48,7 +48,7 @@
     <p>
         * - Необходимо указать либо номер читательского билета, 
         либо номер социалной карты (первые 19 цифр), либо email.</p>
-    <asp:Panel ID="Panel1" runat="server" Visible ="false" >
+    <!--<asp:Panel ID="Panel1" runat="server" Visible ="false" >
     Если Вы не зарегистрированы в библиотеке, то Вам необходимо:
     <br />
     1. <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl ="http://80.250.173.145/WebReaderT/Default.aspx" >Заполнить регистрационную карточку читателя</asp:HyperLink>
@@ -56,7 +56,7 @@
     2. Приехать в библиотеку имея при себе паспорт и одну фотографию либо социальную карту
     <br />
     3. Сотрудник отдела регистрации зарегистрирует Вас.
-    </asp:Panel>
+    </asp:Panel>-->
     <br />
     <br />
     <p >

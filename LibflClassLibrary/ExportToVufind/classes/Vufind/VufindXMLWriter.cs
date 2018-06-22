@@ -70,6 +70,7 @@ namespace LibflClassLibrary.ExportToVufind.classes.BJ
         }
         public void AppendVufindDoc(VufindDoc vfDoc)
         {
+            if (vfDoc == null) return;
             _doc = vfDoc.CreateExportXmlNode();
             _doc.WriteTo(_objXmlWriter);
             _doc = _exportDocument.CreateElement("doc");

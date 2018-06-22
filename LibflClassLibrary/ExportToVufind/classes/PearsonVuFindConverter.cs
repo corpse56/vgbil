@@ -199,5 +199,10 @@ namespace ExportBJ_XML.classes
 
         }
 
+
+        public override void ExportSingleCover(object idRecord)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

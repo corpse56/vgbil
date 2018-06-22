@@ -87,9 +87,9 @@ namespace DataProviderAPI.Loaders
             //string ip = ConfigurationManager.ConnectionStrings["IPAddressFileServer"].ConnectionString;
             string ip = AppSettings.IPAddressFileServer;
             //string login = ConfigurationManager.ConnectionStrings["LoginFileServer"].ConnectionString;
-            string login = AppSettings.LoginFileServer;
+            string login = AppSettings.LoginFileServerRead;
             //string pwd = ConfigurationManager.ConnectionStrings["PasswordFileServer"].ConnectionString;
-            string pwd = AppSettings.PasswordFileServer;
+            string pwd = AppSettings.PasswordFileServerRead;
             string _directoryPath = @"\\" + ip + @"\BookAddInf\";
 
             ElectronicExemplarInfoAPI result = new ElectronicExemplarInfoAPI(-1);//пока что так мы создаем электронный экземпляр

@@ -76,7 +76,7 @@ namespace CirculationACC
                                            " left join BJACC..DATAEXT bar on A.IDDATA = bar.IDDATA and bar.MNFIELD = 899 and bar.MSFIELD = '$w' " +
                                            " left join BJACC..DATAEXT EE on A.IDDATA = EE.IDDATA and EE.MNFIELD = 899 and EE.MSFIELD = '$j'" +
                                            " left join BJACC..DATAEXTPLAIN E on E.IDDATAEXT = EE.ID" +
-                                           " where A.IDREADER = " + ID + " and A.IDSTATUS = 1)" +
+                                           " where A.IDREADER = " + ID + " and A.IDSTATUS in (1,6) and BaseId = 1 )" +
 
                                            " , vvv as (" +
                                            "select  " +
@@ -95,7 +95,7 @@ namespace CirculationACC
                                            " left join BJVVV..DATAEXT bar on A.IDDATA = bar.IDDATA and bar.MNFIELD = 899 and bar.MSFIELD = '$w' " +
                                            " left join BJVVV..DATAEXT EE on A.IDDATA = EE.IDDATA and EE.MNFIELD = 899 and EE.MSFIELD = '$j'" +
                                            " left join BJVVV..DATAEXTPLAIN E on E.IDDATAEXT = EE.ID" +
-                                           " where A.IDREADER = " + ID + " and A.IDSTATUS = 6)" +
+                                           " where A.IDREADER = " + ID + " and A.IDSTATUS in (1,6) and BaseId = 2)" +
                                            " , result as (" +
                                            " select * from acc " +
                                            " union all" +

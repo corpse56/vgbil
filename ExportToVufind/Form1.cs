@@ -26,7 +26,7 @@ namespace ExportBJ_XML
         BJVuFindConverter bjfcc = new BJVuFindConverter("BJFCC");
         BJVuFindConverter bjscc = new BJVuFindConverter("BJSCC");
         //BJVuFindConverter brit_sovet = new BJVuFindConverter("BRIT_SOVET");
-        LitresVuFindConverter litres = new LitresVuFindConverter();
+        LitresVuFindConverter litres = new LitresVuFindConverter("litres");
         PeriodVuFindConverter period = new PeriodVuFindConverter();
         PearsonVuFindConverter pearson = new PearsonVuFindConverter();
         JBHVuFindConverter jbh = new JBHVuFindConverter();
@@ -221,6 +221,7 @@ namespace ExportBJ_XML
         private void litres_Click(object sender, EventArgs e)
         {
             StartTimer();
+
             litres.Export();
             StopTimer();
         }

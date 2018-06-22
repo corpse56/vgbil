@@ -97,7 +97,7 @@ namespace CirculationACC
 
             if (ScannedBook.FUND == Bases.BJACC)
             {
-                dbg.IssueInHall(ScannedBook, ScannedReader, IDEMP);
+                dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
                 return 0;
             }
             else

@@ -26,7 +26,7 @@ namespace ExportBJ_XML.classes
                 return connectionString;
             }
         }
-        static public string LoginFileServer
+        static public string LoginFileServerRead
         {
             get
             {
@@ -34,11 +34,27 @@ namespace ExportBJ_XML.classes
                 return connectionString;
             }
         }
-        static public string PasswordFileServer
+        static public string PasswordFileServerRead
         {
             get
             {
                 string connectionString = "Image_123Viewer";
+                return connectionString;
+            }
+        }
+        static public string LoginFileServerReadWrite
+        {
+            get
+            {
+                string connectionString = "bj\\DigitCentreWork01";
+                return connectionString;
+            }
+        }
+        static public string PasswordFileServerReadWrite
+        {
+            get
+            {
+                string connectionString = "DigCW_01";
                 return connectionString;
             }
         }

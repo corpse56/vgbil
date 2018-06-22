@@ -101,7 +101,6 @@ namespace LibflClassLibrary.ExportToVufind.classes.Vufind
                 XmlNode node = vfdoc.CreateExportXmlNode();
                 node = doc.ImportNode(node, true);
                 RootNode.AppendChild(node);
-                //doc.AppendChild(RootNode);
             }
 
             //doc.Load(AppDomain.CurrentDomain.BaseDirectory + @"increment31.05.2018 01.54.xml");//для отладки
