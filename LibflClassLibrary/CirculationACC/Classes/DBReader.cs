@@ -66,9 +66,9 @@ namespace CirculationACC
                                            " cast(cast(A.DATE_ISSUE as varchar(11)) as datetime) iss, " +
                                            " cast(cast(A.DATE_RETURN as varchar(11)) as datetime) ret , A.ID idiss, " +
                                            " A.IDREADER idr,E.PLAIN collate Cyrillic_general_ci_ai shifr , 'ЦАК'  fund, A.DATE_ISSUE " +
-                                           " ,Reservation_R.dbo.GetProlongedTimes(A.ID, 'BJACC') prolonged, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome" +
+                                           " ,Reservation_R.dbo.GetProlongedTimes(A.ID, 'BJACC') prolonged, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome, F.PLAIN rack" +
                                            "  from Reservation_R..ISSUED_ACC A " +
-                                           " left join Reservation_R..ISSUED_ACC_ACTIONS prolong on A.ID = prolong.IDISSUED_ACC and prolong.IDACTION = 3 " +
+                                           //" left join Reservation_R..ISSUED_ACC_ACTIONS prolong on A.ID = prolong.IDISSUED_ACC and prolong.IDACTION = 3 " +
                                            " left join BJACC..DATAEXT tit on A.IDMAIN = tit.IDMAIN and tit.MNFIELD = 200 and tit.MSFIELD = '$a' " +
                                            " left join BJACC..DATAEXTPLAIN titp on tit.ID = titp.IDDATAEXT " +
                                            " left join BJACC..DATAEXT avt on A.IDMAIN = avt.IDMAIN and avt.MNFIELD = 700 and avt.MSFIELD = '$a' " +
@@ -76,6 +76,8 @@ namespace CirculationACC
                                            " left join BJACC..DATAEXT bar on A.IDDATA = bar.IDDATA and bar.MNFIELD = 899 and bar.MSFIELD = '$w' " +
                                            " left join BJACC..DATAEXT EE on A.IDDATA = EE.IDDATA and EE.MNFIELD = 899 and EE.MSFIELD = '$j'" +
                                            " left join BJACC..DATAEXTPLAIN E on E.IDDATAEXT = EE.ID" +
+                                           " left join BJACC..DATAEXT FF on A.IDDATA = FF.IDDATA and FF.MNFIELD = 899 and FF.MSFIELD = '$c'" +
+                                           " left join BJACC..DATAEXTPLAIN F on F.IDDATAEXT = FF.ID" +
                                            " where A.IDREADER = " + ID + " and A.IDSTATUS in (1,6) and BaseId = 1 )" +
 
                                            " , vvv as (" +
@@ -86,7 +88,7 @@ namespace CirculationACC
                                            " cast(cast(A.DATE_ISSUE as varchar(11)) as datetime) iss, " +
                                            " cast(cast(A.DATE_RETURN as varchar(11)) as datetime) ret , A.ID idiss, " +
                                            " A.IDREADER idr,E.PLAIN collate Cyrillic_general_ci_ai shifr, 'ОФ'  fund, A.DATE_ISSUE " +
-                                           " ,Reservation_R.dbo.GetProlongedTimes(A.ID, 'BJACC') prolonged, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome" +
+                                           " ,Reservation_R.dbo.GetProlongedTimes(A.ID, 'BJACC') prolonged, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome, F.PLAIN rack" +
                                            "  from Reservation_R..ISSUED_ACC A " +
                                            " left join BJVVV..DATAEXT tit on A.IDMAIN = tit.IDMAIN and tit.MNFIELD = 200 and tit.MSFIELD = '$a' " +
                                            " left join BJVVV..DATAEXTPLAIN titp on tit.ID = titp.IDDATAEXT " +
@@ -95,6 +97,8 @@ namespace CirculationACC
                                            " left join BJVVV..DATAEXT bar on A.IDDATA = bar.IDDATA and bar.MNFIELD = 899 and bar.MSFIELD = '$w' " +
                                            " left join BJVVV..DATAEXT EE on A.IDDATA = EE.IDDATA and EE.MNFIELD = 899 and EE.MSFIELD = '$j'" +
                                            " left join BJVVV..DATAEXTPLAIN E on E.IDDATAEXT = EE.ID" +
+                                           " left join BJVVV..DATAEXT FF on A.IDDATA = FF.IDDATA and FF.MNFIELD = 899 and FF.MSFIELD = '$c'" +
+                                           " left join BJVVV..DATAEXTPLAIN F on F.IDDATAEXT = FF.ID" +
                                            " where A.IDREADER = " + ID + " and A.IDSTATUS in (1,6) and BaseId = 2)" +
                                            " , result as (" +
                                            " select * from acc " +

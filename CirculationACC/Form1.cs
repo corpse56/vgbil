@@ -210,6 +210,8 @@ namespace CirculationACC
             Formular.Columns["prolonged"].Width = 80;
             Formular.Columns["IsAtHome"].HeaderText = "Тип выдачи";
             Formular.Columns["IsAtHome"].Width = 80;
+            Formular.Columns["rack"].HeaderText = "Стеллаж";
+            Formular.Columns["rack"].Width = 80;
             pictureBox2.Image = reader.Photo;
             foreach (DataGridViewRow r in Formular.Rows)
             {
@@ -763,6 +765,8 @@ namespace CirculationACC
             Statistics.Columns[12].Width = 85;
             Statistics.Columns[13].HeaderText = "Фонд";
             Statistics.Columns[13].Width = 50;
+            Statistics.Columns[14].HeaderText = "Стеллаж";
+            Statistics.Columns[14].Width = 70;
             foreach (DataGridViewRow r in Statistics.Rows)
             {
                 object value = r.Cells[10].Value;

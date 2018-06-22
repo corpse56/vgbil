@@ -13,6 +13,10 @@ namespace ExportBJ_XML.classes
 {
     public class PeriodVuFindConverter : VuFindConverter
     {
+        public PeriodVuFindConverter(string fund)
+        {
+            this.Fund = fund;
+        }
         public override void Export()
         {
             ///////////////////////////////////////////////////////////////////////////////////////////////

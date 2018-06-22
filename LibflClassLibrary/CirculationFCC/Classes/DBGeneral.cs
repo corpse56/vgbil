@@ -6,15 +6,15 @@ using System.Data;
 
 namespace Circulation
 {
-    public class DBGeneral:DB
+    public class DBGeneral : DB
     {
-//=====================================================================LOGIN==============================================================================
+        //=====================================================================LOGIN==============================================================================
         public int EmpID;
         public string UserName;
 
-        public bool Login(string name,string pass)
+        public bool Login(string name, string pass)
         {
-            DA.SelectCommand.CommandText = "select * from BJFCC..USERS where lower(LOGIN) = '" +name.ToLower()+"' and lower(PASSWORD) = '"+pass.ToLower()+"'";
+            DA.SelectCommand.CommandText = "select * from BJFCC..USERS where lower(LOGIN) = '" + name.ToLower() + "' and lower(PASSWORD) = '" + pass.ToLower() + "'";
             DS = new DataSet();
             int i = DA.Fill(DS, "login");
             if (i == 0) return false;
@@ -22,9 +22,9 @@ namespace Circulation
             UserName = DS.Tables["login"].Rows[0]["NAME"].ToString();
             return true;
         }
-//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^LOGIN^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^LOGIN^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-        public BARTYPE BookOrReader(string data)
+        internal BARTYPE BookOrReader(string data)
         {
             DA.SelectCommand.CommandText = "select top 1 IDMAIN from BJFCC..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = '" + data + "'";
             DS = new DataSet();
@@ -68,7 +68,7 @@ namespace Circulation
         /// <param name="ScannedBook"></param>
         /// <param name="ScannedReader"></param>
         /// <returns></returns>
-        public int ISSUE(BookVO ScannedBook, ReaderVO ScannedReader, int IDEMP)
+        internal int ISSUE(BookVO ScannedBook, ReaderVO ScannedReader, int IDEMP)
         {
             DA.InsertCommand.Parameters.Clear();
             DA.InsertCommand.Parameters.Add("IDMAIN", SqlDbType.Int);
@@ -78,16 +78,17 @@ namespace Circulation
             DA.InsertCommand.Parameters.Add("DATE_RETURN", SqlDbType.DateTime);
             DA.InsertCommand.Parameters.Add("IDSTATUS", SqlDbType.Int);
             DA.InsertCommand.Parameters.Add("BaseId", SqlDbType.Int);
+            DA.InsertCommand.Parameters.Add("IsAtHome", SqlDbType.Bit).Value = true;
 
             DA.InsertCommand.Parameters["IDMAIN"].Value = ScannedBook.IDMAIN;
             DA.InsertCommand.Parameters["IDDATA"].Value = ScannedBook.IDDATA;
             DA.InsertCommand.Parameters["IDREADER"].Value = ScannedReader.ID;
             DA.InsertCommand.Parameters["DATE_ISSUE"].Value = DateTime.Now;
             DA.InsertCommand.Parameters["DATE_RETURN"].Value = DateTime.Now.AddDays(21);
-            DA.InsertCommand.Parameters["IDSTATUS"].Value = (ScannedBook.FUND == Bases.BJFCC) ? 1 : 6;//1 - выдано из центра французских культур, 6 - выдано из основного фонда
+            DA.InsertCommand.Parameters["IDSTATUS"].Value = 1;//1 - на дом, 6 - в зал
             DA.InsertCommand.Parameters["BaseId"].Value = (ScannedBook.FUND == Bases.BJFCC) ? 1 : 2;
-            DA.InsertCommand.CommandText = "insert into Reservation_R..ISSUED_FCC (IDMAIN,IDDATA,IDREADER,DATE_ISSUE,DATE_RETURN,IDSTATUS,BaseId) values " +
-                                            " (@IDMAIN,@IDDATA,@IDREADER,@DATE_ISSUE,@DATE_RETURN,@IDSTATUS,@BaseId);select scope_identity();";
+            DA.InsertCommand.CommandText = "insert into Reservation_R..ISSUED_FCC (IDMAIN,IDDATA,IDREADER,DATE_ISSUE,DATE_RETURN,IDSTATUS,BaseId,IsAtHome) values " +
+                                            " (@IDMAIN,@IDDATA,@IDREADER,@DATE_ISSUE,@DATE_RETURN,@IDSTATUS,@BaseId, @IsAtHome);select scope_identity();";
             DA.InsertCommand.Connection.Open();
             object scope_id = DA.InsertCommand.ExecuteScalar();
 
@@ -97,7 +98,7 @@ namespace Circulation
             DA.InsertCommand.Parameters.Add("IDISSUED_FCC", SqlDbType.Int);
             DA.InsertCommand.Parameters.Add("DATEACTION", SqlDbType.DateTime);
 
-            DA.InsertCommand.Parameters["IDACTION"].Value = (ScannedBook.FUND == Bases.BJFCC) ? 1 : 6;//1 - выдано из центра французских культур, 6 - выдано из основного фонда
+            DA.InsertCommand.Parameters["IDACTION"].Value = 1;
             DA.InsertCommand.Parameters["IDUSER"].Value = IDEMP;
             DA.InsertCommand.Parameters["IDISSUED_FCC"].Value = scope_id;
             DA.InsertCommand.Parameters["DATEACTION"].Value = DateTime.Now;
@@ -113,7 +114,41 @@ namespace Circulation
 
 
         }
-        public void Recieve(BookVO ScannedBook, ReaderVO ScannedReader, int IDEMP)
+        internal void IssueInHall(BookVO ScannedBook, ReaderVO ScannedReader, int IDEMP)
+        {
+            DA.InsertCommand.Parameters.Clear();
+            DA.InsertCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = ScannedBook.IDMAIN;
+            DA.InsertCommand.Parameters.Add("IDDATA", SqlDbType.Int).Value = ScannedBook.IDDATA;
+            DA.InsertCommand.Parameters.Add("IDREADER", SqlDbType.Int).Value = ScannedReader.ID;
+            DA.InsertCommand.Parameters.Add("DATE_ISSUE", SqlDbType.DateTime).Value = DateTime.Now;
+            DA.InsertCommand.Parameters.Add("DATE_RETURN", SqlDbType.DateTime).Value = DateTime.Now;
+            DA.InsertCommand.Parameters.Add("IDSTATUS", SqlDbType.Int).Value = 6;
+            DA.InsertCommand.Parameters.Add("BaseId", SqlDbType.Int).Value = (ScannedBook.FUND == Bases.BJFCC) ? 1 : 2;
+            DA.InsertCommand.Parameters.Add("IsAtHome", SqlDbType.Bit).Value = false;
+
+            DA.InsertCommand.CommandText = "insert into Reservation_R..ISSUED_FCC (IDMAIN,IDDATA,IDREADER,DATE_ISSUE,DATE_RETURN,IDSTATUS,BaseId,IsAtHome) values " +
+                                            " (@IDMAIN,@IDDATA,@IDREADER,@DATE_ISSUE,@DATE_RETURN,@IDSTATUS,@BaseId,@IsAtHome);select scope_identity();";
+            DA.InsertCommand.Connection.Open();
+            object scope_id = DA.InsertCommand.ExecuteScalar();
+
+            DA.InsertCommand.Parameters.Clear();
+            DA.InsertCommand.Parameters.Add("IDACTION", SqlDbType.Int);
+            DA.InsertCommand.Parameters.Add("IDUSER", SqlDbType.Int);
+            DA.InsertCommand.Parameters.Add("IDISSUED_FCC", SqlDbType.Int);
+            DA.InsertCommand.Parameters.Add("DATEACTION", SqlDbType.DateTime);
+
+            DA.InsertCommand.Parameters["IDACTION"].Value = 6;
+            DA.InsertCommand.Parameters["IDUSER"].Value = IDEMP;
+            DA.InsertCommand.Parameters["IDISSUED_FCC"].Value = scope_id;
+            DA.InsertCommand.Parameters["DATEACTION"].Value = DateTime.Now;
+
+            DA.InsertCommand.CommandText = "insert into Reservation_R..ISSUED_FCC_ACTIONS (IDACTION,IDEMP,IDISSUED_FCC,DATEACTION) values " +
+                                            "(@IDACTION,@IDUSER,@IDISSUED_FCC,@DATEACTION)";
+            DA.InsertCommand.ExecuteNonQuery();
+            DA.InsertCommand.Connection.Close();
+        }
+
+        internal void Recieve(BookVO ScannedBook, ReaderVO ScannedReader, int IDEMP)
         {
             DA.UpdateCommand.Parameters.Clear();
             DA.UpdateCommand.Parameters.Add("IDISSUED", SqlDbType.Int);
@@ -163,13 +198,13 @@ namespace Circulation
 
         public DataTable GetLog()
         {
-            DA.SelectCommand.CommandText = "with fcc as ( " +
+            DA.SelectCommand.CommandText = "with FCC as ( " +
                             "select convert(VARCHAR(8),B.DATEACTION,108) [time],   " +
                             " bar.SORT collate Cyrillic_general_ci_ai bar,  " +
                             " case when avtp.PLAIN IS null then '' else avtp.PLAIN + '; ' end + " +
                             " case when titp.PLAIN IS null then '' else titp.PLAIN end collate Cyrillic_general_ci_ai tit,  " +
                             " A.IDREADER idr,  " +
-                            " C.STATUSNAME st, 'ЦФК' fund  " +
+                            " C.STATUSNAME st, 'ФКЦ' fund, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome  " +
                             "from Reservation_R..ISSUED_FCC_ACTIONS B  " +
                             " left join Reservation_R..ISSUED_FCC A on A.ID = B.IDISSUED_FCC  " +
                             " left join Reservation_R..STATUS_ISSUED_FCC C on B.IDACTION = C.ID  " +
@@ -187,7 +222,7 @@ namespace Circulation
                             " case when avtp.PLAIN IS null then '' else avtp.PLAIN + '; ' end + " +
                             " case when titp.PLAIN IS null then '' else titp.PLAIN end tit,  " +
                             " A.IDREADER idr,  " +
-                            " C.STATUSNAME st, 'ОФ' fund  " +
+                            " C.STATUSNAME st, 'ОФ' fund, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome  " +
                             "from Reservation_R..ISSUED_FCC_ACTIONS B  " +
                             " left join Reservation_R..ISSUED_FCC A on A.ID = B.IDISSUED_FCC  " +
                             " left join Reservation_R..STATUS_ISSUED_FCC C on B.IDACTION = C.ID  " +
@@ -199,7 +234,7 @@ namespace Circulation
                             " where cast(cast(B.DATEACTION as varchar(11)) as datetime)  " +
                             " = cast(cast(GETDATE() as varchar(11)) as datetime) and A.BaseId = 2 " +
                             " ) " +
-                            " select * from fcc " +
+                            " select * from FCC " +
                             " union all " +
                             " select * from vvv " +
                             " order by time desc";
@@ -217,11 +252,11 @@ namespace Circulation
             DA.SelectCommand.Parameters.AddWithValue("start", dateTime.Date);
             DA.SelectCommand.Parameters.AddWithValue("end", dateTime_2.Date);
             DA.SelectCommand.CommandText = " select 1 ID,B.ACTION act,A.DATEACTION from Reservation_R..ISSUED_FCC_ACTIONS A " +
-                                           " left join Reservation_R..ACTIONSTYPE B on A.IDACTION = B.ID "+
+                                           " left join Reservation_R..ACTIONSTYPE B on A.IDACTION = B.ID " +
                                            " where cast(cast(A.DATEACTION as varchar(11)) as datetime) between @start and @end and IDEMP = " + EmpID;
             DS = new DataSet();
             int i = DA.Fill(DS, "act");
-            
+
             return DS.Tables["act"];
         }
 
@@ -239,7 +274,7 @@ namespace Circulation
             DS.Tables["result"].Columns.Add("num");
             DS.Tables["result"].Columns.Add("name");
             DS.Tables["result"].Columns.Add("kolvo");
-            DS.Tables["result"].Rows.Add(new string[] { "1","Количество выданных книг",DS.Tables["rep1"].Rows[0][0].ToString()});
+            DS.Tables["result"].Rows.Add(new string[] { "1", "Количество выданных книг", DS.Tables["rep1"].Rows[0][0].ToString() });
 
             DA.SelectCommand.Parameters.Clear();
             DA.SelectCommand.Parameters.AddWithValue("start", dateTime.Date);
@@ -266,11 +301,11 @@ namespace Circulation
             DA.SelectCommand.Parameters.AddWithValue("start", dateTime.Date);
             DA.SelectCommand.Parameters.AddWithValue("end", dateTime_2.Date);
             DA.SelectCommand.CommandText = " select count(A.SORT) from BJFCC..DATAEXT A " +
-                                           " left join BJFCC..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 921 and B.MSFIELD = '$c' "+
+                                           " left join BJFCC..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 921 and B.MSFIELD = '$c' " +
                                            " where A.MNFIELD = 899 and A.MSFIELD = '$w' and B.SORT = 'Disponible' ";
             //DS = new DataSet();
             i = DA.Fill(DS, "rep4");
-            DS.Tables["result"].Rows.Add(new string[] { "4", "Количество всех книг в фонде (в базе франкотеки)", DS.Tables["rep4"].Rows[0][0].ToString() });
+            DS.Tables["result"].Rows.Add(new string[] { "4", "Количество всех книг в фонде (в базе ФКЦ)", DS.Tables["rep4"].Rows[0][0].ToString() });
 
 
 
@@ -284,7 +319,7 @@ namespace Circulation
             DA.SelectCommand.Parameters.AddWithValue("end", dateTime_2.Date);
             DA.SelectCommand.CommandText = " select count(A.DATEACTION) from Reservation_R..ISSUED_FCC_ACTIONS A " +
                                            " left join Reservation_R..ACTIONSTYPE B on A.IDACTION = B.ID " +
-                                           " where cast(cast(A.DATEACTION as varchar(11)) as datetime) between @start and @end and A.IDACTION = 1 and A.IDEMP = "+p;
+                                           " where cast(cast(A.DATEACTION as varchar(11)) as datetime) between @start and @end and A.IDACTION = 1 and A.IDEMP = " + p;
             DS = new DataSet();
             int i = DA.Fill(DS, "rep1");
             DS.Tables.Add("result");
@@ -298,7 +333,7 @@ namespace Circulation
             DA.SelectCommand.Parameters.AddWithValue("end", dateTime_2.Date);
             DA.SelectCommand.CommandText = " select count(A.DATEACTION) from Reservation_R..ISSUED_FCC_ACTIONS A " +
                                            " left join Reservation_R..ACTIONSTYPE B on A.IDACTION = B.ID " +
-                                           " where cast(cast(A.DATEACTION as varchar(11)) as datetime) between @start and @end and A.IDACTION = 2 and A.IDEMP = "+p;
+                                           " where cast(cast(A.DATEACTION as varchar(11)) as datetime) between @start and @end and A.IDACTION = 2 and A.IDEMP = " + p;
             //DS = new DataSet();
             i = DA.Fill(DS, "rep2");
             DS.Tables["result"].Rows.Add(new string[] { "2", "Количество принятых книг", DS.Tables["rep2"].Rows[0][0].ToString() });
@@ -309,7 +344,7 @@ namespace Circulation
             DA.SelectCommand.CommandText = " select count(distinct C.IDREADER) from Reservation_R..ISSUED_FCC_ACTIONS A " +
                                            " left join Reservation_R..ACTIONSTYPE B on A.IDACTION = B.ID " +
                                            " left join Reservation_R..ISSUED_FCC C on A.IDISSUED_FCC = C.ID " +
-                                           " where cast(cast(A.DATEACTION as varchar(11)) as datetime) between @start and @end and A.IDACTION = 1 and A.IDEMP = "+p;
+                                           " where cast(cast(A.DATEACTION as varchar(11)) as datetime) between @start and @end and A.IDACTION = 1 and A.IDEMP = " + p;
             //DS = new DataSet();
             i = DA.Fill(DS, "rep3");
             DS.Tables["result"].Rows.Add(new string[] { "3", "Количество читателей, получивших книги", DS.Tables["rep3"].Rows[0][0].ToString() });
@@ -371,5 +406,7 @@ namespace Circulation
                                            " cast(cast(getdate() as varchar(11)) as datetime) and cast(cast(getdate() as varchar(11)) as datetime) ";
             return DA.Fill(DS);
         }
+
+
     }
 }

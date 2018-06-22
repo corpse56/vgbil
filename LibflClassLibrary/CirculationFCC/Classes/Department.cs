@@ -13,11 +13,11 @@ namespace Circulation
     {
         public ExpectingAction ExpectedBar = ExpectingAction.WaitingBook;
 
-        public Department() 
+        public Department()
         {
             ExpectedBar = 0;
         }
-        
+
 
 
         public BookVO ScannedBook;
@@ -45,8 +45,8 @@ namespace Circulation
             {
                 return 1;
             }
-            
-            if (ExpectedBar == 0)//если сейчас ожидается штрихкод книги
+
+            if (ExpectedBar == ExpectingAction.WaitingBook)//если сейчас ожидается штрихкод книги
             {
                 if (ScannedType == BARTYPE.Reader) //выяснить какой штрихкод сейчас считан: читатель или книга
                 {
@@ -72,7 +72,7 @@ namespace Circulation
                 ScannedReader = new ReaderVO(PortData);
                 ExpectedBar = ExpectingAction.WaitingConfimation;
                 return 5;
-                
+
             }
         }
 
@@ -85,21 +85,48 @@ namespace Circulation
         private BARTYPE BookOrReader(string data) //false - книга, true - читатель
         {
             var dbg = new DBGeneral();
-            
+
             return dbg.BookOrReader(data);
         }
 
         public int ISSUE(int IDEMP)
         {
-            DBGeneral dbg = new DBGeneral();
-            return dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
 
+
+            DBGeneral dbg = new DBGeneral();
+
+            if (ScannedBook.FUND == Bases.BJFCC)
+            {
+                dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
+                return 0;
+            }
+            else
+            {
+                if ((ScannedReader.ReaderRights & Rights.EMPL) == Rights.EMPL)//если сотрудник выдаем сразу на дом
+                {
+                    dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
+                }
+                else
+                {
+                    if (ScannedBook.F899b == "ВХ")
+                    {
+                        dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
+                    }
+                    else
+                    {
+                        dbg.IssueInHall(ScannedBook, ScannedReader, IDEMP);
+
+                    }
+                }
+
+            }
+            return 0;
         }
 
         public void Prolong(int idiss, int days, int idemp)
         {
             DBReader dbr = new DBReader();
-            dbr.ProlongByIDISS(idiss,days,idemp);
+            dbr.ProlongByIDISS(idiss, days, idemp);
 
         }
 

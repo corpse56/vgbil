@@ -27,8 +27,8 @@ namespace ExportBJ_XML
         BJVuFindConverter bjscc = new BJVuFindConverter("BJSCC");
         //BJVuFindConverter brit_sovet = new BJVuFindConverter("BRIT_SOVET");
         LitresVuFindConverter litres = new LitresVuFindConverter("litres");
-        PeriodVuFindConverter period = new PeriodVuFindConverter();
-        PearsonVuFindConverter pearson = new PearsonVuFindConverter();
+        PeriodVuFindConverter period = new PeriodVuFindConverter("period");
+        PearsonVuFindConverter pearson = new PearsonVuFindConverter("pearson");
         JBHVuFindConverter jbh = new JBHVuFindConverter();
 
         Stopwatch sw;
