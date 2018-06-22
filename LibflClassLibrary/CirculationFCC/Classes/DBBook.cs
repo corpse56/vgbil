@@ -12,7 +12,7 @@ namespace Circulation
         //BJRecord rec;// = new BJRecord();
         public DBBook()
         {
-            
+
         }
         public List<BJRecord> GetBookByIDMAIN(int IDMAIN, Bases fund)
         {
@@ -91,9 +91,9 @@ namespace Circulation
         internal bool IsIssued(int IDDATA, Bases fund)
         {
             if (fund == Bases.BJFCC)
-                DA.SelectCommand.CommandText = "select IDMAIN from Reservation_R..ISSUED_FCC where IDDATA = " + IDDATA + " and IDSTATUS = 1 and BaseId = 1";
+                DA.SelectCommand.CommandText = "select IDMAIN from Reservation_R..ISSUED_FCC where IDDATA = " + IDDATA + " and IDSTATUS in (1,6) and BaseId = 1";
             else
-                DA.SelectCommand.CommandText = "select IDMAIN from Reservation_R..ISSUED_FCC where IDDATA = " + IDDATA + " and IDSTATUS = 6 and BaseId = 2";
+                DA.SelectCommand.CommandText = "select IDMAIN from Reservation_R..ISSUED_FCC where IDDATA = " + IDDATA + " and IDSTATUS in (1,6) and BaseId = 2";
             DS = new DataSet();
             int i = DA.Fill(DS, "t");
             if (i > 0) return true; else return false;
@@ -102,9 +102,9 @@ namespace Circulation
         internal int GetIDISSUED(int IDDATA, Bases fund)
         {
             if (fund == Bases.BJFCC)
-                DA.SelectCommand.CommandText = "select ID from Reservation_R..ISSUED_FCC where IDDATA = " + IDDATA + " and IDSTATUS = 1 and  BaseId = 1";
+                DA.SelectCommand.CommandText = "select ID from Reservation_R..ISSUED_FCC where IDDATA = " + IDDATA + " and IDSTATUS in (1,6) and  BaseId = 1";
             else
-                DA.SelectCommand.CommandText = "select ID from Reservation_R..ISSUED_FCC where IDDATA = " + IDDATA + " and IDSTATUS = 6 and  BaseId = 2";
+                DA.SelectCommand.CommandText = "select ID from Reservation_R..ISSUED_FCC where IDDATA = " + IDDATA + " and IDSTATUS in (1,6) and  BaseId = 2";
             DS = new DataSet();
             int i = DA.Fill(DS, "t");
             if (i > 0) return (int)DS.Tables["t"].Rows[0]["ID"]; else return 0;

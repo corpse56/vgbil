@@ -52,6 +52,18 @@ namespace ExportBJ_XML.classes
             for (int i = previous; i < MaxIDMAIN; i += step)
             {
                 _lastID = i;
+
+                if ((i == 52109) && (Fund == "REDKOSTJ"))
+                {
+                    //эта запись образец заполнения электронной копии
+                    continue;
+                }
+                if ((i == 1456705) && (Fund == "BJVVV"))
+                {
+                    //эта запись образец заполнения электронной копии
+                    continue;
+                }
+                
                 DataTable record = dbWrapper.GetBJRecord(_lastID);
                 if (record.Rows.Count == 0) continue;
                 try

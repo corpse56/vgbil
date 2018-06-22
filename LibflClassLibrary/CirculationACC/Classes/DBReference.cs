@@ -52,16 +52,18 @@ namespace CirculationACC
             DA.SelectCommand.CommandText = "select distinct 1,C.PLAIN collate Cyrillic_general_ci_ai tit,D.PLAIN collate Cyrillic_general_ci_ai avt,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
                 " INV.SORT collate Cyrillic_general_ci_ai inv,A.DATE_ISSUE,A.DATE_RETURN," +
                 " (case when (B.Email is null or B.Email = '')  then 'false' else 'true' end) isemail," +
-                " case when EM.DATEACTION is null then 'email не отправлялся' else CONVERT (NVARCHAR, EM.DATEACTION, 104) end emailsent, E.PLAIN collate Cyrillic_general_ci_ai shifr,'ЦАК' fund " +
+                " case when EM.DATEACTION is null then 'email не отправлялся' else CONVERT (NVARCHAR, EM.DATEACTION, 104) end emailsent, E.PLAIN collate Cyrillic_general_ci_ai shifr,'ЦАК' fund, F.PLAIN rack " +
                 " from Reservation_R..ISSUED_ACC A" +
                 " left join Readers..Main B on A.IDREADER = B.NumberReader" +
                 " left join BJACC..DATAEXT CC on A.IDMAIN = CC.IDMAIN and CC.MNFIELD = 200 and CC.MSFIELD = '$a'" +
                 " left join BJACC..DATAEXT DD on A.IDMAIN = DD.IDMAIN and DD.MNFIELD = 700 and DD.MSFIELD = '$a'" +
                 " left join BJACC..DATAEXT EE on A.IDDATA = EE.IDDATA and EE.MNFIELD = 899 and EE.MSFIELD = '$j'" +
+                " left join BJACC..DATAEXT FF on A.IDDATA = FF.IDDATA and FF.MNFIELD = 899 and FF.MSFIELD = '$c'" +
                 " left join BJACC..DATAEXTPLAIN C on C.IDDATAEXT = CC.ID" +
                 " left join BJACC..DATAEXTPLAIN D on D.IDDATAEXT = DD.ID" +
                 " left join BJACC..DATAEXTPLAIN E on E.IDDATAEXT = EE.ID" +
-                " left join Reservation_R..ISSUED_ACC_ACTIONS EM on EM.ID = (select top 1 ID from Reservation_R..ISSUED_ACC_ACTIONS Z "+
+                " left join BJACC..DATAEXTPLAIN F on F.IDDATAEXT = FF.ID" +
+                " left join Reservation_R..ISSUED_ACC_ACTIONS EM on EM.ID = (select top 1 ID from Reservation_R..ISSUED_ACC_ACTIONS Z " +
                                                                             " where Z.IDISSUED_ACC = A.IDREADER and Z.IDACTION = 4 " + // 4 - это ACTIONTYPE = сотрудник отослал емаил
                                                                             " order by ID desc) "+
                                                                             //" and Z.ID = (select max(ID) from Reservation_R..ISSUED_ACC_ACTIONS ZZ where ZZ.IDISSUED_ACC = A.IDREADER and ZZ.IDACTION = 4))" +
@@ -72,15 +74,17 @@ namespace CirculationACC
                 " select distinct 1,C.PLAIN collate Cyrillic_general_ci_ai tit,D.PLAIN collate Cyrillic_general_ci_ai avt,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
                 " INV.SORT collate Cyrillic_general_ci_ai inv,A.DATE_ISSUE,A.DATE_RETURN," +
                 " (case when (B.Email is null or B.Email = '')  then 'false' else 'true' end) isemail," +
-                " case when EM.DATEACTION is null then 'email не отправлялся' else CONVERT (NVARCHAR, EM.DATEACTION, 104) end emailsent, E.PLAIN collate Cyrillic_general_ci_ai shifr,'ОФ' fund " +
+                " case when EM.DATEACTION is null then 'email не отправлялся' else CONVERT (NVARCHAR, EM.DATEACTION, 104) end emailsent, E.PLAIN collate Cyrillic_general_ci_ai shifr,'ОФ' fund, F.PLAIN rack " +
                 " from Reservation_R..ISSUED_ACC A" +
                 " left join Readers..Main B on A.IDREADER = B.NumberReader" +
                 " left join BJVVV..DATAEXT CC on A.IDMAIN = CC.IDMAIN and CC.MNFIELD = 200 and CC.MSFIELD = '$a'" +
                 " left join BJVVV..DATAEXT DD on A.IDMAIN = DD.IDMAIN and DD.MNFIELD = 700 and DD.MSFIELD = '$a'" +
                 " left join BJVVV..DATAEXT EE on A.IDDATA = EE.IDDATA and EE.MNFIELD = 899 and EE.MSFIELD = '$j'" +
+                " left join BJVVV..DATAEXT FF on A.IDDATA = FF.IDDATA and FF.MNFIELD = 899 and FF.MSFIELD = '$c'" +
                 " left join BJVVV..DATAEXTPLAIN C on C.IDDATAEXT = CC.ID" +
                 " left join BJVVV..DATAEXTPLAIN D on D.IDDATAEXT = DD.ID" +
                 " left join BJVVV..DATAEXTPLAIN E on E.IDDATAEXT = EE.ID" +
+                " left join BJVVV..DATAEXTPLAIN F on F.IDDATAEXT = FF.ID" +
                 " left join Reservation_R..ISSUED_ACC_ACTIONS EM on EM.ID = (select top 1 ID from Reservation_R..ISSUED_ACC_ACTIONS Z " +
                                                                             " where Z.IDISSUED_ACC = A.IDREADER and Z.IDACTION = 4 " + // 4 - это ACTIONTYPE = сотрудник отослал емаил
                                                                             " order by ID desc) " +

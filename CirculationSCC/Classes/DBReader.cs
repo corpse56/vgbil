@@ -68,7 +68,7 @@ namespace Circulation
                                            " A.IDREADER idr,E.PLAIN collate Cyrillic_general_ci_ai shifr , 'ЦСК'  fund, A.DATE_ISSUE " +
                                            " ,Reservation_R.dbo.GetProlongedTimes(A.ID, 'BJSCC') prolonged, case when A.IsAtHome = 1 then 'на дом' else 'в зал' end IsAtHome" +
                                            "  from Reservation_R..ISSUED_SCC A " +
-                                           " left join Reservation_R..ISSUED_SCC_ACTIONS prolong on A.ID = prolong.IDISSUED_SCC and prolong.IDACTION = 3 " +
+                                           //" left join Reservation_R..ISSUED_SCC_ACTIONS prolong on A.ID = prolong.IDISSUED_SCC and prolong.IDACTION = 3 " +
                                            " left join BJSCC..DATAEXT tit on A.IDMAIN = tit.IDMAIN and tit.MNFIELD = 200 and tit.MSFIELD = '$a' " +
                                            " left join BJSCC..DATAEXTPLAIN titp on tit.ID = titp.IDDATAEXT " +
                                            " left join BJSCC..DATAEXT avt on A.IDMAIN = avt.IDMAIN and avt.MNFIELD = 700 and avt.MSFIELD = '$a' " +

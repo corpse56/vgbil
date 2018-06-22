@@ -4,11 +4,42 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Drawing;
+using System.ComponentModel;
 
 namespace Circulation
 {
+    [Flags]
+    public enum Rights
+    {
+        [Description("N/A")]
+        NA = 0,
+        [Description("Пользователь британского совета")]
+        BRIT = 1,
+        [Description("Пользователь читальных залов ВГБИЛ")]
+        HALL = 2,
+        [Description("Сотрудник ВГБИЛ")]
+        EMPL = 4,
+        [Description("Индивидуальный абонемент")]
+        ABON = 8,
+        [Description("Персональный абонемент")]
+        PERS = 16,
+        [Description("Коллективный абонемент")]
+        COLL = 32,
+    };
     public class ReaderVO
     {
+        public int ID;
+        public string Family;
+        public string Name;
+        public string Father;
+        public Image Photo;
+        public string FIO;
+        public string BAR;
+        public bool IsEmployee = false;
+        public Rights ReaderRights;
+        public string IDDepartment = "";
+
+
         public ReaderVO() { }
 
         public static bool IsReader(string bar)
@@ -82,6 +113,44 @@ namespace Circulation
             {
                 this.Photo = LibflClassLibrary.Properties.Resources.nofoto;
             }
+            InitReaderRights();
+        }
+
+        private void InitReaderRights()
+        {
+            var dbr = new DBReader();
+            DataTable rights = dbr.GetReaderRightsById(this.ID);
+            if (rights.Rows.Count != 0)
+            {
+                foreach (DataRow r in rights.Rows)
+                {
+                    switch (r["IDReaderRight"].ToString())
+                    {
+                        case "1":
+                            this.ReaderRights |= Rights.BRIT;
+                            break;
+                        case "2":
+                            this.ReaderRights |= Rights.HALL;
+                            break;
+                        case "3":
+                            this.ReaderRights |= Rights.EMPL;
+                            this.IDDepartment = r["IDOrganization"].ToString();
+                            break;
+                        case "4":
+                            this.ReaderRights |= Rights.ABON;
+                            break;
+                        case "5":
+                            this.ReaderRights |= Rights.PERS;
+                            break;
+                        case "6":
+                            this.ReaderRights |= Rights.COLL;
+                            break;
+                        default:
+                            this.ReaderRights |= Rights.HALL;
+                            break;
+                    }
+                }
+            }
         }
         public bool IsAlreadyIssuedMoreThanFourBooks()
         {
@@ -94,15 +163,6 @@ namespace Circulation
             return dbr.GetFormular(this.ID);
         }
 
-
-
-        public int ID;
-        public string Family;
-        public string Name;
-        public string Father;
-        public Image Photo;
-        public string FIO;
-        public string BAR;
         public string GetEmail()
         {
             DBReader dbr = new DBReader();
@@ -139,7 +199,7 @@ namespace Circulation
             //return false;
         }
 
-        public string GetRealIDByGuestBar(string bar)
+        internal string GetRealIDByGuestBar(string bar)
         {
             DBReader dbr = new DBReader();
             return dbr.GetRealIDByGuestBar(bar);

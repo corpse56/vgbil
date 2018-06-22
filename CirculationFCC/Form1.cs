@@ -208,6 +208,10 @@ namespace Circulation
             Formular.Columns["fund"].Width = 50;
             Formular.Columns["prolonged"].HeaderText = "Продлено, раз";
             Formular.Columns["prolonged"].Width = 80;
+            Formular.Columns["IsAtHome"].HeaderText = "Тип выдачи";
+            Formular.Columns["IsAtHome"].Width = 80;
+            Formular.Columns["rack"].HeaderText = "Стеллаж";
+            Formular.Columns["rack"].Width = 80;
             pictureBox2.Image = reader.Photo;
             foreach (DataGridViewRow r in Formular.Rows)
             {
@@ -277,6 +281,8 @@ namespace Circulation
             dgvLOG.Columns["st"].Width = 100;
             dgvLOG.Columns["fund"].HeaderText = "Фонд";
             dgvLOG.Columns["fund"].Width = 80;
+            dgvLOG.Columns["IsAtHome"].HeaderText = "Тип выдачи";
+            dgvLOG.Columns["IsAtHome"].Width = 80;
             foreach (DataGridViewColumn c in dgvLOG.Columns)
             {
                 c.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -659,6 +665,8 @@ namespace Circulation
             Statistics.Columns[11].Width = 100;
             Statistics.Columns[12].HeaderText = "Фонд";
             Statistics.Columns[12].Width = 50;
+            Statistics.Columns[13].HeaderText = "Тип выдачи";
+            Statistics.Columns[13].Width = 50;
 
             button12.Enabled = true;
         }
@@ -717,6 +725,8 @@ namespace Circulation
             Statistics.Columns[12].Width = 85;
             Statistics.Columns[13].HeaderText = "Фонд";
             Statistics.Columns[13].Width = 50;
+            Statistics.Columns[14].HeaderText = "Стеллаж";
+            Statistics.Columns[14].Width = 70;
             foreach (DataGridViewRow r in Statistics.Rows)
             {
                 object value = r.Cells[10].Value;
@@ -869,6 +879,8 @@ namespace Circulation
             Statistics.Columns[7].Width = 150;
             Statistics.Columns[8].HeaderText = "Тематика";
             Statistics.Columns[8].Width = 150;
+            Statistics.Columns[9].HeaderText = "Стеллаж";
+            Statistics.Columns[9].Width = 150;
 
 
 

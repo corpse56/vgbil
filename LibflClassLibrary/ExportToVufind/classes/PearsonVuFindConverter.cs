@@ -15,6 +15,12 @@ namespace ExportBJ_XML.classes
 {
     public class PearsonVuFindConverter : VuFindConverter
     {
+
+        public PearsonVuFindConverter(string fund)
+        {
+            this.Fund = fund;
+        }
+
         public override void Export()
         {
             /////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,44 +45,107 @@ namespace ExportBJ_XML.classes
                 AllFields.AppendFormat(" {0}", vfDoc.title);
                 vfDoc.title_short.Add(token["catalog"]["title"]["default"].ToString());
                 vfDoc.title_sort.Add(token["catalog"]["title"]["default"].ToString());
-                vfDoc.author.Add(token["catalog"]["options"]["Authors"].ToString());
-                AllFields.AppendFormat(" {0}", vfDoc.author);
-                vfDoc.author_sort.Add(token["catalog"]["options"]["Authors"].ToString());
 
-                vfDoc.Country.Add(token["catalog"]["options"]["Country of publication"].ToString());
-                AllFields.AppendFormat(" {0}", vfDoc.Country);
+                if (token["catalog"]["options"] != null)
+                if (token["catalog"]["options"]["Authors"] != null)
+                {
+                    vfDoc.author.Add(token["catalog"]["options"]["Authors"].ToString());
+                    AllFields.AppendFormat(" {0}", vfDoc.author);
+                    vfDoc.author_sort.Add(token["catalog"]["options"]["Authors"].ToString());
+                }
 
-                vfDoc.publisher.Add(token["catalog"]["options"]["Publisher"].ToString());
-                AllFields.AppendFormat(" {0}", vfDoc.publisher);
+                if (token["catalog"]["options"] != null)
+                {
+                    if (token["catalog"]["options"]["Country of publication"] != null)
+                    {
+                        vfDoc.Country.Add(token["catalog"]["options"]["Country of publication"].ToString());
+                        AllFields.AppendFormat(" {0}", vfDoc.Country);
+                    }
+                }
 
-                vfDoc.publishDate.Add(token["catalog"]["options"]["Publishing date"].ToString().Split('.')[2]);
-                AllFields.AppendFormat(" {0}", vfDoc.publishDate);
+                if (token["catalog"]["options"] != null)
+                {
+                    if (token["catalog"]["options"]["Publisher"] != null)
+                    {
+                        vfDoc.publisher.Add(token["catalog"]["options"]["Publisher"].ToString());
+                        AllFields.AppendFormat(" {0}", vfDoc.publisher);
+                    }
+                }
 
-                vfDoc.isbn.Add(token["catalog"]["options"]["ISBN"].ToString());
-                AllFields.AppendFormat(" {0}", vfDoc.isbn);
+                if (token["catalog"]["options"] != null)
+                {
+                    if (token["catalog"]["options"]["Publishing date"] != null)
+                    {
+                        vfDoc.publishDate.Add(token["catalog"]["options"]["Publishing date"].ToString().Split('.')[2]);
+                        AllFields.AppendFormat(" {0}", vfDoc.publishDate);
+                    }
+                }
 
-                vfDoc.Volume.Add(token["catalog"]["options"]["Number of pages"].ToString());
-                AllFields.AppendFormat(" {0}", vfDoc.Volume);
+                if (token["catalog"]["options"] != null)
+                {
+                    if (token["catalog"]["options"]["ISBN"] != null)
+                    {
+                        vfDoc.isbn.Add(token["catalog"]["options"]["ISBN"].ToString());
+                        AllFields.AppendFormat(" {0}", vfDoc.isbn);
+                    }
+                }
 
-                vfDoc.Annotation.Add(token["catalog"]["options"]["Desk"].ToString() + " ; " +
-                                              token["catalog"]["description"]["default"].ToString());
-                AllFields.AppendFormat(" {0}", vfDoc.Annotation);
+                if (token["catalog"]["options"] != null)
+                {
+                    if (token["catalog"]["options"]["Number of pages"] != null)
+                    {
+                        vfDoc.Volume.Add(token["catalog"]["options"]["Number of pages"].ToString());
+                        AllFields.AppendFormat(" {0}", vfDoc.Volume);
+                    }
+                }
 
-                vfDoc.genre.Add(token["catalog"]["options"]["Subject"].ToString());
-                AllFields.AppendFormat(" {0}", vfDoc.genre);
-                vfDoc.genre_facet.Add(token["catalog"]["options"]["Subject"].ToString());
-                
-                vfDoc.topic.Add(token["catalog"]["options"]["Catalogue section"].ToString());
-                AllFields.AppendFormat(" {0}", vfDoc.topic);
+                if (token["catalog"]["options"] != null)
+                {
+                    if (token["catalog"]["options"]["Desk"] != null)
+                    {
+                        vfDoc.Annotation.Add(token["catalog"]["options"]["Desk"].ToString() + " ; " +
+                                                      token["catalog"]["description"]["default"].ToString());
+                        AllFields.AppendFormat(" {0}", vfDoc.Annotation);
+                    }
+                }
 
-                vfDoc.topic_facet.Add(token["catalog"]["options"]["Catalogue section"].ToString());
-                
-                vfDoc.collection.Add(token["catalog"]["options"]["Collection"].ToString());
-                AllFields.AppendFormat(" {0}", vfDoc.collection);
+                if (token["catalog"]["options"] != null)
+                {
+                    if (token["catalog"]["options"]["Subject"] != null)
+                    {
+                        vfDoc.genre.Add(token["catalog"]["options"]["Subject"].ToString());
+                        AllFields.AppendFormat(" {0}", vfDoc.genre);
+                        vfDoc.genre_facet.Add(token["catalog"]["options"]["Subject"].ToString());
+                    }
+                }
 
-                vfDoc.language.Add(token["catalog"]["options"]["Language"].ToString());
-                AllFields.AppendFormat(" {0}", vfDoc.language);
+                if (token["catalog"]["options"] != null)
+                {
+                    if (token["catalog"]["options"]["Catalogue section"] != null)
+                    {
+                        vfDoc.topic.Add(token["catalog"]["options"]["Catalogue section"].ToString());
+                        AllFields.AppendFormat(" {0}", vfDoc.topic);
+                        vfDoc.topic_facet.Add(token["catalog"]["options"]["Catalogue section"].ToString());
+                    }
+                }
 
+                if (token["catalog"]["options"] != null)
+                {
+                    if (token["catalog"]["options"]["Collection"] != null)
+                    {
+                        vfDoc.collection.Add(token["catalog"]["options"]["Collection"].ToString());
+                        AllFields.AppendFormat(" {0}", vfDoc.collection);
+                    }
+                }
+
+                if (token["catalog"]["options"] != null)
+                {
+                    if (token["catalog"]["options"]["Language"] != null)
+                    {
+                        vfDoc.language.Add(token["catalog"]["options"]["Language"].ToString());
+                        AllFields.AppendFormat(" {0}", vfDoc.language);
+                    }
+                }
 
                 vfDoc.allfields = AllFields.ToString();
 
@@ -99,7 +168,7 @@ namespace ExportBJ_XML.classes
 
                 //writer.WriteValue("Для прочтения онлайн необходимо перейти по ссылке");
                 writer.WritePropertyName("exemplar_hyperlink");
-                writer.WriteValue("https://ebooks.libfl.ru/product/" + token["id"].ToString());
+                writer.WriteValue("https://ebooks.libfl.ru/catalog/knigi/" + token["id"].ToString()+@"/");
                 writer.WritePropertyName("exemplar_copyright");
                 writer.WriteValue("Да");
                 writer.WritePropertyName("exemplar_id");
@@ -115,7 +184,7 @@ namespace ExportBJ_XML.classes
                 vfDoc.Location.Add("2042");
                 vfDoc.ExemplarsJSON = sb.ToString();
                 vfDoc.id = "Pearson_" + token["id"].ToString();
-                vfDoc.HyperLink.Add("https://ebooks.libfl.ru/product/" + token["id"].ToString());
+                vfDoc.HyperLink.Add("https://ebooks.libfl.ru/catalog/knigi/" + token["id"].ToString() + @"/");
                 vfDoc.fund = "5008";
                 vfDoc.Level = "Монография";
                 vfDoc.format.Add("3012");
@@ -147,7 +216,12 @@ namespace ExportBJ_XML.classes
             {
                 Uri uri = new Uri("https://storage.aggregion.com/api/files/" + token["catalog"]["cover"].ToString() + "/shared/data");
                 string str = uri.ToString();
-                Utilities.Extensions.DownloadRemoteImageFile(uri.ToString(), @"f:\import\covers\pearson\" + token["id"].ToString()+@"\cover.jpg", @"f:\import\covers\pearson\" + token["id"].ToString());
+                string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf";
+                using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
+                {
+                    Utilities.Extensions.DownloadRemoteImageFile(uri.ToString(), @"f:\import\covers\pearson\" + token["id"].ToString() + @"\cover.jpg", @"f:\import\covers\pearson\" + token["id"].ToString());
+                }
+
 
                 VuFindConverterEventArgs e = new VuFindConverterEventArgs();
                 e.RecordId = "pearson_"+token["id"].ToString();
@@ -166,10 +240,10 @@ namespace ExportBJ_XML.classes
         }
         public void GetPearsonSourceData()
         {
-
+            //59401a585e737d0a2cb05d4e - старый license package
             Uri apiUrl =
-            new Uri("http://market.aggregion.com/api/public/goods?filter=licensePackage(\"59401a585e737d0a2cb05d4e\",equals)&extend=catalog");
-
+            new Uri("http://market.aggregion.com/api/public/goods?filter=licensePackage(\"5a9699f35e8a3174076414fe\",equals)&extend=catalog");
+            
             HttpWebRequest request = HttpWebRequest.Create(apiUrl) as HttpWebRequest;
             request.Timeout = 120000000;
             request.KeepAlive = true;
