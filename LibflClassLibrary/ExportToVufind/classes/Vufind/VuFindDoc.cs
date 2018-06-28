@@ -106,6 +106,15 @@ namespace ExportBJ_XML.classes
             this.Unified_Caption_AF_All  = new VufindField();
             this.Volume  = new VufindField();
             this.ExemplarsJSON = "";
+
+            this.hierarchy_top_id = new VufindField();
+            this.hierarchy_top_title  = new VufindField();
+            this.hierarchy_parent_title = new VufindField();
+            this.hierarchy_parent_id = new VufindField();
+            this.is_hierarchy_id = new VufindField();
+            this.is_hierarchy_title = new VufindField();
+
+
             //this.NewArrivals = "";
         }
 
@@ -206,8 +215,13 @@ namespace ExportBJ_XML.classes
         public List<ExemplarInfo> Exemplars = new List<ExemplarInfo>();
         public string ExemplarsJSON;
 
-
-
+        //поля для сводного уровня
+        public VufindField hierarchy_top_id { get; set; }
+        public VufindField hierarchy_top_title { get; set; }
+        public VufindField hierarchy_parent_title { get; set; }
+        public VufindField hierarchy_parent_id { get; set; }
+        public VufindField is_hierarchy_id { get; set; }
+        public VufindField is_hierarchy_title { get; set; }
         //специальная обработка 
         //перед записью в файл экспорта нужно вызвать этот метод
         //1. Фасетные поля. Если фасетное поле пустое, то вставлять <нет данных>

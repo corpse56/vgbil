@@ -109,7 +109,7 @@ namespace ExportBJ_XML.classes
             string level = BJBook.Rows[0]["Level"].ToString();
             string level_id = BJBook.Rows[0]["level_id"].ToString();
             int lev_id = int.Parse(level_id);
-            if (lev_id < 0) return null;
+            //if (lev_id < 0) return null;
             StringBuilder allFields = new StringBuilder();
             AuthoritativeFile AF_all = new AuthoritativeFile();
             bool wasTitle = false;//встречается ошибка: два заглавия в одном пине
@@ -387,7 +387,7 @@ namespace ExportBJ_XML.classes
                     case "225$a":
                         if (r["PLAIN"].ToString() == "") break;
                         if (r["PLAIN"].ToString() == "-1") break;
-                        //AddHierarchyFields(Convert.ToInt32(r["PLAIN"]), Convert.ToInt32(r["IDMAIN"]));
+                        AddHierarchyFields(Convert.ToInt32(r["PLAIN"]), Convert.ToInt32(r["IDMAIN"]), result);
                         break;
                     case "225$h":
                         result.NumberInSeries.Add(r["PLAIN"].ToString()); 
@@ -472,7 +472,10 @@ namespace ExportBJ_XML.classes
             {
                 result.description.Add(description);
             }
-
+            if (int.Parse(result.Level_id) < 0)
+            {
+                return result;
+            }
             AddExemplarFields(currentIDMAIN, result, this.Fund);
 
             if ((result.Exemplars.Count == 0))
@@ -825,55 +828,43 @@ namespace ExportBJ_XML.classes
 
         }
 
-        private void AddHierarchyFields(int ParentPIN, int CurrentPIN)
+        private void AddHierarchyFields(int ParentPIN, int CurrentPIN, VufindDoc vfDoc)
         {
-            //DataTable table = dbWrapper.GetBJRecord(ParentPIN);
-            //int TopHierarchyId = GetTopId( ParentPIN );
+            DataTable table = dbWrapper.GetBJRecord(ParentPIN);
+            int TopHierarchyId = GetTopId(ParentPIN);
+            
             //AddField("hierarchy_top_id", this.Fund + "_" + TopHierarchyId);
+            vfDoc.hierarchy_top_id.ValueList.Add(this.Fund + "_" + TopHierarchyId);
 
-            //table = dbWrapper.GetTitle(TopHierarchyId);
-            //if (table.Rows.Count != 0)
-            //{
-            //    string hierarchy_top_title = table.Rows[0]["PLAIN"].ToString();
-            //    AddField("hierarchy_top_title", hierarchy_top_title);
-            //}
-            //AddField("hierarchy_parent_id", this.Fund + "_" + ParentPIN);
+            table = dbWrapper.GetTitle(TopHierarchyId);
+            if (table.Rows.Count != 0)
+            {
+                string hierarchy_top_title = table.Rows[0]["PLAIN"].ToString();
+                vfDoc.hierarchy_top_title.ValueList.Add(hierarchy_top_title);
+            }
+            vfDoc.hierarchy_parent_id.ValueList.Add(this.Fund + "_" + ParentPIN);
+            table = dbWrapper.GetTitle(ParentPIN);
+            if (table.Rows.Count != 0)
+            {
+                string hierarchy_parent_title = table.Rows[0]["PLAIN"].ToString();
+                vfDoc.hierarchy_parent_title.ValueList.Add(hierarchy_parent_title);
+            }
 
-            //table = dbWrapper.GetTitle(ParentPIN);
-            //if (table.Rows.Count != 0)
-            //{
-            //    string hierarchy_parent_title = table.Rows[0]["PLAIN"].ToString();
-            //    AddField("hierarchy_parent_title", hierarchy_parent_title);
-            //}
+            if (vfDoc.is_hierarchy_id.ValueList.Count == 0)
+            {
+                vfDoc.is_hierarchy_id.ValueList.Add(this.Fund + "_" + CurrentPIN);
+            }
 
-            //bool metka = false;
-            //foreach (XmlNode n in _doc.ChildNodes)
-            //{
-            //    if (n.Attributes["name"].Value == "is_hierarchy_id")
-            //    {
-            //        metka = true;
-            //    }
-            //}
-            //if (!metka)
-            //{
-            //    AddField("is_hierarchy_id", this.Fund + "_" + CurrentPIN);//пометка о том, что это серия
-            //}
+            table = dbWrapper.GetTitle(CurrentPIN);
+            if (table.Rows.Count != 0)
+            {
+                string is_hierarchy_title = table.Rows[0]["PLAIN"].ToString();
+                if (vfDoc.is_hierarchy_title.ValueList.Count == 0)
+                {
+                    vfDoc.is_hierarchy_title.ValueList.Add(is_hierarchy_title);
+                }
 
-            //table = dbWrapper.GetTitle(CurrentPIN);
-            //if (table.Rows.Count != 0)
-            //{
-            //    string is_hierarchy_title = table.Rows[0]["PLAIN"].ToString();
-
-            //    metka = false;
-            //    foreach (XmlNode n in _doc.ChildNodes)
-            //    {
-            //        if (n.Attributes["name"].Value == "is_hierarchy_id")
-            //        {
-            //            metka = true;
-            //        }
-            //    }
-            //    if (!metka) AddField("is_hierarchy_title", is_hierarchy_title);
-            //}
+            }
         }
         private int GetTopId(int ParentPIN)
         {
