@@ -102,7 +102,8 @@ namespace ExportBJ_XML.classes
         {
             get
             {
-                string connectionString = "http://192.168.3.191/elcir/viewer.aspx";
+                //string connectionString = "http://192.168.3.191/elcir/viewer.aspx";
+                string connectionString = "http://192.168.4.28/elcir/viewer.aspx";
                 return connectionString;
             }
         }

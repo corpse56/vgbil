@@ -149,13 +149,14 @@ public partial class _Default : System.Web.UI.Page
     private string GetRedirectUrlNewViewer()
     {
         string result = "";
+        FormsAuthentication.SignOut();
         if (HttpContext.Current.Server.MachineName == "VGBIL-OPAC")
         {
             result = @"http:\\opac.libfl.ru\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
         }
         else
         {
-            result = @"http:\\192.168.3.128\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
+            result = @"http:\\192.168.4.2\personal\OrderElCopy.aspx?pin=" + bai.IDMAIN.ToString() + "&idbase=" + ((int)bai.Baza).ToString();
         }
         if (bai.ForAllReaders)
         {

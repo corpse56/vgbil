@@ -1,7 +1,9 @@
-﻿namespace Circulation {
-    
-    
-    public partial class BRIT_SOVETDataSet {
+﻿namespace Circulation
+{
+
+
+    public partial class BRIT_SOVETDataSet
+    {
         partial class DataTable1DataTable
         {
         }

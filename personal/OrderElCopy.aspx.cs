@@ -14,10 +14,13 @@ using System.Data;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using DataProviderAPI.ValueObjects;
+using System.Web.Security;
+
 public partial class OrderElCopy : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+
         string IDMAIN = Request["pin"];
         string IDBASE = Request["idbase"];
 
@@ -25,9 +28,15 @@ public partial class OrderElCopy : System.Web.UI.Page
 
         if (IDReader == null)
         {
+            
+
             IDReader = User.Identity.Name;
-            Response.Write("User.Identity.Name " + IDReader);
-            return;
+            //Response.Write("User.Identity.Name " + IDReader);
+            if (IDReader == string.Empty)
+            {
+                Response.Write("Неизвестная ошибка");
+                return;
+            }
         }
         //else
         //{

@@ -1,7 +1,9 @@
-﻿namespace Circulation {
-    
-    
-    public partial class Reservation_RDataSet {
+﻿namespace Circulation
+{
+
+
+    public partial class Reservation_RDataSet
+    {
     }
 }
 

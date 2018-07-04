@@ -5,7 +5,7 @@ using BookClasses;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Data;
-using System.Xml.Linq;
+//using System.Xml.Linq;
 namespace WriteOff
 {
     public class ReadDelBooks
