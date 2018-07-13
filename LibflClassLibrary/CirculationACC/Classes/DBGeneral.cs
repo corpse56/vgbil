@@ -84,7 +84,7 @@ namespace CirculationACC
             DA.InsertCommand.Parameters["IDDATA"].Value = ScannedBook.IDDATA;
             DA.InsertCommand.Parameters["IDREADER"].Value = ScannedReader.ID;
             DA.InsertCommand.Parameters["DATE_ISSUE"].Value = DateTime.Now;
-            DA.InsertCommand.Parameters["DATE_RETURN"].Value = DateTime.Now.AddDays(21);
+            DA.InsertCommand.Parameters["DATE_RETURN"].Value = DateTime.Now.AddDays(30);
             DA.InsertCommand.Parameters["IDSTATUS"].Value = 1 ;//1 - на дом, 6 - в зал
             DA.InsertCommand.Parameters["BaseId"].Value = (ScannedBook.FUND == Bases.BJACC) ? 1 : 2;
             DA.InsertCommand.CommandText = "insert into Reservation_R..ISSUED_ACC (IDMAIN,IDDATA,IDREADER,DATE_ISSUE,DATE_RETURN,IDSTATUS,BaseId,IsAtHome) values " +
@@ -114,6 +114,17 @@ namespace CirculationACC
 
 
         }
+
+        internal int GetCountOfPrologedTimes(int value)
+        {
+            DA.SelectCommand.Parameters.Clear();
+            DA.SelectCommand.CommandText = " select * from  [Reservation_R].[dbo].[ISSUED_ACC_ACTIONS] where IDACTION = 3 and IDISSUED_ACC = "+value;
+            DS = new DataSet();
+            int i = DA.Fill(DS, "act");
+
+            return i;
+        }
+
         internal void IssueInHall(BookVO ScannedBook, ReaderVO ScannedReader, int IDEMP)
         {
             DA.InsertCommand.Parameters.Clear();

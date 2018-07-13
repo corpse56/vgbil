@@ -423,6 +423,7 @@ namespace Circulation
             this.pictureBox2.Location = new System.Drawing.Point(593, 9);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(100, 114);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 20;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
@@ -621,8 +622,8 @@ namespace Circulation
             this.Statistics.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.Statistics.Size = new System.Drawing.Size(1171, 410);
             this.Statistics.TabIndex = 1;
-            this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
             this.Statistics.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_CellMouseDoubleClick);
+            this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
             // 
             // button7
             // 
@@ -703,7 +704,7 @@ namespace Circulation
             // sqlConnection1
             // 
             this.sqlConnection1.ConnectionString = "Data Source=192.168.3.62;Initial Catalog=BRIT_SOVET;Persist Security Info=True;Us" +
-                "er ID=circulation;Password=circfull";
+    "er ID=circulation;Password=circfull";
             this.sqlConnection1.FireInfoMessageEventOnUserErrors = false;
             // 
             // contextMenuStrip2
@@ -719,7 +720,7 @@ namespace Circulation
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem,
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(331, 202);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(331, 224);
             // 
             // выданные нигиЌа“екущийћоментToolStripMenuItem
             // 

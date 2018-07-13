@@ -75,7 +75,7 @@ namespace Circulation
             DA.InsertCommand.Parameters.Add("IDDATA", SqlDbType.Int).Value = ScannedBook.IDDATA;
             DA.InsertCommand.Parameters.Add("IDREADER", SqlDbType.Int).Value = ScannedReader.ID;
             DA.InsertCommand.Parameters.Add("DATE_ISSUE", SqlDbType.DateTime).Value = DateTime.Now;
-            DA.InsertCommand.Parameters.Add("DATE_RETURN", SqlDbType.DateTime).Value = DateTime.Now.AddDays(21);
+            DA.InsertCommand.Parameters.Add("DATE_RETURN", SqlDbType.DateTime).Value = DateTime.Now.AddDays(30);
             DA.InsertCommand.Parameters.Add("IDSTATUS", SqlDbType.Int).Value =  1 ;//1 - выдано на дом, 6 - выдано в зал
             DA.InsertCommand.Parameters.Add("BaseId", SqlDbType.Int).Value = (ScannedBook.FUND == Bases.BJSCC) ? 1 : 2;
             DA.InsertCommand.Parameters.Add("IsAtHome", SqlDbType.Bit).Value = true;
@@ -101,6 +101,17 @@ namespace Circulation
             DA.InsertCommand.ExecuteNonQuery();
             DA.InsertCommand.Connection.Close();
         }
+
+        internal int GetCountOfPrologedTimes(int value)
+        {
+            DA.SelectCommand.Parameters.Clear();
+            DA.SelectCommand.CommandText = " select * from  [Reservation_R].[dbo].[ISSUED_SCC_ACTIONS] where IDACTION = 3 and IDISSUED_SCC = " + value;
+            DS = new DataSet();
+            int i = DA.Fill(DS, "act");
+
+            return i;
+        }
+
         internal void IssueInHall(BookVO ScannedBook, ReaderVO ScannedReader, int IDEMP)//выдача в зал
         {
             DA.InsertCommand.Parameters.Clear();

@@ -313,6 +313,13 @@ namespace Circulation
                 MessageBox.Show("Выделите строку!");
                 return;
             }
+
+            if (DEPARTMENT.GetCountOfPrologedTimes((int)Formular.SelectedRows[0].Cells["idiss"].Value) > 0)
+            {
+                MessageBox.Show("Нельзя продлить книгу более одного раза!");
+                return;
+            }
+
             Prolong p = new Prolong();
             p.ShowDialog();
             if (p.Days == -99) return;
@@ -402,7 +409,7 @@ namespace Circulation
 
         private void Statistics_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (label19.Text.Contains("просроч") || label19.Text.Contains("нарушит"))
+            if (label19.Text.Contains("просроч"))
             foreach (DataGridViewRow r in Statistics.Rows)
             {
                 if (r.Cells[10].Value.ToString() == "true")
@@ -603,7 +610,7 @@ namespace Circulation
             if (label19.Text.Contains("нарушит"))
             {
                 tabControl1.SelectedIndex = 1;
-                numericUpDown3.Value = int.Parse(Statistics.Rows[e.RowIndex].Cells[1].Value.ToString());
+                numericUpDown3.Value = int.Parse(Statistics.Rows[e.RowIndex].Cells[2].Value.ToString());
                 button10_Click(sender, new EventArgs());
             }
         }
@@ -1013,27 +1020,37 @@ namespace Circulation
 
             autoinc(Statistics);
             Statistics.Columns[0].HeaderText = "№№";
-            Statistics.Columns[0].Width = 40;
-            Statistics.Columns[1].HeaderText = "Номер читате льского билета";
-            Statistics.Columns[1].Width = 70;
-            Statistics.Columns[2].HeaderText = "Фамилия";
-            Statistics.Columns[2].Width = 120;
-            Statistics.Columns[3].HeaderText = "Имя";
-            Statistics.Columns[3].Width = 120;
-            Statistics.Columns[4].HeaderText = "Отчество";
-            Statistics.Columns[4].Width = 120;
-            Statistics.Columns[5].Visible = false;
-            Statistics.Columns[6].HeaderText = "Дата последней отправки email";
-            Statistics.Columns[6].Width = 150;
+            Statistics.Columns[0].Width = 30;
+            Statistics.Columns[1].HeaderText = "ФИО";
+            Statistics.Columns[1].Width = 100;
+            Statistics.Columns[2].HeaderText = "Номер читателя";
+            Statistics.Columns[2].Width = 100;
+            Statistics.Columns[3].HeaderText = "Права читателя";
+            Statistics.Columns[3].Width = 100;
+            Statistics.Columns[4].HeaderText = "Инв номер/ шкод";
+            Statistics.Columns[4].Width = 100;
+            Statistics.Columns[5].HeaderText = "Телефон";
+            Statistics.Columns[5].Width = 100;
+            Statistics.Columns[6].HeaderText = "Email";
+            Statistics.Columns[6].Width = 100;
+            Statistics.Columns[7].HeaderText = "Адрес";
+            Statistics.Columns[7].Width = 100;
+
+            Statistics.Columns[8].HeaderText = "Дата выдачи";
+            Statistics.Columns[8].Width = 90;
+            Statistics.Columns[9].HeaderText = "Дата возврата";
+            Statistics.Columns[9].Width = 90;
+            Statistics.Columns[10].HeaderText = "Дней просрочено";
+            Statistics.Columns[10].Width = 90;
             button12.Enabled = true;
-            foreach (DataGridViewRow r in Statistics.Rows)
-            {
-                object value = r.Cells[5].Value;
-                if (Convert.ToBoolean(value) == true)
-                {
-                    r.DefaultCellStyle.BackColor = Color.Yellow;
-                }
-            }
+            //foreach (DataGridViewRow r in Statistics.Rows)
+            //{
+            //    object value = r.Cells[5].Value;
+            //    if (Convert.ToBoolean(value) == true)
+            //    {
+            //        r.DefaultCellStyle.BackColor = Color.Yellow;
+            //    }
+            //}
         }
 
         private void bComment_Click(object sender, EventArgs e)

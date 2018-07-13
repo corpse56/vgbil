@@ -350,17 +350,29 @@ namespace Circulation
 
         public object GetViolators()
         {
-            DA.SelectCommand.CommandText = "with vio as (select distinct 1 nn,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
-                " (case when (B.Email is null or B.Email = '') then 'false' else 'true' end) isemail," +
-                " case when EM.DATEACTION is null then 'email не отправлялся' else CONVERT (NVARCHAR, EM.DATEACTION, 104) end emailsent " +
-                " from Reservation_R..ISSUED_FCC A" +
-                " left join Readers..Main B on A.IDREADER = B.NumberReader" +
-                " left join Reservation_R..ISSUED_FCC_ACTIONS EM on EM.IDISSUED_FCC = A.IDREADER and EM.IDACTION = 4" + // 4 - это ACTIONTYPE = сотрудник отослал емаил
-                " where A.IDSTATUS = 1 and A.DATE_RETURN < getdate() and " +
-                " (EM.DATEACTION = (select max(DATEACTION) from Reservation_R..ISSUED_FCC_ACTIONS where IDISSUED_FCC = A.IDREADER and IDACTION = 4) " +
-                " or EM.DATEACTION is null) )" +
-                " select * from vio";
-            //" select * from vio where emailsent = (select max)";
+            DA.SelectCommand.CommandText = " select distinct rm.NumberReader, " +
+                 "isnull(rm.FamilyName,'') +' '+isnull(rm.Name,'')+' '+isnull(rm.FatherName,'') fio , " +
+                 "rm.NumberReader numr, " +
+                 " Reservation_R.dbo.GetReaderRights(A.IDREADER) rgt, " +
+                 "(case when A.BaseId = 1 then isnull(PinvFCC.PLAIN, PbarFCC.PLAIN) else PinvVVV.PLAIN end) inv," +
+                 "isnull('факт.: '+rm.LiveTelephone+',','') + ' ' + isnull('дом.:'+rm.RegistrationTelephone+',','') ph, " +
+                 "isnull('факт.: '+rm.Email+',','') em ," +
+                 " 'Зарегистрирован: '+ isnull(rm.RegistrationProvince,'') + ', '+isnull(rm.RegistrationCity,'')+', '+isnull(rm.RegistrationStreet,'')+ '; ' + " +
+                 " 'Проживает: ' +isnull(rm.LiveProvince,'') + ', '+isnull(rm.LiveCity,'')+ ', '+isnull(rm.LiveStreet,'') address ," +
+                 " A.DATE_ISSUE , " +
+                 " A.DATE_RETURN ret," +
+                 " case when datediff(day, A.DATE_RETURN, getdate() ) < 0 then 0 else datediff(day, A.DATE_RETURN, getdate()) end ovrd " +
+                                                   " from Reservation_R..ISSUED_FCC A" +
+                                                   //" inner join BJVVV..LIST_8 DEP on A.ZALISS = DEP.SHORTNAME" +
+                                                   " left join Readers..Main rm on A.IDREADER = rm.NumberReader " +
+                                                   " left join BJVVV..LIST_8 l8 on l8.ID = rm.WorkDepartment " +
+                                                   " left join BJFCC..DATAEXT invFCC on invFCC.IDDATA = A.IDDATA and invFCC.MNFIELD = 899 and invFCC.MSFIELD = '$p' and A.BaseId = 1 " +
+                                                   " left join BJFCC..DATAEXTPLAIN PinvFCC on invFCC.ID = PinvFCC.IDDATAEXT" +
+                                                   " left join BJFCC..DATAEXT barFCC on barFCC.IDDATA = A.IDDATA and barFCC.MNFIELD = 899 and barFCC.MSFIELD = '$w' and A.BaseId = 1 " +
+                                                   " left join BJFCC..DATAEXTPLAIN PbarFCC on barFCC.ID = PbarFCC.IDDATAEXT" +
+                                                   " left join BJVVV..DATAEXT invVVV on invVVV.IDDATA = A.IDDATA and invVVV.MNFIELD = 899 and invVVV.MSFIELD = '$p' and A.BaseId = 2 " +
+                                                   " left join BJVVV..DATAEXTPLAIN PinvVVV on invVVV.ID = PinvVVV.IDDATAEXT" +
+                                                   " where A.IDSTATUS = 1 and A.DATE_RETURN < getdate() ";
             DS = new DataSet();
             DA.Fill(DS, "t");
             return DS.Tables["t"];

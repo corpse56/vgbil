@@ -2370,7 +2370,7 @@ namespace Circulation
 
 
 
-        int ProlongDays = -1;
+        int ProlongDays = 30;
         private void button5_Click(object sender, EventArgs e)
         {
             if (Formular.SelectedRows.Count == 0)
@@ -2390,7 +2390,10 @@ namespace Circulation
                     string zi = r.Cells["zi"].Value.ToString();
                     
                     
-                    dbw.ProlongReservation(dend, zi);
+                    if (dbw.ProlongReservation(dend, zi))
+                    {
+                        continue;
+                    }
                     if (!dbw.IsAtHome(zi))
                     {
                         //dbReader reader  = new dbReader(int.Parse(label25.Text));
@@ -4600,6 +4603,11 @@ namespace Circulation
             dbw.RemoveResponsibility(b);
 
             this.FormularColumnsForming(ReaderRecordFormular.id);
+
+        }
+
+        private void список„итателей» ниг¬ыданныхЌаƒом—ѕросроченным—роком—дачиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
         }
 

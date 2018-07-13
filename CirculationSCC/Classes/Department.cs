@@ -148,5 +148,11 @@ namespace Circulation
             DBGeneral dbg = new DBGeneral();
             return dbg.GetAttendance();
         }
+
+        internal int GetCountOfPrologedTimes(int value)
+        {
+            DBGeneral dbg = new DBGeneral();
+            return dbg.GetCountOfPrologedTimes(value);
+        }
     }
 }

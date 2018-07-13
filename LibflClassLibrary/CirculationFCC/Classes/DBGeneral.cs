@@ -84,7 +84,7 @@ namespace Circulation
             DA.InsertCommand.Parameters["IDDATA"].Value = ScannedBook.IDDATA;
             DA.InsertCommand.Parameters["IDREADER"].Value = ScannedReader.ID;
             DA.InsertCommand.Parameters["DATE_ISSUE"].Value = DateTime.Now;
-            DA.InsertCommand.Parameters["DATE_RETURN"].Value = DateTime.Now.AddDays(21);
+            DA.InsertCommand.Parameters["DATE_RETURN"].Value = DateTime.Now.AddDays(30);
             DA.InsertCommand.Parameters["IDSTATUS"].Value = 1;//1 - на дом, 6 - в зал
             DA.InsertCommand.Parameters["BaseId"].Value = (ScannedBook.FUND == Bases.BJFCC) ? 1 : 2;
             DA.InsertCommand.CommandText = "insert into Reservation_R..ISSUED_FCC (IDMAIN,IDDATA,IDREADER,DATE_ISSUE,DATE_RETURN,IDSTATUS,BaseId,IsAtHome) values " +
@@ -114,6 +114,16 @@ namespace Circulation
 
 
         }
+
+        internal int GetCountOfPrologedTimes(int value)
+        {
+            DA.SelectCommand.Parameters.Clear();
+            DA.SelectCommand.CommandText = " select * from  [Reservation_R].[dbo].[ISSUED_FCC_ACTIONS] where IDACTION = 3 and IDISSUED_FCC = " + value;
+            DS = new DataSet();
+            int i = DA.Fill(DS, "act");
+            return i;
+        }
+
         internal void IssueInHall(BookVO ScannedBook, ReaderVO ScannedReader, int IDEMP)
         {
             DA.InsertCommand.Parameters.Clear();

@@ -43,12 +43,32 @@ namespace Circulation
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.button20 = new System.Windows.Forms.Button();
+            this.dataGridView1 = new Circulation.DBDataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.tabHome = new System.Windows.Forms.TabPage();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.label16 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.dgwHome = new Circulation.DBDataGridView();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button14 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -85,6 +105,9 @@ namespace Circulation
             this.label20 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
+            this.crystalReportViewer1 = new Circulation.DBCrystalReportViewer();
+            this.numericUpDown3 = new Circulation.DBNumericUpDown();
+            this.Formular = new Circulation.DBDataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button18 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
@@ -95,16 +118,24 @@ namespace Circulation
             this.label18 = new System.Windows.Forms.Label();
             this.button15 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.Statistics = new Circulation.DBDataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.button9 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.RecBooks = new Circulation.DBDataGridView();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.button28 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
+            this.PaidServiceGrid = new Circulation.DBDataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.button27 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
+            this.FreeServiceGrid = new Circulation.DBDataGridView();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.label23 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -180,67 +211,36 @@ namespace Circulation
             this.backgroundWorker14 = new System.ComponentModel.BackgroundWorker();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.zAKAZBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dataGridView1 = new Circulation.DBDataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgwHome = new Circulation.DBDataGridView();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.crystalReportViewer1 = new Circulation.DBCrystalReportViewer();
-            this.numericUpDown3 = new Circulation.DBNumericUpDown();
-            this.Formular = new Circulation.DBDataGridView();
-            this.Statistics = new Circulation.DBDataGridView();
-            this.RecBooks = new Circulation.DBDataGridView();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PaidServiceGrid = new Circulation.DBDataGridView();
-            this.FreeServiceGrid = new Circulation.DBDataGridView();
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabHall.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabHome.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwHome)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Formular)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Statistics)).BeginInit();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RecBooks)).BeginInit();
             this.tabPage5.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PaidServiceGrid)).BeginInit();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FreeServiceGrid)).BeginInit();
             this.tabPage6.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.cmsBack.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.zAKAZBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgwHome)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Formular)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Statistics)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RecBooks)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PaidServiceGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FreeServiceGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // label3
@@ -277,9 +277,9 @@ namespace Circulation
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage2);
@@ -327,9 +327,9 @@ namespace Circulation
             // 
             // tabControl2
             // 
-            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl2.Controls.Add(this.tabHall);
             this.tabControl2.Controls.Add(this.tabHome);
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
@@ -391,6 +391,92 @@ namespace Circulation
             this.button20.UseVisualStyleBackColor = true;
             this.button20.Click += new System.EventHandler(this.button20_Click_1);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.Column1,
+            this.Column4,
+            this.Column2,
+            this.Column3,
+            this.dataGridViewTextBoxColumn4,
+            this.Column5});
+            this.dataGridView1.Location = new System.Drawing.Point(4, 39);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(1091, 232);
+            this.dataGridView1.TabIndex = 15;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "»нв.н. или шкод";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "»здание";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 220;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "„итатель";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Ќомер читател€";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 80;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "¬ыдача с є";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "¬рем€ выдачи";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 70;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "¬рем€ возврата";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 70;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.HeaderText = " афедра выдачи";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = " афедра возврата";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -418,6 +504,7 @@ namespace Circulation
             // 
             // dateTimePicker2
             // 
+            this.dateTimePicker2.Enabled = false;
             this.dateTimePicker2.Location = new System.Drawing.Point(340, 12);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(150, 23);
@@ -450,6 +537,93 @@ namespace Circulation
             this.label2.Size = new System.Drawing.Size(124, 17);
             this.label2.TabIndex = 17;
             this.label2.Text = "∆урнал событий:";
+            // 
+            // dgwHome
+            // 
+            this.dgwHome.AllowUserToAddRows = false;
+            this.dgwHome.AllowUserToDeleteRows = false;
+            this.dgwHome.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgwHome.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgwHome.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn7,
+            this.dataGridViewTextBoxColumn8,
+            this.dataGridViewTextBoxColumn9,
+            this.dataGridViewTextBoxColumn10,
+            this.dataGridViewTextBoxColumn11,
+            this.dataGridViewTextBoxColumn12,
+            this.dataGridViewTextBoxColumn13,
+            this.Column8,
+            this.Column9});
+            this.dgwHome.Location = new System.Drawing.Point(4, 39);
+            this.dgwHome.Margin = new System.Windows.Forms.Padding(4);
+            this.dgwHome.MultiSelect = false;
+            this.dgwHome.Name = "dgwHome";
+            this.dgwHome.ReadOnly = true;
+            this.dgwHome.RowHeadersVisible = false;
+            this.dgwHome.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgwHome.Size = new System.Drawing.Size(1091, 255);
+            this.dgwHome.TabIndex = 16;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.HeaderText = "»нв.н. или шкод";
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.HeaderText = "»здание";
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            this.dataGridViewTextBoxColumn8.Width = 220;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.HeaderText = "„итатель";
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn10
+            // 
+            this.dataGridViewTextBoxColumn10.HeaderText = "Ќомер читател€";
+            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
+            this.dataGridViewTextBoxColumn10.ReadOnly = true;
+            this.dataGridViewTextBoxColumn10.Width = 80;
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            this.dataGridViewTextBoxColumn11.HeaderText = " ласс читател€";
+            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            this.dataGridViewTextBoxColumn11.ReadOnly = true;
+            this.dataGridViewTextBoxColumn11.Width = 90;
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            this.dataGridViewTextBoxColumn12.HeaderText = "ƒата выдачи";
+            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            this.dataGridViewTextBoxColumn12.ReadOnly = true;
+            this.dataGridViewTextBoxColumn12.Width = 75;
+            // 
+            // dataGridViewTextBoxColumn13
+            // 
+            this.dataGridViewTextBoxColumn13.HeaderText = "ƒата возврата";
+            this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
+            this.dataGridViewTextBoxColumn13.ReadOnly = true;
+            this.dataGridViewTextBoxColumn13.Width = 75;
+            // 
+            // Column8
+            // 
+            this.Column8.HeaderText = " афедра выдачи";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
+            // 
+            // Column9
+            // 
+            this.Column9.HeaderText = " афедра возврата";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
             // 
             // button14
             // 
@@ -498,8 +672,8 @@ namespace Circulation
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.RPhoto);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label5);
@@ -512,8 +686,8 @@ namespace Circulation
             // 
             // RPhoto
             // 
-            this.RPhoto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.RPhoto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
             this.RPhoto.ErrorImage = global::Circulation.Properties.Resources.nofoto;
             this.RPhoto.InitialImage = global::Circulation.Properties.Resources.nofoto;
@@ -691,7 +865,7 @@ namespace Circulation
             this.pictureBox2.Location = new System.Drawing.Point(547, 9);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(100, 109);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 24;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
@@ -852,6 +1026,49 @@ namespace Circulation
             this.label17.TabIndex = 3;
             this.label17.Text = "„итатель:";
             // 
+            // crystalReportViewer1
+            // 
+            this.crystalReportViewer1.ActiveViewIndex = -1;
+            this.crystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.crystalReportViewer1.Location = new System.Drawing.Point(128, 157);
+            this.crystalReportViewer1.Name = "crystalReportViewer1";
+            this.crystalReportViewer1.SelectionFormula = "";
+            this.crystalReportViewer1.Size = new System.Drawing.Size(99, 127);
+            this.crystalReportViewer1.TabIndex = 13;
+            this.crystalReportViewer1.ViewTimeSelectionFormula = "";
+            this.crystalReportViewer1.Visible = false;
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.numericUpDown3.Location = new System.Drawing.Point(733, 521);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(277, 23);
+            this.numericUpDown3.TabIndex = 8;
+            // 
+            // Formular
+            // 
+            this.Formular.AllowUserToAddRows = false;
+            this.Formular.AllowUserToDeleteRows = false;
+            this.Formular.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Formular.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Formular.Location = new System.Drawing.Point(3, 130);
+            this.Formular.Name = "Formular";
+            this.Formular.RowHeadersVisible = false;
+            this.Formular.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Formular.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Formular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.Formular.Size = new System.Drawing.Size(1110, 384);
+            this.Formular.TabIndex = 2;
+            this.Formular.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Formular_ColumnHeaderMouseClick);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.button18);
@@ -970,6 +1187,24 @@ namespace Circulation
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // Statistics
+            // 
+            this.Statistics.AllowUserToAddRows = false;
+            this.Statistics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Statistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Statistics.Location = new System.Drawing.Point(7, 78);
+            this.Statistics.MultiSelect = false;
+            this.Statistics.Name = "Statistics";
+            this.Statistics.ReadOnly = true;
+            this.Statistics.RowHeadersVisible = false;
+            this.Statistics.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.Statistics.Size = new System.Drawing.Size(1063, 430);
+            this.Statistics.TabIndex = 1;
+            this.Statistics.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_CellMouseDoubleClick);
+            this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.button9);
@@ -1004,6 +1239,57 @@ namespace Circulation
             this.button6.Text = "эмул€ци€";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // RecBooks
+            // 
+            this.RecBooks.AllowUserToAddRows = false;
+            this.RecBooks.AllowUserToDeleteRows = false;
+            this.RecBooks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.RecBooks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.RecBooks.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column6,
+            this.dataGridViewTextBoxColumn5,
+            this.dataGridViewTextBoxColumn6,
+            this.Column7});
+            this.RecBooks.Location = new System.Drawing.Point(4, 7);
+            this.RecBooks.Margin = new System.Windows.Forms.Padding(4);
+            this.RecBooks.MultiSelect = false;
+            this.RecBooks.Name = "RecBooks";
+            this.RecBooks.ReadOnly = true;
+            this.RecBooks.RowHeadersVisible = false;
+            this.RecBooks.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.RecBooks.Size = new System.Drawing.Size(1062, 470);
+            this.RecBooks.TabIndex = 3;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "єє";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            this.Column6.Width = 70;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.HeaderText = "»нвентарный номер";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            this.dataGridViewTextBoxColumn5.Width = 170;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.HeaderText = "»здание";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            this.dataGridViewTextBoxColumn6.Width = 450;
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "јвтор";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            this.Column7.Width = 250;
             // 
             // tabPage5
             // 
@@ -1050,10 +1336,24 @@ namespace Circulation
             this.button26.UseVisualStyleBackColor = true;
             this.button26.Click += new System.EventHandler(this.button26_Click);
             // 
+            // PaidServiceGrid
+            // 
+            this.PaidServiceGrid.AllowUserToAddRows = false;
+            this.PaidServiceGrid.AllowUserToDeleteRows = false;
+            this.PaidServiceGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.PaidServiceGrid.Location = new System.Drawing.Point(6, 22);
+            this.PaidServiceGrid.MultiSelect = false;
+            this.PaidServiceGrid.Name = "PaidServiceGrid";
+            this.PaidServiceGrid.ReadOnly = true;
+            this.PaidServiceGrid.RowHeadersVisible = false;
+            this.PaidServiceGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.PaidServiceGrid.Size = new System.Drawing.Size(488, 417);
+            this.PaidServiceGrid.TabIndex = 3;
+            // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox3.Controls.Add(this.button27);
             this.groupBox3.Controls.Add(this.button25);
             this.groupBox3.Controls.Add(this.FreeServiceGrid);
@@ -1085,6 +1385,23 @@ namespace Circulation
             this.button25.Text = "¬вод услуги";
             this.button25.UseVisualStyleBackColor = true;
             this.button25.Click += new System.EventHandler(this.button25_Click);
+            // 
+            // FreeServiceGrid
+            // 
+            this.FreeServiceGrid.AllowUserToAddRows = false;
+            this.FreeServiceGrid.AllowUserToDeleteRows = false;
+            this.FreeServiceGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.FreeServiceGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.FreeServiceGrid.Location = new System.Drawing.Point(6, 22);
+            this.FreeServiceGrid.MultiSelect = false;
+            this.FreeServiceGrid.Name = "FreeServiceGrid";
+            this.FreeServiceGrid.ReadOnly = true;
+            this.FreeServiceGrid.RowHeadersVisible = false;
+            this.FreeServiceGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.FreeServiceGrid.Size = new System.Drawing.Size(447, 472);
+            this.FreeServiceGrid.TabIndex = 3;
             // 
             // tabPage6
             // 
@@ -1137,7 +1454,7 @@ namespace Circulation
             // sqlConnection1
             // 
             this.sqlConnection1.ConnectionString = "Data Source=192.168.3.62;Initial Catalog=BRIT_SOVET;Persist Security Info=True;Us" +
-                "er ID=circulation;Password=circfull";
+    "er ID=circulation;Password=circfull";
             this.sqlConnection1.FireInfoMessageEventOnUserErrors = false;
             // 
             // backgroundWorker1
@@ -1274,7 +1591,7 @@ namespace Circulation
             // обращаемость нигЅравшихс€¬“екущем«але»з нигохранени€ѕо»нвентарномуЌомеруToolStripMenuItem
             // 
             this.обращаемость нигЅравшихс€¬“екущем«але»з нигохранени€ѕо»нвентарномуЌомеруToolStripMenuItem.Name = "обращаемость нигЅравшихс€¬“екущем«але»з нигохранени€ѕо»нвентарномуЌомеруToolStrip" +
-                "MenuItem";
+    "MenuItem";
             this.обращаемость нигЅравшихс€¬“екущем«але»з нигохранени€ѕо»нвентарномуЌомеруToolStripMenuItem.Size = new System.Drawing.Size(441, 22);
             this.обращаемость нигЅравшихс€¬“екущем«але»з нигохранени€ѕо»нвентарномуЌомеруToolStripMenuItem.Text = "ќбращаемость книг ќ‘ в текущем зале по инвентарному номеру";
             this.обращаемость нигЅравшихс€¬“екущем«але»з нигохранени€ѕо»нвентарномуЌомеруToolStripMenuItem.Click += new System.EventHandler(this.обращаемость нигЅравшихс€¬“екущем«але»з нигохранени€ѕо»нвентарномуЌомеруToolStripMenuItem_Click);
@@ -1502,10 +1819,10 @@ namespace Circulation
             // список¬сех нигЌаход€щихс€¬ќткрытомƒоступе¬«алејбонементногоќбслуживани€ToolStripMenuItem
             // 
             this.список¬сех нигЌаход€щихс€¬ќткрытомƒоступе¬«алејбонементногоќбслуживани€ToolStripMenuItem.Name = "список¬сех нигЌаход€щихс€¬ќткрытомƒоступе¬«алејбонементногоќбслуживани€ToolStripM" +
-                "enuItem";
+    "enuItem";
             this.список¬сех нигЌаход€щихс€¬ќткрытомƒоступе¬«алејбонементногоќбслуживани€ToolStripMenuItem.Size = new System.Drawing.Size(670, 22);
             this.список¬сех нигЌаход€щихс€¬ќткрытомƒоступе¬«алејбонементногоќбслуживани€ToolStripMenuItem.Text = "—писок всех книг наход€щихс€ в открытом доступе в зале абонементного обслуживани€" +
-                " на указанную дату";
+    " на указанную дату";
             this.список¬сех нигЌаход€щихс€¬ќткрытомƒоступе¬«алејбонементногоќбслуживани€ToolStripMenuItem.Click += new System.EventHandler(this.спписок¬сех нигЌаход€щихс€¬ќткрытомƒоступе¬«алејбонементногоќбслуживани€ToolStripMenuItem_Click);
             // 
             // обращаемость ниг‘ондајбонементToolStripMenuItem
@@ -1651,322 +1968,6 @@ namespace Circulation
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.Column1,
-            this.Column4,
-            this.Column2,
-            this.Column3,
-            this.dataGridViewTextBoxColumn4,
-            this.Column5});
-            this.dataGridView1.Location = new System.Drawing.Point(4, 39);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1091, 232);
-            this.dataGridView1.TabIndex = 15;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "»нв.н. или шкод";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "»здание";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 220;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "„итатель";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Ќомер читател€";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 80;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "¬ыдача с є";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "¬рем€ выдачи";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 70;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "¬рем€ возврата";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Width = 70;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.HeaderText = " афедра выдачи";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = " афедра возврата";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            // 
-            // dgwHome
-            // 
-            this.dgwHome.AllowUserToAddRows = false;
-            this.dgwHome.AllowUserToDeleteRows = false;
-            this.dgwHome.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgwHome.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgwHome.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn7,
-            this.dataGridViewTextBoxColumn8,
-            this.dataGridViewTextBoxColumn9,
-            this.dataGridViewTextBoxColumn10,
-            this.dataGridViewTextBoxColumn11,
-            this.dataGridViewTextBoxColumn12,
-            this.dataGridViewTextBoxColumn13,
-            this.Column8,
-            this.Column9});
-            this.dgwHome.Location = new System.Drawing.Point(4, 39);
-            this.dgwHome.Margin = new System.Windows.Forms.Padding(4);
-            this.dgwHome.MultiSelect = false;
-            this.dgwHome.Name = "dgwHome";
-            this.dgwHome.ReadOnly = true;
-            this.dgwHome.RowHeadersVisible = false;
-            this.dgwHome.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgwHome.Size = new System.Drawing.Size(1091, 255);
-            this.dgwHome.TabIndex = 16;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.HeaderText = "»нв.н. или шкод";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.HeaderText = "»здание";
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            this.dataGridViewTextBoxColumn8.Width = 220;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.HeaderText = "„итатель";
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn10
-            // 
-            this.dataGridViewTextBoxColumn10.HeaderText = "Ќомер читател€";
-            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            this.dataGridViewTextBoxColumn10.ReadOnly = true;
-            this.dataGridViewTextBoxColumn10.Width = 80;
-            // 
-            // dataGridViewTextBoxColumn11
-            // 
-            this.dataGridViewTextBoxColumn11.HeaderText = " ласс читател€";
-            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
-            this.dataGridViewTextBoxColumn11.ReadOnly = true;
-            this.dataGridViewTextBoxColumn11.Width = 90;
-            // 
-            // dataGridViewTextBoxColumn12
-            // 
-            this.dataGridViewTextBoxColumn12.HeaderText = "ƒата выдачи";
-            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
-            this.dataGridViewTextBoxColumn12.ReadOnly = true;
-            this.dataGridViewTextBoxColumn12.Width = 75;
-            // 
-            // dataGridViewTextBoxColumn13
-            // 
-            this.dataGridViewTextBoxColumn13.HeaderText = "ƒата возврата";
-            this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
-            this.dataGridViewTextBoxColumn13.ReadOnly = true;
-            this.dataGridViewTextBoxColumn13.Width = 75;
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = " афедра выдачи";
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = " афедра возврата";
-            this.Column9.Name = "Column9";
-            this.Column9.ReadOnly = true;
-            // 
-            // crystalReportViewer1
-            // 
-            this.crystalReportViewer1.ActiveViewIndex = -1;
-            this.crystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.crystalReportViewer1.Location = new System.Drawing.Point(128, 157);
-            this.crystalReportViewer1.Name = "crystalReportViewer1";
-            this.crystalReportViewer1.SelectionFormula = "";
-            this.crystalReportViewer1.Size = new System.Drawing.Size(99, 127);
-            this.crystalReportViewer1.TabIndex = 13;
-            this.crystalReportViewer1.ViewTimeSelectionFormula = "";
-            this.crystalReportViewer1.Visible = false;
-            // 
-            // numericUpDown3
-            // 
-            this.numericUpDown3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown3.Location = new System.Drawing.Point(733, 521);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(277, 23);
-            this.numericUpDown3.TabIndex = 8;
-            // 
-            // Formular
-            // 
-            this.Formular.AllowUserToAddRows = false;
-            this.Formular.AllowUserToDeleteRows = false;
-            this.Formular.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.Formular.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Formular.Location = new System.Drawing.Point(3, 130);
-            this.Formular.Name = "Formular";
-            this.Formular.RowHeadersVisible = false;
-            this.Formular.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Formular.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Formular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Formular.Size = new System.Drawing.Size(1110, 384);
-            this.Formular.TabIndex = 2;
-            this.Formular.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Formular_ColumnHeaderMouseClick);
-            // 
-            // Statistics
-            // 
-            this.Statistics.AllowUserToAddRows = false;
-            this.Statistics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.Statistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Statistics.Location = new System.Drawing.Point(7, 78);
-            this.Statistics.MultiSelect = false;
-            this.Statistics.Name = "Statistics";
-            this.Statistics.ReadOnly = true;
-            this.Statistics.RowHeadersVisible = false;
-            this.Statistics.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Statistics.Size = new System.Drawing.Size(1063, 430);
-            this.Statistics.TabIndex = 1;
-            this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
-            this.Statistics.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_CellMouseDoubleClick);
-            // 
-            // RecBooks
-            // 
-            this.RecBooks.AllowUserToAddRows = false;
-            this.RecBooks.AllowUserToDeleteRows = false;
-            this.RecBooks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.RecBooks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.RecBooks.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column6,
-            this.dataGridViewTextBoxColumn5,
-            this.dataGridViewTextBoxColumn6,
-            this.Column7});
-            this.RecBooks.Location = new System.Drawing.Point(4, 7);
-            this.RecBooks.Margin = new System.Windows.Forms.Padding(4);
-            this.RecBooks.MultiSelect = false;
-            this.RecBooks.Name = "RecBooks";
-            this.RecBooks.ReadOnly = true;
-            this.RecBooks.RowHeadersVisible = false;
-            this.RecBooks.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.RecBooks.Size = new System.Drawing.Size(1062, 470);
-            this.RecBooks.TabIndex = 3;
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "єє";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            this.Column6.Width = 70;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.HeaderText = "»нвентарный номер";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            this.dataGridViewTextBoxColumn5.Width = 170;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.HeaderText = "»здание";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            this.dataGridViewTextBoxColumn6.Width = 450;
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "јвтор";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            this.Column7.Width = 250;
-            // 
-            // PaidServiceGrid
-            // 
-            this.PaidServiceGrid.AllowUserToAddRows = false;
-            this.PaidServiceGrid.AllowUserToDeleteRows = false;
-            this.PaidServiceGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.PaidServiceGrid.Location = new System.Drawing.Point(6, 22);
-            this.PaidServiceGrid.MultiSelect = false;
-            this.PaidServiceGrid.Name = "PaidServiceGrid";
-            this.PaidServiceGrid.ReadOnly = true;
-            this.PaidServiceGrid.RowHeadersVisible = false;
-            this.PaidServiceGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.PaidServiceGrid.Size = new System.Drawing.Size(488, 417);
-            this.PaidServiceGrid.TabIndex = 3;
-            // 
-            // FreeServiceGrid
-            // 
-            this.FreeServiceGrid.AllowUserToAddRows = false;
-            this.FreeServiceGrid.AllowUserToDeleteRows = false;
-            this.FreeServiceGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.FreeServiceGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.FreeServiceGrid.Location = new System.Drawing.Point(6, 22);
-            this.FreeServiceGrid.MultiSelect = false;
-            this.FreeServiceGrid.Name = "FreeServiceGrid";
-            this.FreeServiceGrid.ReadOnly = true;
-            this.FreeServiceGrid.RowHeadersVisible = false;
-            this.FreeServiceGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.FreeServiceGrid.Size = new System.Drawing.Size(447, 472);
-            this.FreeServiceGrid.TabIndex = 3;
-            // 
             // dataGridViewButtonColumn1
             // 
             this.dataGridViewButtonColumn1.HeaderText = "Ќарушение";
@@ -2004,8 +2005,10 @@ namespace Circulation
             this.tabControl2.ResumeLayout(false);
             this.tabHall.ResumeLayout(false);
             this.tabHall.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabHome.ResumeLayout(false);
             this.tabHome.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwHome)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).EndInit();
@@ -2014,27 +2017,25 @@ namespace Circulation
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Formular)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Statistics)).EndInit();
             this.tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.RecBooks)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PaidServiceGrid)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.FreeServiceGrid)).EndInit();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
             this.contextMenuStrip2.ResumeLayout(false);
             this.cmsBack.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.zAKAZBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgwHome)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Formular)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Statistics)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RecBooks)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PaidServiceGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.FreeServiceGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

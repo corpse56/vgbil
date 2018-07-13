@@ -6,5 +6,5 @@
   <ZakazO>Data Source=192.168.4.25,1443;Initial Catalog=Reservation_O;Persist Security Info=True;User ID=EmplOrd;Password=Employee_Order;Connection Timeout = 1200</ZakazO>
   <BJVVV>Data Source=192.168.4.25,1443;Initial Catalog=SURVEY;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connection Timeout = 1200</BJVVV>
     <Tech>Data Source=192.168.4.24,1442;Initial Catalog=TECHNOLOG_VVV;Persist Security Info=True;User ID=EmplOrd;Password=Employee_Order;Connection Timeout = 1200</Tech>
-    <TechOut>Data Source=192.168.3.241;Initial Catalog=TECHNOLOG_VVV;Persist Security Info=True;User ID=EmplOrd;Password=Employee_Order;Connection Timeout = 1200</TechOut>
+    <TechOut>Data Source=192.168.4.7;Initial Catalog=TECHNOLOG_VVV;Persist Security Info=True;User ID=EmplOrd;Password=Employee_Order;Connection Timeout = 1200</TechOut>
 </Connections>

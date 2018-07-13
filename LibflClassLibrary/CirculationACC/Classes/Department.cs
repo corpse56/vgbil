@@ -151,6 +151,10 @@ namespace CirculationACC
             dbg.AddAttendance(reader);
         }
 
-
+        public int GetCountOfPrologedTimes(int value)
+        {
+            DBGeneral dbg = new DBGeneral();
+            return dbg.GetCountOfPrologedTimes(value);
+        }
     }
 }

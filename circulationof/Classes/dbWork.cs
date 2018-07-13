@@ -1212,8 +1212,17 @@ namespace Circulation
             return DS.Tables["t"];
         }
 
-        internal void ProlongReservation(DateTime p,string zi)
+        internal bool ProlongReservation(DateTime p,string zi)
         {
+            Conn.SQLDA.SelectCommand.CommandText = "select * from " + F1.BASENAME + "..ISSUED_OF_ACTIONS where IDISSUED_OF = "+zi+" and IDACTION = 3";
+            DataTable table = new DataTable();
+            int cnt = Conn.SQLDA.Fill(table);
+            if (cnt > 0)
+            {
+                MessageBox.Show("Заказ можно продлевать только один раз!");
+                return true;
+            }
+
             Conn.SQLDA.UpdateCommand = new SqlCommand();
             Conn.SQLDA.UpdateCommand.Connection = Conn.ZakazCon;
 
@@ -1244,6 +1253,7 @@ namespace Circulation
             Conn.SQLDA.InsertCommand.ExecuteNonQuery();
             Conn.SQLDA.InsertCommand.Connection.Close();
 
+            return false;
         }
 
         internal object GetIssBooksFromAnotherRespan()
@@ -4571,17 +4581,30 @@ namespace Circulation
             Conn.SQLDA.SelectCommand.CommandTimeout = 1200;
             Conn.SQLDA.SelectCommand.Connection = Conn.ZakazCon;
             string dep = this.GetDepName(F1.DepID);
+            //ФИО
+            //Номер билета
+            //Права читателя
+            //Инвентарный номер
+            //телефон
+            //Эл.почта
+            //Адрес
+            //Дата выдачи
+            //Срок сдачи
+            //Дней просрочено
+
             Conn.SQLDA.SelectCommand.CommandText = " select distinct rm.NumberReader, " +
                  "isnull(rm.FamilyName,'') +' '+isnull(rm.Name,'')+' '+isnull(rm.FatherName,'') fio , " +
                  "rm.NumberReader numr, " +
-                 //"A.DATE_RET ret," +
-                 //"(case when A.IDMAIN_CONST = -1 then A.BAR else A.INV end) inv," +
+                 " Reservation_R.dbo.GetReaderRights(A.IDREADER) rgt, " +
+                 "(case when A.IDMAIN_CONST = -1 then A.BAR else A.INV end) inv," +
                  "isnull('факт.: '+rm.LiveTelephone+',','') + ' ' + isnull('дом.:'+rm.RegistrationTelephone+',','') ph, " +
                  "isnull('факт.: '+rm.Email+',','') em ," +
                  " 'Зарегистрирован: '+ isnull(rm.RegistrationProvince,'') + ', '+isnull(rm.RegistrationCity,'')+', '+isnull(rm.RegistrationStreet,'')+ '; ' + " +
                  " 'Проживает: ' +isnull(rm.LiveProvince,'') + ', '+isnull(rm.LiveCity,'')+ ', '+isnull(rm.LiveStreet,'') address ," +
-                 " case when rm.Email is not null and rm.Email != '' then 'Email существует' else '' end note," +
-                 " Reservation_R.dbo.GetReaderRights(A.IDREADER) rgt" +
+                 " A.DATE_ISSUE , "+
+                 " A.DATE_RET ret," +
+                 " case when datediff(day, A.DATE_RET, getdate() ) < 0 then 0 else datediff(day, A.DATE_RET, getdate()) end ovrd " +
+                 //" case when rm.Email is not null and rm.Email != '' then 'Email существует' else '' end note" +
                 //" (case when A.IDMAIN_CONST = -1 then E.[NAME]+'; '+E.[YEAR] +'; ' +E.NUMBER + '; '+ " +
                 //" (case when E.ADDNUMBERS is null then '' else E.ADDNUMBERS end) else CC.PLAIN +'; '+ isnull(DD.PLAIN,'') end) zag " +
                 //" (case when A.IDMAIN_CONST = -1 then A.BAR else A.INV end) inv, A.IDREADER,Reservation_R.dbo.GetReaderRights(A.IDREADER), A.ZALISS, cast(cast(A.DATE_ISSUE as varchar(11)) as datetime) iss, A.DATE_RET ret, " +

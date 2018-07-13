@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -26,9 +27,17 @@ namespace ALISAPI.Controllers
         }
 
 
-        public string GetByOauthToken(string id)
+        /// <summary>
+        /// Получить читателя по oauth-токену
+        /// </summary>
+        /// <param name="token">Токен, выданный читателю при авторизации</param>
+        /// <returns>ReaderInfo</returns>
+        /// 
+        [HttpGet]
+        [Route("Readers/GetByOauthToken/{token}")]
+        public string GetByOauthToken(string token)
         {
-            return "reader" + id;
+            return "reader" + token;
         }
 
         // POST api/Readers

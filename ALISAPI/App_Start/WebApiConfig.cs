@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Routing;
 
@@ -12,6 +14,18 @@ namespace ALISAPI
         public static void Register(HttpConfiguration config)
         {
             // Конфигурация и службы веб-API
+            GlobalConfiguration.Configuration.Formatters.Clear();
+
+            var jsonFormatter = new JsonMediaTypeFormatter();
+            jsonFormatter.SupportedMediaTypes.Clear();
+            jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
+
+            GlobalConfiguration.Configuration.Formatters.Add(jsonFormatter);
+
+
+
+
+
 
             // Маршруты веб-API
             config.MapHttpAttributeRoutes();
@@ -22,12 +36,6 @@ namespace ALISAPI
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            //config.Routes.MapHttpRoute("DefaultApiWithId", "Api/{controller}/{id}", new { id = RouteParameter.Optional }, new { id = @"\d+" });
-            //config.Routes.MapHttpRoute("DefaultApiWithAction", "Api/{controller}/{action}");
-            //config.Routes.MapHttpRoute("DefaultApiGet", "Api/{controller}", new { action = "Get" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) });
-            //config.Routes.MapHttpRoute("DefaultApiPost", "Api/{controller}", new { action = "Post" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Post) });
-            //config.Routes.MapHttpRoute("API Default", "api/{controller}/{action}/{id}", new { id = RouteParameter.Optional });
-            //config.Routes.MapHttpRoute("API Default", "api/{controller}/{action}/{id}", new { action = "Get" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) } );
         }
     }
 }

@@ -22,7 +22,7 @@
     <GenerateManifests>true</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <PublishUrl>D:\projects\crcnof\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>

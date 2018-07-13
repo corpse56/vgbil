@@ -249,17 +249,40 @@ namespace CirculationACC
 
         public object GetViolators()
         {
-            DA.SelectCommand.CommandText = "with vio as (select distinct 1 nn,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
-                " (case when (B.Email is null or B.Email = '') then 'false' else 'true' end) isemail," +
-                " case when EM.DATEACTION is null then 'email не отправлялся' else CONVERT (NVARCHAR, EM.DATEACTION, 104) end emailsent " +
-                " from Reservation_R..ISSUED_ACC A" +
-                " left join Readers..Main B on A.IDREADER = B.NumberReader" +
-                " left join Reservation_R..ISSUED_ACC_ACTIONS EM on EM.IDISSUED_ACC = A.IDREADER and EM.IDACTION = 4" + // 4 - это ACTIONTYPE = сотрудник отослал емаил
-                " where A.IDSTATUS = 1 and A.DATE_RETURN < getdate() and "+
-                " (EM.DATEACTION = (select max(DATEACTION) from Reservation_R..ISSUED_ACC_ACTIONS where IDISSUED_ACC = A.IDREADER and IDACTION = 4) " +
-                " or EM.DATEACTION is null) )" +
-                " select * from vio";
-                //" select * from vio where emailsent = (select max)";
+            //DA.SelectCommand.CommandText = "with vio as (select distinct 1 nn,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
+            //    " (case when (B.Email is null or B.Email = '') then 'false' else 'true' end) isemail," +
+            //    " case when EM.DATEACTION is null then 'email не отправлялся' else CONVERT (NVARCHAR, EM.DATEACTION, 104) end emailsent " +
+            //    " from Reservation_R..ISSUED_ACC A" +
+            //    " left join Readers..Main B on A.IDREADER = B.NumberReader" +
+            //    " left join Reservation_R..ISSUED_ACC_ACTIONS EM on EM.IDISSUED_ACC = A.IDREADER and EM.IDACTION = 4" + // 4 - это ACTIONTYPE = сотрудник отослал емаил
+            //    " where A.IDSTATUS = 1 and A.DATE_RETURN < getdate() and "+
+            //    " (EM.DATEACTION = (select max(DATEACTION) from Reservation_R..ISSUED_ACC_ACTIONS where IDISSUED_ACC = A.IDREADER and IDACTION = 4) " +
+            //    " or EM.DATEACTION is null) )" +
+            //    " select * from vio";
+
+            DA.SelectCommand.CommandText = " select distinct rm.NumberReader, " +
+                 "isnull(rm.FamilyName,'') +' '+isnull(rm.Name,'')+' '+isnull(rm.FatherName,'') fio , " +
+                 "rm.NumberReader numr, " +
+                 " Reservation_R.dbo.GetReaderRights(A.IDREADER) rgt, " +
+                 "(case when A.BaseId = 1 then isnull(PinvACC.PLAIN, PbarACC.PLAIN) else PinvVVV.PLAIN end) inv," +
+                 "isnull('факт.: '+rm.LiveTelephone+',','') + ' ' + isnull('дом.:'+rm.RegistrationTelephone+',','') ph, " +
+                 "isnull('факт.: '+rm.Email+',','') em ," +
+                 " 'Зарегистрирован: '+ isnull(rm.RegistrationProvince,'') + ', '+isnull(rm.RegistrationCity,'')+', '+isnull(rm.RegistrationStreet,'')+ '; ' + " +
+                 " 'Проживает: ' +isnull(rm.LiveProvince,'') + ', '+isnull(rm.LiveCity,'')+ ', '+isnull(rm.LiveStreet,'') address ," +
+                 " A.DATE_ISSUE , " +
+                 " A.DATE_RETURN ret," +
+                 " case when datediff(day, A.DATE_RETURN, getdate() ) < 0 then 0 else datediff(day, A.DATE_RETURN, getdate()) end ovrd " +
+                                                   " from Reservation_R..ISSUED_ACC A" +
+                                                   //" inner join BJVVV..LIST_8 DEP on A.ZALISS = DEP.SHORTNAME" +
+                                                   " left join Readers..Main rm on A.IDREADER = rm.NumberReader " +
+                                                   " left join BJVVV..LIST_8 l8 on l8.ID = rm.WorkDepartment " +
+                                                   " left join BJACC..DATAEXT invACC on invACC.IDDATA = A.IDDATA and invACC.MNFIELD = 899 and invACC.MSFIELD = '$p' and A.BaseId = 1 " +
+                                                   " left join BJACC..DATAEXTPLAIN PinvACC on invACC.ID = PinvACC.IDDATAEXT" +
+                                                   " left join BJACC..DATAEXT barACC on barACC.IDDATA = A.IDDATA and barACC.MNFIELD = 899 and barACC.MSFIELD = '$w' and A.BaseId = 1 " +
+                                                   " left join BJACC..DATAEXTPLAIN PbarACC on barACC.ID = PbarACC.IDDATAEXT" +
+                                                   " left join BJVVV..DATAEXT invVVV on invVVV.IDDATA = A.IDDATA and invVVV.MNFIELD = 899 and invVVV.MSFIELD = '$p' and A.BaseId = 2 " +
+                                                   " left join BJVVV..DATAEXTPLAIN PinvVVV on invVVV.ID = PinvVVV.IDDATAEXT" +
+                                                   " where A.IDSTATUS = 1 and A.DATE_RETURN < getdate() ";
             DS = new DataSet();
             DA.Fill(DS, "t");
             return DS.Tables["t"];

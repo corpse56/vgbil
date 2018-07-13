@@ -321,13 +321,29 @@ namespace Circulation
 
         internal object GetViolators()
         {
-            DA.SelectCommand.CommandText = "select distinct 1,A.IDREADER,B.FamilyName,B.[Name],B.FatherName," +
-                " (case when (B.Email is null or B.Email = '') then 'false' else 'true' end) isemail," +
-                " case when EM.DATEACTION is null then 'email не отправлялся' else CONVERT (NVARCHAR, EM.DATEACTION, 104) end emailsent " +
-                " from Reservation_R..ISSUED_SCC A" +
-                " left join Readers..Main B on A.IDREADER = B.NumberReader" +
-                " left join Reservation_R..ISSUED_SCC_ACTIONS EM on EM.IDISSUED_SCC = A.IDREADER and EM.IDACTION = 4" + // 4 - это ACTIONTYPE = сотрудник отослал емаил
-                " where A.IDSTATUS = 1 and A.DATE_RETURN < getdate()";
+            DA.SelectCommand.CommandText = " select distinct  rm.NumberReader , " +
+                 "isnull(rm.FamilyName,'') +' '+isnull(rm.Name,'')+' '+isnull(rm.FatherName,'') fio , " +
+                 "rm.NumberReader numr, " +
+                 " Reservation_R.dbo.GetReaderRights(A.IDREADER) rgt, " +
+                 "(case when A.BaseId = 1 then isnull(PinvSCC.PLAIN, PbarSCC.PLAIN) else PinvVVV.PLAIN end) collate cyrillic_general_CI_AI inv," +
+                 "isnull('факт.: '+rm.LiveTelephone+',','') + ' ' + isnull('дом.:'+rm.RegistrationTelephone+',','') ph, " +
+                 "isnull('факт.: '+rm.Email+',','') em ," +
+                 " 'Зарегистрирован: '+ isnull(rm.RegistrationProvince,'') + ', '+isnull(rm.RegistrationCity,'')+', '+isnull(rm.RegistrationStreet,'')+ '; ' + " +
+                 " 'Проживает: ' +isnull(rm.LiveProvince,'') + ', '+isnull(rm.LiveCity,'')+ ', '+isnull(rm.LiveStreet,'') address ," +
+                 " A.DATE_ISSUE , " +
+                 " A.DATE_RETURN ret," +
+                 " case when datediff(day, A.DATE_RETURN, getdate() ) < 0 then 0 else datediff(day, A.DATE_RETURN, getdate()) end ovrd " +
+                                                   " from Reservation_R..ISSUED_SCC A" +
+                                                   //" inner join BJVVV..LIST_8 DEP on A.ZALISS = DEP.SHORTNAME" +
+                                                   " left join Readers..Main rm on A.IDREADER = rm.NumberReader " +
+                                                   //" left join BJVVV..LIST_8 l8 on l8.ID = rm.WorkDepartment " +
+                                                   " left join BJSCC..DATAEXT invSCC on invSCC.IDDATA = A.IDDATA and invSCC.MNFIELD = 899 and invSCC.MSFIELD = '$p' and A.BaseId = 1 " +
+                                                   " left join BJSCC..DATAEXTPLAIN PinvSCC on invSCC.ID = PinvSCC.IDDATAEXT" +
+                                                   " left join BJSCC..DATAEXT barSCC on barSCC.IDDATA = A.IDDATA and barSCC.MNFIELD = 899 and barSCC.MSFIELD = '$w' and A.BaseId = 1 " +
+                                                   " left join BJSCC..DATAEXTPLAIN PbarSCC on barSCC.ID = PbarSCC.IDDATAEXT" +
+                                                   " left join BJVVV..DATAEXT invVVV on invVVV.IDDATA = A.IDDATA and invVVV.MNFIELD = 899 and invVVV.MSFIELD = '$p' and A.BaseId = 2 " +
+                                                   " left join BJVVV..DATAEXTPLAIN PinvVVV on invVVV.ID = PinvVVV.IDDATAEXT" +
+                                                   " where A.IDSTATUS = 1 and A.DATE_RETURN < getdate() ";
             DS = new DataSet();
             DA.Fill(DS, "t");
             return DS.Tables["t"];

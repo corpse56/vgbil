@@ -1221,30 +1221,45 @@ namespace Circulation
                 return;
             }
             autoinc(Statistics);
+
+            //ФИО
+            //Номер билета
+            //Права читателя
+            //Инвентарный номер
+            //телефон
+            //Эл.почта
+            //Адрес
+            //Дата выдачи
+            //Срок сдачи
+            //Дней просрочено
+
             Statistics.Columns[0].HeaderText = "№№";
             Statistics.Columns[0].Width = 30;
             Statistics.Columns[1].HeaderText = "ФИО";
             Statistics.Columns[1].Width = 100;
             Statistics.Columns[2].HeaderText = "Номер читателя";
             Statistics.Columns[2].Width = 100;
-            //Statistics.Columns[3].HeaderText = "Дата возврата";
-            //Statistics.Columns[3].Width = 90;
-            //Statistics.Columns[4].HeaderText = "Инв номер/ шкод";
-            //Statistics.Columns[4].Width = 100;
-            Statistics.Columns[3].HeaderText = "Телефон";
+            Statistics.Columns[3].HeaderText = "Права читателя";
             Statistics.Columns[3].Width = 100;
-            //Statistics.Columns[6].HeaderText = "Email";
-            //Statistics.Columns[6].Width = 100;
-            Statistics.Columns[4].Visible = false;
-
-            Statistics.Columns[5].HeaderText = "Адрес";
+            Statistics.Columns[4].HeaderText = "Инв номер/ шкод";
+            Statistics.Columns[4].Width = 100;
+            Statistics.Columns[5].HeaderText = "Телефон";
             Statistics.Columns[5].Width = 100;
-            Statistics.Columns[6].HeaderText = "Примечание";
-            Statistics.Columns[6].Width = 120;
-            Statistics.Columns[7].HeaderText = "Тип абонемента";
-            Statistics.Columns[7].Width = 120;
-            //Statistics.Columns[10].HeaderText = "Заглавие автор";
-            //Statistics.Columns[10].Width = 200;
+            Statistics.Columns[6].HeaderText = "Email";
+            Statistics.Columns[6].Width = 100;
+            Statistics.Columns[7].HeaderText = "Адрес";
+            Statistics.Columns[7].Width = 100;
+
+            Statistics.Columns[8].HeaderText = "Дата выдачи";
+            Statistics.Columns[8].Width = 90;
+            Statistics.Columns[9].HeaderText = "Дата возврата";
+            Statistics.Columns[9].Width = 90;
+            Statistics.Columns[10].HeaderText = "Дней просрочено";
+            Statistics.Columns[10].Width = 90;
+            //Statistics.Columns[4].Visible = false;
+
+            //Statistics.Columns[11].HeaderText = "Примечание";
+           // Statistics.Columns[11].Width = 120;
             if (Statistics.Rows.Count != 0)
                 button18.Enabled = true;
         }
