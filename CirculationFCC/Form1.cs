@@ -317,7 +317,14 @@ namespace Circulation
             Prolong p = new Prolong();
             p.ShowDialog();
             if (p.Days == -99) return;
-            DEPARTMENT.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, p.Days,EmpID);
+            if (Formular.SelectedRows[0].Cells["IsAtHome"].Value.ToString().ToLower().Contains("дом"))
+            {
+                DEPARTMENT.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, p.Days, EmpID);
+            }
+            else
+            {
+                DEPARTMENT.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 3, EmpID);
+            }
             ReaderVO reader = new ReaderVO((int)Formular.SelectedRows[0].Cells["idr"].Value);
             FillFormularGrid(reader);
 

@@ -84,11 +84,11 @@ namespace Circulation
                 "                                   понедельник - пятница с 11-00 до 20-30 час." + rn +
                 "                                   суббота с 11-00 до 18-30 час." + rn +
                 "                                   (в летние месяцы воскресенье - выходной)" + rn +
-                "Контактный телефон: 8 (495) 915-36-69" + rn +
+                "Контактный телефон: 8 (495) 915-37-02" + rn +
                 "Внутренний телефон: 2-42" + rn +
-                ((f1.DepName.ToLower().Contains("бонемент")) ?
-                "Email: abonement@libfl.ru" + rn :
-                "Email: kafedra@libfl.ru" + rn) + 
+                //((f1.DepName.ToLower().Contains("бонемент")) ?
+                "Email: abonement@libfl.ru" + rn +//:
+               // "Email: kafedra@libfl.ru" + rn) + 
 
                 "Сайт: www.libfl.ru" + rn +
                 "                                          Зал абонементного обслуживания" + rn +

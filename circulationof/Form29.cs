@@ -12,6 +12,7 @@ namespace Circulation
     public partial class Form29 : Form
     {
         public int days;
+        public int daysBookingShelf;
         public Form29(int pdays)
         {
             InitializeComponent();
@@ -34,6 +35,7 @@ namespace Circulation
 
         private void button2_Click(object sender, EventArgs e)
         {
+            daysBookingShelf = (int)numericUpDown2.Value;
             days = (int)numericUpDown1.Value;
             Close();
         }

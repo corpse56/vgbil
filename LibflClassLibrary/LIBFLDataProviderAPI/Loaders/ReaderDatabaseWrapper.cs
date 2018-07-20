@@ -7,6 +7,7 @@ using ExportBJ_XML.classes;
 using System.Data;
 using System.Data.SqlClient;
 using LibflClassLibrary.ExportToVufind.classes.DB;
+using MySql.Data.MySqlClient;
 
 namespace LibflClassLibrary.Readers
 {
@@ -40,6 +41,20 @@ namespace LibflClassLibrary.Readers
                 dataAdapter.SelectCommand.Parameters.Add("Id", SqlDbType.Int).Value = Id;
                 return this.ExecuteSelectQuery(dataAdapter);
             }
+        }
+
+        internal DataTable GetReaderIdByOAuthToken(string token)
+        {
+            string connectionString = AppSettings.OauthMySqlConnectionString;
+            DataTable table = new DataTable();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(ReaderQueries.GET_READER_ID_BY_OAUTH_TOKEN, connection);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("token", token);
+                dataAdapter.Fill(table);
+                return table;
+            }
+
         }
     }
 }

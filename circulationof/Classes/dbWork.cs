@@ -1217,7 +1217,7 @@ namespace Circulation
             Conn.SQLDA.SelectCommand.CommandText = "select * from " + F1.BASENAME + "..ISSUED_OF_ACTIONS where IDISSUED_OF = "+zi+" and IDACTION = 3";
             DataTable table = new DataTable();
             int cnt = Conn.SQLDA.Fill(table);
-            if (cnt > 0)
+            if ((cnt > 0) && (this.IsAtHome(zi)))
             {
                 MessageBox.Show("Заказ можно продлевать только один раз!");
                 return true;

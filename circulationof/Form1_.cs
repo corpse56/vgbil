@@ -2380,28 +2380,38 @@ namespace Circulation
             }
             Form29 f29 = new Form29(ProlongDays);
             f29.ShowDialog();
-            if (f29.days > 0)
+            if (f29.daysBookingShelf > 0)
             {
                 ProlongDays = f29.days;
                 foreach (DataGridViewRow r in Formular.SelectedRows)
                 {
-                    DateTime dend = (DateTime)r.Cells["dend"].Value;
-                    dend = dend.AddDays(f29.days);
                     string zi = r.Cells["zi"].Value.ToString();
-                    
-                    
+                    DateTime dend = (DateTime)r.Cells["dend"].Value;
+
+                    if (dbw.IsAtHome(zi))
+                    {
+                        dend = dend.AddDays(f29.days);
+                    }
+                    else
+                    {
+                        dend = dend.AddDays(f29.daysBookingShelf);
+                    }
+
+
                     if (dbw.ProlongReservation(dend, zi))
                     {
                         continue;
                     }
-                    if (!dbw.IsAtHome(zi))
-                    {
-                        //dbReader reader  = new dbReader(int.Parse(label25.Text));
-                        dbBook book = new dbBook(r.Cells["bar"].Value.ToString(),this.BASENAME);
-                        dbw.InsertStatisticsReservationProlonged(book, label25.Text);
-                    }
+                    //dbReader reader  = new dbReader(int.Parse(label25.Text));
+                    dbBook book = new dbBook(r.Cells["bar"].Value.ToString(),this.BASENAME);
+                    dbw.InsertStatisticsReservationProlonged(book, label25.Text);
                     r.Cells["dend"].Value = dend;
                 }
+            }
+            else
+            {
+                MessageBox.Show(" оличество дней не может быть отрицательным.");
+                return;
             }
             dbw.GetFormular(label25.Text);
             this.FormularColumnsForming(label25.Text);
@@ -4606,10 +4616,10 @@ namespace Circulation
 
         }
 
-        private void список„итателей» ниг¬ыданныхЌаƒом—ѕросроченным—роком—дачиToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        //private void список„итателей» ниг¬ыданныхЌаƒом—ѕросроченным—роком—дачиToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
 
-        }
+        //}
 
         private void RPhoto_Click(object sender, EventArgs e)
         {

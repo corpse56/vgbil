@@ -1,29 +1,41 @@
 ﻿using DataProviderAPI.ValueObjects;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Text;
 using System.Web.Http;
 
 namespace ALISAPI.Controllers
 {
     public class ReadersController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "Reader1", "Reader1444" };
-        }
+        //// GET api/values
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "Reader1", "Reader1444" };
+        //}
 
         // GET api/Readers/5
-        public string Get(int id)
+        /// <summary>
+        /// Получает читателя по номеру читательского билета
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Readers/{id}")]
+        public HttpResponseMessage Get(int id)
         {
             ReaderInfo reader = ReaderInfo.GetReader(id);
-
-            return JsonConvert.SerializeObject(reader, Formatting.Indented);
+            //string json = JsonConvert.SerializeObject(reader, Formatting.Indented);
+            
+            return Request.CreateResponse(HttpStatusCode.OK, reader);
+            //return json;
         }
 
 
@@ -32,28 +44,70 @@ namespace ALISAPI.Controllers
         /// </summary>
         /// <param name="token">Токен, выданный читателю при авторизации</param>
         /// <returns>ReaderInfo</returns>
-        /// 
         [HttpGet]
         [Route("Readers/GetByOauthToken/{token}")]
-        public string GetByOauthToken(string token)
+        public HttpResponseMessage GetByOauthToken(string token)
         {
-            return "reader" + token;
+            ReaderInfo reader;
+            try
+            {
+                reader = ReaderInfo.GetReaderByOAuthToken(token);
+            }
+            catch (Exception ex)
+            {
+                //HttpResponseMessage resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+                //{
+                //    Content = new StringContent("R002"),
+                //    ReasonPhrase = "Токен не найден или не действителен"
+                //};
+                //throw new HttpResponseException(resp);
+                JObject jo = new JObject();
+                jo.Add("Error", ex.Message);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, jo);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, reader);
         }
 
-        // POST api/Readers
-        public void Post([FromBody]string value)
+        /// <summary>
+        /// Получить тип логина для заданного логина. 
+        /// </summary>
+        /// <param name="Login"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Readers/GetLoginType/{login}")]
+        public HttpResponseMessage GetLoginType(string Login)
         {
+            string result = ReaderInfo.GetLoginType(Login);
+            if (result.ToLower() == "notdefined")
+            {
+                HttpResponseMessage resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent("R003"),
+                    ReasonPhrase = "Неизвестный тип логина"
+                };
+                throw new HttpResponseException(resp);
+
+            }
+            JObject jo = new JObject();
+            jo.Add("LoginType", result);
+            return Request.CreateResponse(HttpStatusCode.OK, jo);
+
         }
 
-        // PUT api/Readers/5
-        public void Put(int id, [FromBody]string value)
-        {
+        //// POST api/Readers
+        //public void Post([FromBody]string value)
+        //{
+        //}
 
-        }
+        //// PUT api/Readers/5
+        //public void Put(int id, [FromBody]string value)
+        //{
 
-        // DELETE api/Readers/5
-        public void Delete(int id)
-        {
-        }
+        //}
+
+        //// DELETE api/Readers/5
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

@@ -15,7 +15,7 @@ namespace ALISAPI
         {
             // Конфигурация и службы веб-API
             GlobalConfiguration.Configuration.Formatters.Clear();
-
+            config.Formatters.Clear();
             var jsonFormatter = new JsonMediaTypeFormatter();
             jsonFormatter.SupportedMediaTypes.Clear();
             jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));

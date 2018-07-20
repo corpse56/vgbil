@@ -88,15 +88,21 @@ namespace ALISAPI.Areas.HelpPage
                 "   \"FamilyName\" : \"Иванов\"  \n" +
 
                 "}", new MediaTypeHeaderValue("application/json"), "Readers", "GetByOauthToken");
+            config.SetSampleResponse(
+                "{\n" +
+                "   \"id\" : 189245  \n" +
+                "   \"FamilyName\" : \"Иванов\"  \n" +
+                "   \"Name\" : \"Иванов\"  \r\n" +
+                "}", new MediaTypeHeaderValue("application/json"), "Readers", "Get");
 
-                //config.SetSampleForType(
-                //    "{" +
-                //    "   id : 189245  " +
-                //    "}",
-                //    new MediaTypeHeaderValue("text/json"),
-                //    typeof(string));
+            //config.SetSampleForType(
+            //    "{" +
+            //    "   id : 189245  " +
+            //    "}",
+            //    new MediaTypeHeaderValue("text/json"),
+            //    typeof(string));
 
-            }
+        }
 
 #if Handle_PageResultOfT
         private static object GeneratePageResult(HelpPageSampleGenerator sampleGenerator, Type type)
@@ -127,5 +133,5 @@ namespace ALISAPI.Areas.HelpPage
             return null;
         }
 #endif
-        }
+    }
 }

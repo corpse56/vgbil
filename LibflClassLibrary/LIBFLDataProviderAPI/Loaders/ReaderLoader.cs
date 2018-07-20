@@ -72,6 +72,17 @@ namespace LibflClassLibrary.Readers
             return reader;
         }
 
+        internal int GetReaderIdByOAuthToken(string token)
+        {
+            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
+            DataTable table = dbw.GetReaderIdByOAuthToken(token);
+            if (table.Rows.Count == 0)
+            {
+                throw new Exception("R002");
+            }
+            return Convert.ToInt32(table.Rows[0][0]);
+        }
+
         public bool IsFiveElBooksIssued(int Id)
         {
             ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
