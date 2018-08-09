@@ -14,7 +14,10 @@ using System.Xml.Linq;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ExportBJ_XML.classes;
+using LibflClassLibrary.ExportToVufind.BJ;
+using LibflClassLibrary.ExportToVufind.Litres;
+using LibflClassLibrary.ExportToVufind;
+using LibflClassLibrary.ExportToVufind.Vufind;
 
 namespace ExportBJ_XML
 {

@@ -11,10 +11,8 @@ using System.Net;
 using System.Drawing;
 using Newtonsoft.Json;
 using DataProviderAPI.ValueObjects;
-using ExportBJ_XML.classes;
 using Utilities;
-
-
+using LibflClassLibrary.ExportToVufind;
 
 namespace DataProviderAPI.Loaders
 {

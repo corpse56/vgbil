@@ -76,6 +76,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Books\BJBooks\BJBookJsonConverter.cs" />
+    <Compile Include="Books\BookBase.cs" />
+    <Compile Include="Books\BookExemplarBase.cs" />
+    <Compile Include="Books\BookJsonConverter.cs" />
     <Compile Include="CirculationACC\Classes\BJRecord.cs" />
     <Compile Include="CirculationACC\Classes\BookVO.cs" />
     <Compile Include="CirculationACC\Classes\DataGridViewDisableButtonCell.cs" />
@@ -100,47 +104,48 @@
     <Compile Include="CirculationFCC\Classes\Utils.cs" />
     <Compile Include="CirculationFCC\Classes\XmlConnections.cs" />
     <Compile Include="ExportToRusMARC\RMCONVERT.cs" />
-    <Compile Include="ExportToVufind\classes\AppSettings.cs" />
-    <Compile Include="ExportToVufind\classes\BJ\AuthoritativeFile.cs" />
-    <Compile Include="ExportToVufind\classes\BJ\BJBookInfo.cs" />
-    <Compile Include="ExportToVufind\classes\BJ\BJField.cs" />
-    <Compile Include="ExportToVufind\classes\BJ\BJFields.cs" />
-    <Compile Include="ExportToVufind\classes\BJ\BJVuFindConverter.cs" />
-    <Compile Include="ExportToVufind\classes\BJ\ElectronicExemplarInfo.cs" />
-    <Compile Include="ExportToVufind\classes\BJ\ExemplarAccess.cs" />
-    <Compile Include="ExportToVufind\classes\BJ\ExemplarInfo.cs" />
-    <Compile Include="ExportToVufind\classes\BJ\KeyValueMapping.cs" />
-    <Compile Include="ExportToVufind\classes\DB\DatabaseWrapper.cs" />
-    <Compile Include="LIBFLDataProviderAPI\Loaders\ReaderDatabaseWrapper.cs" />
-    <Compile Include="LIBFLDataProviderAPI\Loaders\ReaderLoader.cs" />
+    <Compile Include="ExportToVufind\AppSettings.cs" />
+    <Compile Include="Books\BJBooks\AuthoritativeFile.cs" />
+    <Compile Include="Books\BJBooks\BJBookInfo.cs" />
+    <Compile Include="Books\BJBooks\BJField.cs" />
+    <Compile Include="Books\BJBooks\BJFields.cs" />
+    <Compile Include="ExportToVufind\BJ\BJVuFindConverter.cs" />
+    <Compile Include="Books\BJBooks\BJExemplars\ElectronicExemplarInfo.cs" />
+    <Compile Include="Books\BJBooks\BJExemplars\ExemplarAccess.cs" />
+    <Compile Include="Books\BJBooks\BJExemplars\ExemplarInfo.cs" />
+    <Compile Include="ExportToVufind\KeyValueMapping.cs" />
+    <Compile Include="Books\BJBooks\DB\DatabaseWrapper.cs" />
+    <Compile Include="Readers\DB\QueriesText.cs" />
+    <Compile Include="Readers\DB\ReaderDatabaseWrapper.cs" />
+    <Compile Include="Readers\Loaders\ReaderLoader.cs" />
     <Compile Include="Utilites\Log.cs" />
-    <Compile Include="ExportToVufind\classes\Vufind\LitresVufindIndexUpdater.cs" />
-    <Compile Include="ExportToVufind\classes\Vufind\VufindIndexUpdater.cs" />
-    <Compile Include="ExportToVufind\classes\Vufind\VufindXMLWriter.cs" />
-    <Compile Include="ExportToVufind\classes\DB\BJDatabaseWrapper.cs" />
-    <Compile Include="ExportToVufind\classes\DB\QueriesText.cs" />
-    <Compile Include="ExportToVufind\classes\JBHVuFindConverter.cs" />
-    <Compile Include="ExportToVufind\classes\LitresVuFindConverter.cs" />
-    <Compile Include="ExportToVufind\classes\PearsonVuFindConverter.cs" />
-    <Compile Include="ExportToVufind\classes\PeriodTreeLoader.cs" />
-    <Compile Include="ExportToVufind\classes\PeriodVuFindConverter.cs" />
+    <Compile Include="ExportToVufind\Litres\LitresVufindIndexUpdater.cs" />
+    <Compile Include="ExportToVufind\Vufind\VufindIndexUpdater.cs" />
+    <Compile Include="ExportToVufind\Vufind\VufindXMLWriter.cs" />
+    <Compile Include="Books\BJBooks\DB\BJDatabaseWrapper.cs" />
+    <Compile Include="Books\BJBooks\DB\QueriesText.cs" />
+    <Compile Include="ExportToVufind\JBHVuFindConverter.cs" />
+    <Compile Include="ExportToVufind\Litres\LitresVuFindConverter.cs" />
+    <Compile Include="ExportToVufind\PearsonVuFindConverter.cs" />
+    <Compile Include="Books\PeriodBooks\PeriodTreeLoader.cs" />
+    <Compile Include="ExportToVufind\PeriodVuFindConverter.cs" />
     <Compile Include="Utilites\Extensions.cs" />
-    <Compile Include="ExportToVufind\classes\Vufind\VuFindConverter.cs" />
-    <Compile Include="ExportToVufind\classes\Vufind\VuFindConverterEventArgs.cs" />
-    <Compile Include="ExportToVufind\classes\Vufind\VuFindDoc.cs" />
-    <Compile Include="ExportToVufind\classes\Vufind\VufindField.cs" />
+    <Compile Include="ExportToVufind\Vufind\VuFindConverter.cs" />
+    <Compile Include="ExportToVufind\Vufind\VuFindConverterEventArgs.cs" />
+    <Compile Include="ExportToVufind\Vufind\VuFindDoc.cs" />
+    <Compile Include="ExportToVufind\Vufind\VufindField.cs" />
     <Compile Include="LIBFLDataProviderAPI\Loaders\BaseLoader.cs" />
     <Compile Include="LIBFLDataProviderAPI\Loaders\BJBookLoader.cs" />
     <Compile Include="LIBFLDataProviderAPI\Loaders\DBProperties.cs" />
     <Compile Include="LIBFLDataProviderAPI\Loaders\ExemplarLoader.cs" />
-    <Compile Include="LIBFLDataProviderAPI\NetworkConnection.cs" />
+    <Compile Include="Utilites\NetworkConnection.cs" />
     <Compile Include="LIBFLDataProviderAPI\Queries\QueriesText.cs" />
-    <Compile Include="LIBFLDataProviderAPI\ToStringJsonConverter.cs" />
+    <Compile Include="Utilites\ToStringJsonConverter.cs" />
     <Compile Include="LIBFLDataProviderAPI\ValueObjects\BJField.cs" />
     <Compile Include="LIBFLDataProviderAPI\ValueObjects\BookInfo.cs" />
     <Compile Include="LIBFLDataProviderAPI\ValueObjects\ElectronicExemplarInfoAPI.cs" />
     <Compile Include="LIBFLDataProviderAPI\ValueObjects\ExemplarInfoAPI.cs" />
-    <Compile Include="LIBFLDataProviderAPI\ValueObjects\ReaderInfo.cs" />
+    <Compile Include="Readers\ReaderInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -158,7 +163,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Readers\" />
+    <Folder Include="Circulation\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

@@ -4,9 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using ExportBJ_XML.ValueObjects;
 using DataProviderAPI.Loaders;
-using ExportBJ_XML.classes;
 using BookForOrder;
 using InvOfBookForOrder;
 using System.Data.SqlClient;
@@ -15,6 +13,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using DataProviderAPI.ValueObjects;
 using System.Web.Security;
+using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.ExportToVufind;
 
 public partial class OrderElCopy : System.Web.UI.Page
 {

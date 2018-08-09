@@ -5,8 +5,7 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Data;
 using System.Configuration;
-using ExportBJ_XML.classes;
-
+using LibflClassLibrary.ExportToVufind;
 
 namespace DataProviderAPI.Loaders
 {

@@ -62,6 +62,7 @@ namespace ALISAPI.Controllers
                 //};
                 //throw new HttpResponseException(resp);
                 JObject jo = new JObject();
+
                 jo.Add("Error", ex.Message);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, jo);
             }
@@ -90,6 +91,7 @@ namespace ALISAPI.Controllers
             }
             JObject jo = new JObject();
             jo.Add("LoginType", result);
+            //return IHttpActionResult
             return Request.CreateResponse(HttpStatusCode.OK, jo);
 
         }
