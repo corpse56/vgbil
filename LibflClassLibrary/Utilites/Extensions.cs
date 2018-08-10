@@ -6,6 +6,7 @@ using System.Net;
 using System.IO;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
+using System.Net.Http;
 
 namespace Utilities
 {
@@ -148,6 +149,14 @@ namespace Utilities
             Buffer.BlockCopy(arrayA, 0, outputBytes, 0, arrayA.Length);
             Buffer.BlockCopy(arrayB, 0, outputBytes, arrayA.Length, arrayB.Length);
             return outputBytes;
+        }
+        public static HttpResponseMessage CreateJsonResponse(string json)
+        {
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            };
+
         }
     }
 }

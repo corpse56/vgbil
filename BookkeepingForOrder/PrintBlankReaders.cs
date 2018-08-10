@@ -79,14 +79,14 @@ namespace BookkeepingForOrder
             //num = this.printFont.Height;
             //pd.PrinterSettings.PrinterName = "Zebra TLP2844";
             //pd.PrinterSettings.PrinterName = "HP LaserJet 5000 Series PCL 5";
-            //pd.PrinterSettings.PrinterName = "HP Universal Printing PCL 6 2055";
+            pd.PrinterSettings.PrinterName = "HP Universal Printing PCL 6 2055";
 
             F1.SqlDA.SelectCommand = new SqlCommand();
             F1.SqlDA.SelectCommand.Connection = F1.SqlCon;
-            F1.SqlDA.SelectCommand.CommandText = "select * from Readers..Main where NumberReader = " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
+            F1.SqlDA.SelectCommand.CommandText = "select * from Readers..ReaderRight where IDReaderRight = 3 and IDReader = " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
             DataSet DS = new DataSet();
-            F1.SqlDA.Fill(DS, "t");
-            if ((int)DS.Tables["t"].Rows[0]["WorkDepartment"] == 1)
+            int cc = F1.SqlDA.Fill(DS, "t");
+            if (cc != 0)
                 pd.DefaultPageSettings.PaperSize = new PaperSize("rdr", 315, PaperSizeForReaders);
             else
                 pd.DefaultPageSettings.PaperSize = new PaperSize("rdr", 315, PaperSizeForEmployee);
@@ -108,16 +108,16 @@ namespace BookkeepingForOrder
 
             F1.SqlDA.SelectCommand = new SqlCommand();
             F1.SqlDA.SelectCommand.Connection = F1.SqlCon;
-            F1.SqlDA.SelectCommand.CommandText = "select * from Readers..Main where NumberReader = " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
+            F1.SqlDA.SelectCommand.CommandText = "select * from Readers..ReaderRight where IDReaderRight = 3 and IDReader = " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
             DataSet DS = new DataSet();
             int t = 0;
-            F1.SqlDA.Fill(DS, "t");
-            if ((int)DS.Tables["t"].Rows[0]["WorkDepartment"] != 1)
+            int cc = F1.SqlDA.Fill(DS, "t");
+            if (cc != 0)
             {
                 #region читатель-сотрудник 
                 string str = "Билет № " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
                 //string inv = DS.Tables["t"].Rows[0][1].ToString();
-                string dep = GetDepartment(DS.Tables["t"].Rows[0]["WorkDepartment"].ToString());
+                string dep = GetDepartment(DS.Tables["t"].Rows[0]["IDOrganization"].ToString());
                 string abonement = GetAbonement(dg.SelectedRows[0].Cells["fio"].Value.ToString());
                 int CurrentY = 0;
                 rectangle = new Rectangle(0, CurrentY, 315, 25);
@@ -563,17 +563,9 @@ namespace BookkeepingForOrder
             string retval = string.Empty;
             foreach (DataRow r in DS.Tables["t"].Rows)
             {
-                if ((int)r["IDReaderRight"] == 4)
+                if (((int)r["IDReaderRight"] == 4) || ((int)r["IDReaderRight"] == 5) || ((int)r["IDReaderRight"] == 6))
                 {
-                    retval += "Индивидуальный абонемент; ";
-                }
-                if ((int)r["IDReaderRight"] == 5)
-                {
-                    retval += "Персональный абонемент; ";
-                }
-                if ((int)r["IDReaderRight"] == 6)
-                {
-                    retval += "Коллективный абонемент; ";
+                    retval += r["NameReaderRight"].ToString() + "; ";
                 }
             }
             return retval.TrimEnd();

@@ -9,7 +9,7 @@ using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.Readers.DB;
 using LibflClassLibrary.ExportToVufind;
 
-namespace LibflClassLibrary.Readers
+namespace LibflClassLibrary.Readers.DB
 {
     class ReaderDatabaseWrapper : DatabaseWrapper
     {

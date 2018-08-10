@@ -1,4 +1,5 @@
 ﻿using DataProviderAPI.ValueObjects;
+using LibflClassLibrary.Readers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -32,11 +33,15 @@ namespace ALISAPI.Controllers
         public HttpResponseMessage Get(int id)
         {
             ReaderInfo reader = ReaderInfo.GetReader(id);
-            //string json = JsonConvert.SerializeObject(reader, Formatting.Indented);
-            
-            return Request.CreateResponse(HttpStatusCode.OK, reader);
+            string json = JsonConvert.SerializeObject(reader, Formatting.Indented);
+
+            HttpResponseMessage result = Utilities.Extensions.CreateJsonResponse(json);
+            result.Content = new StringContent(json);
+            return result;
+            //return Request.CreateResponse(HttpStatusCode.OK).Content. //, reader);
             //return json;
         }
+
 
 
         /// <summary>

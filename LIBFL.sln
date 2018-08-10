@@ -229,6 +229,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALISAPI", "ALISAPI\ALISAPI.
 		{CA4020F7-B048-4DFA-9E13-3E04DB83B093} = {CA4020F7-B048-4DFA-9E13-3E04DB83B093}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALISAPI_TEST", "ALISAPI_TEST\ALISAPI_TEST.csproj", "{38CA557D-1C7A-4A08-926E-119995021205}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -363,6 +365,10 @@ Global
 		{342E9693-4E7F-45AF-B917-56F977BD7F9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{342E9693-4E7F-45AF-B917-56F977BD7F9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{342E9693-4E7F-45AF-B917-56F977BD7F9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38CA557D-1C7A-4A08-926E-119995021205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38CA557D-1C7A-4A08-926E-119995021205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38CA557D-1C7A-4A08-926E-119995021205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38CA557D-1C7A-4A08-926E-119995021205}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

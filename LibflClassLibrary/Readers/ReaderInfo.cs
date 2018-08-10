@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using LibflClassLibrary.Readers;
+using LibflClassLibrary.Readers.Loaders;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace DataProviderAPI.ValueObjects
+namespace LibflClassLibrary.Readers
 {
 
     public enum TypeReader { Local = 0, Remote = 1 };

@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Threading;
 using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.ExportToVufind;
+using LibflClassLibrary.Readers;
 
 namespace LibflClassLibrary.Books.BJBooks.DB
 {

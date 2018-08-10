@@ -13,6 +13,7 @@ using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Books.BJBooks.DB;
 using Newtonsoft.Json;
+using LibflClassLibrary.Readers;
 
 /// <summary>
 /// Сводное описание для BookInfo
