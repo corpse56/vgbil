@@ -40,6 +40,12 @@ namespace ALISAPI.Controllers
             return result;
             //return Request.CreateResponse(HttpStatusCode.OK).Content. //, reader);
             //return json;
+
+            //вот так нужно вставлять json а не строкой.
+            //string yourJson = GetJsonFromSomewhere();
+            //var response = this.Request.CreateResponse(HttpStatusCode.OK);
+            //response.Content = new StringContent(yourJson, Encoding.UTF8, "application/json");
+
         }
 
 

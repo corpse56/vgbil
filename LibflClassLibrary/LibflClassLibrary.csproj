@@ -122,6 +122,7 @@
     <Compile Include="Books\BJBooks\BJExemplars\ElectronicExemplarInfo.cs" />
     <Compile Include="Books\BJBooks\BJExemplars\ExemplarAccess.cs" />
     <Compile Include="Books\BJBooks\BJExemplars\ExemplarInfo.cs" />
+    <Compile Include="ExportToVufind\BJ\BJVufindIndexUpdater.cs" />
     <Compile Include="ExportToVufind\KeyValueMapping.cs" />
     <Compile Include="Books\BJBooks\DB\DatabaseWrapper.cs" />
     <Compile Include="Readers\DB\QueriesText.cs" />

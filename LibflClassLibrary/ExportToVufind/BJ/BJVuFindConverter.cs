@@ -64,11 +64,11 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 }
                 
                 DataTable record = dbWrapper.GetBJRecord(_lastID);
-                if (record.Rows.Count == 0) continue;
+                if (record.Rows.Count == 0) continue; //если сводный уровень, то пропускаем пока.
                 try
                 {
                     vfDoc = CreateVufindDoc( record );
-                    if (vfDoc == null) continue;
+                    if (vfDoc == null) continue;//одна из причин - все экземпляры списаны и нет электронного экземпляра
                 }
                 catch (Exception ex)
                 {
@@ -386,7 +386,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "225$a":
                         if (r["PLAIN"].ToString() == "") break;
                         if (r["PLAIN"].ToString() == "-1") break;
-                        AddHierarchyFields(Convert.ToInt32(r["PLAIN"]), Convert.ToInt32(r["IDMAIN"]), result);
+                        //AddHierarchyFields(Convert.ToInt32(r["PLAIN"]), Convert.ToInt32(r["IDMAIN"]), result);
                         break;
                     case "225$h":
                         result.NumberInSeries.Add(r["PLAIN"].ToString()); 

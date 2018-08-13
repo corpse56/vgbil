@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
@@ -37,6 +38,7 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                     " left join " + this.Fund + "..FIELDS F on A.MNFIELD = F.MNFIELD and A.MSFIELD = F.MSFIELD " +
                     " where A.IDMAIN = @idmain " +
                     " and not exists (select 1 from " + this.Fund + "..DATAEXT EXTR where EXTR.IDMAIN = @idmain and EXTR.MNFIELD = 899 and EXTR.MSFIELD = '$x' and lower(EXTR.SORT) = 'э') " +
+                    " and not exists (select 1 from " + this.Fund + "..DATAEXT FIN where FIN.IDMAIN = @idmain and FIN.MNFIELD = 338 and FIN.MSFIELD = '$b') " +
                     " order by A.IDMAIN, A.IDDATA";
             }
         }
@@ -335,8 +337,21 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
-        
-        
+        public string GET_INCREMENT_UPDATE_QUERY
+        {
+            get
+            {
+                return "  select distinct IDMAIN from BJVVV..DATAEXT where Changed >=  (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')";
+            }
+        }
+        public string GET_INCREMENT_DELETED_QUERY
+        {
+            get
+            {
+                return "select IDMAIN from " + this.Fund + "..PROTOCOL" +
+                       "where WHAT = 'Удалена запись' and Date >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')";
+            }
+        }
         
     }
 

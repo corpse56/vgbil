@@ -16,19 +16,25 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
 {
     public abstract class VufindIndexUpdater
     {
-        public VufindIndexUpdater() { }
+        public string Host { get; set; }
+        public VufindIndexUpdater(string Host)
+        {
+            this.Host = Host;
+        }
 
-        public abstract XDocument GetCurrentIncrement();
+        public abstract object GetCurrentIncrement();
+        public abstract object GetCurrentIncrementDeleted();
 
         //curl http://192.168.56.31:8080/solr/biblio/update --data "<delete><query>id:BJVVV_1463041</query><query>id:BJVVV_1463040</query></delete>" -H "Content-type:text/xml; charset=utf-8"
         //curl http://192.168.56.31:8080/solr/biblio/update --data "<commit/>" -H "Content-type:text/xml; charset=utf-8"
-       
+
         public void DeleteFromIndex(List<string> IdList)
         {
             if (IdList.Count == 0) return;
             StringBuilder address = new StringBuilder();
             StringBuilder query = new StringBuilder();
-            address.Append(@"http://catalog.libfl.ru:8080/solr/biblio/update");
+            //address.Append(@"http://catalog.libfl.ru:8080/solr/biblio/update");
+            address.Append(@"http://"+this.Host+":8080/solr/biblio/update");
 
             query.Append("<delete>");
             foreach (string id in IdList)
@@ -70,7 +76,7 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
                 throw new Exception(ResponseXML.ToString());
             }
 
-            url = new Uri("http://catalog.libfl.ru:8080/solr/biblio/update?stream.body=%3Ccommit/%3E");
+            url = new Uri("http://" + this.Host + ":8080/solr/biblio/update?stream.body=%3Ccommit/%3E");
             request = HttpWebRequest.Create(url) as HttpWebRequest;
             try
             {
@@ -102,7 +108,7 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
 
             //doc.Load(AppDomain.CurrentDomain.BaseDirectory + @"increment31.05.2018 01.54.xml");//для отладки
 
-            Uri url = new Uri("http://catalog.libfl.ru:8080/solr/biblio/update?commit=true");
+            Uri url = new Uri("http://" + this.Host + ":8080/solr/biblio/update?commit=true");
             HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
             request.Timeout = 120000000;
             request.Method = "POST";

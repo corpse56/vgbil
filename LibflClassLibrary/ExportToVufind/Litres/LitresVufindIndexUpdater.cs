@@ -12,7 +12,9 @@ namespace LibflClassLibrary.ExportToVufind.Litres
 {
     public class LitresVufindIndexUpdater : VufindIndexUpdater
     {
-        public override XDocument GetCurrentIncrement()
+        public LitresVufindIndexUpdater(string Host) : base(Host)
+        { }
+        public override object GetCurrentIncrement()
         {
             //внимание! Timestamp нужен от текущего времени, а не от чекпоинта! SHA генерируется тоже от текущего времени, а не от чекпоинта
             DateTime CurrentDate = DateTime.Now;
@@ -56,5 +58,9 @@ namespace LibflClassLibrary.ExportToVufind.Litres
             return xdoc;
         }
 
+        public override object GetCurrentIncrementDeleted()
+        {
+            throw new NotImplementedException("Для Литреса удалённые записи приходят вместе с измененными в одном api-запросе. Просто теги получаются разные или аттрибуты тоже влияют.");
+        }
     }
 }

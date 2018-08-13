@@ -37,6 +37,27 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        internal DataTable GetIncrementUpdate()
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_INCREMENT_UPDATE_QUERY, connection);
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+        internal DataTable GetIncrementDeleted()
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_INCREMENT_DELETED_QUERY, connection);
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
         internal DataTable Clarify_10a(int iddata)
         {
             string connectionString = AppSettings.ConnectionString;
