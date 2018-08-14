@@ -169,7 +169,7 @@ public static class CurrentCultureInfo
 
 
             //для входа под любым читателем. не забывать закомментироват
-            //CurReader.ID = "178312";
+            CurReader.ID = "83934";
             //FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
            // Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type=0&litres=" + litres);
 

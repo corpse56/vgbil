@@ -25,13 +25,10 @@ using BookForOrder;
 using Itenso.Rtf;
 using Itenso.Rtf.Support;
 using System.Web.Configuration;
-using ExportBJ_XML.classes.BJ;
-using ExportBJ_XML.ValueObjects;
-using ExportBJ_XML.classes.DB;
-using LibflClassLibrary.ExportToVufind.classes.BJ;
-using LibflClassLibrary.ExportToVufind.classes;
-using ExportBJ_XML.classes;
 using Utilities;
+using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using LibflClassLibrary.ExportToVufind;
 
 public partial class _Default : System.Web.UI.Page
 {
@@ -91,7 +88,7 @@ public partial class _Default : System.Web.UI.Page
             BJBookInfo book = BJBookInfo.GetBookInfoByPIN(Convert.ToInt32(r["IDMAIN"]), "BJVVV");
             for (int j = book.Exemplars.Count - 1; j >= 0; j-- )
             {
-                if (book.Exemplars[j].Fields["921$c"].ToLower() == "списано")
+                if (((ExemplarInfo)book.Exemplars[j]).Fields["921$c"].ToLower() == "списано")
                 {
                     book.Exemplars.RemoveAt(j);
                 }

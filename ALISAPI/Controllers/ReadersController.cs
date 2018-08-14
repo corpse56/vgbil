@@ -35,8 +35,8 @@ namespace ALISAPI.Controllers
             ReaderInfo reader = ReaderInfo.GetReader(id);
             string json = JsonConvert.SerializeObject(reader, Formatting.Indented);
 
-            HttpResponseMessage result = Utilities.Extensions.CreateJsonResponse(json);
-            result.Content = new StringContent(json);
+            HttpResponseMessage result = this.Request.CreateResponse(HttpStatusCode.OK);
+            result.Content = new StringContent(json,Encoding.UTF8, "application/json");
             return result;
             //return Request.CreateResponse(HttpStatusCode.OK).Content. //, reader);
             //return json;
