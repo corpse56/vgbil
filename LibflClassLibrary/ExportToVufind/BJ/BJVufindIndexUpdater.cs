@@ -40,7 +40,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             }
 
 
-            return new object();
+            return Increment;
         }
 
         public override object GetCurrentIncrementDeleted()
@@ -48,14 +48,14 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             throw new NotImplementedException();
         }
     }
-    class IncrementStruct
+    public class IncrementStruct
     {
         public IncrementStruct(string Flag, string Id)
         {
             this.Flag = Flag;
             this.Id = Id;
         }
-        string Flag;
-        string Id;
+        public string Flag;//updated или deleted
+        public string Id;
     }
 }

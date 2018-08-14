@@ -563,12 +563,12 @@ public class Service : System.Web.Services.WebService
         foreach (string exemplar in exemplars)
         {
             string status = GetExemplarStatus(exemplar, fund);
-            if (status.Contains( "available" ))
+            if (status.Contains("available")  && !status.Contains("unavailable"))
             {
                 available++;
                 continue;
             }
-            if (status.Contains( "busy"))
+            if (status.Contains("unavailable"))
             {
                 busy++;
                 continue;

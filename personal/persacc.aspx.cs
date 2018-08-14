@@ -1827,6 +1827,10 @@ public partial class persacc : System.Web.UI.Page
             string HostName = HttpContext.Current.Server.MachineName;
             //string HostName1 = Page.Server.MachineName;
             string ElBookViewerServer = "";
+
+
+            //для отладки
+            //HostName = "VGBIL-OPAC";
             if (HostName == "VGBIL-OPAC")
             {
                 bool IsExistsLQ = GetIsExistsLQ(row["idm"].ToString());

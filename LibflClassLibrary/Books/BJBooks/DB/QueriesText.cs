@@ -341,7 +341,16 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         {
             get
             {
-                return "  select distinct IDMAIN from BJVVV..DATAEXT where Changed >=  (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')";
+                return "  select distinct IDMAIN from (" +
+                        " select IDMAIN from BJVVV..DATAEXT " +
+                        "  where Changed >=  (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
+                        " union all" +
+                        "  select A.IDMAIN IDMAIN" +
+                        "  from[BJVVV].[dbo].[TPR_TES] T " +
+                        "  left join BJVVV..DATAEXT A on A.MNFIELD = 606 and A.MSFIELD = '$a' "+
+                        "        and cast(T.IDCHAIN as varchar) = A.SORT "+
+                        " where DateChanged >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
+                        ") tableAlias";
             }
         }
         public string GET_INCREMENT_DELETED_QUERY
