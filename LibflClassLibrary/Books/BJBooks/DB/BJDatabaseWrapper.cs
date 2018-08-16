@@ -11,7 +11,7 @@ using LibflClassLibrary.Readers;
 
 namespace LibflClassLibrary.Books.BJBooks.DB
 {
-    class BJDatabaseWrapper : DatabaseWrapper
+    public class BJDatabaseWrapper : DatabaseWrapper
     {
 
         public string Fund { get; set; }
@@ -25,7 +25,7 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         }
        
 
-        internal DataTable GetBJRecord(int idmain)
+        public DataTable GetBJRecord(int idmain)
         {
             string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
@@ -47,6 +47,18 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                 return this.ExecuteSelectQuery(dataAdapter);
             }
         }
+
+        internal DataTable GetIncrementCovers()
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_INCREMENT_COVERS_QUERY, connection);
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
         internal DataTable GetIncrementDeleted()
         {
             string connectionString = AppSettings.ConnectionString;

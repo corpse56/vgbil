@@ -3,10 +3,12 @@ using LibflClassLibrary.ExportToVufind.Vufind;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Utilities;
 
 namespace LibflClassLibrary.ExportToVufind.BJ
 {
@@ -28,16 +30,28 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             DataTable table = dbWrapper.GetIncrementUpdate();
             foreach (DataRow row in table.Rows)
             {
+                sb.Clear();
                 sb.AppendFormat("{0}_{1}", this.Fund, row["IDMAIN"].ToString());
                 Increment.Add(new IncrementStruct("updated", sb.ToString()));
+                //Debug.Assert(sb.Length < 7, row["IDMAIN"].ToString());
             }
 
             table = dbWrapper.GetIncrementDeleted();
             foreach (DataRow row in table.Rows)
             {
+                sb.Clear();
                 sb.AppendFormat("{0}_{1}", this.Fund, row["IDMAIN"].ToString());
                 Increment.Add(new IncrementStruct("deleted", sb.ToString()));
             }
+
+            table = dbWrapper.GetIncrementCovers();
+            foreach (DataRow row in table.Rows)
+            {
+                sb.Clear();
+                sb.AppendFormat("{0}_{1}", this.Fund, row["IDMAIN"].ToString());
+                Increment.Add(new IncrementStruct("cover", sb.ToString()));
+            }
+
 
 
             return Increment;

@@ -2769,3 +2769,4 @@
 /ALISAPI/Properties/PublishProfiles/CustomProfile.pubxml
 /ALISAPI/Properties/PublishProfiles/CustomProfile.pubxml.user
 /.vs/LIBFL/DesignTimeBuild/.dtbcache
+/VufindIncrementUpdate/bin/Debug/MySql.Data.dll

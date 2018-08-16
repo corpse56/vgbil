@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace LibflClassLibrary.Books.BJBooks.DB
 {
-    class DatabaseWrapper
+    public class DatabaseWrapper
     {
         //public DatabaseWrapper();
 

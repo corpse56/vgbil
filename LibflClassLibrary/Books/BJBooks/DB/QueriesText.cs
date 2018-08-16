@@ -342,14 +342,17 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             get
             {
                 return "  select distinct IDMAIN from (" +
-                        " select IDMAIN from BJVVV..DATAEXT " +
+                        " select IDMAIN from " + this.Fund + "..DATAEXT " +
                         "  where Changed >=  (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
+                        //"     or Created >=  (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
                         " union all" +
                         "  select A.IDMAIN IDMAIN" +
-                        "  from[BJVVV].[dbo].[TPR_TES] T " +
-                        "  left join BJVVV..DATAEXT A on A.MNFIELD = 606 and A.MSFIELD = '$a' "+
+                        "  from [BJVVV].[dbo].[TPR_TES] T " +
+                        "  left join " + this.Fund + "..DATAEXT A on A.MNFIELD = 606 and A.MSFIELD = '$a' " +
                         "        and cast(T.IDCHAIN as varchar) = A.SORT "+
                         " where DateChanged >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
+                        //"   or  DateCreate >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
+                        " and A.IDMAIN is not null" +
                         ") tableAlias";
             }
         }
@@ -357,11 +360,18 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         {
             get
             {
-                return "select IDMAIN from " + this.Fund + "..PROTOCOL" +
-                       "where WHAT = 'Удалена запись' and Date >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')";
+                return " select distinct IDMAIN from " + this.Fund + "..PROTOCOL " +
+                       " where WHAT = 'Удалена запись' and Date >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')";
             }
         }
-        
+        public string GET_INCREMENT_COVERS_QUERY
+        {
+            get
+            {
+                return "select IDMAIN from " + this.Fund + "..IMAGES where DateCreate >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')";
+            }
+        }
+
     }
 
    

@@ -151,6 +151,30 @@ namespace Utilities
             return outputBytes;
         }
 
+        public static string CalculateMD5(string filename)
+        {
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(filename))
+                {
+                    var hash = md5.ComputeHash(stream);
+                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                }
+            }
+        }
+        public static string CalculateMD5(byte[] byteArray)
+        {
+            using (var md5 = MD5.Create())
+            {
+                byte[] hash = md5.ComputeHash(byteArray);
+                return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+            }
+        }
+        public static void Clear(this StringBuilder value)
+        {
+            value.Length = 0;
+            value.Capacity = 0;
+        }
     }
 }
 namespace System.Runtime.CompilerServices

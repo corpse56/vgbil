@@ -16,6 +16,9 @@ using LibflClassLibrary.ExportToVufind.Vufind;
 using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using System.Security.Cryptography;
+using System.Drawing.Imaging;
+using System.Security.AccessControl;
 
 namespace LibflClassLibrary.ExportToVufind.BJ
 {
@@ -420,7 +423,13 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                         result.HyperLink.Add(r["PLAIN"].ToString()); 
                         break;
                     case "606$a"://"""""" • """"""
-                        clarify = dbWrapper.Clarify_606a(Convert.ToInt32(r["SORT"]));
+                        int IDChain = 0;
+                        string row = r["SORT"].ToString();
+                        if (!int.TryParse(row, out IDChain))
+                        {
+                            continue;
+                        }
+                        clarify = dbWrapper.Clarify_606a(IDChain);
                         if (clarify.Rows.Count == 0) break;
                         string TPR = "";
                         foreach (DataRow rr in clarify.Rows)
@@ -826,6 +835,89 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             File.WriteAllLines(@"f:\import\importErrors\" + this.Fund + "Errors.txt", errors.ToArray());
 
         }
+        public override void ExportSingleCover(object idRecord)
+        {
+            string ID = idRecord.ToString();
+            int IDMAIN = int.Parse(ID.Substring(ID.IndexOf("_")+1));
+            string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf";
+
+            using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
+            {
+                string NewPath = VuFindConverter.GetCoverExportPath(ID);
+                string path = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf\"+Fund.ToUpper()+@"\" + NewPath;
+                
+
+                DirectoryInfo di = new DirectoryInfo(path);
+                if (!di.Exists)
+                {
+                    di.Create();
+                }
+                FileInfo[] ExistingCovers;
+
+                ExistingCovers = di.GetFiles();
+
+                List<string> MD5Hashes = new List<string>();
+
+                foreach (FileInfo file in ExistingCovers)
+                {
+                    MD5Hashes.Add(Extensions.CalculateMD5(file.FullName));//собираем хэши существующих обложек
+                }
+
+                BJDatabaseWrapper wrapper = new BJDatabaseWrapper(Fund);
+                DataTable pics = dbWrapper.GetImage(IDMAIN);
+                foreach (DataRow pic in pics.Rows)//Копируем считанные из базы обложки на файловое хранилище
+                {
+                    byte[] p = (byte[])pic["PIC"];
+                    Image img;
+                    using (MemoryStream ms = new MemoryStream(p))
+                    {
+                        img = Image.FromStream(ms);
+                    }
+
+                    StringBuilder fileName = new StringBuilder();
+                    fileName.Append(path).Append("cover.").Append("jpg");//вроде в базе bj все обложки jpg...
+
+                    if (!File.Exists(path + "cover.jpg"))//если нет файла с таким именем, значит нет обложки. сразу сохраняем
+                    {
+                        //img.Save(path + "cover.jpg");
+
+                        using (FileStream fs = new FileStream(path + "cover.jpg", FileMode.Create, FileAccess.Write))
+                        {
+                            fs.Write(p, 0, p.Length);
+                            fs.Flush();
+                        }
+                        continue;
+                    }
+                    else
+                    {
+                        //там уже могут лежать какие-то поэтому надо сравнивать MD5 хэши, чтобы дублей не запилить
+                        string imgMD5 = Extensions.CalculateMD5(p);
+                        if (MD5Hashes.Contains(imgMD5))//нашлась такая же обложка, значит её не сохраняем и пропускаем
+                        {
+                            continue;
+                        }
+                       
+                        while (true)//если до сюда дошло, значит надо сохранить во что бы то ни стало
+                        {
+                            int i = 0;
+                            if (!File.Exists(path + (i++).ToString() + ".jpg"))
+                            {
+                                string filename = path + (i).ToString() + ".jpg";
+                                //img.Save(filename, ImageFormat.Jpeg);
+                                using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
+                                {
+                                    fs.Write(p, 0, p.Length);
+                                    fs.Flush();
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+       
+    
 
         private void AddHierarchyFields(int ParentPIN, int CurrentPIN, VufindDoc vfDoc)
         {
@@ -897,13 +989,5 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             return result;
         }
 
-
-
-
-
-        public override void ExportSingleCover(object idRecord)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

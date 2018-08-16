@@ -10,6 +10,7 @@ using LibflClassLibrary.ExportToVufind.Litres;
 using LibflClassLibrary.ExportToVufind.Vufind;
 using LibflClassLibrary.ExportToVufind.BJ;
 using System.Data;
+using LibflClassLibrary.Books.BJBooks.DB;
 
 namespace VufindIncrementUpdate
 {
@@ -17,12 +18,16 @@ namespace VufindIncrementUpdate
     {
         static void Main(string[] args)
         {
-            //Program.LitresIncrementUpdate();
+            Program.LitresIncrementUpdate();
             Program.BJIncrementUpdate("BJVVV");
+            Program.BJIncrementUpdate("REDKOSTJ");
+            Program.BJIncrementUpdate("BJACC");
+            Program.BJIncrementUpdate("BJFCC");
+            Program.BJIncrementUpdate("BJSCC");
 
 
             //для отладки
-            Console.ReadKey();
+            //Console.ReadKey();
         }
 
         static void BJIncrementUpdate(string Fund)
@@ -31,13 +36,14 @@ namespace VufindIncrementUpdate
             {
                 log.WriteLog("Начало инкрементной загрузки "+Fund+"...");
                 Console.WriteLine("Начало инкрементной загрузки " + Fund + "...");
-                BJVufindIndexUpdater bj = new BJVufindIndexUpdater(@"192.168.56.31", Fund);
+                BJVufindIndexUpdater bj = new BJVufindIndexUpdater(@"catalog.libfl.ru", Fund);
 
                 //получаем инкремент
-                List<IncrementStruct> IncrementXML = new List<IncrementStruct>();
+                List<IncrementStruct> Increment = new List<IncrementStruct>();
+                List<IncrementStruct> IncrementCovers = new List<IncrementStruct>();
                 try
                 {
-                    IncrementXML = (List<IncrementStruct>)bj.GetCurrentIncrement();
+                    Increment = (List<IncrementStruct>)bj.GetCurrentIncrement();
                 }
                 catch (Exception ex)
                 {
@@ -50,42 +56,27 @@ namespace VufindIncrementUpdate
                 Console.WriteLine("Загрузка инкремента " + Fund + " успешно завершена...");
 
                 //вычленияем удалённые записи и удаляем их из индекса
-                List<IncrementStruct> removedBooks = IncrementXML.FindAll(x => x.Flag == "deleted");
-                List<string> removedBookIDs = new List<string>();
-                foreach (IncrementStruct elt in removedBooks)
+                List<IncrementStruct> RemovedBooks = Increment.FindAll(x => x.Flag == "deleted");
+                List<IncrementStruct> UpdatedBooks = Increment.FindAll(x => x.Flag == "updated");
+                List<IncrementStruct> CoverUpdatedBooks = Increment.FindAll(x => x.Flag == "cover");
+
+                List<string> BooksToDeleteIds = new List<string>();
+                foreach (IncrementStruct elt in Increment)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.AppendFormat("Litres_{0}", elt.Attribute("id").Value);
-                    removedBookIDs.Add(sb.ToString());
-                }
-                //вычленияем удалённые записи по you_can_sell == 0
-                removedBooks = IncrementXML.Descendants("updated-book");
-                foreach (XElement elt in removedBooks)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    if (elt.Attribute("you_can_sell").Value == "0")
+                    if (elt.Flag != "cover")
                     {
-                        sb.AppendFormat("Litres_{0}", elt.Attribute("id").Value);
-                        removedBookIDs.Add(sb.ToString());
+                        sb.AppendFormat("{0}", elt.Id);
+                        BooksToDeleteIds.Add(sb.ToString());
                     }
                 }
 
-
-                //вычленияем изменённые записи и тоже удаляем их из индекса.хотя по моему это необязятельно.если послать запись, которая уже есть, то она автоматически обновится. надо проверить
-                //так и есть - это необязательно.экономим время и пропускаем этот шаг
-                removedBooks = IncrementXML.Descendants("updated-book");
-                foreach (XElement elt in removedBooks)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    sb.AppendFormat("Litres_{0}", elt.Attribute("id").Value);
-                    removedBookIDs.Add(sb.ToString());
-                }
-                Console.WriteLine("Начинаю удаление изъятых " + Fund + " записей из индекса...");
-                log.WriteLog("Начинаю удаление изъятых " + Fund + " записей из индекса...");
+                Console.WriteLine("Начинаю удаление изменённых/удалённых " + Fund + " записей из индекса...");
+                log.WriteLog("Начинаю удаление изменённых/удалённых " + Fund + " записей из индекса...");
 
                 try
                 {
-                    bj.DeleteFromIndex(removedBookIDs);//удаляем сразу все одним запросом. 
+                    bj.DeleteFromIndex(BooksToDeleteIds);//удаляем сразу все одним запросом. 
                 }
                 catch (Exception ex)
                 {
@@ -94,46 +85,42 @@ namespace VufindIncrementUpdate
                     Console.ReadKey();
                     return;
                 }
-                foreach (string elt in removedBookIDs)
+                foreach (string elt in BooksToDeleteIds)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.AppendFormat("Запись " + Fund + " {0} удалена из индекса", elt);
+                    sb.AppendFormat("Запись {0} удалена из индекса", elt);
                     Console.WriteLine(sb.ToString());
                     log.WriteLog(sb.ToString());
                 }
-                Console.WriteLine("Начинаю обновление обложек " + Fund + "...");
-                log.WriteLog("Начинаю обновление обложек " + Fund + "...");
 
-                теперь добавляем новые и изменяем изменённые. Изменённые заменяться автоматически
-                IEnumerable<XElement> UpdatedBooks = IncrementXML.Descendants("updated-book");
-                LitresVuFindConverter converter = new LitresVuFindConverter("litres");
+                //теперь добавляем новые и изменяем изменённые. Изменённые заменяться автоматически
+                Console.WriteLine("Начинаю обновление " + Fund + " изменённых записей...");
+                log.WriteLog("Начинаю обновление " + Fund + " изменённых записей...");
+
+                BJVuFindConverter converter = new BJVuFindConverter(Fund);
                 List<VufindDoc> UpdatedBooksList = new List<VufindDoc>();
                 VufindDoc doc;
-                foreach (XElement elt in UpdatedBooks)
+
+                //для отладки
+                //UpdatedBooks = UpdatedBooks.Take(5).ToList();
+
+                foreach (IncrementStruct elt in UpdatedBooks)
                 {
-                    doc = converter.CreateVufindDoc(elt);
+                    BJDatabaseWrapper wrapper = new BJDatabaseWrapper(Fund);
+                    int IDMAIN = int.Parse(elt.Id.Substring(elt.Id.IndexOf("_")+1));
+                    DataTable BJRecord =  wrapper.GetBJRecord(IDMAIN);
+                    if (BJRecord.Rows.Count == 0)
+                    {
+                        continue;
+                    }
+                    doc = converter.CreateVufindDoc(BJRecord);
                     if (doc == null)
                     {
                         continue;
                     }
                     UpdatedBooksList.Add(doc);
-                    //скачиваем обложечку
-                    try
-                    {
-                        converter.ExportSingleCover(elt);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Скачивание " + Fund + " обложки " + elt.Attribute("id").Value + " завершилось неудачей. " + ex.Message);
-                        log.WriteLog("Скачивание " + Fund + " обложки " + elt.Attribute("id").Value + " завершилось неудачей. " + ex.Message);
-                        continue;
-                    }
-                    Console.WriteLine("Обложка " + Fund + " " + elt.Attribute("id").Value + " скачана успешно. ");
-                    log.WriteLog("Обложка " + Fund + " " + elt.Attribute("id").Value + " скачана успешно. ");
                 }
 
-                Console.WriteLine("Начинаю обновление " + Fund + " записей...");
-                log.WriteLog("Начинаю обновление " + Fund + " записей...");
 
 
                 try
@@ -154,6 +141,27 @@ namespace VufindIncrementUpdate
                     Console.WriteLine(sb.ToString());
                     log.WriteLog(sb.ToString());
                 }
+
+
+                Console.WriteLine("Начинаю обновление обложек " + Fund + "...");
+                log.WriteLog("Начинаю обновление обложек " + Fund + "...");
+                foreach (IncrementStruct elt in CoverUpdatedBooks)
+                {
+                    //скачиваем обложечку
+                    try
+                    {
+                        converter.ExportSingleCover(elt.Id);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Скачивание  обложки " + elt.Id + " завершилось неудачей. " + ex.Message);
+                        log.WriteLog("Скачивание  обложки " + elt.Id + " завершилось неудачей. " + ex.Message);
+                        continue;
+                    }
+                    Console.WriteLine("Обложка  " + elt.Id + " скачана успешно. ");
+                    log.WriteLog("Обложка  " + elt.Id + " скачана успешно. ");
+                }
+
 
                 bj.SetLastIncrementDate(Fund);
 
