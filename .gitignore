@@ -2770,3 +2770,11 @@
 /ALISAPI/Properties/PublishProfiles/CustomProfile.pubxml.user
 /.vs/LIBFL/DesignTimeBuild/.dtbcache
 /VufindIncrementUpdate/bin/Debug/MySql.Data.dll
+/BookkeepingForOrder/bin/Debug/BookkeepingForOrder.exe.config
+/BookkeepingForOrder/bin/Debug/LibflClassLibrary.dll
+/BookkeepingForOrder/bin/Debug/LibflClassLibrary.pdb
+/BookkeepingForOrder/bin/Debug/MySql.Data.dll
+/BookkeepingForOrder/bin/Debug/Newtonsoft.Json.dll
+/BookkeepingForOrder/bin/Debug/Newtonsoft.Json.xml
+/BookkeepingForOrder/obj/Debug/BookkeepingForOrder.csproj.CopyComplete
+/BookkeepingForOrder/obj/Debug/BookkeepingForOrder.csprojAssemblyReference.cache

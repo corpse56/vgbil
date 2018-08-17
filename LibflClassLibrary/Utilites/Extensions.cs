@@ -6,7 +6,6 @@ using System.Net;
 using System.IO;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
-//using System.Net.Http;
 
 namespace Utilities
 {

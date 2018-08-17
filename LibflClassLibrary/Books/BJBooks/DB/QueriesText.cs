@@ -353,6 +353,10 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                         " where DateChanged >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
                         //"   or  DateCreate >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
                         " and A.IDMAIN is not null" +
+                        " union all " +
+                        " select IDBook IDMAIN from BookAddInf..ScanInfo" +
+                        " where DateChang >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
+                        " and IDBase = " + ((this.Fund == "BJVVV") ? "1" : "2") +
                         ") tableAlias";
             }
         }

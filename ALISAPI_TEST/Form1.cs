@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.Readers;
+﻿using LibflClassLibrary.Books.BJBooks.DB;
+using LibflClassLibrary.Readers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,13 @@ namespace ALISAPI_TEST
             }
 
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            BJDatabaseWrapper dbWrapper = new BJDatabaseWrapper("BJVVV");
+            DataTable record = dbWrapper.GetBJRecord(17132);
+            int cnt = record.Rows.Count;
         }
     }
 

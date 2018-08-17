@@ -1170,7 +1170,7 @@ namespace BookkeepingForOrder
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Form2 f2 = new Form2(dgwHis);
+            Form2 f2 = new Form2(dgwRHis, this);
             f2.Show();
 
         }

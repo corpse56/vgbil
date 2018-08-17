@@ -30,12 +30,13 @@
         {
             this.ReadersGet = new System.Windows.Forms.Button();
             this.tbResponse = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
             // 
             this.ReadersGet.Location = new System.Drawing.Point(14, 14);
-            this.ReadersGet.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.ReadersGet.Margin = new System.Windows.Forms.Padding(5);
             this.ReadersGet.Name = "ReadersGet";
             this.ReadersGet.Size = new System.Drawing.Size(160, 35);
             this.ReadersGet.TabIndex = 0;
@@ -52,15 +53,26 @@
             this.tbResponse.Size = new System.Drawing.Size(626, 854);
             this.tbResponse.TabIndex = 1;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(32, 77);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1445, 887);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.tbResponse);
             this.Controls.Add(this.ReadersGet);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -72,6 +84,7 @@
 
         private System.Windows.Forms.Button ReadersGet;
         private System.Windows.Forms.TextBox tbResponse;
+        private System.Windows.Forms.Button button1;
     }
 }
 

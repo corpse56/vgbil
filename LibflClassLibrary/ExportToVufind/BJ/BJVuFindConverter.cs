@@ -55,16 +55,6 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             {
                 _lastID = i;
 
-                if ((i == 52109) && (Fund == "REDKOSTJ"))
-                {
-                    //эта запись образец заполнения электронной копии
-                    continue;
-                }
-                if ((i == 1456705) && (Fund == "BJVVV"))
-                {
-                    //эта запись образец заполнения электронной копии
-                    continue;
-                }
                 
                 DataTable record = dbWrapper.GetBJRecord(_lastID);
                 if (record.Rows.Count == 0) continue; //если сводный уровень, то пропускаем пока.
@@ -105,13 +95,31 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             MessageBox.Show("Завершено");
         }
 
+
+        private bool SpecialFilter(int IDMAIN)
+        {
+            if ((IDMAIN == 52109) && (Fund == "REDKOSTJ"))
+            {
+                //эта запись образец заполнения электронной копии
+                return false;
+            }
+            if ((IDMAIN == 1456705) && (Fund == "BJVVV"))
+            {
+                //эта запись образец заполнения электронной копии
+                return false;
+            }
+
+            return true;
+        }
+
         public VufindDoc CreateVufindDoc( DataTable BJBook )
         {
             int currentIDMAIN = (int)BJBook.Rows[0]["IDMAIN"];
+            if (!SpecialFilter(currentIDMAIN)) return null;
             string level = BJBook.Rows[0]["Level"].ToString();
             string level_id = BJBook.Rows[0]["level_id"].ToString();
             int lev_id = int.Parse(level_id);
-            //if (lev_id < 0) return null;
+            if (lev_id < 0) return null;
             StringBuilder allFields = new StringBuilder();
             AuthoritativeFile AF_all = new AuthoritativeFile();
             bool wasTitle = false;//встречается ошибка: два заглавия в одном пине

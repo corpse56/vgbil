@@ -151,7 +151,7 @@ public partial class _Default : System.Web.UI.Page
                 int StatusCode = 0;
                 if ((location == "Книгохранение") || (location == "Книгохранение - Абонемент"))
                 {
-                    Status.Append("Книга свободна. Для получения нажмите ссылку \"Заказать\"");
+                    Status.Append("Книга свободна. Для получения нажмите ссылку \"Заказать\". Местонахождение: "+ exemplar.Fields["899$a"].ToString());
                     StatusCode = 1;
                 }
                 else if (location == "Служебные подразделения")
@@ -289,6 +289,12 @@ public partial class _Default : System.Web.UI.Page
     {
         if (e.Row.RowIndex == -1) return;
         int StatusCode = int.Parse(e.Row.Cells[11].Text);
+        //ExemplarInfo exemplar = ExemplarInfo.GetExemplarByInventoryNumber(e.Row.Cells[5].Text.Substring(0, e.Row.Cells[5].Text.IndexOf("\n")), "BJVVV");
+        //if (exemplar.Fields["899$a"].ToString().ToLower().Contains("абонемент") && exemplar.Fields["899$a"].ToString().ToLower().Contains("книгохранен"))
+        //{
+        //    e.Row.Cells[12].Text = exemplar.Fields["899$a"].ToString();
+        //}
+
         switch (StatusCode)
         {
             case 1://"Нажмите ссылку \"Заказать\""
@@ -313,7 +319,38 @@ public partial class _Default : System.Web.UI.Page
         }
         
     }
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+        DABasket = new SqlDataAdapter();
+        DABasket.SelectCommand = new SqlCommand();
+        DABasket.SelectCommand.Connection = ZCon;
+        DABasket.SelectCommand.CommandText = " with F0 as (" +
+                                             " select ID, IDMAIN IDMAIN from Reservation_E..Basket where IDREADER = " + CurReader.ID +
+                                             " union all" +
+                                             " select 1 ID, ID_Book_EC IDMAIN from Reservation_E..Orders where ID_Reader = " + CurReader.ID +
+                                             ") select distinct IDMAIN,ID  from F0 order by ID desc";//сортируем по IDMAIN чтобы все были в одном порядке
+        DataTable table = new DataTable();
+        int i = DABasket.Fill(table);
+        List<Book> Books = new List<Book>();
+        foreach (DataRow r in table.Rows)
+        {
+            BJBookInfo bjbook = BJBookInfo.GetBookInfoByPIN(Convert.ToInt32(r["IDMAIN"]), "BJVVV");
+            Book book = new Book(bjbook.Fields["200$a"].ToString(),r["IDMAIN"].ToString(), bjbook.Fields["700$a"].ToString(), "0");
+            Books.Add(book);
+        }
 
+        List<KeyValuePair<string, Book>> spisok = new List<KeyValuePair<string, Book>>();
+
+
+        foreach (Book b in Books)
+        {
+            spisok.Add(new KeyValuePair<string, Book>(b.Language, b));
+        }
+        spisok.Sort(BiblioDescriptionCompare);
+        Session.Add("spisok", spisok);
+
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('Default2.aspx','_blank')", true);
+    }
     protected void Button2_Click(object sender, EventArgs e)
     {
 
@@ -570,19 +607,7 @@ public partial class _Default : System.Web.UI.Page
         return a.Value.Name.CompareTo(b.Value.Name);
         
     }
-    protected void Button4_Click(object sender, EventArgs e)
-    {
-        //List<KeyValuePair<string,Book>> spisok = new List<KeyValuePair<string,Book>>();
-
-        //foreach (Book b in BooksForTableNew)
-        //{
-        //    spisok.Add(new KeyValuePair<string, Book>(b.Language, b));
-        //}
-        //spisok.Sort(BiblioDescriptionCompare);
-        //Session.Add("spisok", spisok);
-
-        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('Default2.aspx','_blank')", true);
-    }
+   
     protected void Button5_Click(object sender, EventArgs e)//очистить корзину
     {
         //sdvig.DeleteCommand = new SqlCommand("delete from Reservation_E..Basket where IDReader = " + b.IdBasket, ZCon);

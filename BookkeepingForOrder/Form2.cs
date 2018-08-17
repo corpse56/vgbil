@@ -6,6 +6,9 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Printing;
+using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using System.Data.SqlClient;
 
 namespace BookkeepingForOrder
 {
@@ -13,135 +16,258 @@ namespace BookkeepingForOrder
     {
         DataGridView dg;
         public int i = 0;
-        public Form2(DataGridView dg_)
+        private Font printFont;
+        Form1 F1;
+        public Form2(DataGridView dg_, Form1 F1)
         {
             dg = dg_;
+            this.F1 = F1;
             InitializeComponent();
         }
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
-            PaperSize size;
+            this.printFont = new Font("Arial Unicode MS", 10f);
             Rectangle rectangle;
             StringFormat format;
-            //string str = this.printString;
-            string str = "Дата формирования заказа: " + DateTime.Now.ToString("dd.MM.yyyy HH:MM");
-            size = new PaperSize("bar", 314, 492);
-            Size rectsize = new Size(314, 492);
-            Font printFont = new Font("Arial Unicode MS", 10f);
-
-            rectangle = new Rectangle(new Point(0, 0), new Size(314, 490));
-            format = new StringFormat(StringFormatFlags.NoClip);// (0x4000);
-            format.LineAlignment = StringAlignment.Far;
-            format.Alignment = StringAlignment.Far;
-            format.FormatFlags = StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft;
-
-            //format.LineAlignment = StringAlignment.Center;
-            //format.FormatFlags = StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft;
-            //format.Alignment = StringAlignment.Center;
-            //format.FormatFlags = StringFormatFlags.NoClip;
-            //e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawLine(Pens.Black, new Point(280, 0), new Point(280, 490));
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-            if (dg.SelectedRows[0].Cells["fio"].Value.ToString().Contains("Выставка"))
-            {
-                str = "БЛАНК-ЗАКАЗ ДЛЯ ВЫДАЧИ ЛИТЕРАТУРЫ НА\r\n ВЫСТАВКУ";
-            }
-            else
-            {
-                str = "БЛАНК-ЗАКАЗ ДЛЯ ВЫДАЧИ ЛИТЕРАТУРЫ НА\r\n ДЛИТЕЛЬНОЕ ПОЛЬЗОВАНИЕ В ОТДЕЛЫ";
-            }
+            format = new StringFormat(StringFormatFlags.NoClip);
             format.LineAlignment = StringAlignment.Near;
-            format.Alignment = StringAlignment.Center;
-            //e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            //g.DrawString(this.printString, this.printFont, Brushes.Black, rectangle, format);
-            //this.printString = "";
-
+            format.Alignment = StringAlignment.Near;
+            DataSet DS = new DataSet();
+            int t = 0;
+            F1.SqlDA.SelectCommand = new SqlCommand();
+            F1.SqlDA.SelectCommand.Connection = F1.SqlCon;
+            F1.SqlDA.SelectCommand.CommandText = "select * from Readers..ReaderRight where IDReaderRight = 3 and IDReader = " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
+            F1.SqlDA.Fill(DS, "t");
+            #region читатель-сотрудник 
+            string str = "Билет № " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
+            //string inv = DS.Tables["t"].Rows[0][1].ToString();
+            string dep = GetDepartment(DS.Tables["t"].Rows[0]["IDOrganization"].ToString());
+            string abonement = GetAbonement(dg.SelectedRows[0].Cells["fio"].Value.ToString());
+            int CurrentY = 0;
+            rectangle = new Rectangle(0, CurrentY, 70, 50);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawLine(Pens.Black, new Point(280, 0), new Point(280, 490));
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-            format.Alignment = StringAlignment.Near;
-            format.Alignment = StringAlignment.Near;
-            rectangle = new Rectangle(new Point(260, 0), new Size(20, 490));
-            str = "Отдел: " + dg.SelectedRows[0].Cells["dp"].Value.ToString();
-
-
-
-            //e.Graphics.DrawRectangle(Pens.Black, rectangle);
-
+            str = "НА ДОМ\n до:";
             e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
 
-            if (dg.SelectedRows[0].Cells["fio"].Value.ToString().Contains("Выставка"))
-            {
-                printFont = new Font(printFont, FontStyle.Bold);
-            }
-            else
-            {
-                printFont = new Font("Arial Unicode MS", 10f);
-            }
-            str = "(" + dg.SelectedRows[0].Cells["fio"].Value.ToString() + ")";//db.GetReader(dg.SelectedRows[0].Cells["idr"].Value.ToString());            rectangle = new Rectangle(new Point(200, 0), new Size(30, 240));
-            if (dg.SelectedRows[0].Cells["fio"].Value.ToString().Contains("Выставка"))
-            {
-                printFont = new Font(printFont, FontStyle.Bold);
-            }
-            else
-            {
-                printFont = new Font("Arial Unicode MS", 10f);
-            }
-            rectangle = new Rectangle(new Point(240, 0), new Size(20, 490));
+            //rectangle = new Rectangle(0, 0, 315, 800);
+            //e.Graphics.DrawRectangle(Pens.Aqua, rectangle);
+
+
+
+            rectangle = new Rectangle(70, CurrentY, 245, 50);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = DateTime.Now.AddDays(30).ToString("dd.MM.yyyy");
             e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 50;
+
+            rectangle = new Rectangle(0, CurrentY, 70, 50);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
             printFont = new Font("Arial Unicode MS", 10f);
-
-            rectangle = new Rectangle(new Point(200, 0), new Size(30, 240));
-            str = "Шифр: " + dg.SelectedRows[0].Cells["shifr"].Value.ToString();
-            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = F1.Floor.Substring(F1.Floor.IndexOf("-") + 2);
             e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
 
-            rectangle = new Rectangle(new Point(200, 240), new Size(30, 250));
-            str = "Инв. : " + dg.SelectedRows[0].Cells["inv"].Value.ToString();
+            rectangle = new Rectangle(70, CurrentY, 245, 25);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            printFont = new Font("Arial Unicode MS", 13f);
+            str = "Билет № " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 25;
+            rectangle = new Rectangle(70, CurrentY, 245, 25);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            F1.SqlDA.SelectCommand.CommandText = "select FamilyName+' ' +substring([Name],1,1)+'. ' + substring(ISNULL(FatherName,' '),1,1)+case when FatherName is null then '' else '.' end  from  Readers..Main where NumberReader =" + dg.SelectedRows[0].Cells["fio"].Value.ToString();
+            DS = new DataSet();
+            t = F1.SqlDA.Fill(DS, "t");
+            printFont = new Font("Arial Unicode MS", 10f);
+            str = "Фамилия: " + DS.Tables["t"].Rows[0][0].ToString();
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 25;
+
+            rectangle = new Rectangle(0, CurrentY, 315, 50);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            printFont = new Font("Arial Unicode MS", 10f);
+            e.Graphics.DrawString("Сотрудник отдела: " + dep, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 50;
+
+            rectangle = new Rectangle(0, CurrentY, 315, 50);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = "Шифр: " + dg.SelectedRows[0].Cells["shifr"].Value.ToString(); ;
+            printFont = new Font("Arial Unicode MS", 13f);
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 50;
+            rectangle = new Rectangle(0, CurrentY, 315, 25);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            if (dg.SelectedRows[0].Cells["note"].Value.ToString() == string.Empty)
+            {
+                str = "Инв. № " + dg.SelectedRows[0].Cells["inv"].Value.ToString();
+            }
+            else
+            {
+                str = "Инв. № " + dg.SelectedRows[0].Cells["inv"].Value.ToString() + "; метка: " + dg.SelectedRows[0].Cells["note"].Value.ToString();
+            }
+            printFont = new Font("Arial Unicode MS", 13f);
             e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
 
-            rectangle = new Rectangle(new Point(170, 0), new Size(30, 490));
-            str = "Автор : " + dg.SelectedRows[0].Cells["avt"].Value.ToString();
-            format.LineAlignment = StringAlignment.Center;
+            /*rectangle = new Rectangle(158, 175, 315, 25);
+            str = dg.SelectedRows[0].Cells["note"].Value.ToString();
+            printFont = new Font("Arial Unicode MS", 10f);
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);*/
+            CurrentY += 25;
+            rectangle = new Rectangle(0, CurrentY, 315, 50);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = "Автор: " + dg.SelectedRows[0].Cells["avt"].Value.ToString();
+            printFont = new Font("Arial Unicode MS", 10f);
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 50;
+
+            rectangle = new Rectangle(0, CurrentY, 315, 75);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = "Заглавие: " + dg.SelectedRows[0].Cells["zag"].Value.ToString();
             e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
 
-            rectangle = new Rectangle(new Point(90, 0), new Size(80, 490));
-            str = "Заглавие : " + dg.SelectedRows[0].Cells["zag"].Value.ToString();
-            format.LineAlignment = StringAlignment.Near;
+            CurrentY += 75;
+            rectangle = new Rectangle(0, CurrentY, 315, 25);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            F1.SqlDA.SelectCommand.CommandText = "select Plng.PLAIN " +
+                "from BJVVV..DATAEXT A  " +
+                "left join BJVVV..DATAEXT lng on A.IDMAIN = lng.IDMAIN and lng.MNFIELD = 101 and lng.MSFIELD = '$a' " +
+                "left join BJVVV..DATAEXTPLAIN Plng on Plng.IDDATAEXT = lng.ID " +
+                "where A.IDMAIN = " + dg.SelectedRows[0].Cells["idm"].Value.ToString();
+            DS = new DataSet();
+            t = F1.SqlDA.Fill(DS, "t");
+            str = "Язык: " + DS.Tables["t"].Rows[0][0].ToString();
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+
+            CurrentY += 25;
+            rectangle = new Rectangle(0, CurrentY, 315, 25);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            F1.SqlDA.SelectCommand.CommandText = "select (case when Plng.PLAIN is null then '<нет>' else Plng.PLAIN end) as first, (case when Ptom.PLAIN is null then '<нет>' else Ptom.PLAIN end) as second " +
+                "from BJVVV..DATAEXT A  " +
+                "left join BJVVV..DATAEXT lng on A.IDMAIN = lng.IDMAIN and lng.MNFIELD = 2100 and lng.MSFIELD = '$d' " +
+                "left join BJVVV..DATAEXTPLAIN Plng on Plng.IDDATAEXT = lng.ID " +
+                "left join BJVVV..DATAEXT tom on A.IDMAIN = tom.IDMAIN and tom.MNFIELD = 225 and tom.MSFIELD = '$h' " +
+                "left join BJVVV..DATAEXTPLAIN Ptom on Ptom.IDDATAEXT = tom.ID " +
+                "where A.IDMAIN = " + dg.SelectedRows[0].Cells["idm"].Value.ToString();
+            DS = new DataSet();
+            t = F1.SqlDA.Fill(DS, "t");
+            str = "Год: " + DS.Tables["t"].Rows[0][0].ToString() + "   Том: " + DS.Tables["t"].Rows[0][1].ToString();
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+
+            CurrentY += 25;
+            rectangle = new Rectangle(0, CurrentY, 315, 25);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = "Место издания: " + dg.SelectedRows[0].Cells["gizd"].Value.ToString();
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+
+            //rectangle = new Rectangle(0, 325, 315, 25);
             //e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            rectangle = new Rectangle(new Point(60, 0), new Size(30, 240));
-            str = "Год издания: " + dg.SelectedRows[0].Cells["izd"].Value.ToString();
+            //str = "Подпись читателя";
+            //e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 25;
+            rectangle = new Rectangle(0, CurrentY, 315, 25);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = DateTime.Now.Date.ToString("dd.MM.yyyy");
             e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            rectangle = new Rectangle(new Point(60, 240), new Size(30, 250));
-            //str = "Язык: " + ((DataTable)dg.DataSource).Rows[0]["yaz"].ToString();// dg.SelectedRows[0].Cells["yaz"].Value.ToString();
-            str = "Язык: " + dg.SelectedRows[0].Cells["yaz"].Value.ToString();
+            CurrentY += 25;
+            rectangle = new Rectangle(0, CurrentY, 315, 75);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
+
+
+            //========вторая часть требования
+            DS = new DataSet();
+            t = 0;// Conn.SQLDA.Fill(DS, "t");
+            str = "Билет № " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
+            CurrentY += 75;
+            rectangle = new Rectangle(0, CurrentY, 70, 50);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+
+            rectangle = new Rectangle(70, CurrentY, 245, 25);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            printFont = new Font("Arial Unicode MS", 13f);
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 25;
+            rectangle = new Rectangle(70, CurrentY, 245, 25);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            F1.SqlDA.SelectCommand.CommandText = "select ISNULL(FamilyName+' ' +substring([Name],1,1)+'. ',' ') + substring(ISNULL(FatherName,' '),1,1)+case when FatherName is null then '' else '.' end  from  Readers..Main where NumberReader =" + dg.SelectedRows[0].Cells["fio"].Value.ToString();
+            DS = new DataSet();
+            t = F1.SqlDA.Fill(DS, "t");
+            printFont = new Font("Arial Unicode MS", 10f);
+            str = "Фамилия: " + DS.Tables["t"].Rows[0][0].ToString();
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 25;
+
+            rectangle = new Rectangle(0, CurrentY, 315, 50);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            printFont = new Font("Arial Unicode MS", 10f);
+            e.Graphics.DrawString("Сотрудник отдела: " + dep, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 50;
+
+
+            rectangle = new Rectangle(0, CurrentY, 315, 50);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = "НА ДОМ";
+            printFont = new Font("Arial Unicode MS", 11f);
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 50;
+
+            rectangle = new Rectangle(0, CurrentY, 315, 50);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = "Шифр: " + dg.SelectedRows[0].Cells["shifr"].Value.ToString(); ;
+            printFont = new Font("Arial Unicode MS", 13f);
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 50;
+
+            rectangle = new Rectangle(0, CurrentY, 315, 25);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            if (dg.SelectedRows[0].Cells["note"].Value.ToString() == string.Empty)
+            {
+                str = "Инв. № " + dg.SelectedRows[0].Cells["inv"].Value.ToString();
+            }
+            else
+            {
+                str = "Инв. № " + dg.SelectedRows[0].Cells["inv"].Value.ToString() + "; метка: " + dg.SelectedRows[0].Cells["note"].Value.ToString();
+            }
+            printFont = new Font("Arial Unicode MS", 13f);
             e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
 
-            rectangle = new Rectangle(new Point(20, 0), new Size(40, 490));
-            str = "Получил______________________________ ";
-            format.LineAlignment = StringAlignment.Far;
-            //e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            CurrentY += 25;
+            printFont = new Font("Arial Unicode MS", 10f);
+            rectangle = new Rectangle(0, CurrentY, 315, 50);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = DateTime.Now.Date.ToString("dd.MM.yyyy");
             e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 25;
+            rectangle = new Rectangle(0, CurrentY, 315, 10);
+            e.Graphics.DrawRectangle(Pens.White, rectangle);
+            #endregion
 
-            rectangle = new Rectangle(new Point(0, 0), new Size(40, 490));
-            str = "*123459854*";//вставить год
-            format.LineAlignment = StringAlignment.Center;
-            format.Alignment = StringAlignment.Center;
-            //format.FormatFlags = StringFormatFlags.
-            //e.Graphics.DrawRectangle(Pens.Red, rectangle);
-            //e.Graphics.DrawString(str, new Font("C39HrP24DhTt", 36f), Brushes.Black, rectangle, format);
 
-            //throw new Exception("The method or operation is not implemented.");
 
         }
+        private string GetAbonement(string p)
+        {
+            F1.SqlDA.SelectCommand.CommandText = "select * from Readers..ReaderRight A " +
+                                                " left join Readers..ReaderRightList B on A.IDReaderRight = B.IDReaderRight " +
+                                                "where A.IDReader = " + p;
+            DataSet DS = new DataSet();
+            F1.SqlDA.Fill(DS, "t");
+            string retval = string.Empty;
+            foreach (DataRow r in DS.Tables["t"].Rows)
+            {
+                if (((int)r["IDReaderRight"] == 4) || ((int)r["IDReaderRight"] == 5) || ((int)r["IDReaderRight"] == 6))
+                {
+                    retval += r["NameReaderRight"].ToString() + "; ";
+                }
+            }
+            return retval.TrimEnd();
+        }
+        private string GetDepartment(string p)
+        {
+            F1.SqlDA.SelectCommand.CommandText = "select SHORTNAME from BJVVV..LIST_8 where ID = " + p;
+            DataSet DS = new DataSet();
+            F1.SqlDA.Fill(DS, "t");
+            return DS.Tables["t"].Rows[0]["SHORTNAME"].ToString();
+        }
+
     }
 }
