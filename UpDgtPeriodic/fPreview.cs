@@ -72,6 +72,12 @@ namespace UpDgtPeriodic
             //получаем список номеров выбранного издания и года
             NumberFolderList = GetNumberFolderList();
 
+            if (NumberFolderList.Count == 0)
+            {
+                throw new Exception("Внутри папки с годом отсутствуют папки с номерами!");
+            }
+
+
             comboBox1.Items.AddRange(NumberFolderList.ToArray());
             comboBox1.SelectedIndex = 0;
             /// <summary>
@@ -350,26 +356,42 @@ namespace UpDgtPeriodic
             panel1.Focus();
         }
         private string Set = "";
+        private string GetPath(string pin, string year)
+        {
+            //string idz = this.IDZ.ToString();
+            //return @"PERIOD\" + ValidPath(GetFolderByIDZ(idz)) + @"\";
+            string path = PINFormat(pin);
+            path = path.Substring(0, 3) + @"\" + path.Substring(3, 3) + @"\" + path.Substring(6, 3) + @"\" + year + @"\";
+
+            return path;
+
+        }
         private string PINFormat(string pin)
         {
             switch (pin.Length)
             {
                 case 1:
-                    pin = "000000" + pin;
+                    pin = "00000000" + pin;
                     break;
                 case 2:
-                    pin = "00000" + pin;
+                    pin = "0000000" + pin;
                     break;
                 case 3:
-                    pin = "0000" + pin;
+                    pin = "000000" + pin;
                     break;
                 case 4:
-                    pin = "000" + pin;
+                    pin = "00000" + pin;
                     break;
                 case 5:
-                    pin = "00" + pin;
+                    pin = "0000" + pin;
                     break;
                 case 6:
+                    pin = "000" + pin;
+                    break;
+                case 7:
+                    pin = "00" + pin;
+                    break;
+                case 8:
                     pin = "0" + pin;
                     break;
             }
@@ -389,7 +411,8 @@ namespace UpDgtPeriodic
             DBScanInfo db = new DBScanInfo();
             string PIN = this.PIN;
             PIN = PINFormat(PIN);
-            sTarget += PIN.Substring(0, 1) + @"\" + PIN.Substring(1, 3) + @"\" + PIN.Substring(4, 3) + @"\";
+            string ExactPath = GetPath(PIN, FolderYear);
+            sTarget += ExactPath;//PIN.Substring(0, 1) + @"\" + PIN.Substring(1, 3) + @"\" + PIN.Substring(4, 3) + @"\";
 
             DirectoryInfo diSource = new DirectoryInfo(YearPath);
             Package = "";
@@ -514,14 +537,15 @@ namespace UpDgtPeriodic
             DirectoryInfo diSource = new DirectoryInfo(sSource);
             char[] invalid_chars = System.IO.Path.GetInvalidFileNameChars();
 
-            DirectoryInfo TargetFolder = new DirectoryInfo(diTarget.FullName + "\\" + FolderYear);
-            string outside_ip = @"\\" + XmlConnections.GetConnection("/Connections/outside_ip") + @"\Backup\BookAddInf\PERIOD\";
-            string outsideIPConnect = @"\\" + XmlConnections.GetConnection("/Connections/outside_ip") + @"\Backup";
+            //string outside_ip = @"\\" + XmlConnections.GetConnection("/Connections/outside_ip") + @"\Backup\BookAddInf\PERIOD\";
+            //string outsideIPConnect = @"\\" + XmlConnections.GetConnection("/Connections/outside_ip") + @"\Backup";
             string PIN = PINFormat(this.PIN);
 
-            outside_ip += PIN.Substring(0, 1) + @"\" + PIN.Substring(1, 3) + @"\" + PIN.Substring(4, 3) + @"\";
-
-            DirectoryInfo TargetFolderOutside = new DirectoryInfo(outside_ip + @"\" + this.Year.ToString() );
+            //outside_ip += PIN.Substring(0, 1) + @"\" + PIN.Substring(1, 3) + @"\" + PIN.Substring(4, 3) + @"\";
+            sTarget += SF.Name;//имя папки = название номер
+            sTarget += "\\JPEG_HQ";
+            DirectoryInfo TargetFolderOutside = new DirectoryInfo(sTarget);
+            DirectoryInfo TargetFolder = new DirectoryInfo(sTarget);
 
             //string sTargetConnect = @"\\192.168.4.30\BookAddInf\";
             //MessageBox.Show(TargetFolder.FullName);
@@ -565,56 +589,6 @@ namespace UpDgtPeriodic
                 }
             }
 
-            //MessageBox.Show(TargetFolderOutside.FullName + "11111111111111111111");
-//            MessageBox.Show(TargetFolderOutside.Exists.ToString());
-           /* using (new NetworkConnection(outsideIPConnect, new NetworkCredential(@"bj\CopyPeriodAddInf", "Period_Copy")))
-            {
-                TargetFolderOutside.Refresh();
-                //MessageBox.Show(TargetFolderOutside.Exists.ToString());
-            }
-            //MessageBox.Show(Directory.Exists(TargetFolderOutside.FullName).ToString());
-            
-            if (!Directory.Exists(TargetFolderOutside.FullName))
-            {
-                try
-                {
-                    //MessageBox.Show(TargetFolderOutside.FullName + "1");
-                    TargetFolderOutside.Create();
-                }
-                catch
-                {
-                    //MessageBox.Show(outsideIPConnect);
-                    //MessageBox.Show(TargetFolderOutside.FullName);
-                    using (new NetworkConnection(outsideIPConnect, new NetworkCredential(@"bj\CopyPeriodAddInf", "Period_Copy")))
-                    {
-                        TargetFolderOutside.Create();
-                        //MessageBox.Show(TargetFolderOutside.FullName);
-                    }
-                }
-            }
-            else
-            {
-                if (!FirstPass)
-                {
-                    try
-                    {
-                        //MessageBox.Show(TargetFolderOutside.FullName+"2");
-                        TargetFolderOutside.Delete(true);
-                        TargetFolderOutside.Create();
-                        //MessageBox.Show(TargetFolderOutside.FullName + "rrrrrrrrrrrrrrrrrrrrrr");
-                    }
-                    catch
-                    {
-                        using (new NetworkConnection(outsideIPConnect, new NetworkCredential(@"bj\CopyPeriodAddInf", "Period_Copy")))
-                        {
-                            //MessageBox.Show(TargetFolderOutside.FullName + "3");
-                            TargetFolderOutside.Delete(true);
-                            TargetFolderOutside.Create();
-                            //MessageBox.Show(TargetFolderOutside.FullName + "ttttttttttttttt");
-                        }
-                    }
-                }
-            }*/
             
             DirectoryInfo[] di = diSource.GetDirectories();
             max_img = di.Length;
@@ -622,8 +596,7 @@ namespace UpDgtPeriodic
 
 
             FileInfo[] fi = SF.GetFiles();
-            DirectoryInfo To = new DirectoryInfo(TargetFolder.FullName + "\\" + SF.Name);
-            //DirectoryInfo ToOutside = new DirectoryInfo(TargetFolderOutside.FullName + "\\" + SF.Name);
+            DirectoryInfo To = new DirectoryInfo(TargetFolder.FullName);
             using (new NetworkConnection(sTargetConnect, new NetworkCredential(@"bj\DigitCentreWork01", "DigCW_01")))
             {
                 To.Refresh();

@@ -27,7 +27,7 @@ namespace UpDgtPeriodic
         private bool done = false;
         private string Login;
         private FileInfo fPDF;
-        private string PIN;
+        private string PIN = "";
 
         public fPreviewPDF(int IDZ_, string selectedYear, string fPDF_, string PIN_, string login_)
         {
@@ -163,14 +163,6 @@ namespace UpDgtPeriodic
             label1.Text = "Страница " + (current + 1).ToString() + " из " + max_img.ToString();
         }
 
-        //private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    //здесь обработать исключения
-        //    //SetupViewing();
-        //    SetupPreview();
-        //    panel1.Focus();
-        //}
-
         private void panel1_MouseEnter(object sender, EventArgs e)
         {
             panel1.Focus();
@@ -202,31 +194,7 @@ namespace UpDgtPeriodic
             _tracking = false;
             panel1.Focus();
         }
-        private string PINFormat(string pin)
-        {
-            switch (pin.Length)
-            {
-                case 1:
-                    pin = "000000" + pin;
-                    break;
-                case 2:
-                    pin = "00000" + pin;
-                    break;
-                case 3:
-                    pin = "0000" + pin;
-                    break;
-                case 4:
-                    pin = "000" + pin;
-                    break;
-                case 5:
-                    pin = "00" + pin;
-                    break;
-                case 6:
-                    pin = "0" + pin;
-                    break;
-            }
-            return pin;
-        }
+       
         fProgress fp;
         private void button5_Click(object sender, EventArgs e)
         {
@@ -240,9 +208,6 @@ namespace UpDgtPeriodic
             string sTarget = @"\\" + store_ip + @"\BookAddInf\PERIOD\";
             string sTargetConnectBookAddInf = @"\\" + store_ip + @"\BookAddInf";
             DBScanInfo db = new DBScanInfo();
-            string PIN = this.PIN;
-            PIN = PINFormat(PIN);
-            sTarget += PIN.Substring(0, 1) + @"\" + PIN.Substring(1, 3) + @"\" + PIN.Substring(4, 3) + @"\";
 
             Package = "";
 
@@ -300,14 +265,57 @@ namespace UpDgtPeriodic
             this.Close();
         }
 
+        private string GetPath(string pin, string year)
+        {
+            //string idz = this.IDZ.ToString();
+            //return @"PERIOD\" + ValidPath(GetFolderByIDZ(idz)) + @"\";
+            string path = PINFormat(pin);
+            path = path.Substring(0, 3) + @"\" + path.Substring(3, 3) + @"\" + path.Substring(6, 3) + @"\" + year + @"\";
+
+            return path;
+
+        }
+        private string PINFormat(string pin)
+        {
+            switch (pin.Length)
+            {
+                case 1:
+                    pin = "00000000" + pin;
+                    break;
+                case 2:
+                    pin = "0000000" + pin;
+                    break;
+                case 3:
+                    pin = "000000" + pin;
+                    break;
+                case 4:
+                    pin = "00000" + pin;
+                    break;
+                case 5:
+                    pin = "0000" + pin;
+                    break;
+                case 6:
+                    pin = "000" + pin;
+                    break;
+                case 7:
+                    pin = "00" + pin;
+                    break;
+                case 8:
+                    pin = "0" + pin;
+                    break;
+            }
+            return pin;
+        }
 
         private string Package = "";
         private List<string> PackageList = new List<string>();
         private void CopyPDFToTarget(string ip, string sTarget, string sSource, FileInfo fPDF, int number, int total, fProgress fp,string sTargetConnectBookAddInf)
         {
+            sTarget += GetPath(this.PIN, Year.ToString());
+            sTarget += fPDF.Name.Remove(fPDF.Name.LastIndexOf(".")) + "\\JPEG_HQ";
             DirectoryInfo diTarget = new DirectoryInfo(sTarget);
             DirectoryInfo diSource = new DirectoryInfo(sSource);
-            DirectoryInfo TargetFolder = new DirectoryInfo(sTarget + @"\" + this.Year.ToString() + @"\" + fPDF.Name.Remove(fPDF.Name.LastIndexOf(".")));
+            DirectoryInfo TargetFolder = new DirectoryInfo(sTarget);
             string outside_ip = @"\\" + XmlConnections.GetConnection("/Connections/outside_ip") + @"\Backup\BookAddInf\PERIOD\";
             string PIN = PINFormat(this.PIN);
 
@@ -351,25 +359,6 @@ namespace UpDgtPeriodic
                 this.Enabled = true;
                 return;
             }
-            /*using (new NetworkConnection(outside_ip, new NetworkCredential(@"bj\CopyPeriodAddInf", "Period_Copy")))
-            {
-                TargetFolderOutside.Refresh();
-            }
-
-            if (!TargetFolderOutside.Exists)
-            {
-                try
-                {
-                    TargetFolderOutside.Create();
-                }
-                catch
-                {
-                    using (new NetworkConnection(outside_ip, new NetworkCredential(@"bj\CopyPeriodAddInf", "Period_Copy")))
-                    {
-                        TargetFolderOutside.Create();
-                    }
-                }
-            }*/
             using (MagickImageCollection images = new MagickImageCollection())
             {
 
