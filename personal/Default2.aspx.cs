@@ -8,6 +8,8 @@ using System.IO;
 using SoftArtisans.HTMLToWord;
 using System.Text;
 using BookForOrder;
+using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 
 public partial class Default2 : System.Web.UI.Page
 {
@@ -68,6 +70,8 @@ public partial class Default2 : System.Web.UI.Page
         int i = 1;
         foreach (KeyValuePair<string, Book> b in spisok)
         {
+            BJBookInfo bjBook = BJBookInfo.GetBookInfoByPIN(int.Parse(b.Value.ID), "BJVVV");
+
             if (firstLang != b.Key)
             {
                 i = 1;
@@ -77,14 +81,18 @@ public partial class Default2 : System.Web.UI.Page
                 {
                     //strBody.Append("<p style=\"margin: 0px;padding: 0px;\">" + (i++) + ". " + b.Value.Avt);
                     strBody.Append("<p style=\"margin: 0px;padding: 0px;\">" + b.Value.Name);
+                    strBody.Append("<p style=\"margin: 0px;padding: 0px;\">" + bjBook.RTF);
                 }
                 else
                 {
                     //strBody.Append("<p style=\"margin: 0px;padding: 0px;\">" + (i++) + ". " + b.Value.Name);
                 }
-                if (b.Value.InvsOfBook.Count != 0)
+                if (bjBook.Exemplars.Count != 0)
                 {
-                    strBody.Append("<p style=\"margin-top: 0px;margin-bottom: 10px;padding-bottom: 10px;padding-top: 0px;\">" + b.Value.InvsOfBook[0].inv);
+                    foreach (ExemplarInfo exemplar in bjBook.Exemplars)
+                    {
+                        strBody.Append("<p style=\"margin-top: 0px;margin-bottom: 10px;padding-bottom: 10px;padding-top: 0px;\">" + exemplar.Fields["899$p"].ToString());
+                    }
                 }
             }
             else
@@ -93,14 +101,18 @@ public partial class Default2 : System.Web.UI.Page
                 {
                     //strBody.Append("<p style=\"margin: 0px;padding: 0px;\">" + (i++) + ". " + b.Value.Avt);
                     strBody.Append("<p style=\"margin: 0px;padding: 0px;\">" + b.Value.Name);
+                    strBody.Append("<p style=\"margin: 0px;padding: 0px;\">" + bjBook.RTF);
                 }
                 else
                 {
                     strBody.Append("<p style=\"margin: 0px;padding: 0px;\">" + (i++) + ". " + b.Value.Name);
                 }
-                if (b.Value.InvsOfBook.Count != 0)
+                if (bjBook.Exemplars.Count != 0)
                 {
-                    strBody.Append("<p style=\"margin-top: 0px;margin-bottom: 10px;padding-bottom: 10px;padding-top: 0px;\">" + b.Value.InvsOfBook[0].inv);
+                    foreach (ExemplarInfo exemplar in bjBook.Exemplars)
+                    {
+                        strBody.Append("<p style=\"margin-top: 0px;margin-bottom: 10px;padding-bottom: 10px;padding-top: 0px;\">" + exemplar.Fields["899$p"].ToString());
+                    }
                 }
             }
         }

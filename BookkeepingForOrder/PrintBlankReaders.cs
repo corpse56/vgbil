@@ -81,7 +81,7 @@ namespace BookkeepingForOrder
             //num = this.printFont.Height;
             //pd.PrinterSettings.PrinterName = "Zebra TLP2844";
             //pd.PrinterSettings.PrinterName = "HP LaserJet 5000 Series PCL 5";
-            pd.PrinterSettings.PrinterName = "HP Universal Printing PCL 6 2055";
+            //pd.PrinterSettings.PrinterName = "HP Universal Printing PCL 6 2055";
 
             F1.SqlDA.SelectCommand = new SqlCommand();
             F1.SqlDA.SelectCommand.Connection = F1.SqlCon;
@@ -122,6 +122,11 @@ namespace BookkeepingForOrder
                 string dep = GetDepartment(DS.Tables["t"].Rows[0]["IDOrganization"].ToString());
                 string abonement = GetAbonement(dg.SelectedRows[0].Cells["fio"].Value.ToString());
                 int CurrentY = 0;
+
+                rectangle = new Rectangle(0, CurrentY, 315, 25);
+                e.Graphics.DrawRectangle(Pens.Black, rectangle);
+                CurrentY += 25;
+
                 rectangle = new Rectangle(0, CurrentY, 70, 50);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
                 str = "НА ДОМ\n до:";
@@ -317,14 +322,23 @@ namespace BookkeepingForOrder
                 BJBookInfo Book = BJBookInfo.GetBookInfoByInventoryNumber(dg.SelectedRows[0].Cells["inv"].Value.ToString(), "BJVVV");
                 ExemplarInfo Exemplar = ExemplarInfo.GetExemplarByInventoryNumber(dg.SelectedRows[0].Cells["inv"].Value.ToString(), "BJVVV");
 
-
+                string abonement = GetAbonement(dg.SelectedRows[0].Cells["fio"].Value.ToString());
                 string str = "Билет № " + dg.SelectedRows[0].Cells["fio"].Value.ToString();
                 //string inv = DS.Tables["t"].Rows[0][1].ToString();
                 int CurrentY = 0;
+
+                rectangle = new Rectangle(0, CurrentY, 315, 25);
+                e.Graphics.DrawRectangle(Pens.Black, rectangle);
+                CurrentY += 25;
+
                 rectangle = new Rectangle(0, CurrentY, 70, 50);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
 
                 str = (Exemplar.ExemplarAccess.Access == 1000) ? "НА ДОМ\n до:" : "ЧЗ\nдо:"; //1000 - на дом
+                if (abonement.ToLower().Contains("платный") && !abonement.ToLower().Contains("бес"))
+                {
+                    str = "НА ДОМ\n до:";
+                }
                 e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
 
                 rectangle = new Rectangle(70, CurrentY, 245, 50);
@@ -358,7 +372,6 @@ namespace BookkeepingForOrder
 
                 rectangle = new Rectangle(0, CurrentY, 315, 50);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
-                string abonement = GetAbonement(dg.SelectedRows[0].Cells["fio"].Value.ToString());
                 printFont = new Font("Arial Unicode MS", 11f);
                 e.Graphics.DrawString(abonement, printFont, Brushes.Black, rectangle, format);
                 CurrentY += 50;
@@ -471,6 +484,10 @@ namespace BookkeepingForOrder
                 rectangle = new Rectangle(0, CurrentY, 315, 50);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
                 str = (Exemplar.ExemplarAccess.Access == 1000) ? "НА ДОМ:" : "ЧЗ"; //1000 - на дом
+                if (abonement.ToLower().Contains("платный") && !abonement.ToLower().Contains("бес"))
+                {
+                    str = "НА ДОМ\n до:";
+                }
                 printFont = new Font("Arial Unicode MS", 11f);
                 e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
                 CurrentY += 50;

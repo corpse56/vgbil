@@ -13,7 +13,6 @@ using System.Data.SqlClient;
 using System.Xml;
 using System.IO;
 using Elcir;
-using ExportBJ_XML.classes;
 using Newtonsoft.Json.Linq;
 
 public partial class _Default : System.Web.UI.Page 

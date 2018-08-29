@@ -567,6 +567,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     {
                         case "899$a":
                             string plain = r["PLAIN"].ToString();
+                            string check = r["NAME"].ToString();
                             string UL = KeyValueMapping.UnifiedLocation.GetValueOrDefault(r["NAME"].ToString(), "отсутствует в словаре");
                             int LocationCode = KeyValueMapping.UnifiedLocationCode.GetValueOrDefault(UL, 2999);
 

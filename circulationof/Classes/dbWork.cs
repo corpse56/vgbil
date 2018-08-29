@@ -4353,14 +4353,14 @@ namespace Circulation
                 {
                     if (book.getFloor().Contains("Абонемент"))
                     {
-                        cmd.Parameters["DATE_RET"].Value = DateTime.Today.AddMonths(1);
+                        cmd.Parameters["DATE_RET"].Value = DateTime.Today.AddDays(30);
                     }
                     else
                     {
                         if ((reader.ReaderRights & dbReader.Rights.EMPL) == dbReader.Rights.EMPL)
-                            cmd.Parameters["DATE_RET"].Value = DateTime.Today.AddMonths(3);
+                            cmd.Parameters["DATE_RET"].Value = DateTime.Today.AddDays(30);
                         else
-                            cmd.Parameters["DATE_RET"].Value = F1.dateTimePicker2.Value;
+                            cmd.Parameters["DATE_RET"].Value = DateTime.Today.AddDays(30);
                     }
                 }
                 cmd.Parameters["IDREADER"].Value = reader.id;

@@ -920,6 +920,8 @@ namespace Circulation
                 dgwHome.Rows[0].Cells[6].Value = DateTime.Now.ToString("dd.MM.yyyy");
                 dgwHome.Rows[0].Cells[7].Value = zaliss;
                 dgwHome.Rows[0].Cells[8].Value = zalret;
+                dgwHome.Rows[0].Cells[9].Value = BookRecordWork.get899a();
+
                 if (BookRecordWork.klass != "до")
                 {
                     dbw.InsertStatisticsRetBookAtHome(BookRecordWork);
@@ -960,6 +962,8 @@ namespace Circulation
                 dataGridView1.Rows[0].Cells[6].Value = DateTime.Now.ToShortTimeString();
                 dataGridView1.Rows[0].Cells[7].Value = zaliss;
                 dataGridView1.Rows[0].Cells[8].Value = zalret;
+                dataGridView1.Rows[0].Cells[9].Value = BookRecordWork.get899a();
+
                 if (dataGridView1.Rows[0].Cells[7].Value.ToString() != dataGridView1.Rows[0].Cells[8].Value.ToString())
                 {
                     dataGridView1.Rows[0].Cells[7].Style.BackColor = Color.LightSalmon;
@@ -1501,6 +1505,7 @@ namespace Circulation
                 dgwHome.Rows[0].Cells[6].Value = "-";
                 dgwHome.Rows[0].Cells[7].Value = BookRecord.GetZalIss(this.DepName);
                 dgwHome.Rows[0].Cells[8].Value = BookRecord.GetZalRet();
+                dgwHome.Rows[0].Cells[8].Value = BookRecord.get899a();
                 if (dgwHome.Rows[0].Cells[8].Value.ToString() == "")
                 {
                     dgwHome.Rows[0].Cells[8].Value = "-";
@@ -1603,6 +1608,7 @@ namespace Circulation
                     dataGridView1.Rows[0].Cells[6].Value = "-";
                     dataGridView1.Rows[0].Cells[7].Value = BookRecord.GetZalIss(this.DepName);
                     dataGridView1.Rows[0].Cells[8].Value = BookRecord.GetZalRet();
+                    dataGridView1.Rows[0].Cells[9].Value = BookRecord.get899a();
                     if (dataGridView1.Rows[0].Cells[8].Value.ToString() == "")
                     {
                         dataGridView1.Rows[0].Cells[8].Value = "-";
