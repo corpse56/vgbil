@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.Books.BJBooks.DB;
+﻿using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
+using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.Readers;
 using Newtonsoft.Json;
 using System;
@@ -6,8 +7,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +45,65 @@ namespace ALISAPI_TEST
             BJDatabaseWrapper dbWrapper = new BJDatabaseWrapper("BJVVV");
             DataTable record = dbWrapper.GetBJRecord(17132);
             int cnt = record.Rows.Count;
+        }
+
+        private void ReadersAuthorize_Click(object sender, EventArgs e)
+        {
+            AuthorizeInfo request = new AuthorizeInfo();
+            request.login = "189245";
+            request.password = "123";
+            string jsonData = JsonConvert.SerializeObject(request);
+
+
+            //ReaderInfo r = ReaderInfo.Authorize(request);
+
+            //using (WebClient client = new WebClient())
+            //{
+
+            //    client.Encoding = Encoding.UTF8;
+            //    //HttpRequestHeader AcceptHeader = HttpRequestHeader.Accept;
+            //    //client.Headers[AcceptHeader] = "application/json";
+            //    HttpRequestHeader ContentType = HttpRequestHeader.ContentType;
+            //    client.Headers[ContentType] = "application/json";
+            //    byte[] data = Encoding.UTF8.GetBytes(jsonData);
+            //    byte[] result = client.UploadData(new Uri ("http://80.250.173.142/Readers/Authorize/"), data);
+            //    jsonData = result.ToString();
+            //    ReaderInfo reader = JsonConvert.DeserializeObject<ReaderInfo>(jsonData);
+            //    tbResponse.Text = jsonData;
+            //}
+
+            using (HttpClient client = new HttpClient())
+            {
+
+                var response = client.PostAsync("http://80.250.173.142/Readers/Authorize/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
+
+            }
+
+            //var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://80.250.173.142/Readers/Authorize");
+            //httpWebRequest.ContentType = "application/json";
+            //httpWebRequest.Method = "POST";
+            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
+            //using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            //{
+            //    //string json = new JavaScriptSerializer().Serialize(new
+            //    //{
+            //    //    Username = "myusername",
+            //    //    Password = "pass"
+            //    //});
+            //    streamWriter.Write(jsonData);
+            //    streamWriter.Flush();
+            //    streamWriter.Close();
+            //}
+
+            //var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            //{
+            //    var result = streamReader.ReadToEnd();
+            //    tbResponse.Text = result;
+            //}
+
         }
     }
 

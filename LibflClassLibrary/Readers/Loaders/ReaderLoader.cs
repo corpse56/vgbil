@@ -11,6 +11,19 @@ namespace LibflClassLibrary.Readers.Loaders
     class ReaderLoader
     {
         public ReaderLoader() { }
+        public ReaderInfo LoadReader(string Email)
+        {
+            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
+            DataTable table = dbw.GetReaderByEmail(Email);
+            if (table.Rows.Count != 0)
+            {
+                return this.LoadReader(Convert.ToInt32(table.Rows[0][0]));
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         public ReaderInfo LoadReader(int Id)
         {
@@ -90,6 +103,27 @@ namespace LibflClassLibrary.Readers.Loaders
             return (table.Rows.Count >= 5) ? true : false;
         }
 
-        
+        internal ReaderInfo Authorize(int numberReader, string password)
+        {
+            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
+            DataTable table = dbw.AuthorizeReaderWithNumberReader(numberReader, password);
+            if (table.Rows.Count == 0)
+            {
+                return null;
+            }
+            ReaderInfo result = this.LoadReader(Convert.ToInt32(table.Rows[0][0]));
+            return result;
+        }
+        internal ReaderInfo Authorize(string Email, string password)
+        {
+            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
+            DataTable table = dbw.AuthorizeReaderWithEmail(Email, password);
+            if (table.Rows.Count == 0)
+            {
+                return null;
+            }
+            ReaderInfo result = this.LoadReader(Convert.ToInt32(table.Rows[0][0]));
+            return result;
+        }
     }
 }

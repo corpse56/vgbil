@@ -20,6 +20,18 @@ namespace LibflClassLibrary.Readers.DB
             ReaderQueries = new Reader();
         }
 
+        internal DataTable GetReaderByEmail(string Email)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ReaderQueries.GET_READER_BY_EMAIL, connection);
+                dataAdapter.SelectCommand.Parameters.Add("Email", SqlDbType.NVarChar).Value = Email;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
         internal DataTable GetReader(int Id)
         {
             string connectionString = AppSettings.ConnectionString;
@@ -56,5 +68,32 @@ namespace LibflClassLibrary.Readers.DB
             }
 
         }
+
+        internal DataTable AuthorizeReaderWithNumberReader( int numberReader,  string password)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ReaderQueries.AUTHORIZE_READER_WITH_NUMBERREADER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("Id", SqlDbType.Int).Value = numberReader;
+                dataAdapter.SelectCommand.Parameters.Add("Password", SqlDbType.NVarChar).Value = password;
+                return this.ExecuteSelectQuery(dataAdapter); 
+            }
+        }
+
+        internal DataTable AuthorizeReaderWithEmail(string Email, string password)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ReaderQueries.AUTHORIZE_READER_WITH_EMAIL, connection);
+                dataAdapter.SelectCommand.Parameters.Add("Email", SqlDbType.NVarChar).Value = Email;
+                dataAdapter.SelectCommand.Parameters.Add("Password", SqlDbType.NVarChar).Value = password;
+                return this.ExecuteSelectQuery(dataAdapter); 
+            }
+        }
+
     }
 }

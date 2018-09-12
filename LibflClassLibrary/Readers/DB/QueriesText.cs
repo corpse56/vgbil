@@ -30,6 +30,29 @@ namespace LibflClassLibrary.Readers.DB
                 return "select user_id from oauth_access_tokens where access_token = @token and expires>=CURDATE()";
             }
         }
+
+        public string AUTHORIZE_READER_WITH_NUMBERREADER
+        {
+            get
+            {
+                return "select NumberReader from Readers..Main where NumberReader = @Id and Password = @Password";
+            }
+        }
+        public string AUTHORIZE_READER_WITH_EMAIL
+        {
+            get
+            {
+                return "select NumberReader from Readers..Main where Email = @Email and Password = @Password";
+            }
+        }
+        public string GET_READER_BY_EMAIL
+        {
+            get
+            {
+                return "select NumberReader from Readers..Main where Email = @Email";
+            }
+        }
+
     }
 
 }

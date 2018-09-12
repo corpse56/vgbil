@@ -817,6 +817,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 j++;
                 int IDMAIN = (int)row["IDMAIN"];
                 this.ExportSingleCover(IDMAIN);
+                GC.Collect();
             }
             //File.WriteAllLines(@"f:\import\importErrors\" + this.Fund + "Errors.txt", errors.ToArray());
 
@@ -861,7 +862,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     {
                         img = Image.FromStream(ms);
                     }
-
+                    
                     StringBuilder fileName = new StringBuilder();
                     fileName.Append(path).Append("cover.").Append("jpg");//вроде в базе bj все обложки jpg...
 
@@ -874,6 +875,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                             fs.Write(p, 0, p.Length);
                             fs.Flush();
                         }
+                        if (img != null) img.Dispose();
                         continue;
                     }
                     else
@@ -882,6 +884,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                         string imgMD5 = Extensions.CalculateMD5(p);
                         if (MD5Hashes.Contains(imgMD5))//нашлась такая же обложка, значит её не сохраняем и пропускаем
                         {
+                            if (img != null) img.Dispose();
                             continue;
                         }
                        
@@ -901,6 +904,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                             }
                         }
                     }
+                    if (img != null) img.Dispose();
                 }
             }
         }

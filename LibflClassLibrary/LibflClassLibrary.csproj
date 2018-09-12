@@ -79,6 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ALISAPI\RequestObjects\Readers\AuthorizeInfo.cs" />
     <Compile Include="Books\BJBooks\BJBookJsonConverter.cs" />
     <Compile Include="Books\BookAPIViews\BookFullView.cs" />
     <Compile Include="Books\BookAPIViews\BookViewField.cs" />

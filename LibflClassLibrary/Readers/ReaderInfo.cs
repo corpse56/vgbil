@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.Loaders;
 using Newtonsoft.Json;
@@ -51,6 +54,28 @@ namespace LibflClassLibrary.Readers
             ReaderInfo result = loader.LoadReader(Id);
             return result;
         }
+        public static ReaderInfo GetReader(string Email)
+        {
+            ReaderLoader loader = new ReaderLoader();
+            ReaderInfo result = loader.LoadReader(Email);
+            return result;
+        }
+
+        public static string HashPass(string strPassword, string strSol)
+        {
+            String strHashPass = string.Empty;
+            byte[] bytes = Encoding.Unicode.GetBytes(strSol + strPassword);
+            //создаем объект для получения средст шифрования 
+            SHA256CryptoServiceProvider CSP = new SHA256CryptoServiceProvider();
+            //вычисляем хеш-представление в байтах 
+            byte[] byteHash = CSP.ComputeHash(bytes);
+            //формируем одну цельную строку из массива 
+            foreach (byte b in byteHash)
+            {
+                strHashPass += string.Format("{0:x2}", b);
+            }
+            return strHashPass;
+        }
 
         public static ReaderInfo GetReaderByOAuthToken(string token)
         {
@@ -76,7 +101,7 @@ namespace LibflClassLibrary.Readers
                 return "NumberReader";
             }
             else
-                if (login.Length == 19)
+            if (login.Length == 19)
             {
                 for (int i = 0; i < 19; i++)
                 {
@@ -92,17 +117,47 @@ namespace LibflClassLibrary.Readers
                 }
             }
             else
-                    if (Regex.IsMatch(login,
-                       @"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))" +
-                       @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$"))//не номер, и не социалка, значит email. проверяем формат
             {
-                return "Email";
-            }
-            else
-            {
-                return "NotDefined";
+                if (Regex.IsMatch(login,
+                   @"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))" +
+                   @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$"))//не номер, и не социалка, значит email. проверяем формат
+                {
+                    return "Email";
+                }
+                else
+                {
+                    return "NotDefined";
+                }
             }
             return "NotDefined";
+        }
+
+        public static ReaderInfo Authorize(AuthorizeInfo request)
+        {
+            int NumberReader = 0;
+            ReaderInfo result = null;
+            ReaderLoader loader = new ReaderLoader();
+            string LoginType = ReaderInfo.GetLoginType(request.login);
+            if (LoginType == "NumberReader")
+            {
+                NumberReader = int.Parse(request.login);
+                ReaderInfo reader = ReaderInfo.GetReader(NumberReader);
+                if (reader == null) throw new Exception("R001");
+                request.password = ReaderInfo.HashPass(request.password, reader.Salt);
+                result = loader.Authorize(NumberReader, request.password);
+            }
+            else if (LoginType == "Email")
+            {
+                ReaderInfo reader = ReaderInfo.GetReader(request.login);
+                if (reader == null) throw new Exception("R001");
+                request.password = ReaderInfo.HashPass(request.password, reader.Salt);
+                result = loader.Authorize(request.login, request.password);
+            }
+            if (result == null)
+            {
+                throw new Exception("R001");
+            }
+            return result;
         }
     }
 }

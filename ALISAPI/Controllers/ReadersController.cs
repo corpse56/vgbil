@@ -1,4 +1,5 @@
 ﻿using DataProviderAPI.ValueObjects;
+using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.Readers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -106,6 +107,44 @@ namespace ALISAPI.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, jo);
 
         }
+
+        /// <summary>
+        /// Авторизовать пользователя. Если авторизация успешна, то вернуть полный профиль 
+        /// </summary>
+        /// 
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Readers/Authorize")]
+        public HttpResponseMessage Authorize()
+        {
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            AuthorizeInfo request = JsonConvert.DeserializeObject<AuthorizeInfo>(JSONRequest);
+            ReaderInfo reader;
+
+            try
+            {
+                reader = ReaderInfo.Authorize(request);
+            }
+            catch (Exception ex)
+            {
+                HttpResponseMessage resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message),
+                    ReasonPhrase = "Введён неверный логин или пароль"
+                };
+                throw new HttpResponseException(resp);
+            }
+
+
+            
+            string json = JsonConvert.SerializeObject(reader, Formatting.Indented);
+
+            HttpResponseMessage result = this.Request.CreateResponse(HttpStatusCode.OK);
+            result.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            return result;
+
+        }
+
 
         //// POST api/Readers
         //public void Post([FromBody]string value)
