@@ -1829,9 +1829,9 @@ public partial class persacc : System.Web.UI.Page
             string ElBookViewerServer = "";
 
 
-            //для отладки
+            //для отладки. чтобы код думал, что я пришёл извне, а не изнутри
             //HostName = "VGBIL-OPAC";
-            if (HostName == "VGBIL-OPAC")
+            if ((HostName == "VGBIL-OPAC") || (HostName == "ADMINPCAT"))
             {
                 bool IsExistsLQ = GetIsExistsLQ(row["idm"].ToString());
                 string redirectUrl = "";

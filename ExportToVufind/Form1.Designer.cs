@@ -62,6 +62,7 @@
             this.txtSingleRecordId = new System.Windows.Forms.TextBox();
             this.btnJBH = new System.Windows.Forms.Button();
             this.btnGetJBHSource = new System.Windows.Forms.Button();
+            this.bExportSingleCover = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // all
@@ -76,7 +77,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(217, 459);
+            this.button2.Location = new System.Drawing.Point(180, 489);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 1;
@@ -122,7 +123,7 @@
             // 
             // exportSingleRecord
             // 
-            this.exportSingleRecord.Location = new System.Drawing.Point(445, 395);
+            this.exportSingleRecord.Location = new System.Drawing.Point(431, 395);
             this.exportSingleRecord.Name = "exportSingleRecord";
             this.exportSingleRecord.Size = new System.Drawing.Size(109, 23);
             this.exportSingleRecord.TabIndex = 6;
@@ -256,7 +257,7 @@
             // 
             // allCovers
             // 
-            this.allCovers.Location = new System.Drawing.Point(580, 356);
+            this.allCovers.Location = new System.Drawing.Point(591, 304);
             this.allCovers.Name = "allCovers";
             this.allCovers.Size = new System.Drawing.Size(75, 23);
             this.allCovers.TabIndex = 12;
@@ -375,11 +376,22 @@
             this.btnGetJBHSource.UseVisualStyleBackColor = true;
             this.btnGetJBHSource.Click += new System.EventHandler(this.btnGetJBHSource_Click);
             // 
+            // bExportSingleCover
+            // 
+            this.bExportSingleCover.Location = new System.Drawing.Point(431, 424);
+            this.bExportSingleCover.Name = "bExportSingleCover";
+            this.bExportSingleCover.Size = new System.Drawing.Size(123, 23);
+            this.bExportSingleCover.TabIndex = 18;
+            this.bExportSingleCover.Text = "Export Single Cover";
+            this.bExportSingleCover.UseVisualStyleBackColor = true;
+            this.bExportSingleCover.Click += new System.EventHandler(this.bExportSingleCover_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(693, 524);
+            this.Controls.Add(this.bExportSingleCover);
             this.Controls.Add(this.btnGetJBHSource);
             this.Controls.Add(this.btnJBH);
             this.Controls.Add(this.txtSingleRecordId);
@@ -455,6 +467,7 @@
         private System.Windows.Forms.TextBox txtSingleRecordId;
         private System.Windows.Forms.Button btnJBH;
         private System.Windows.Forms.Button btnGetJBHSource;
+        private System.Windows.Forms.Button bExportSingleCover;
     }
 }
 

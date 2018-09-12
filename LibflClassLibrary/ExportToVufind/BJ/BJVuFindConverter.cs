@@ -218,7 +218,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                         result.title_alt.Add(fieldValue);
                         //нужно специальным образом обрабатывать
                         break;
-                    //=======================================================================добавленные в индекс=======================
+                    //=======================================================================добавленные поля в Вуфайнд=======================
                     case "210$a":
                         result.PlaceOfPublication.Add(r["PLAIN"].ToString());
                         break;
@@ -494,7 +494,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             }
             AddExemplarFields(currentIDMAIN, result, this.Fund);
 
-            if ((result.Exemplars.Count == 0))
+            if ((result.Exemplars.Count == 0))//все экземпляры отсеялись сами собой.
             {
                 return null;
             }
@@ -506,15 +506,16 @@ namespace LibflClassLibrary.ExportToVufind.BJ
         private void AddExemplarFields(int idmain, VufindDoc result, string fund)
         {
 
-            DataTable table = dbWrapper.GetAllExemplars(idmain);
+            DataTable table = dbWrapper.GetIdDataOfAllExemplars(idmain);
             if (table.Rows.Count == 0)
             {
                 DataTable IsElectronicCopyExists = dbWrapper.GetHyperLink(idmain);
                 if (IsElectronicCopyExists.Rows.Count == 0)
                 {
-                    return;//все списано и нет электронных копий
+                    return;//все списано и нет электронных копий.
                 }
             }
+
             int IDMAIN = idmain;//(int)table.Rows[0]["IDMAIN"];
 
             StringBuilder sb = new StringBuilder();
@@ -554,6 +555,12 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             foreach (DataRow iddata in table.Rows)
             {
                 exemplar = dbWrapper.GetExemplar((int)iddata["IDDATA"]);
+                ExemplarInfo bjExemplar = ExemplarInfo.GetExemplarByIdData((int)iddata["IDDATA"], this.Fund);
+                if (bjExemplar.ExemplarAccess.Access == 1020)//экстремистская литература. не выгружаем такое.
+                {
+                    continue;
+                }
+
                 writer.WritePropertyName(cnt++.ToString());
                 writer.WriteStartObject();
 
@@ -634,8 +641,6 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                             break;
                         case "921$d":
 
-                            //writer.WritePropertyName("exemplar_class_edition");
-                            //writer.WriteValue(r["PLAIN"].ToString());
                             break;
                         //case "922$b":
                             //Exemplar += "Трофей\\Принадлежность к:" + r["PLAIN"].ToString() + "#";
@@ -718,7 +723,6 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 writer.WritePropertyName("exemplar_id");
                 writer.WriteValue(iddata["IDDATA"].ToString());
 
-                ExemplarInfo bjExemplar = ExemplarInfo.GetExemplarByIdData((int)iddata["IDDATA"], this.Fund);
 
                 result.MethodOfAccess.Add(bjExemplar.ExemplarAccess.MethodOfAccess.ToString());
                 writer.WritePropertyName("exemplar_access");
@@ -806,53 +810,28 @@ namespace LibflClassLibrary.ExportToVufind.BJ
         {
             StringBuilder sb = new StringBuilder();
             DataTable table = dbWrapper.GetAllIdmainWithImages();
-            List<string> errors = new List<string>();
-            foreach (DataRow row in table.Rows)
+            //List<string> errors = new List<string>();
+            int j = 0;
+            foreach(DataRow row in table.Rows)
             {
-                DataTable pics = dbWrapper.GetImage((int)row["IDMAIN"]);
-                int i = 0;
-                foreach (DataRow pic in pics.Rows)
-                {
-                    byte[] p = (byte[])pic["PIC"];
-                    MemoryStream ms = new MemoryStream(p);
-                    Image img = Image.FromStream(ms);
-                    string path = @"f:\import\covers\"+this.Fund.ToLower()+"\\" + row["IDMAIN"].ToString() + @"\";
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    if (i == 0)
-                    {
-                        i++;
-                        try
-                        {
-                            img.Save(path + "cover.jpg");
-                        }
-                        catch (Exception ex)
-                        {
-                            errors.Add(pic["PIC"].ToString() + " " + ex.Message + ex.InnerException);
-
-                        }
-                    }
-                    else
-                    {
-                        img.Save(path + "cover"+i++.ToString() + ".jpg");
-                    }
-                }
-
+                j++;
+                int IDMAIN = (int)row["IDMAIN"];
+                this.ExportSingleCover(IDMAIN);
             }
-            File.WriteAllLines(@"f:\import\importErrors\" + this.Fund + "Errors.txt", errors.ToArray());
+            //File.WriteAllLines(@"f:\import\importErrors\" + this.Fund + "Errors.txt", errors.ToArray());
 
         }
         public override void ExportSingleCover(object idRecord)
         {
-            string ID = idRecord.ToString();
-            int IDMAIN = int.Parse(ID.Substring(ID.IndexOf("_")+1));
+            //string ID = idRecord.ToString();
+            //int IDMAIN = int.Parse(ID.Substring(ID.IndexOf("_")+1));
+            int IDMAIN = (int)idRecord;
+
             string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf";
 
             using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
             {
-                string NewPath = VuFindConverter.GetCoverExportPath(ID);
+                string NewPath = VuFindConverter.GetCoverExportPath(this.Fund+"_"+ IDMAIN);
                 string path = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf\"+Fund.ToUpper()+@"\" + NewPath;
                 
 

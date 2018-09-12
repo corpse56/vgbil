@@ -335,7 +335,7 @@ namespace BookkeepingForOrder
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
 
                 str = (Exemplar.ExemplarAccess.Access == 1000) ? "НА ДОМ\n до:" : "ЧЗ\nдо:"; //1000 - на дом
-                if (abonement.ToLower().Contains("платный") && !abonement.ToLower().Contains("бес"))
+                if (abonement.Contains("Платный"))
                 {
                     str = "НА ДОМ\n до:";
                 }
@@ -484,7 +484,7 @@ namespace BookkeepingForOrder
                 rectangle = new Rectangle(0, CurrentY, 315, 50);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
                 str = (Exemplar.ExemplarAccess.Access == 1000) ? "НА ДОМ:" : "ЧЗ"; //1000 - на дом
-                if (abonement.ToLower().Contains("платный") && !abonement.ToLower().Contains("бес"))
+                if (abonement.Contains("Платный"))
                 {
                     str = "НА ДОМ\n до:";
                 }

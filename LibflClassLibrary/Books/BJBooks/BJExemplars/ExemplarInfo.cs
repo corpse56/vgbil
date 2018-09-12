@@ -49,17 +49,6 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             }
             ExemplarInfo exemplar = ExemplarInfo.GetExemplarByIdData((int)table.Rows[0]["IDDATA"], fund);
             return exemplar;
-                
-            //    new ExemplarInfo((int)table.Rows[0]["IDDATA"]);
-            //exemplar.IDMAIN = (int)table.Rows[0]["IDMAIN"];
-            //exemplar.Fund = fund;
-            //foreach (DataRow row in table.Rows)
-            //{
-            //    exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
-            //}
-            //exemplar.ExemplarAccess = ExemplarInfo.GetExemplarAccess(exemplar);
-            ////exemplar.IsAlligat = dbw.IsAlligat(exemplar.IdData).Rows.Count;
-            //return exemplar;
         }
         public static ExemplarInfo GetExemplarByIdData(int iddata, string fund)
         {
@@ -68,20 +57,22 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             ExemplarInfo exemplar = new ExemplarInfo((int)table.Rows[0]["IDDATA"]);
             exemplar.IDMAIN = (int)table.Rows[0]["IDMAIN"];
             exemplar.Fund = fund;
-            foreach (DataRow row in table.Rows)
+
+
+            foreach (DataRow row in table.Rows)//записываем все поля в объект
             {
                 if (fund == "BJACC")
                 {
                     if (row["MNFIELD"].ToString() + row["MSFIELD"].ToString() == "899$w")//в американской базе нет инвентарных номеров. берем штрихкод
                     {
-                        exemplar.Created = (DateTime)row["Created"];
+                        exemplar.Created = (DateTime)row["Created"];//за дату создания берем дату присвоения штрихкода
                     }
                 }
                 else
                 {
                     if (row["MNFIELD"].ToString() + row["MSFIELD"].ToString() == "899$p")//в остальных есть и берём дату создания поля инвентарный номер
                     {
-                        exemplar.Created = (DateTime)row["Created"];
+                        exemplar.Created = (DateTime)row["Created"];//за дату создания берем дату присвоения инвентаря
                     }
                 }
                 if (row["MNFIELD"].ToString() + row["MSFIELD"].ToString() == "899$a")
@@ -89,8 +80,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                     exemplar.Fields.AddField(row["NAME"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString()); //местонахождение берём из LIST_8, а не из DATAEXTPLAIN, потому что в поле PLAIN меняются некоторые символы
                     continue;
                 }
-                exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
-
+                exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());//добавляем все поля блока 260 к объекту экземпляра
             }
             exemplar.ExemplarAccess = ExemplarInfo.GetExemplarAccess(exemplar);
 
@@ -222,9 +212,6 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                         access.Access = 1999;
                         access.MethodOfAccess = 4005;
                     }
-
-
-
                     break;
                 case "REDKOSTJ":
                     if (exemplar.Fields["482$a"].ToLower() != "")

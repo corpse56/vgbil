@@ -170,6 +170,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Books\BJBooks\BJExemplars\Viewes\" />
+    <Folder Include="Books\BJBooks\Viewes\" />
     <Folder Include="Circulation\" />
   </ItemGroup>
   <ItemGroup>

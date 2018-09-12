@@ -111,7 +111,7 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
-        public string GET_ALL_EXEMPLARS
+        public string GET_IDDATA_OF_ALL_EXEMPLARS
         {
             get
             {
@@ -345,6 +345,8 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                         " select IDMAIN from " + this.Fund + "..DATAEXT " +
                         "  where Changed >=  (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
                         //"     or Created >=  (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
+                        " union all" +
+                        " select IDMAIN from " + this.Fund + "..IMAGES where DateCreate >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" + 
                         " union all" +
                         "  select A.IDMAIN IDMAIN" +
                         "  from [BJVVV].[dbo].[TPR_TES] T " +

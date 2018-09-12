@@ -343,9 +343,13 @@ namespace ExportBJ_XML
         
         }
 
+        private void bExportSingleCover_Click(object sender, EventArgs e)
+        {
+            string fnd = txtSingleRecordId.Text.Substring(0, txtSingleRecordId.Text.IndexOf("_"));
+            int id = int.Parse(txtSingleRecordId.Text.Substring(txtSingleRecordId.Text.IndexOf("_")+1));
 
-      
-
-      
+            BJVuFindConverter converter = new BJVuFindConverter(fnd);
+            converter.ExportSingleCover(id);
+        }
     }
 }

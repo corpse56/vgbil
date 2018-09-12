@@ -19,6 +19,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Utilities;
 
 public partial class loginemployee : System.Web.UI.Page
 {
@@ -168,11 +169,12 @@ public static class CurrentCultureInfo
             string RedirectUrl = "";
 
 
-            //для входа под любым читателем. не забывать закомментироват
-            //CurReader.ID = "83934";
-            //FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
-            //Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type=0&litres=" + litres);
-
+        //для входа под любым читателем. не забывать закомментироват
+        //CurReader.ID = "213493";
+        //CurReader.ReaderType = 1;
+        //FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
+        //RedirectWithCookie("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + CurReader.ReaderType + "&litres=" + litres, CurReader);
+        //для входа под любым читателем. не забывать закомментироват
 
 
         if (RadioButton2.Checked)//сотрудник для ДП
@@ -386,7 +388,7 @@ public static class CurrentCultureInfo
         {
             HttpCookie cookie = new HttpCookie("personal_reader_login");
             cookie.Expires = DateTime.Now.AddHours(1);
-            cookie.Value = HashReaderId(CurReader.ID);
+            cookie.Value = Utilities.Extensions.HashReaderId(CurReader.ID);
             cookie.Path = "/";
             cookie.HttpOnly = true;
             cookie.Domain = "libfl.ru";
@@ -411,21 +413,21 @@ public static class CurrentCultureInfo
             }
             return strHashPass;
         }
-        public String HashReaderId(String ReaderId)
-        {
-            String strHashPass = String.Empty;
-            byte[] bytes = Encoding.UTF8.GetBytes(ReaderId + "www.libfl.ru");
-            //создаем объект для получения средст шифрования 
-            SHA256CryptoServiceProvider CSP = new SHA256CryptoServiceProvider();
-            //вычисляем хеш-представление в байтах 
-            byte[] byteHash = CSP.ComputeHash(bytes);
-            //формируем одну цельную строку из массива 
-            foreach (byte b in byteHash)
-            {
-                strHashPass += string.Format("{0:x2}",b);
-            }
-            return strHashPass;
-        }
+        //public String HashReaderId(String ReaderId)
+        //{
+        //    String strHashPass = String.Empty;
+        //    byte[] bytes = Encoding.UTF8.GetBytes(ReaderId + "www.libfl.ru");
+        //    //создаем объект для получения средст шифрования 
+        //    SHA256CryptoServiceProvider CSP = new SHA256CryptoServiceProvider();
+        //    //вычисляем хеш-представление в байтах 
+        //    byte[] byteHash = CSP.ComputeHash(bytes);
+        //    //формируем одну цельную строку из массива 
+        //    foreach (byte b in byteHash)
+        //    {
+        //        strHashPass += string.Format("{0:x2}",b);
+        //    }
+        //    return strHashPass;
+        //}
 
         private void InsertSession(Reader r)
         {

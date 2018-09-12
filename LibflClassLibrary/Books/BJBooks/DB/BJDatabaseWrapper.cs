@@ -142,13 +142,13 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
-        internal DataTable GetAllExemplars(int idmain)
+        internal DataTable GetIdDataOfAllExemplars(int idmain)
         {
             string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_ALL_EXEMPLARS, connection);
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_IDDATA_OF_ALL_EXEMPLARS, connection);
                 dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = idmain;
                 return this.ExecuteSelectQuery(dataAdapter);
             }
