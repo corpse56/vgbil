@@ -77,6 +77,7 @@ namespace CirculationACC
             this.DateIssue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button12 = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -102,7 +103,7 @@ namespace CirculationACC
             this.списокКнигСКоторыхСнятаОтветственностьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокНарушителейСроковПользованияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.listView1 = new System.Windows.Forms.ListView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -364,6 +365,7 @@ namespace CirculationACC
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.listView1);
             this.tabPage4.Controls.Add(this.bComment);
             this.tabPage4.Controls.Add(this.button4);
             this.tabPage4.Controls.Add(this.button2);
@@ -555,7 +557,7 @@ namespace CirculationACC
             this.DateVozv,
             this.DateVozvFact,
             this.Penalt});
-            this.Formular.Location = new System.Drawing.Point(0, 139);
+            this.Formular.Location = new System.Drawing.Point(0, 187);
             this.Formular.MultiSelect = false;
             this.Formular.Name = "Formular";
             this.Formular.ReadOnly = true;
@@ -563,7 +565,7 @@ namespace CirculationACC
             this.Formular.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.Formular.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Formular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Formular.Size = new System.Drawing.Size(1176, 360);
+            this.Formular.Size = new System.Drawing.Size(1176, 312);
             this.Formular.TabIndex = 2;
             // 
             // N
@@ -614,6 +616,15 @@ namespace CirculationACC
             this.DateVozvFact.Name = "DateVozvFact";
             this.DateVozvFact.ReadOnly = true;
             this.DateVozvFact.Width = 80;
+            // 
+            // Penalt
+            // 
+            this.Penalt.HeaderText = "Нарушение";
+            this.Penalt.Name = "Penalt";
+            this.Penalt.ReadOnly = true;
+            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Penalt.Width = 85;
             // 
             // tabPage2
             // 
@@ -683,8 +694,8 @@ namespace CirculationACC
             this.Statistics.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.Statistics.Size = new System.Drawing.Size(1171, 447);
             this.Statistics.TabIndex = 1;
-            this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
             this.Statistics.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_CellMouseDoubleClick);
+            this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
             // 
             // button7
             // 
@@ -850,21 +861,21 @@ namespace CirculationACC
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
             // 
-            // Penalt
+            // listView1
             // 
-            this.Penalt.HeaderText = "Нарушение";
-            this.Penalt.Name = "Penalt";
-            this.Penalt.ReadOnly = true;
-            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Penalt.Width = 85;
+            this.listView1.Location = new System.Drawing.Point(6, 67);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(546, 114);
+            this.listView1.TabIndex = 24;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.List;
             // 
             // Form1
             // 
             this.AcceptButton = this.bConfirm;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1221, 702);
+            this.ClientSize = new System.Drawing.Size(1217, 707);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.tabControl1);
@@ -979,6 +990,7 @@ namespace CirculationACC
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Button bComment;
+        private System.Windows.Forms.ListView listView1;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         //private CrystalReport1 CrystalReport11;

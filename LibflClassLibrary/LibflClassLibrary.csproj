@@ -126,6 +126,9 @@
     <Compile Include="Readers\DB\QueriesText.cs" />
     <Compile Include="Readers\DB\ReaderDatabaseWrapper.cs" />
     <Compile Include="Readers\Loaders\ReaderLoader.cs" />
+    <Compile Include="Readers\ReadersRight\ReaderRight.cs" />
+    <Compile Include="Readers\ReadersRight\ReaderRightsEnum.cs" />
+    <Compile Include="Readers\ReadersRight\ReaderRightsInfo.cs" />
     <Compile Include="Utilites\Log.cs" />
     <Compile Include="ExportToVufind\Litres\LitresVufindIndexUpdater.cs" />
     <Compile Include="ExportToVufind\Vufind\VufindIndexUpdater.cs" />
@@ -168,6 +171,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

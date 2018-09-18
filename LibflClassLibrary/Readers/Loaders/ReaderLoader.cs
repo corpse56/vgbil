@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.Readers.DB;
+using LibflClassLibrary.Readers.ReadersRight;
 
 namespace LibflClassLibrary.Readers.Loaders
 {
@@ -125,5 +126,52 @@ namespace LibflClassLibrary.Readers.Loaders
             ReaderInfo result = this.LoadReader(Convert.ToInt32(table.Rows[0][0]));
             return result;
         }
+        internal ReaderRightsInfo GetReaderRights(int NumberReader)
+        {
+            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
+            DataTable table = dbw.GetReaderRights(NumberReader);
+            if (table.Rows.Count == 0)
+            {
+                return null;
+            }
+
+            ReaderRightsInfo result = new ReaderRightsInfo();
+            foreach (DataRow row in table.Rows)
+            {
+                ReaderRight right = new ReaderRight();
+                object o = row["DataEndReaderRight"];
+                Type t = o.GetType();
+                right.DateEndReaderRight = (row["DataEndReaderRight"].GetType() != typeof(DBNull)) ? (DateTime)row["DataEndReaderRight"] : DateTime.Now.AddYears(1);
+                right.IDOrganization = (row["IDOrganization"].GetType() == typeof(DBNull)) ? 0 : (int)row["IDOrganization"];
+                switch((int)row["IDReaderRight"])
+                {
+                    case 1:
+                        right.ReaderRightValue = ReadersRights.ReaderRightsEnum.BritSovet;
+                        break;
+                    case 2:
+                        right.ReaderRightValue = ReadersRights.ReaderRightsEnum.ReadingRoomUser;
+                        break;
+                    case 3:
+                        right.ReaderRightValue = ReadersRights.ReaderRightsEnum.Employee;
+                        break;
+                    case 4:
+                        right.ReaderRightValue = ReadersRights.ReaderRightsEnum.FreeAbonement;
+                        break;
+                    case 5:
+                        right.ReaderRightValue = ReadersRights.ReaderRightsEnum.PaidAbonement;
+                        break;
+                    case 6:
+                        right.ReaderRightValue = ReadersRights.ReaderRightsEnum.CollectiveAbonement;
+                        break;
+                    case 7:
+                        right.ReaderRightValue = ReadersRights.ReaderRightsEnum.Partner;
+                        break;
+
+                }
+                result.Rights.Add(right);
+            }
+            return result;
+        }
+
     }
 }

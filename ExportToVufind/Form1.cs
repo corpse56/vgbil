@@ -101,20 +101,24 @@ namespace ExportBJ_XML
 
         private void button2_Click(object sender, EventArgs e)
         {
-            XDocument xdoc = XDocument.Load(@"f:\litres_source.xml");
-            XmlWriter writ = XmlTextWriter.Create(@"F:\litres_example.xml");
-            var books = xdoc.Descendants("updated-book").Take(50);
-            writ.WriteStartElement("litresBooks");
-            foreach (XElement elt in books)
-            {
-                elt.WriteTo(writ);
-            }
+            //литрес обрезать большой файл для теста. первые 50 записей
+            //XDocument xdoc = XDocument.Load(@"f:\litres_source.xml");
+            //XmlWriter writ = XmlTextWriter.Create(@"F:\litres_example.xml");
+            //var books = xdoc.Descendants("updated-book").Take(50);
+            //writ.WriteStartElement("litresBooks");
+            //foreach (XElement elt in books)
+            //{
+            //    elt.WriteTo(writ);
+            //}
 
-            writ.Flush();
-            writ.WriteEndElement();
-            writ.Close();
+            //writ.Flush();
+            //writ.WriteEndElement();
+            //writ.Close();
 
-            
+            JBHVuFindConverter jbh = new JBHVuFindConverter();
+            jbh.GetSource();
+
+
         }
 
        

@@ -18,6 +18,8 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.IO.Ports;
 using System.IO;
+using LibflClassLibrary.Readers.ReadersRight;
+
 namespace CirculationACC
 {
     //public delegate void ScannedEventHandler();
@@ -221,7 +223,12 @@ namespace CirculationACC
                     r.DefaultCellStyle.BackColor = Color.Tomato;
                 }
             }
-
+            ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(reader.ID);
+            //ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(189245);
+            foreach (var right in rights.Rights)
+            {
+                listView1.Items.Add(right.ToString());
+            }
 
         }
         private void bConfirm_Click(object sender, EventArgs e)
@@ -1120,7 +1127,6 @@ namespace CirculationACC
         {
             button14_Click(sender, e);
         }
-
     }
   
 }

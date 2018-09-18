@@ -9,6 +9,7 @@ using System.Data;
 using System.IO;
 using System.Windows.Forms;
 using LibflClassLibrary.ExportToVufind.Vufind;
+using Newtonsoft.Json;
 
 namespace LibflClassLibrary.ExportToVufind
 {
@@ -81,18 +82,70 @@ namespace LibflClassLibrary.ExportToVufind
             //OnRecordExported(arg);
 
 
+            VufindXMLWriter vfWriter = new VufindXMLWriter("JBH");//Jewish Book House
+
+            vfWriter.StartVufindXML(@"F:\import\" + Fund.ToLower() + ".xml");
+
+            string[] JHB = File.ReadAllLines(@"f:\jbh_source.rtf");
+            VufindDoc doc = new VufindDoc();
+            List<VufindDoc> docs = new List<VufindDoc>();
+            foreach (string line in JHB)
+            {
+
+                if (doc.id != line)//если встретили новый ID
+                {
+                    docs.Add(doc);
+                    doc = new VufindDoc();
+                }
+                doc.id = "JHB_000001";
+                doc.id = "JHB_" + line;
+
+                string FieldCode = line.Substring(0, line.IndexOf(":")-1);
+                string FieldValue = line.Substring(line.IndexOf(":"));
+
+                StringBuilder sb = new StringBuilder();
+                StringWriter sw = new StringWriter(sb);
+                JsonWriter writer = new JsonTextWriter(sw);
+
+                switch (FieldCode)
+                {
+                    case "700":
+                        doc.author.Add(FieldValue);
+                        break;
+                    case "200":
+                        doc.title.Add(FieldValue);
+                        break;
+                    case "901":
+                        break;
+                }
+
+            }
+
+
+
+
+
+
         }
 
         public void GetSource()
         {
             string[] JHB = File.ReadAllLines(@"f:\jbh_source.rtf");
 
-            string rtf = File.ReadAllText(@"f:\jbh_source.rtf");
+            string[] lines = File.ReadAllLines(@"f:\jbh_source.rtf", Encoding.Default);
+            string[] OutLines = new string[lines.Length];
             RichTextBox rtb = new RichTextBox();
-            rtb.Rtf = rtf;
-            string plainText = rtb.Text;
 
-            File.WriteAllText(@"f:\jbh_source.txt", plainText);
+            int i = 0;
+            foreach (string line in lines)
+            {
+                rtb.Rtf = line;
+                OutLines[i] = rtb.Text;
+                i++;
+            }
+
+            File.WriteAllLines(@"f:\jbh_source.txt", OutLines, Encoding.Default);
+
 
         }
 

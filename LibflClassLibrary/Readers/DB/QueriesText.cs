@@ -53,6 +53,14 @@ namespace LibflClassLibrary.Readers.DB
             }
         }
 
+        public string GET_READER_RIGHTS
+        {
+            get
+            {
+                return "select * from Readers..ReaderRight where IDReader = @NumberReader";
+            }
+        }
+
     }
 
 }

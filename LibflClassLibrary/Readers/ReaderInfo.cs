@@ -43,11 +43,6 @@ namespace LibflClassLibrary.Readers
         public TypeReader TypeReader { get; set; }
         
 
-        public string GetRights()
-        {
-            return "Бесплатный абонемент";
-        }
-
         public static ReaderInfo GetReader(int Id)
         {
             ReaderLoader loader = new ReaderLoader();

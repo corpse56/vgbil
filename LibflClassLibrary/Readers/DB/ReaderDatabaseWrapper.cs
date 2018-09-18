@@ -95,5 +95,17 @@ namespace LibflClassLibrary.Readers.DB
             }
         }
 
+        internal DataTable GetReaderRights(int NumberReader)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ReaderQueries.GET_READER_RIGHTS, connection);
+                dataAdapter.SelectCommand.Parameters.Add("NumberReader", SqlDbType.Int).Value = NumberReader;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
     }
 }
