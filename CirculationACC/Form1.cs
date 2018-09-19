@@ -1127,6 +1127,11 @@ namespace CirculationACC
         {
             button14_Click(sender, e);
         }
+
+        private void bReaderRegistration_Click(object sender, EventArgs e)
+        {
+
+        }
     }
   
 }

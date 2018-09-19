@@ -104,6 +104,7 @@ namespace CirculationACC
             this.списокНарушителейСроковПользованияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.bReaderRegistration = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -365,6 +366,7 @@ namespace CirculationACC
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.bReaderRegistration);
             this.tabPage4.Controls.Add(this.listView1);
             this.tabPage4.Controls.Add(this.bComment);
             this.tabPage4.Controls.Add(this.button4);
@@ -425,7 +427,7 @@ namespace CirculationACC
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox2.ErrorImage = global::CirculationACC.Properties.Resources.nofoto;
             this.pictureBox2.InitialImage = global::CirculationACC.Properties.Resources.nofoto;
-            this.pictureBox2.Location = new System.Drawing.Point(593, 9);
+            this.pictureBox2.Location = new System.Drawing.Point(665, 6);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(100, 105);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -865,10 +867,20 @@ namespace CirculationACC
             // 
             this.listView1.Location = new System.Drawing.Point(6, 67);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(546, 114);
+            this.listView1.Size = new System.Drawing.Size(653, 114);
             this.listView1.TabIndex = 24;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.List;
+            // 
+            // bReaderRegistration
+            // 
+            this.bReaderRegistration.Location = new System.Drawing.Point(771, 102);
+            this.bReaderRegistration.Name = "bReaderRegistration";
+            this.bReaderRegistration.Size = new System.Drawing.Size(174, 64);
+            this.bReaderRegistration.TabIndex = 25;
+            this.bReaderRegistration.Text = "Выдать права бесплатного абонемента";
+            this.bReaderRegistration.UseVisualStyleBackColor = true;
+            this.bReaderRegistration.Click += new System.EventHandler(this.bReaderRegistration_Click);
             // 
             // Form1
             // 
@@ -991,6 +1003,7 @@ namespace CirculationACC
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Button bComment;
         private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.Button bReaderRegistration;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         //private CrystalReport1 CrystalReport11;

@@ -234,6 +234,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALISAPI", "ALISAPI\ALISAPI.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALISAPI_TEST", "ALISAPI_TEST\ALISAPI_TEST.csproj", "{38CA557D-1C7A-4A08-926E-119995021205}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTimeProjectForGlueGoogleExportXMLs", "OneTimeProjectForGlueGoogleExportXMLs\OneTimeProjectForGlueGoogleExportXMLs.csproj", "{CEE46F9B-05A3-4729-86F6-F378F175834F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -372,6 +374,10 @@ Global
 		{38CA557D-1C7A-4A08-926E-119995021205}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38CA557D-1C7A-4A08-926E-119995021205}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38CA557D-1C7A-4A08-926E-119995021205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE46F9B-05A3-4729-86F6-F378F175834F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE46F9B-05A3-4729-86F6-F378F175834F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE46F9B-05A3-4729-86F6-F378F175834F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE46F9B-05A3-4729-86F6-F378F175834F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
