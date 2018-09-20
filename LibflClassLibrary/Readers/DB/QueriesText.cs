@@ -61,6 +61,40 @@ namespace LibflClassLibrary.Readers.DB
             }
         }
 
+        public string GET_COUNTRIES_READERS
+        {
+            get
+            {
+                return "select IDCountry, NameCountry from Readers..Country";
+            }
+        }
+        public string GIVE_FREE_ABONEMENT_RIGHTS
+        {
+            get
+            {
+                return "insert into Readers..[ReaderRight] (IDReader, IDReaderRight, DataEndReaderRight, IDOrganization) values " +
+                                                            "(@NumberReader, 4, dateadd(year, 1, getdate()), null)";
+            }
+        }
+
+        public string UPDATE_REGISTRATION_FIELDS
+        {
+            get
+            {
+                return "update Readers..Main "+
+                        "set RegistrationCountry = @RegistrationCountry, " +
+                        " RegistrationRegion = @RegistrationRegion, " +
+                        " RegistrationProvince = @RegistrationProvince, " +
+                        " RegistrationDistrict = @RegistrationDistrict, " +
+                        " RegistrationCity = @RegistrationCity, " +
+                        " RegistrationStreet = @RegistrationStreet, " +
+                        " RegistrationHouse = @RegistrationHouse, " +
+                        " RegistrationFlat = @RegistrationFlat, " +
+                        " MobileTelephone = @MobileTelephone " +
+                        " where NumberReader = @NumberReader";
+            }
+        }
+
     }
 
 }

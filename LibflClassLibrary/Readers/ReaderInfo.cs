@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Web;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.Loaders;
+using LibflClassLibrary.Readers.ReadersRight;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -38,6 +40,19 @@ namespace LibflClassLibrary.Readers
         [JsonIgnore]
         public string Salt { get; set; }
         public int NumberReader { get; set; }
+        public int RegistrationCountry { get; set; }
+        public string RegistrationRegion { get; set; }
+        public string RegistrationProvince { get; set; }
+        public string RegistrationDistrict { get; set; }
+        public string RegistrationCity { get; set; }
+        public string RegistrationStreet { get; set; }
+        public string RegistrationHouse { get; set; }
+        public string RegistrationFlat { get; set; }
+        public string RegistrationTelephone { get; set; }
+
+        public ReaderRightsInfo Rights = null;
+
+
 
         [JsonConverter(typeof(StringEnumConverter))]
         public TypeReader TypeReader { get; set; }
@@ -127,6 +142,12 @@ namespace LibflClassLibrary.Readers
             return "NotDefined";
         }
 
+        internal void UpdateRegistrationFields()
+        {
+            ReaderLoader loader = new ReaderLoader();
+            loader.UpdateRegistrationFields(this);
+        }
+
         public static ReaderInfo Authorize(AuthorizeInfo request)
         {
             int NumberReader = 0;
@@ -153,6 +174,11 @@ namespace LibflClassLibrary.Readers
                 throw new Exception("R001");
             }
             return result;
+        }
+
+        public static DataTable GetReaderCountries()
+        {
+            return ReaderLoader.GetReaderCountries();
         }
     }
 }

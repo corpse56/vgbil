@@ -19,6 +19,7 @@ using System.Text.RegularExpressions;
 using System.IO.Ports;
 using System.IO;
 using LibflClassLibrary.Readers.ReadersRight;
+using LibflClassLibrary.Controls.Readers;
 
 namespace CirculationACC
 {
@@ -183,6 +184,8 @@ namespace CirculationACC
             }
             FillFormularGrid(reader);
 
+            readerRightsView1.Init(reader.ID);
+
         }
         public void FillFormularGrid(ReaderVO reader)
         {
@@ -223,13 +226,6 @@ namespace CirculationACC
                     r.DefaultCellStyle.BackColor = Color.Tomato;
                 }
             }
-            ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(reader.ID);
-            //ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(189245);
-            foreach (var right in rights.Rights)
-            {
-                listView1.Items.Add(right.ToString());
-            }
-
         }
         private void bConfirm_Click(object sender, EventArgs e)
         {
@@ -305,7 +301,7 @@ namespace CirculationACC
                 MessageBox.Show("Читатель не найден!");
                 return;
             }
-            FillFormularGrid(reader);
+            FillFormular(reader);
 
         }
         private void button1_Click(object sender, EventArgs e)
@@ -1130,7 +1126,18 @@ namespace CirculationACC
 
         private void bReaderRegistration_Click(object sender, EventArgs e)
         {
+            if (lFromularNumber.Text == "")
+            {
+                MessageBox.Show("Введите номер или считайте штрихкод читателя!");
+                return;
+            }
+            ReaderVO reader = new ReaderVO(int.Parse(lFromularNumber.Text));
 
+            fReaderRegistrationAndRights frr = new fReaderRegistrationAndRights();
+            frr.Init(reader.ID);
+            frr.ShowDialog();
+
+            FillFormular(reader);
         }
     }
   

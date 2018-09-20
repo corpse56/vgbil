@@ -9,7 +9,9 @@ namespace LibflClassLibrary.Readers.ReadersRight
 {
     public class ReaderRightsInfo
     {
-        public List<ReaderRight> Rights = new List<ReaderRight>();
+        public List<ReaderRight> RightsList = new List<ReaderRight>();
+        private int NumberReader;
+
         public ReaderRight this[ReaderRightsEnum right]
         {
             get
@@ -22,7 +24,7 @@ namespace LibflClassLibrary.Readers.ReadersRight
         {
             ReaderRight result = null;
 
-            result = Rights.Find(x => ((x.ReaderRightValue & right) == right));
+            result = RightsList.Find(x => ((x.ReaderRightValue & right) == right));
 
             return result;
         }
@@ -32,8 +34,15 @@ namespace LibflClassLibrary.Readers.ReadersRight
             ReaderRightsInfo result = null;
             ReaderLoader loader = new ReaderLoader();
             result = loader.GetReaderRights(NumberReader);
+            result.NumberReader = NumberReader;
             return result;
 
+        }
+
+        internal void GiveFreeAbonementRight()
+        {
+            ReaderLoader loader = new ReaderLoader();
+            loader.GiveFreeAbonementRight(NumberReader);
         }
     }
 }
