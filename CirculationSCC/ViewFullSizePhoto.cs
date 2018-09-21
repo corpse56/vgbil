@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Circulation
+namespace CirculationSCC
 {
     public partial class ViewFullSizePhoto : Form
     {

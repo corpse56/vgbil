@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Circulation
+namespace CirculationSCC
 {
     public enum Bases { BJSCC = 1, BJVVV};
     public class BookVO

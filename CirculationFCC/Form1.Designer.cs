@@ -77,7 +77,6 @@ namespace Circulation
             this.DateIssue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.button12 = new System.Windows.Forms.Button();
@@ -93,7 +92,6 @@ namespace Circulation
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.выданные нигиЌа“екущийћоментToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.просроченные нигиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -104,6 +102,10 @@ namespace Circulation
             this.обращаемость нигToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bGiveFreeAbonement = new System.Windows.Forms.Button();
+            this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
+            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -248,7 +250,7 @@ namespace Circulation
             this.RPhoto.Location = new System.Drawing.Point(577, 12);
             this.RPhoto.Name = "RPhoto";
             this.RPhoto.Size = new System.Drawing.Size(93, 101);
-            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.RPhoto.TabIndex = 6;
             this.RPhoto.TabStop = false;
             this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
@@ -365,6 +367,8 @@ namespace Circulation
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.bGiveFreeAbonement);
+            this.tabPage4.Controls.Add(this.readerRightsView1);
             this.tabPage4.Controls.Add(this.bComment);
             this.tabPage4.Controls.Add(this.button4);
             this.tabPage4.Controls.Add(this.button2);
@@ -424,7 +428,7 @@ namespace Circulation
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox2.ErrorImage = global::CirculationFCC.Properties.Resources.nofoto;
             this.pictureBox2.InitialImage = global::CirculationFCC.Properties.Resources.nofoto;
-            this.pictureBox2.Location = new System.Drawing.Point(593, 9);
+            this.pictureBox2.Location = new System.Drawing.Point(665, 6);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(100, 105);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -556,7 +560,7 @@ namespace Circulation
             this.DateVozv,
             this.DateVozvFact,
             this.Penalt});
-            this.Formular.Location = new System.Drawing.Point(0, 139);
+            this.Formular.Location = new System.Drawing.Point(0, 171);
             this.Formular.MultiSelect = false;
             this.Formular.Name = "Formular";
             this.Formular.ReadOnly = true;
@@ -564,7 +568,7 @@ namespace Circulation
             this.Formular.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.Formular.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Formular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Formular.Size = new System.Drawing.Size(1176, 360);
+            this.Formular.Size = new System.Drawing.Size(1176, 328);
             this.Formular.TabIndex = 2;
             // 
             // N
@@ -615,15 +619,6 @@ namespace Circulation
             this.DateVozvFact.Name = "DateVozvFact";
             this.DateVozvFact.ReadOnly = true;
             this.DateVozvFact.Width = 80;
-            // 
-            // Penalt
-            // 
-            this.Penalt.HeaderText = "Ќарушение";
-            this.Penalt.Name = "Penalt";
-            this.Penalt.ReadOnly = true;
-            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Penalt.Width = 85;
             // 
             // tabPage2
             // 
@@ -702,8 +697,8 @@ namespace Circulation
             this.Statistics.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.Statistics.Size = new System.Drawing.Size(1171, 447);
             this.Statistics.TabIndex = 1;
-            this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
             this.Statistics.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_CellMouseDoubleClick);
+            this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
             // 
             // button7
             // 
@@ -782,14 +777,6 @@ namespace Circulation
             this.label10.TabIndex = 11;
             this.label10.Text = " ниговыдача: ‘ранцузский  ультурный ÷ентр";
             // 
-            // dataGridViewButtonColumn1
-            // 
-            this.dataGridViewButtonColumn1.HeaderText = "Ќарушение";
-            this.dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
-            this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewButtonColumn1.Width = 85;
-            // 
             // contextMenuStrip2
             // 
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -867,6 +854,41 @@ namespace Circulation
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Text = "—писок нарушителей сроков пользовани€";
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Click += new System.EventHandler(this.списокЌарушителей—роковѕользовани€ToolStripMenuItem_Click);
+            // 
+            // bGiveFreeAbonement
+            // 
+            this.bGiveFreeAbonement.Location = new System.Drawing.Point(771, 102);
+            this.bGiveFreeAbonement.Name = "bGiveFreeAbonement";
+            this.bGiveFreeAbonement.Size = new System.Drawing.Size(174, 61);
+            this.bGiveFreeAbonement.TabIndex = 25;
+            this.bGiveFreeAbonement.Text = "¬ыдать права бесплатного абонемента";
+            this.bGiveFreeAbonement.UseVisualStyleBackColor = true;
+            this.bGiveFreeAbonement.Click += new System.EventHandler(this.bGiveFreeAbonement_Click);
+            // 
+            // dataGridViewButtonColumn1
+            // 
+            this.dataGridViewButtonColumn1.HeaderText = "Ќарушение";
+            this.dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
+            this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewButtonColumn1.Width = 85;
+            // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(10, 68);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(621, 95);
+            this.readerRightsView1.TabIndex = 24;
+            // 
+            // Penalt
+            // 
+            this.Penalt.HeaderText = "Ќарушение";
+            this.Penalt.Name = "Penalt";
+            this.Penalt.ReadOnly = true;
+            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Penalt.Width = 85;
             // 
             // Form1
             // 
@@ -989,6 +1011,8 @@ namespace Circulation
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Button bComment;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button bGiveFreeAbonement;
+        private LibflClassLibrary.Controls.Readers.ReaderRightsView readerRightsView1;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         //private CrystalReport1 CrystalReport11;

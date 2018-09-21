@@ -18,7 +18,9 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.IO.Ports;
 using System.IO;
-namespace Circulation
+using LibflClassLibrary.Controls.Readers;
+
+namespace CirculationSCC
 {
     //public delegate void ScannedEventHandler();
     public delegate void HeaderClick(object sender, DataGridViewCellMouseEventArgs ev);
@@ -169,16 +171,12 @@ namespace Circulation
                 return;
             }
             FillFormularGrid(reader);
-
+            readerRightsView1.Init(reader.ID);
         }
         public void FillFormularGrid(ReaderVO reader)
         {
             lFormularName.Text = reader.Family + " " + reader.Name + " " + reader.Father;
             lFromularNumber.Text = reader.ID.ToString();
-            if ((reader.ReaderRights & Rights.EMPL) == Rights.EMPL)
-            {
-                lFromularNumber.Text += " (сотрудник)";
-            }
             Formular.DataSource = reader.GetFormular();
             Formular.Columns["num"].HeaderText = "№№";
             Formular.Columns["num"].Width = 40;
@@ -239,6 +237,13 @@ namespace Circulation
                     CancelIssue();
                     Log();
                     DEPARTMENT = new Department();
+                    break;
+                case 1://у читателя нет прав для выдачи на дом
+                    bConfirm.Enabled = false;
+                    bCancel.Enabled = false;
+                    CancelIssue();
+                    DEPARTMENT = new Department();
+                    MessageBox.Show("Выдача на дом невозможна так как у читателя отсутствуют права бесплатного абонемента! Перейдите в формуляр читателя, чтобы выдать права.");
                     break;
             }
 
@@ -303,7 +308,7 @@ namespace Circulation
                 MessageBox.Show("Читатель не найден!");
                 return;
             }
-            FillFormularGrid(reader);
+            FillFormular(reader);
 
         }
         private void button1_Click(object sender, EventArgs e)
@@ -380,6 +385,7 @@ namespace Circulation
                     Formular.Columns.Clear();
                     AcceptButton = this.button10;
                     pictureBox2.Image = null;
+                    readerRightsView1.Clear();
                     break;
                 case "Учёт посещаемости":
                     label21.Text = "На сегодня посещаемость составляет: " + DEPARTMENT.GetAttendance() + " человек(а)";
@@ -1071,6 +1077,23 @@ namespace Circulation
 
             ChangeComment cc = new ChangeComment(reader);
             cc.ShowDialog();
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (lFromularNumber.Text == "")
+            {
+                MessageBox.Show("Введите номер или считайте штрихкод читателя!");
+                return;
+            }
+            ReaderVO reader = new ReaderVO(int.Parse(lFromularNumber.Text));
+
+            fReaderRegistrationAndRights frr = new fReaderRegistrationAndRights();
+            frr.Init(reader.ID);
+            frr.ShowDialog();
+
+            FillFormular(reader);
 
         }
     }

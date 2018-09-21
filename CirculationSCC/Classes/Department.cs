@@ -1,10 +1,12 @@
-﻿using System;
+﻿using LibflClassLibrary.Readers.ReadersRight;
+using LibflClassLibrary.Readers.ReadersRights;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Circulation
+namespace CirculationSCC
 {
     public enum BARTYPE { BookSCC, Reader, NotExist, BookBJVVV }
     public class Department : DB
@@ -108,19 +110,19 @@ namespace Circulation
                 {
                     if (ScannedBook.F899b == "ВХ")
                     {
+                        if (!CheckFreeAbonementRights())
+                        {
+                            return 1;
+                        }
                         dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
                     }
                     else
                     {
                         dbg.IssueInHall(ScannedBook, ScannedReader, IDEMP);
-
                     }
                 }
             }
-
-
             return 0;
-
         }
 
         internal void Prolong(int idiss, int days,int idemp)
@@ -128,6 +130,24 @@ namespace Circulation
             DBReader dbr = new DBReader();
             dbr.ProlongByIDISS(idiss,days,idemp);
 
+        }
+        private bool CheckFreeAbonementRights()
+        {
+            ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(ScannedReader.ID);
+            if (rights[ReaderRightsEnum.FreeAbonement] == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        private bool CheckEmployeeRights()
+        {
+            ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(ScannedReader.ID);
+            if (rights[ReaderRightsEnum.Employee] == null)
+            {
+                return false;
+            }
+            return true;
         }
 
         internal void RemoveResponsibility(int idiss, int EmpID)

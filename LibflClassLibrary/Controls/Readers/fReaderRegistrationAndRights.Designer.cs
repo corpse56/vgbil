@@ -60,10 +60,10 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(4, 18);
+            this.label1.Location = new System.Drawing.Point(4, 3);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(763, 35);
+            this.label1.Size = new System.Drawing.Size(763, 74);
             this.label1.TabIndex = 0;
             this.label1.Text = "label1";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -266,7 +266,7 @@
             // readerRightsView1
             // 
             this.readerRightsView1.Location = new System.Drawing.Point(216, 369);
-            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
             this.readerRightsView1.Name = "readerRightsView1";
             this.readerRightsView1.Size = new System.Drawing.Size(542, 82);
             this.readerRightsView1.TabIndex = 7;

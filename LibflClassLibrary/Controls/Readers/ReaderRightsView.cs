@@ -28,5 +28,9 @@ namespace LibflClassLibrary.Controls.Readers
             }
 
         }
+        public void Clear()
+        {
+            lvRights.Items.Clear();
+        }
     }
 }

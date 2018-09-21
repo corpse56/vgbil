@@ -837,7 +837,7 @@ namespace CirculationACC
             this.RPhoto.Location = new System.Drawing.Point(577, 12);
             this.RPhoto.Name = "RPhoto";
             this.RPhoto.Size = new System.Drawing.Size(93, 101);
-            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.RPhoto.TabIndex = 6;
             this.RPhoto.TabStop = false;
             this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
@@ -954,7 +954,7 @@ namespace CirculationACC
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage ttabPage4;
         private System.Windows.Forms.Label lFormularName;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button button10;
@@ -997,6 +997,7 @@ namespace CirculationACC
         private System.Windows.Forms.ToolStripMenuItem список ниг— оторых—н€таќтветственностьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem списокЌарушителей—роковѕользовани€ToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label21;

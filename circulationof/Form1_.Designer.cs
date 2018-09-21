@@ -44,6 +44,16 @@ namespace Circulation
             this.label14 = new System.Windows.Forms.Label();
             this.button20 = new System.Windows.Forms.Button();
             this.dataGridView1 = new Circulation.DBDataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.tabHome = new System.Windows.Forms.TabPage();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
@@ -51,6 +61,16 @@ namespace Circulation
             this.label26 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dgwHome = new Circulation.DBDataGridView();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button14 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -68,8 +88,6 @@ namespace Circulation
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
             this.button30 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.button29 = new System.Windows.Forms.Button();
@@ -194,26 +212,8 @@ namespace Circulation
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.zAKAZBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
+            this.bReaderRegistrationAndRights = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -422,6 +422,70 @@ namespace Circulation
             this.dataGridView1.Size = new System.Drawing.Size(1091, 232);
             this.dataGridView1.TabIndex = 15;
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Инв.н. или шкод";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Издание";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 220;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Читатель";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Номер читателя";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 80;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Выдача с №";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Время выдачи";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 70;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Время возврата";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 70;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.HeaderText = "Кафедра выдачи";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "Кафедра возврата";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            // 
+            // Column10
+            // 
+            this.Column10.HeaderText = "Местонахождение экземпляра";
+            this.Column10.Name = "Column10";
+            this.Column10.ReadOnly = true;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -512,6 +576,71 @@ namespace Circulation
             this.dgwHome.Size = new System.Drawing.Size(1091, 255);
             this.dgwHome.TabIndex = 16;
             // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.HeaderText = "Инв.н. или шкод";
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.HeaderText = "Издание";
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            this.dataGridViewTextBoxColumn8.Width = 220;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.HeaderText = "Читатель";
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn10
+            // 
+            this.dataGridViewTextBoxColumn10.HeaderText = "Номер читателя";
+            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
+            this.dataGridViewTextBoxColumn10.ReadOnly = true;
+            this.dataGridViewTextBoxColumn10.Width = 80;
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            this.dataGridViewTextBoxColumn11.HeaderText = "Класс читателя";
+            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            this.dataGridViewTextBoxColumn11.ReadOnly = true;
+            this.dataGridViewTextBoxColumn11.Width = 90;
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            this.dataGridViewTextBoxColumn12.HeaderText = "Дата выдачи";
+            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            this.dataGridViewTextBoxColumn12.ReadOnly = true;
+            this.dataGridViewTextBoxColumn12.Width = 75;
+            // 
+            // dataGridViewTextBoxColumn13
+            // 
+            this.dataGridViewTextBoxColumn13.HeaderText = "Дата возврата";
+            this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
+            this.dataGridViewTextBoxColumn13.ReadOnly = true;
+            this.dataGridViewTextBoxColumn13.Width = 75;
+            // 
+            // Column8
+            // 
+            this.Column8.HeaderText = "Кафедра выдачи";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
+            // 
+            // Column9
+            // 
+            this.Column9.HeaderText = "Кафедра возврата";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
+            // 
+            // Column11
+            // 
+            this.Column11.HeaderText = "Местонахождение экземпляра";
+            this.Column11.Name = "Column11";
+            this.Column11.ReadOnly = true;
+            // 
             // button14
             // 
             this.button14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -581,7 +710,7 @@ namespace Circulation
             this.RPhoto.Location = new System.Drawing.Point(483, 22);
             this.RPhoto.Name = "RPhoto";
             this.RPhoto.Size = new System.Drawing.Size(108, 110);
-            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.RPhoto.TabIndex = 8;
             this.RPhoto.TabStop = false;
             this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
@@ -684,8 +813,8 @@ namespace Circulation
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.label29);
-            this.tabPage4.Controls.Add(this.label28);
+            this.tabPage4.Controls.Add(this.bReaderRegistrationAndRights);
+            this.tabPage4.Controls.Add(this.readerRightsView1);
             this.tabPage4.Controls.Add(this.button30);
             this.tabPage4.Controls.Add(this.pictureBox2);
             this.tabPage4.Controls.Add(this.button29);
@@ -713,23 +842,6 @@ namespace Circulation
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Формуляр читателя";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // label29
-            // 
-            this.label29.Location = new System.Drawing.Point(87, 70);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(454, 48);
-            this.label29.TabIndex = 27;
-            this.label29.Text = "label29";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(4, 69);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(89, 17);
-            this.label28.TabIndex = 26;
-            this.label28.Text = "Абонемент: ";
             // 
             // button30
             // 
@@ -946,13 +1058,13 @@ namespace Circulation
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Formular.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Formular.Location = new System.Drawing.Point(3, 130);
+            this.Formular.Location = new System.Drawing.Point(3, 157);
             this.Formular.Name = "Formular";
             this.Formular.RowHeadersVisible = false;
             this.Formular.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.Formular.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Formular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Formular.Size = new System.Drawing.Size(1110, 384);
+            this.Formular.Size = new System.Drawing.Size(1110, 357);
             this.Formular.TabIndex = 2;
             this.Formular.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Formular_ColumnHeaderMouseClick);
             // 
@@ -1863,134 +1975,23 @@ namespace Circulation
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
             // 
-            // dataGridViewTextBoxColumn1
+            // readerRightsView1
             // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Инв.н. или шкод";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.readerRightsView1.Location = new System.Drawing.Point(7, 55);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(533, 95);
+            this.readerRightsView1.TabIndex = 26;
             // 
-            // dataGridViewTextBoxColumn2
+            // bReaderRegistrationAndRights
             // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Издание";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 220;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "Читатель";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Номер читателя";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 80;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Выдача с №";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Время выдачи";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 70;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Время возврата";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Width = 70;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "Кафедра выдачи";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Кафедра возврата";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            // 
-            // Column10
-            // 
-            this.Column10.HeaderText = "Местонахождение экземпляра";
-            this.Column10.Name = "Column10";
-            this.Column10.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.HeaderText = "Инв.н. или шкод";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.HeaderText = "Издание";
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            this.dataGridViewTextBoxColumn8.Width = 220;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.HeaderText = "Читатель";
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn10
-            // 
-            this.dataGridViewTextBoxColumn10.HeaderText = "Номер читателя";
-            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            this.dataGridViewTextBoxColumn10.ReadOnly = true;
-            this.dataGridViewTextBoxColumn10.Width = 80;
-            // 
-            // dataGridViewTextBoxColumn11
-            // 
-            this.dataGridViewTextBoxColumn11.HeaderText = "Класс читателя";
-            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
-            this.dataGridViewTextBoxColumn11.ReadOnly = true;
-            this.dataGridViewTextBoxColumn11.Width = 90;
-            // 
-            // dataGridViewTextBoxColumn12
-            // 
-            this.dataGridViewTextBoxColumn12.HeaderText = "Дата выдачи";
-            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
-            this.dataGridViewTextBoxColumn12.ReadOnly = true;
-            this.dataGridViewTextBoxColumn12.Width = 75;
-            // 
-            // dataGridViewTextBoxColumn13
-            // 
-            this.dataGridViewTextBoxColumn13.HeaderText = "Дата возврата";
-            this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
-            this.dataGridViewTextBoxColumn13.ReadOnly = true;
-            this.dataGridViewTextBoxColumn13.Width = 75;
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "Кафедра выдачи";
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = "Кафедра возврата";
-            this.Column9.Name = "Column9";
-            this.Column9.ReadOnly = true;
-            // 
-            // Column11
-            // 
-            this.Column11.HeaderText = "Местонахождение экземпляра";
-            this.Column11.Name = "Column11";
-            this.Column11.ReadOnly = true;
+            this.bReaderRegistrationAndRights.Location = new System.Drawing.Point(825, 123);
+            this.bReaderRegistrationAndRights.Name = "bReaderRegistrationAndRights";
+            this.bReaderRegistrationAndRights.Size = new System.Drawing.Size(288, 27);
+            this.bReaderRegistrationAndRights.TabIndex = 27;
+            this.bReaderRegistrationAndRights.Text = "Выдать права бесплатного абонемента";
+            this.bReaderRegistrationAndRights.UseVisualStyleBackColor = true;
+            this.bReaderRegistrationAndRights.Click += new System.EventHandler(this.bReaderRegistrationAndRights_Click);
             // 
             // Form1
             // 
@@ -2219,8 +2220,6 @@ namespace Circulation
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Button button30;
         private System.Windows.Forms.Button button31;
-        private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.Label label29;
         private System.Windows.Forms.ToolStripMenuItem количествоЧитателейСПравамиПлатногоИЕсплатногоАбонементаToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
@@ -2242,6 +2241,8 @@ namespace Circulation
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.Button bReaderRegistrationAndRights;
+        private LibflClassLibrary.Controls.Readers.ReaderRightsView readerRightsView1;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         //private CrystalReport1 CrystalReport11;

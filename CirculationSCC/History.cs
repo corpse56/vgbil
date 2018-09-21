@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
-namespace Circulation
+namespace CirculationSCC
 {
     public partial class History : Form
     {

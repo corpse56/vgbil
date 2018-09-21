@@ -6,7 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.ComponentModel;
 
-namespace Circulation
+namespace CirculationSCC
 {
     [Flags]
     public enum Rights

@@ -5,7 +5,7 @@ using System.Text;
 using System.Data;
 using System.Text.RegularExpressions;
 
-namespace Circulation
+namespace CirculationSCC
 {
     class DBReader : DB
     {

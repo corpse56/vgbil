@@ -240,12 +240,19 @@ namespace CirculationACC
             }
             switch (DEPARTMENT.ISSUE(EmpID))
             {
-                case 0:
+                case 0://успех
                     bConfirm.Enabled = false;
                     bCancel.Enabled = false;
                     CancelIssue();
                     Log();
                     DEPARTMENT = new Department();
+                    break;
+                case 1://у читателя нет прав для выдачи на дом
+                    bConfirm.Enabled = false;
+                    bCancel.Enabled = false;
+                    CancelIssue();
+                    DEPARTMENT = new Department();
+                    MessageBox.Show("Выдача на дом невозможна так как у читателя отсутствуют права бесплатного абонемента! Перейдите в формуляр читателя, чтобы выдать права.");
                     break;
             }
 
@@ -386,6 +393,7 @@ namespace CirculationACC
                     Formular.Columns.Clear();
                     AcceptButton = this.button10;
                     pictureBox2.Image = null;
+                    readerRightsView1.Clear();
                     break;
                 case "Учёт посещаемости":
                     label21.Text = "На сегодня посещаемость составляет: " + DEPARTMENT.GetAttendance() + " человек(а)";

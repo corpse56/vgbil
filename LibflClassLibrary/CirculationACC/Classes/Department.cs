@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LibflClassLibrary.Readers.ReadersRight;
+using LibflClassLibrary.Readers.ReadersRights;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -92,13 +94,27 @@ namespace CirculationACC
         public int ISSUE(int IDEMP)
         {
 
-
             DBGeneral dbg = new DBGeneral();
 
             if (ScannedBook.FUND == Bases.BJACC)
             {
-                dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
-                return 0;
+                if (CheckEmployeeRights())
+                {
+                    dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
+                    return 0;
+                }
+                else
+                {
+                    if (!CheckFreeAbonementRights())
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
+                        return 0;
+                    }
+                }
             }
             else
             {
@@ -110,6 +126,10 @@ namespace CirculationACC
                 {
                     if (ScannedBook.F899b == "ВХ")
                     {
+                        if (!CheckFreeAbonementRights())
+                        {
+                            return 1;
+                        }
                         dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
                     }
                     else
@@ -122,7 +142,24 @@ namespace CirculationACC
             }
             return 0;
         }
-
+        private bool CheckFreeAbonementRights()
+        {
+            ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(ScannedReader.ID);
+            if (rights[ReaderRightsEnum.FreeAbonement] == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        private bool CheckEmployeeRights()
+        {
+            ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(ScannedReader.ID);
+            if (rights[ReaderRightsEnum.Employee] == null)
+            {
+                return false;
+            }
+            return true;
+        }
         public void Prolong(int idiss, int days, int idemp)
         {
             DBReader dbr = new DBReader();

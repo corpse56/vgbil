@@ -22,7 +22,7 @@ namespace LibflClassLibrary.Controls.Readers
         public void Init(int NumberReader)
         {
             reader = ReaderInfo.GetReader(NumberReader);
-            label1.Text = "Регистрационные данные читателя №" + reader.NumberReader + ". " + reader.FamilyName + " " + reader.Name + " " + reader.FatherName;
+            label1.Text = "Регистрационные данные читателя №" + reader.NumberReader + ".\n " + reader.FamilyName + " " + reader.Name + " " + reader.FatherName;
 
             DataTable CountryTable = ReaderInfo.GetReaderCountries();
             cbCountry.DataSource = CountryTable;
