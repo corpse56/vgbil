@@ -5,6 +5,8 @@ using System.Text;
 using System.Data;
 using System.Drawing;
 using System.ComponentModel;
+using System.EnterpriseServices;
+using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
 
 namespace CirculationACC
 {
