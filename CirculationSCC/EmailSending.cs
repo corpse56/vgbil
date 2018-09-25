@@ -12,7 +12,7 @@ using Itenso.Rtf.Converter.Html;
 using Itenso.Rtf.Support;
 using Itenso.Rtf;
 
-namespace Circulation
+namespace CirculationSCC
 {
     public partial class EmailSending : Form
     {

@@ -107,5 +107,52 @@ namespace LibflClassLibrary.Readers.DB
             }
         }
 
+        internal void GiveFreeAbonementRight(int NumberReader)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(ReaderQueries.GIVE_FREE_ABONEMENT_RIGHTS, connection);
+                command.Parameters.Add("NumberReader", SqlDbType.Int).Value = NumberReader;
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        internal DataTable GetReaderCountries()
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ReaderQueries.GET_COUNTRIES_READERS, connection);
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
+        internal void UpdateRegistrationFields(ReaderInfo readerInfo)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(ReaderQueries.UPDATE_REGISTRATION_FIELDS, connection);
+                command.Parameters.Add("RegistrationCountry", SqlDbType.Int).Value = readerInfo.RegistrationCountry;
+                command.Parameters.Add("RegistrationRegion", SqlDbType.NVarChar).Value = readerInfo.RegistrationRegion;
+                command.Parameters.Add("RegistrationProvince", SqlDbType.NVarChar).Value = readerInfo.RegistrationProvince;
+                command.Parameters.Add("RegistrationDistrict", SqlDbType.NVarChar).Value = readerInfo.RegistrationDistrict;
+                command.Parameters.Add("RegistrationCity", SqlDbType.NVarChar).Value = readerInfo.RegistrationCity;
+                command.Parameters.Add("RegistrationStreet", SqlDbType.NVarChar).Value = readerInfo.RegistrationStreet;
+                command.Parameters.Add("RegistrationHouse", SqlDbType.NVarChar).Value = readerInfo.RegistrationHouse;
+                command.Parameters.Add("RegistrationFlat", SqlDbType.NVarChar).Value = readerInfo.RegistrationFlat;
+                command.Parameters.Add("NumberReader", SqlDbType.NVarChar).Value = readerInfo.NumberReader;
+                command.Parameters.Add("MobileTelephone", SqlDbType.NVarChar).Value = readerInfo.MobileTelephone;
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
     }
 }

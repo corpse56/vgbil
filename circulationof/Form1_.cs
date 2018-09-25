@@ -20,6 +20,8 @@ using System.Diagnostics;
 using System.IO.Ports;
 using CrystalDecisions.Windows.Forms;
 using System.ServiceModel;
+using LibflClassLibrary.Controls.Readers;
+
 namespace Circulation
 {
     public delegate void ScannedEventHandler(object sender, EventArgs ev);
@@ -331,8 +333,8 @@ namespace Circulation
                         label25.Text = ReaderRecordFormular.id;
                         pictureBox2.Image = ReaderRecordFormular.Photo;
                         this.FormularColumnsForming(ReaderRecordFormular.id);
-                        label29.Text = dbw.GetReaderRights(ReaderRecordFormular.id);
-
+                        //label29.Text = dbw.GetReaderRights(ReaderRecordFormular.id);
+                        readerRightsView1.Init(int.Parse(ReaderRecordFormular.id));
                         Sorting.WhatStat = Stats.Formular;
                         Sorting.AuthorSort = SortDir.None;
                         Sorting.ZagSort = SortDir.None;
@@ -1347,7 +1349,7 @@ namespace Circulation
                                     }
                                     else
                                     {
-                                        DialogResult dr = MessageBox.Show("” читател€ нет прав индивидуального абонемента. ’отите выдать ему такие права вместе с книгой?", " ¬нимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                                        DialogResult dr = MessageBox.Show("” читател€ нет прав бесплатного абонемента. ’отите выдать ему такие права вместе с книгой?", " ¬нимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                                         if (dr == DialogResult.Yes)
                                         {
                                             ReaderRecord.setReaderRight();
@@ -1661,6 +1663,7 @@ namespace Circulation
                     pictureBox2.Image = null;
                     Formular.Columns.Clear();
                     AcceptButton = this.button10;
+                    readerRightsView1.Clear();
                     break;
                 case "”чет услуг":
                     if (this.EmpID == "1")
@@ -2154,8 +2157,8 @@ namespace Circulation
             pictureBox2.Image = ReaderSetBarcode.Photo;
             ReaderRecordFormular = new dbReader(ReaderSetBarcode);
             this.FormularColumnsForming(ReaderSetBarcode.id);
-            label29.Text = dbw.GetReaderRights(ReaderSetBarcode.id);
-
+            //label29.Text = dbw.GetReaderRights(ReaderSetBarcode.id);
+            readerRightsView1.Init((int)numericUpDown3.Value);
         }
 
 
@@ -4620,6 +4623,19 @@ namespace Circulation
 
             this.FormularColumnsForming(ReaderRecordFormular.id);
 
+        }
+
+        private void bReaderRegistrationAndRights_Click(object sender, EventArgs e)
+        {
+            if (label25.Text == "")
+            {
+                MessageBox.Show("¬ведите номер или считайте штрихкод читател€!");
+                return;
+            }
+            ReaderVO reader = new ReaderVO(int.Parse(label25.Text));
+            fReaderRegistrationAndRights frr = new fReaderRegistrationAndRights();
+            frr.Init(reader.ID);
+            frr.ShowDialog();
         }
 
         //private void список„итателей» ниг¬ыданныхЌаƒом—ѕросроченным—роком—дачиToolStripMenuItem_Click(object sender, EventArgs e)

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 //using BoardNameMap = System.Collections.Generic.Dictionary<string /*boardName*/, int /*Number*/>;
 
-namespace Circulation
+namespace CirculationSCC
 {
     //using BoardThreadMap = System.Collections.Generic.Dictionary<string /*boardName*/, BoardNameMap>;
 

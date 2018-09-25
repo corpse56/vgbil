@@ -1,4 +1,4 @@
-﻿namespace Circulation
+﻿namespace CirculationSCC
 {
     partial class ReaderInformation
     {
@@ -98,8 +98,8 @@
             // pictureBox1
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.ErrorImage = global::Circulation.Properties.Resources.nofoto;
-            this.pictureBox1.InitialImage = global::Circulation.Properties.Resources.nofoto;
+            this.pictureBox1.ErrorImage = global::CirculationSCC.Properties.Resources.nofoto;
+            this.pictureBox1.InitialImage = global::CirculationSCC.Properties.Resources.nofoto;
             this.pictureBox1.Location = new System.Drawing.Point(889, 200);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(127, 156);

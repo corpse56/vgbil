@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using LibflClassLibrary.Readers.ReadersRight;
 
 namespace CirculationACC
 {
@@ -69,7 +70,7 @@ namespace CirculationACC
         /// <param name="ScannedReader"></param>
         /// <returns></returns>
         internal int ISSUE(BookVO ScannedBook, ReaderVO ScannedReader, int IDEMP)
-        {
+        {            
             DA.InsertCommand.Parameters.Clear();
             DA.InsertCommand.Parameters.Add("IDMAIN", SqlDbType.Int);
             DA.InsertCommand.Parameters.Add("IDDATA", SqlDbType.Int);

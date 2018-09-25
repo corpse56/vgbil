@@ -1,4 +1,4 @@
-namespace Circulation
+namespace CirculationSCC
 {
     partial class Form1
     {
@@ -99,6 +99,8 @@ namespace Circulation
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
+            this.button6 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -239,12 +241,12 @@ namespace Circulation
             // RPhoto
             // 
             this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RPhoto.ErrorImage = global::Circulation.Properties.Resources.nofoto;
-            this.RPhoto.InitialImage = global::Circulation.Properties.Resources.nofoto;
+            this.RPhoto.ErrorImage = global::CirculationSCC.Properties.Resources.nofoto;
+            this.RPhoto.InitialImage = global::CirculationSCC.Properties.Resources.nofoto;
             this.RPhoto.Location = new System.Drawing.Point(577, 12);
             this.RPhoto.Name = "RPhoto";
             this.RPhoto.Size = new System.Drawing.Size(93, 101);
-            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.RPhoto.TabIndex = 6;
             this.RPhoto.TabStop = false;
             this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
@@ -361,6 +363,8 @@ namespace Circulation
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.button6);
+            this.tabPage4.Controls.Add(this.readerRightsView1);
             this.tabPage4.Controls.Add(this.bComment);
             this.tabPage4.Controls.Add(this.button4);
             this.tabPage4.Controls.Add(this.button2);
@@ -418,9 +422,9 @@ namespace Circulation
             // pictureBox2
             // 
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox2.ErrorImage = global::Circulation.Properties.Resources.nofoto;
-            this.pictureBox2.InitialImage = global::Circulation.Properties.Resources.nofoto;
-            this.pictureBox2.Location = new System.Drawing.Point(593, 9);
+            this.pictureBox2.ErrorImage = global::CirculationSCC.Properties.Resources.nofoto;
+            this.pictureBox2.InitialImage = global::CirculationSCC.Properties.Resources.nofoto;
+            this.pictureBox2.Location = new System.Drawing.Point(663, 9);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(100, 114);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -543,7 +547,7 @@ namespace Circulation
             this.Formular.AllowUserToAddRows = false;
             this.Formular.AllowUserToDeleteRows = false;
             this.Formular.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Formular.Location = new System.Drawing.Point(7, 129);
+            this.Formular.Location = new System.Drawing.Point(7, 162);
             this.Formular.MultiSelect = false;
             this.Formular.Name = "Formular";
             this.Formular.ReadOnly = true;
@@ -551,7 +555,7 @@ namespace Circulation
             this.Formular.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.Formular.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Formular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Formular.Size = new System.Drawing.Size(1176, 360);
+            this.Formular.Size = new System.Drawing.Size(1176, 327);
             this.Formular.TabIndex = 2;
             // 
             // tabPage2
@@ -720,7 +724,7 @@ namespace Circulation
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem,
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(331, 224);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(331, 202);
             // 
             // выданные нигиЌа“екущийћоментToolStripMenuItem
             // 
@@ -792,6 +796,24 @@ namespace Circulation
             this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
+            // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(12, 70);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(600, 85);
+            this.readerRightsView1.TabIndex = 24;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(771, 99);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(174, 61);
+            this.button6.TabIndex = 25;
+            this.button6.Text = "¬ыдать права бесплатного абонемента";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form1
             // 
@@ -910,6 +932,8 @@ namespace Circulation
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label21;
+        private LibflClassLibrary.Controls.Readers.ReaderRightsView readerRightsView1;
+        private System.Windows.Forms.Button button6;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         //private CrystalReport1 CrystalReport11;

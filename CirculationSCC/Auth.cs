@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
-namespace Circulation
+namespace CirculationSCC
 {
     public partial class Auth : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace Circulation
+﻿namespace CirculationSCC
 {
     partial class FindReaderBySurname
     {

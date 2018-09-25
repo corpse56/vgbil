@@ -80,10 +80,40 @@ namespace LibflClassLibrary.Readers.Loaders
                     case "Password":
                         reader.HashedPassword = row[col].ToString();
                         break;
-
+                    case "RegistrationCountry":
+                        reader.RegistrationCountry = (int)row[col];
+                        break;
+                    case "RegistrationRegion":
+                        reader.RegistrationRegion = row[col].ToString();
+                        break;
+                    case "RegistrationProvince":
+                        reader.RegistrationProvince = row[col].ToString();
+                        break;
+                    case "RegistrationDistrict":
+                        reader.RegistrationDistrict = row[col].ToString();
+                        break;
+                    case "RegistrationCity":
+                        reader.RegistrationCity = row[col].ToString();
+                        break;
+                    case "RegistrationStreet":
+                        reader.RegistrationStreet = row[col].ToString();
+                        break;
+                    case "RegistrationHouse":
+                        reader.RegistrationHouse = row[col].ToString();
+                        break;
+                    case "RegistrationFlat":
+                        reader.RegistrationFlat = row[col].ToString();
+                        break;
                 }
             }
+            reader.Rights = ReaderRightsInfo.GetReaderRights(reader.NumberReader);
             return reader;
+        }
+
+        internal void GiveFreeAbonementRight(int numberReader)
+        {
+            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
+            dbw.GiveFreeAbonementRight(numberReader);
         }
 
         internal int GetReaderIdByOAuthToken(string token)
@@ -102,6 +132,12 @@ namespace LibflClassLibrary.Readers.Loaders
             ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             DataTable table = dbw.IsFiveElBooksIssued(Id);
             return (table.Rows.Count >= 5) ? true : false;
+        }
+
+        internal void UpdateRegistrationFields(ReaderInfo readerInfo)
+        {
+            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
+            dbw.UpdateRegistrationFields(readerInfo);
         }
 
         internal ReaderInfo Authorize(int numberReader, string password)
@@ -168,9 +204,16 @@ namespace LibflClassLibrary.Readers.Loaders
                         break;
 
                 }
-                result.Rights.Add(right);
+                result.RightsList.Add(right);
             }
             return result;
+        }
+
+        public static DataTable GetReaderCountries()
+        {
+            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
+            DataTable table = dbw.GetReaderCountries();
+            return table;
         }
 
     }
