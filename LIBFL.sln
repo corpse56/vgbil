@@ -244,6 +244,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dynamic example", "ExampleP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "visitor example", "ExampleProjects\visitor example\visitor example\visitor example.csproj", "{2A22DBD4-961C-4116-BDE2-C1457C62F065}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenamePDFWithBJPIN", "RenamePDFWithBJPIN\RenamePDFWithBJPIN.csproj", "{A7B2D729-46D3-48C7-AE2E-417A19BDD42D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -394,6 +396,10 @@ Global
 		{2A22DBD4-961C-4116-BDE2-C1457C62F065}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A22DBD4-961C-4116-BDE2-C1457C62F065}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A22DBD4-961C-4116-BDE2-C1457C62F065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7B2D729-46D3-48C7-AE2E-417A19BDD42D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7B2D729-46D3-48C7-AE2E-417A19BDD42D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7B2D729-46D3-48C7-AE2E-417A19BDD42D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7B2D729-46D3-48C7-AE2E-417A19BDD42D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -402,6 +408,7 @@ Global
 		{CEE46F9B-05A3-4729-86F6-F378F175834F} = {172B6033-F306-482B-B443-5D565ADCB12A}
 		{64066C7E-5692-46BE-AD4F-522A89310F08} = {F06A4AB3-9392-4157-B11A-9CCEE75EC75E}
 		{2A22DBD4-961C-4116-BDE2-C1457C62F065} = {F06A4AB3-9392-4157-B11A-9CCEE75EC75E}
+		{A7B2D729-46D3-48C7-AE2E-417A19BDD42D} = {172B6033-F306-482B-B443-5D565ADCB12A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA724ECA-4FCD-4BF4-9553-7CA9DBF07D8D}

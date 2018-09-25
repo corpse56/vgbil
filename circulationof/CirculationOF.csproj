@@ -57,6 +57,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bytescout.PDFExtractor, Version=9.1.0.3170, Culture=neutral, PublicKeyToken=f7dd1bd9d40a50eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bytescout.PDFExtractor.9.1.0.3170\lib\net20\Bytescout.PDFExtractor.dll</HintPath>
+    </Reference>
+    <Reference Include="Bytescout.PDFExtractor.OCRExtension, Version=9.1.0.3170, Culture=neutral, PublicKeyToken=f7dd1bd9d40a50eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bytescout.PDFExtractor.9.1.0.3170\lib\net20\Bytescout.PDFExtractor.OCRExtension.dll</HintPath>
+    </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\WINDOWS\assembly\GAC_MSIL\CrystalDecisions.CrystalReports.Engine\10.5.3700.0__692fbea5521e1304\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
@@ -422,6 +428,7 @@
     </Compile>
     <None Include="app.config" />
     <None Include="CirculationOF_TemporaryKey.pfx" />
+    <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -478,6 +485,10 @@
     <Compile Include="ViewFullSizePhoto.designer.cs">
       <DependentUpon>ViewFullSizePhoto.cs</DependentUpon>
     </Compile>
+    <None Include="tessdata\deu.traineddata" />
+    <None Include="tessdata\eng.traineddata" />
+    <None Include="tessdata\fra.traineddata" />
+    <None Include="tessdata\spa.traineddata" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="nofoto.png" />

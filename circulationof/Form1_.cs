@@ -1115,7 +1115,7 @@ namespace Circulation
         {
             if ((((ReaderRecord.ReaderRights & dbReader.Rights.PERS) != dbReader.Rights.PERS)) && (this.DepID == "29"))
             {
-                DialogResult dr = MessageBox.Show("У читателя нет прав персонального абонемента! Всё равно выдать?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                DialogResult dr = MessageBox.Show("У читателя нет прав платного абонемента! Всё равно выдать?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 if (dr == DialogResult.No)
                 {
                     CancelIssueInterface();
@@ -1128,7 +1128,7 @@ namespace Circulation
                 DateTime? dt = ReaderRecord.GetDateEndPersAbonement();
                 if ((dt < DateTime.Now) || (dt == null))
                 {
-                    DialogResult dr = MessageBox.Show("У читателя закончился срок персонального абонемента! Всё равно выдать?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                    DialogResult dr = MessageBox.Show("У читателя закончился срок платного абонемента! Всё равно выдать?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                     if (dr == DialogResult.No)
                     {
                         CancelIssueInterface();
@@ -1254,7 +1254,7 @@ namespace Circulation
             if (((((ReaderRecord.ReaderRights & dbReader.Rights.PERS) == dbReader.Rights.PERS) ||
                ((ReaderRecord.ReaderRights & dbReader.Rights.COLL) == dbReader.Rights.COLL))) && !homezal)//если коллективный или персональный
             {
-                DialogResult colper = MessageBox.Show("Читатель с правами персонального или коллективного абонемента хочет взять книгу. "+
+                DialogResult colper = MessageBox.Show("Читатель с правами платного или коллективного абонемента хочет взять книгу. "+
                     "\nДа - выдать книгу на дом "+
                     "\nНет - выдать книгу в залы ",
                     "Вопрос", MessageBoxButtons.YesNo);
@@ -1410,7 +1410,7 @@ namespace Circulation
                                     }
                                     else
                                     {
-                                        DialogResult dr = MessageBox.Show("У читателя нет прав индивидуального персонального абонемента. Хотите выдать ему такие права вместе с книгой?", " Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                                        DialogResult dr = MessageBox.Show("У читателя нет прав бесплатного абонемента. Хотите выдать ему такие права вместе с книгой?", " Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                                         if (dr == DialogResult.Yes)
                                         {
                                             ReaderRecord.setReaderRight();
