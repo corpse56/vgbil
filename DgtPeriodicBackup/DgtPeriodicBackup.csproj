@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="XMLConnections, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\UpDgtPeriodic\UpDgtPeriodic\bin\Debug\XMLConnections.dll</HintPath>
+      <HintPath>..\packages\XMLConnections.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

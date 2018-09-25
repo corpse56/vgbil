@@ -39,7 +39,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -127,7 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibflClassLibrary\LibflClassLibrary.csproj">
-      <Project>{CA4020F7-B048-4DFA-9E13-3E04DB83B093}</Project>
+      <Project>{ca4020f7-b048-4dfa-9e13-3e04db83b093}</Project>
       <Name>LibflClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>

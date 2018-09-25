@@ -2791,12 +2791,1327 @@
 /OneTimeProjectForGlueGoogleExportXMLs/obj/Debug/OneTimeProjectForGlueGoogleExportXMLs.pdb
 /LibflClassLibrary/obj/Debug/LibflClassLibrary.Controls.Readers.fReaderRegistrationAndRights.resources
 /OneTimeProjectForGlueGoogleExportXMLs/obj/Debug/OneTimeProjectForGlueGoogleExportXMLs.csproj.FileListAbsolute.txt
+/ALISAPI/bin/LibflClassLibrary.dll.config
+/ALISAPI_TEST/bin/Debug/LibflClassLibrary.dll.config
+/BookkeepingForOrder/bin/Debug/LibflClassLibrary.dll.config
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.ClientDoc.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.CommLayer.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.CommonControls.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.Controllers.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.CubeDefModel.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.DataDefModel.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.DataSetConversion.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.ObjectFactory.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.Prompting.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.ReportDefModel.dll
+/Circulation/bin/Debug/CrystalDecisions.ReportAppServer.XmlSerialize.dll
+/Circulation/bin/Debug/FlashControlV71.dll
+/Circulation/bin/Debug/Itenso.Sys.dll
+/Circulation/bin/Debug/ShockwaveFlashObjects.dll
+/Circulation/bin/Debug/cs/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/cs/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/cs/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/cs/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/da/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/da/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/da/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/da/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/de/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/de/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/de/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/de/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/en/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/en/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/en/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/en/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/es/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/es/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/es/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/es/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/fi/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/fi/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/fi/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/fi/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/fr/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/fr/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/fr/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/fr/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/hu/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/hu/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/hu/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/hu/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/it/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/it/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/it/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/it/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/ja/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/ja/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/ja/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/ja/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/ko/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/ko/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/ko/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/ko/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/log4net.dll
+/Circulation/bin/Debug/log4net.xml
+/Circulation/bin/Debug/nb-NO/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/nb-NO/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/nb-NO/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/nb-NO/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/nl/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/nl/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/nl/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/nl/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/pl/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/pl/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/pl/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/pl/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/pt/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/pt/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/pt/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/pt/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/sk/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/sk/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/sk/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/sk/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/sv/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/sv/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/sv/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/sv/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/th/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/th/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/th/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/th/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/tr/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/tr/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/tr/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/tr/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/zh-CHS/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/zh-CHS/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/zh-CHS/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/zh-CHS/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/bin/Debug/zh-CHT/CrystalDecisions.CrystalReports.Engine.resources.dll
+/Circulation/bin/Debug/zh-CHT/CrystalDecisions.ReportSource.resources.dll
+/Circulation/bin/Debug/zh-CHT/CrystalDecisions.Shared.resources.dll
+/Circulation/bin/Debug/zh-CHT/CrystalDecisions.Windows.Forms.resources.dll
+/Circulation/packages.config
+/CirculationACC/bin/Debug/FlashControlV71.dll
+/CirculationACC/bin/Debug/LibflClassLibrary.dll.config
+/CirculationACC/bin/Debug/ShockwaveFlashObjects.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.ClientDoc.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.CommLayer.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.CommonControls.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.Controllers.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.CubeDefModel.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.DataDefModel.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.DataSetConversion.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.ObjectFactory.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.Prompting.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.ReportDefModel.dll
+/CirculationFCC/bin/Debug/CrystalDecisions.ReportAppServer.XmlSerialize.dll
+/CirculationFCC/bin/Debug/FlashControlV71.dll
+/CirculationFCC/bin/Debug/LibflClassLibrary.dll.config
 /CirculationFCC/bin/Debug/MySql.Data.dll
+/CirculationFCC/bin/Debug/ShockwaveFlashObjects.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.ClientDoc.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.CommLayer.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.CommonControls.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.Controllers.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.CubeDefModel.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.DataDefModel.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.DataSetConversion.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.ObjectFactory.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.Prompting.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.ReportDefModel.dll
+/CirculationSCC/bin/Debug/CrystalDecisions.ReportAppServer.XmlSerialize.dll
+/CirculationSCC/bin/Debug/FlashControlV71.dll
+/CirculationSCC/bin/Debug/ShockwaveFlashObjects.dll
+/CountOfDigitizedPages/bin/Debug/Microsoft.Office.Interop.Excel.dll
+/CountOfDigitizedPages/bin/Debug/stdole.dll
+/CountOfDigitizedPages/packages.config
+/DocList/bin/Debug/CrystalDecisions.ReportAppServer.CommLayer.dll
+/DocList/bin/Debug/CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+/DocList/bin/Debug/CrystalDecisions.ReportAppServer.Controllers.dll
+/DocList/bin/Debug/CrystalDecisions.ReportAppServer.CubeDefModel.dll
+/DocList/bin/Debug/CrystalDecisions.ReportAppServer.DataDefModel.dll
+/DocList/bin/Debug/CrystalDecisions.ReportAppServer.ReportDefModel.dll
+/DocList/bin/Debug/FlashControlV71.dll
+/DocList/bin/Debug/ShockwaveFlashObjects.dll
+/DocList/bin/Debug/cs/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/da/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/de/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/en/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/es/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/fi/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/fr/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/hu/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/it/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/ja/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/ko/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/nb-NO/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/nl/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/pl/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/pt/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/sk/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/sv/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/th/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/tr/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/zh-CHS/CrystalDecisions.Shared.resources.dll
+/DocList/bin/Debug/zh-CHT/CrystalDecisions.Shared.resources.dll
+/ExportBJ_XMLRUSMARC/bin/Debug/ExportBJ_XMLRUSMARC.exe.config
+/ExportBJ_XMLRUSMARC/bin/Debug/LibflClassLibrary.dll.config
+/ExportBJ_XMLRUSMARC/bin/Debug/MySql.Data.dll
+/ExportFullDatabaseToExcel/packages.config
+/ExportToVufind/bin/Debug/LibflClassLibrary.dll.config
+/ExportToVufind/bin/Debug/Newtonsoft.Json.xml
+/GenStat/bin/Debug/CrystalDecisions.ReportAppServer.CommLayer.dll
+/GenStat/bin/Debug/CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+/GenStat/bin/Debug/CrystalDecisions.ReportAppServer.Controllers.dll
+/GenStat/bin/Debug/CrystalDecisions.ReportAppServer.CubeDefModel.dll
+/GenStat/bin/Debug/CrystalDecisions.ReportAppServer.DataDefModel.dll
+/GenStat/bin/Debug/CrystalDecisions.ReportAppServer.ReportDefModel.dll
+/GenStat/bin/Debug/FlashControlV71.dll
+/GenStat/bin/Debug/ShockwaveFlashObjects.dll
+/GenStat/bin/Debug/cs/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/da/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/de/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/en/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/es/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/fi/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/fr/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/hu/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/it/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/ja/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/ko/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/nb-NO/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/nl/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/pl/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/pt/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/sk/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/sv/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/th/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/tr/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/zh-CHS/CrystalDecisions.Shared.resources.dll
+/GenStat/bin/Debug/zh-CHT/CrystalDecisions.Shared.resources.dll
+/InsertElectronicExemplarBJ/bin/Debug/LibflClassLibrary.dll.config
+/InsertElectronicExemplarBJ/bin/Debug/MySql.Data.dll
+/LIBFLDataProviderAPI/Bin/CrystalDecisions.CrystalReports.Engine.dll
+/LIBFLDataProviderAPI/Bin/CrystalDecisions.ReportSource.dll
+/LIBFLDataProviderAPI/Bin/CrystalDecisions.Shared.dll
+/LIBFLDataProviderAPI/Bin/CrystalDecisions.Windows.Forms.dll
+/LIBFLDataProviderAPI/Bin/Google.Protobuf.dll
+/LIBFLDataProviderAPI/Bin/MySql.Data.dll
+/LibflClassLibrary/app.config
+/LibflClassLibrary/bin/Debug/CrystalDecisions.CrystalReports.Engine.dll
+/LibflClassLibrary/bin/Debug/CrystalDecisions.ReportSource.dll
+/LibflClassLibrary/bin/Debug/CrystalDecisions.Shared.dll
+/LibflClassLibrary/bin/Debug/CrystalDecisions.Windows.Forms.dll
+/LibflClassLibrary/bin/Debug/FlashControlV71.dll
+/LibflClassLibrary/bin/Debug/LibflClassLibrary.dll.config
+/LibflClassLibrary/bin/Debug/Microsoft.Office.Interop.Word.dll
+/LibflClassLibrary/bin/Debug/ShockwaveFlashObjects.dll
+/LibflClassLibrary/bin/Debug/stdole.dll
+/LibflClassLibrary/packages.config
+/OAI-PMH/Bin/CrystalDecisions.CrystalReports.Engine.dll
+/OAI-PMH/Bin/CrystalDecisions.ReportSource.dll
+/OAI-PMH/Bin/CrystalDecisions.Shared.dll
+/OAI-PMH/Bin/CrystalDecisions.Windows.Forms.dll
+/OAI-PMH/Bin/Google.Protobuf.dll
+/OAI-PMH/Bin/MySql.Data.dll
+/WriteOff/bin/Debug/System.Xml.Linq.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.ClientDoc.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.CommLayer.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.CommonControls.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.Controllers.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.CubeDefModel.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.DataDefModel.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.DataSetConversion.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.ObjectFactory.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.Prompting.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.ReportDefModel.dll
+/circulationof/bin/Debug/CrystalDecisions.ReportAppServer.XmlSerialize.dll
+/circulationof/bin/Debug/FlashControlV71.dll
+/circulationof/bin/Debug/ShockwaveFlashObjects.dll
+/elcir/Bin/CrystalDecisions.CrystalReports.Engine.dll
+/elcir/Bin/CrystalDecisions.ReportSource.dll
+/elcir/Bin/CrystalDecisions.Shared.dll
+/elcir/Bin/CrystalDecisions.Windows.Forms.dll
+/elcir/Bin/Google.Protobuf.dll
+/elcir/Bin/MySql.Data.dll
+/packages/AjaxControlToolkit.18.1.0/AjaxControlToolkit.18.1.0.nupkg
+/packages/AjaxControlToolkit.18.1.0/Content/Web.config.transform
+/packages/AjaxControlToolkit.18.1.0/lib/net40/AjaxControlToolkit.dll
+/packages/AjaxControlToolkit.18.1.0/readme.txt
+/packages/CrystalDecisions.CrystalReports.Engine.1.0.0/CrystalDecisions.CrystalReports.Engine.1.0.0.nupkg
+/packages/CrystalDecisions.CrystalReports.Engine.1.0.0/lib/CrystalDecisions.CrystalReports.Engine.dll
+/packages/CrystalDecisions.ReportSource.1.0.0/CrystalDecisions.ReportSource.1.0.0.nupkg
+/packages/CrystalDecisions.ReportSource.1.0.0/lib/CrystalDecisions.ReportSource.dll
+/packages/CrystalDecisions.Shared.1.0.0/CrystalDecisions.Shared.1.0.0.nupkg
+/packages/CrystalDecisions.Shared.1.0.0/lib/CrystalDecisions.Shared.dll
+/packages/CrystalDecisions.Windows.Forms.1.0.0/CrystalDecisions.Windows.Forms.1.0.0.nupkg
+/packages/CrystalDecisions.Windows.Forms.1.0.0/lib/CrystalDecisions.Windows.Forms.dll
+/packages/CrystalReports.Engine.13.0.3501/CrystalReports.Engine.13.0.3501.nupkg
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/CrystalDecisions.CrystalReports.Engine.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/cs/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/da/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/de/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/en/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/es/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/fi/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/fr/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/hu/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/it/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/ja/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/ko/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/nb-NO/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/nl/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/pl/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/pt/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/ru/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/sk/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/sv/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/th/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/tr/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/zh-CHS/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.Engine.13.0.3501/lib/net20/zh-CHT/CrystalDecisions.CrystalReports.Engine.resources.dll
+/packages/CrystalReports.FlashControlV71.13.0.3501/CrystalReports.FlashControlV71.13.0.3501.nupkg
+/packages/CrystalReports.FlashControlV71.13.0.3501/lib/net20/FlashControlV71.dll
+/packages/CrystalReports.FlashControlV71.13.0.3501/lib/net20/ShockwaveFlashObjects.dll
+/packages/CrystalReports.ReportAppServer.ClientDoc.13.0.3501/CrystalReports.ReportAppServer.ClientDoc.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.ClientDoc.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.ClientDoc.dll
+/packages/CrystalReports.ReportAppServer.CommLayer.13.0.3501/CrystalReports.ReportAppServer.CommLayer.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.CommLayer.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.CommLayer.dll
+/packages/CrystalReports.ReportAppServer.CommonControls.13.0.3501/CrystalReports.ReportAppServer.CommonControls.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.CommonControls.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.CommonControls.dll
+/packages/CrystalReports.ReportAppServer.CommonObjectModel.13.0.3501/CrystalReports.ReportAppServer.CommonObjectModel.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.CommonObjectModel.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+/packages/CrystalReports.ReportAppServer.Controllers.13.0.3501/CrystalReports.ReportAppServer.Controllers.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.Controllers.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.Controllers.dll
+/packages/CrystalReports.ReportAppServer.CubeDefModel.13.0.3501/CrystalReports.ReportAppServer.CubeDefModel.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.CubeDefModel.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.CubeDefModel.dll
+/packages/CrystalReports.ReportAppServer.DataDefModel.13.0.3501/CrystalReports.ReportAppServer.DataDefModel.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.DataDefModel.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.DataDefModel.dll
+/packages/CrystalReports.ReportAppServer.DataSetConversion.13.0.3501/CrystalReports.ReportAppServer.DataSetConversion.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.DataSetConversion.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.DataSetConversion.dll
+/packages/CrystalReports.ReportAppServer.ObjectFactory.13.0.3501/CrystalReports.ReportAppServer.ObjectFactory.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.ObjectFactory.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.ObjectFactory.dll
+/packages/CrystalReports.ReportAppServer.Prompting.13.0.3501/CrystalReports.ReportAppServer.Prompting.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.Prompting.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.Prompting.dll
+/packages/CrystalReports.ReportAppServer.ReportDefModel.13.0.3501/CrystalReports.ReportAppServer.ReportDefModel.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.ReportDefModel.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.ReportDefModel.dll
+/packages/CrystalReports.ReportAppServer.XmlSerialize.13.0.3501/CrystalReports.ReportAppServer.XmlSerialize.13.0.3501.nupkg
+/packages/CrystalReports.ReportAppServer.XmlSerialize.13.0.3501/lib/net20/CrystalDecisions.ReportAppServer.XmlSerialize.dll
+/packages/CrystalReports.ReportSource.13.0.3501/CrystalReports.ReportSource.13.0.3501.nupkg
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/CrystalDecisions.ReportSource.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/cs/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/da/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/de/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/en/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/es/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/fi/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/fr/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/hu/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/it/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/ja/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/ko/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/nb-NO/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/nl/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/pl/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/pt/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/ru/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/sk/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/sv/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/th/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/tr/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/zh-CHS/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.ReportSource.13.0.3501/lib/net20/zh-CHT/CrystalDecisions.ReportSource.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/CrystalReports.Shared.13.0.3501.nupkg
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/CrystalDecisions.Shared.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/cs/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/da/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/de/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/en/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/es/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/fi/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/fr/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/hu/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/it/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/ja/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/ko/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/nb-NO/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/nl/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/pl/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/pt/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/ru/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/sk/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/sv/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/th/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/tr/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/zh-CHS/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Shared.13.0.3501/lib/net20/zh-CHT/CrystalDecisions.Shared.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/CrystalReports.Windows.Forms.13.0.3501.nupkg
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/CrystalDecisions.Windows.Forms.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/cs/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/da/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/de/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/en/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/es/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/fi/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/fr/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/hu/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/it/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/ja/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/ko/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/nb-NO/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/nl/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/pl/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/pt/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/ru/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/sk/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/sv/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/th/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/tr/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/zh-CHS/CrystalDecisions.Windows.Forms.resources.dll
+/packages/CrystalReports.Windows.Forms.13.0.3501/lib/net20/zh-CHT/CrystalDecisions.Windows.Forms.resources.dll
+/packages/Intenso/Itenso.Rtf.Converter.Html.dll
+/packages/Intenso/Itenso.Rtf.Interpreter.dll
+/packages/Intenso/Itenso.Rtf.Parser.dll
+/packages/Intenso/Itenso.Sys.dll
+/packages/Interop.OposScanner_CCO.dll
+/packages/Magick.NET-x64.dll
+/packages/Microsoft.AspNet.WebApi.Client.5.2.4/lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.dll
+/packages/Microsoft.AspNet.WebApi.Client.5.2.4/lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.xml
+/packages/Microsoft.Office.Interop.Excel.15.0.4795.1000/Microsoft.Office.Interop.Excel.15.0.4795.1000.nupkg
+/packages/Microsoft.Office.Interop.Excel.15.0.4795.1000/lib/net20/Microsoft.Office.Interop.Excel.dll
+/packages/Microsoft.Office.Interop.Word.15.0.4797.1003/Microsoft.Office.Interop.Word.15.0.4797.1003.nupkg
+/packages/Microsoft.Office.Interop.Word.15.0.4797.1003/lib/net20/Microsoft.Office.Interop.Word.dll
+/packages/MySQL/Connector.J 5.1/CHANGES
+/packages/MySQL/Connector.J 5.1/COPYING
+/packages/MySQL/Connector.J 5.1/README
+/packages/MySQL/Connector.J 5.1/README.txt
+/packages/MySQL/Connector.J 5.1/build.xml
+/packages/MySQL/Connector.J 5.1/docs/README.txt
+/packages/MySQL/Connector.J 5.1/docs/connector-j.html
+/packages/MySQL/Connector.J 5.1/docs/connector-j.pdf
+/packages/MySQL/Connector.J 5.1/mysql-connector-java-5.1.36-bin.jar
+/packages/MySQL/Connector.J 5.1/src.zip
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/FabricCommunicationException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/FabricConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/FabricStateResponse.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/HashShardMapping.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/RangeShardMapping.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/Response.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/Server.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/ServerGroup.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/ServerMode.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/ServerRole.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/ShardIndex.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/ShardMapping.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/ShardMappingFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/ShardTable.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/ShardingType.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/hibernate/FabricMultiTenantConnectionProvider.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/jdbc/ErrorReportingExceptionInterceptor.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/jdbc/FabricMySQLConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/jdbc/FabricMySQLConnectionProperties.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/jdbc/FabricMySQLConnectionProxy.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/jdbc/FabricMySQLDataSource.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/jdbc/FabricMySQLDriver.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/jdbc/JDBC4FabricMySQLConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/jdbc/JDBC4FabricMySQLConnectionProxy.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/proto/xmlrpc/AuthenticatedXmlRpcMethodCaller.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/proto/xmlrpc/DigestAuthentication.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/proto/xmlrpc/InternalXmlRpcMethodCaller.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/proto/xmlrpc/ResultSetParser.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/proto/xmlrpc/XmlRpcClient.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/proto/xmlrpc/XmlRpcMethodCaller.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/Client.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/Array.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/Data.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/Fault.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/Member.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/MethodCall.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/MethodResponse.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/Param.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/Params.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/ResponseParser.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/Struct.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/base/Value.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/fabric/xmlrpc/exceptions/MySQLFabricException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/AbandonedConnectionCleanupThread.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/AssertionFailedException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/AuthenticationPlugin.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/BalanceStrategy.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/BestResponseTimeBalanceStrategy.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Blob.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/BlobFromLocator.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Buffer.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/BufferRow.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ByteArrayRow.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/CacheAdapter.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/CacheAdapterFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/CachedResultSetMetaData.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/CallableStatement.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/CharsetMapping.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Charsets.properties
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Clob.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/CommunicationsException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/CompressedInputStream.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Connection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ConnectionFeatureNotAvailableException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ConnectionGroup.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ConnectionGroupManager.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ConnectionImpl.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ConnectionLifecycleInterceptor.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ConnectionProperties.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ConnectionPropertiesImpl.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ConnectionPropertiesTransform.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Constants.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/DatabaseMetaData.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/DatabaseMetaDataUsingInfoSchema.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/DocsConnectionPropsHelper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Driver.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/EscapeProcessor.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/EscapeProcessorResult.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/EscapeTokenizer.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ExceptionInterceptor.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ExportControlled.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Extension.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/FailoverConnectionProxy.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Field.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/IterateBlock.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4CallableStatement.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4ClientInfoProvider.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4ClientInfoProviderSP.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4CommentClientInfoProvider.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4Connection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4DatabaseMetaData.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4DatabaseMetaDataUsingInfoSchema.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4LoadBalancedMySQLConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4MultiHostMySQLConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4MySQLConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4MysqlSQLXML.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4NClob.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4PreparedStatement.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4PreparedStatementHelper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4ResultSet.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4ServerPreparedStatement.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/JDBC4UpdatableResultSet.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/LicenseConfiguration.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/LoadBalanceExceptionChecker.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/LoadBalancedAutoCommitInterceptor.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/LoadBalancedConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/LoadBalancedMySQLConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/LoadBalancingConnectionProxy.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/LocalizedErrorMessages.properties
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Messages.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/MiniAdmin.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/MultiHostConnectionProxy.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/MultiHostMySQLConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/MySQLConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/MysqlDataTruncation.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/MysqlDefs.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/MysqlErrorNumbers.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/MysqlIO.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/MysqlParameterMetadata.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/MysqlSavepoint.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/NamedPipeSocketFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/NdbLoadBalanceExceptionChecker.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/NetworkResources.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/NoSubInterceptorWrapper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/NonRegisteringDriver.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/NonRegisteringReplicationDriver.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/NotImplemented.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/NotUpdatable.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/OperationNotSupportedException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/OutputStreamWatcher.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/PacketTooBigException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ParameterBindings.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/PerConnectionLRUFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/PerVmServerConfigCacheFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/PingTarget.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/PreparedStatement.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ProfilerEventHandlerFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/RandomBalanceStrategy.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ReflectiveStatementInterceptorAdapter.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ReplicationConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ReplicationConnectionGroup.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ReplicationConnectionGroupManager.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ReplicationDriver.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ResultSetImpl.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ResultSetInternalMethods.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ResultSetMetaData.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ResultSetRow.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/RowData.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/RowDataCursor.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/RowDataDynamic.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/RowDataStatic.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/SQLError.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Security.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/SequentialBalanceStrategy.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/ServerPreparedStatement.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/SingleByteCharsetConverter.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/SocketFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/SocketMetadata.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/SocksProxySocketFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/StandardLoadBalanceExceptionChecker.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/StandardSocketFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Statement.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/StatementImpl.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/StatementInterceptor.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/StatementInterceptorV2.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/StreamingNotifiable.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/StringUtils.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/TimeUtil.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/TimeZoneMapping.properties
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/UpdatableResultSet.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/Util.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/V1toV2StatementInterceptorAdapter.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/WatchableOutputStream.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/WatchableWriter.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/WriterWatcher.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/authentication/MysqlClearPasswordPlugin.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/authentication/MysqlNativePasswordPlugin.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/authentication/MysqlOldPasswordPlugin.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/authentication/Sha256PasswordPlugin.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/configs/3-0-Compat.properties
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/configs/5-0-Compat.properties
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/configs/clusterBase.properties
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/configs/coldFusion.properties
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/configs/fullDebug.properties
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/configs/maxPerformance.properties
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/configs/solarisMaxPerformance.properties
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/DeadlockTimeoutRollbackMarker.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLDataException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLIntegrityConstraintViolationException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLInvalidAuthorizationSpecException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLNonTransientConnectionException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLNonTransientException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLQueryInterruptedException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLStatementCancelledException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLSyntaxErrorException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLTimeoutException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLTransactionRollbackException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLTransientConnectionException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/MySQLTransientException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/CommunicationsException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLDataException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLIntegrityConstraintViolationException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLInvalidAuthorizationSpecException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLNonTransientConnectionException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLNonTransientException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLQueryInterruptedException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLSyntaxErrorException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLTimeoutException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLTransactionRollbackException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLTransientConnectionException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/exceptions/jdbc4/MySQLTransientException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/integration/c3p0/MysqlConnectionTester.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/integration/jboss/ExtendedMysqlExceptionSorter.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/integration/jboss/MysqlValidConnectionChecker.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/interceptors/ResultSetScannerInterceptor.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/interceptors/ServerStatusDiffInterceptor.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/interceptors/SessionAssociationInterceptor.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/CallableStatementWrapper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/ConnectionWrapper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/JDBC4CallableStatementWrapper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/JDBC4ConnectionWrapper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/JDBC4MysqlPooledConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/JDBC4MysqlXAConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/JDBC4PreparedStatementWrapper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/JDBC4StatementWrapper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/JDBC4SuspendableXAConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/MysqlConnectionPoolDataSource.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/MysqlDataSource.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/MysqlDataSourceFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/MysqlPooledConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/MysqlXAConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/MysqlXADataSource.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/MysqlXAException.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/MysqlXid.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/PreparedStatementWrapper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/StatementWrapper.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/SuspendableXAConnection.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jdbc2/optional/WrapperBase.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jmx/LoadBalanceConnectionGroupManager.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jmx/LoadBalanceConnectionGroupManagerMBean.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jmx/ReplicationGroupManager.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/jmx/ReplicationGroupManagerMBean.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/log/Jdk14Logger.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/log/Log.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/log/LogFactory.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/log/LogUtils.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/log/NullLogger.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/log/Slf4JLogger.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/log/StandardLogger.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/profiler/LoggingProfilerEventHandler.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/profiler/ProfilerEvent.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/profiler/ProfilerEventHandler.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/util/Base64Decoder.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/util/BaseBugReport.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/util/ErrorMappingsDocGenerator.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/util/LRUCache.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/util/PropertiesDocGenerator.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/util/ReadAheadInputStream.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/util/ResultSetUtil.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/util/ServerController.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/util/TimezoneDump.java
+/packages/MySQL/Connector.J 5.1/src/com/mysql/jdbc/util/VersionFSHierarchyMaker.java
+/packages/MySQL/Connector.J 5.1/src/demo/fabric/Client1_Fabric.java
+/packages/MySQL/Connector.J 5.1/src/demo/fabric/Employee.java
+/packages/MySQL/Connector.J 5.1/src/demo/fabric/EmployeesJdbc.java
+/packages/MySQL/Connector.J 5.1/src/demo/fabric/HibernateFabric.java
+/packages/MySQL/Connector.J 5.1/src/demo/fabric/resources/com/mysql/fabric/demo/employee.hbm.xml
+/packages/MySQL/Connector.J 5.1/src/doc/sources/pom.xml
+/packages/MySQL/Connector.J 5.1/src/lib/c3p0-0.9.1-pre6.jar
+/packages/MySQL/Connector.J 5.1/src/lib/c3p0-0.9.1-pre6.src.zip
+/packages/MySQL/Connector.J 5.1/src/lib/jboss-common-jdbc-wrapper-src.jar
+/packages/MySQL/Connector.J 5.1/src/lib/jboss-common-jdbc-wrapper.jar
+/packages/MySQL/Connector.J 5.1/src/lib/slf4j-api-1.6.1.jar
+/packages/MySQL/Connector.J 5.1/src/org/gjt/mm/mysql/Driver.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/BaseStatementInterceptor.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/BaseTestCase.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/UnreliableSocketFactory.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/BaseFabricTestCase.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/SetupFabricTestsuite.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/TestAdminCommands.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/TestDumpCommands.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/TestResultSetParser.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/TestShardMapping.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/TestXmlRpcCore.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/jdbc/TestBasicConnection.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/jdbc/TestFabricMySQLConnectionSharding.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/jdbc/TestHABasics.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/jdbc/TestHashSharding.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/fabric/jdbc/TestRegressions.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/perf/BasePerfTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/perf/LoadStorePerfTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/perf/RetrievalPerfTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/BlobRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/CachedRowsetTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/CallableStatementRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/CharsetRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/ConnectionRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/DataSourceRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/EscapeProcessorRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/MetaDataRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/MicroPerformanceRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/NumbersRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/PooledConnectionRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/ResultSetRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/StatementRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/StressRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/StringRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/SubqueriesRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/SyntaxRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/UtilsRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/jdbc4/ConnectionRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/jdbc4/ExceptionSubclassesTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/jdbc4/MetaDataRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/regression/jdbc4/StatementRegressionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/BlobTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/CallableStatementTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/CharsetTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/ConnectionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/DataSourceTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/DateTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/EscapeProcessingTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/MetadataTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/MiniAdminTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/MultiHostConnectionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/NumbersTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/ReadOnlyCallableStatementTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/ResultSetTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/SSLTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/ServerControllerTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/SimpleTransformer.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/SplitDBdotNameTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/StatementsTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/StringUtilsTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/TestBug57662Logger.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/TestLifecycleInterceptor.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/TransactionTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/TraversalTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/UpdatabilityTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/UtilsTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/XATest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/jdbc4/StatementsTest.java
+/packages/MySQL/Connector.J 5.1/src/testsuite/simple/tb2-data.txt.gz
+/packages/MySQL/Connector.J 5.1/src/testsuite/ssl-test-certs/ca-cert.pem
+/packages/MySQL/Connector.J 5.1/src/testsuite/ssl-test-certs/ca-key.pem
+/packages/MySQL/Connector.J 5.1/src/testsuite/ssl-test-certs/mykey.pem
+/packages/MySQL/Connector.J 5.1/src/testsuite/ssl-test-certs/mykey.pub
+/packages/MySQL/Connector.J 5.1/src/testsuite/ssl-test-certs/server-cert.pem
+/packages/MySQL/Connector.J 5.1/src/testsuite/ssl-test-certs/server-key.pem
+/packages/MySQL/Connector.J 5.1/src/testsuite/ssl-test-certs/server-req.pem
+/packages/MySQL/Connector.J 5.1/src/testsuite/ssl-test-certs/test-cert-store
+/packages/MySQL/Connector.NET 6.9/Assemblies/RT/MySql.Data.RT.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v2.0/MySql.Data.CF.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v2.0/MySql.Data.Entity.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v2.0/MySql.Data.InstallState
+/packages/MySQL/Connector.NET 6.9/Assemblies/v2.0/MySql.Data.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v2.0/MySql.Fabric.Plugin.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v2.0/MySql.Web.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v2.0/MySql.Web.v20.InstallState
+/packages/MySQL/Connector.NET 6.9/Assemblies/v2.0/MySql.Web.v20.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v4.0/MySql.Data.Entity.EF6.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v4.0/MySql.Data.Entity.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v4.0/MySql.Data.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v4.0/MySql.Fabric.Plugin.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v4.0/MySql.Web.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v4.5/MySql.Data.Entity.EF5.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v4.5/MySql.Data.Entity.EF6.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v4.5/MySql.Data.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v4.5/MySql.Fabric.Plugin.dll
+/packages/MySQL/Connector.NET 6.9/Assemblies/v4.5/MySql.Web.dll
+/packages/MySQL/Connector.NET 6.9/CHANGES
+/packages/MySQL/Connector.NET 6.9/COPYING
+/packages/MySQL/Connector.NET 6.9/Documentation/COL_Master.HxC
+/packages/MySQL/Connector.NET 6.9/Documentation/COL_Master.HxT
+/packages/MySQL/Connector.NET 6.9/Documentation/COL_Master_A.HxK
+/packages/MySQL/Connector.NET 6.9/Documentation/COL_Master_F.HxK
+/packages/MySQL/Connector.NET 6.9/Documentation/COL_Master_K.HxK
+/packages/MySQL/Connector.NET 6.9/Documentation/COL_Master_N.HxK
+/packages/MySQL/Connector.NET 6.9/Documentation/ConnectorNET.chm
+/packages/MySQL/Connector.NET 6.9/Documentation/HelpContentSetup.msha
+/packages/MySQL/Connector.NET 6.9/Documentation/Licenses for Third-Party Components/license-antlr.html
+/packages/MySQL/Connector.NET 6.9/Documentation/Licenses for Third-Party Components/license-us-secure-hash.html
+/packages/MySQL/Connector.NET 6.9/Documentation/Licenses for Third-Party Components/license-zlib-net.html
+/packages/MySQL/Connector.NET 6.9/Documentation/Licenses for Third-Party Components/license-zlib.html
+/packages/MySQL/Connector.NET 6.9/Documentation/MySql.Data.HxS
+/packages/MySQL/Connector.NET 6.9/Documentation/MySql.Data.mshc
+/packages/MySQL/Connector.NET 6.9/Documentation/help.cmd
+/packages/MySQL/Connector.NET 6.9/README
+/packages/MySQL/Connector.NET 6.9/Release Notes.txt
+/packages/MySQL/Connector.NET 6.9/Samples/Async/cs/App.ico
+/packages/MySQL/Connector.NET 6.9/Samples/Async/cs/AssemblyInfo.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Async/cs/Async.csproj
+/packages/MySQL/Connector.NET 6.9/Samples/Async/cs/Form1.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Async/cs/Form1.res
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/FailDetails.Designer.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/FailDetails.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/FailDetails.resx
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Form1.Designer.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Form1.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Form1.resx
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/MySql.Data.Tests.CF.dll.config
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Program.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Properties/AssemblyInfo.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Properties/Resources.Designer.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Properties/Resources.resx
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Properties/green.png
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Properties/red.png
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Properties/white.png
+/packages/MySQL/Connector.NET 6.9/Samples/Pocket PC/Tester/Tester.csproj
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/cs/App.ico
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/cs/AssemblyInfo.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/cs/Form1.cs
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/cs/Form1.resx
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/cs/TableEditor.build
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/cs/TableEditor.csproj
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/vb/AssemblyInfo.vb
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/vb/Form1.resx
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/vb/Form1.vb
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/vb/TableEditor.build
+/packages/MySQL/Connector.NET 6.9/Samples/Table Editor/vb/TableEditor.vbproj
+/packages/MySQL/Connector.ODBC 5.3/COPYING.txt
+/packages/MySQL/Connector.ODBC 5.3/ChangeLog.txt
+/packages/MySQL/Connector.ODBC 5.3/Licenses_for_Third-Party_Components.txt
+/packages/MySQL/Connector.ODBC 5.3/README.txt
+/packages/MySQL/Connector.ODBC 5.3/myodbc-installer.exe
+/packages/MySQL/Connector.ODBC 5.3/myodbc-installer.pdb
+/packages/MySQL/Connector.ODBC 5.3/myodbc5S.dll
+/packages/MySQL/Connector.ODBC 5.3/myodbc5S.lib
+/packages/MySQL/Connector.ODBC 5.3/myodbc5S.pdb
+/packages/MySQL/Connector.ODBC 5.3/myodbc5a.dll
+/packages/MySQL/Connector.ODBC 5.3/myodbc5a.lib
+/packages/MySQL/Connector.ODBC 5.3/myodbc5a.pdb
+/packages/MySQL/Connector.ODBC 5.3/myodbc5w.dll
+/packages/MySQL/Connector.ODBC 5.3/myodbc5w.lib
+/packages/MySQL/Connector.ODBC 5.3/myodbc5w.pdb
+/packages/MySQL/MySQL Server 5.6/COPYING
+/packages/MySQL/MySQL Server 5.6/README
+/packages/MySQL/MySQL Server 5.6/bin/innochecksum.exe
+/packages/MySQL/MySQL Server 5.6/bin/my_print_defaults.exe
+/packages/MySQL/MySQL Server 5.6/bin/myisam_ftdump.exe
+/packages/MySQL/MySQL Server 5.6/bin/myisamchk.exe
+/packages/MySQL/MySQL Server 5.6/bin/myisamlog.exe
+/packages/MySQL/MySQL Server 5.6/bin/myisampack.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysql.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysql_config.pl
+/packages/MySQL/MySQL Server 5.6/bin/mysql_config_editor.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysql_convert_table_format.pl
+/packages/MySQL/MySQL Server 5.6/bin/mysql_embedded.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysql_plugin.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysql_secure_installation.pl
+/packages/MySQL/MySQL Server 5.6/bin/mysql_tzinfo_to_sql.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysql_upgrade.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysqladmin.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysqlbinlog.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysqlcheck.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysqld.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysqld_multi.pl
+/packages/MySQL/MySQL Server 5.6/bin/mysqldump.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysqldumpslow.pl
+/packages/MySQL/MySQL Server 5.6/bin/mysqlhotcopy.pl
+/packages/MySQL/MySQL Server 5.6/bin/mysqlimport.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysqlshow.exe
+/packages/MySQL/MySQL Server 5.6/bin/mysqlslap.exe
+/packages/MySQL/MySQL Server 5.6/bin/perror.exe
+/packages/MySQL/MySQL Server 5.6/bin/resolveip.exe
+/packages/MySQL/MySQL Server 5.6/data/ib_logfile0
+/packages/MySQL/MySQL Server 5.6/data/ib_logfile1
+/packages/MySQL/MySQL Server 5.6/data/ibdata1
+/packages/MySQL/MySQL Server 5.6/data/mysql/columns_priv.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/columns_priv.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/columns_priv.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/db.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/db.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/db.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/event.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/event.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/event.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/func.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/func.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/func.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/general_log.CSM
+/packages/MySQL/MySQL Server 5.6/data/mysql/general_log.CSV
+/packages/MySQL/MySQL Server 5.6/data/mysql/general_log.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_category.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_category.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_category.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_keyword.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_keyword.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_keyword.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_relation.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_relation.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_relation.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_topic.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_topic.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/help_topic.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/innodb_index_stats.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/innodb_index_stats.ibd
+/packages/MySQL/MySQL Server 5.6/data/mysql/innodb_table_stats.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/innodb_table_stats.ibd
+/packages/MySQL/MySQL Server 5.6/data/mysql/ndb_binlog_index.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/ndb_binlog_index.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/ndb_binlog_index.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/plugin.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/plugin.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/plugin.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/proc.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/proc.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/proc.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/procs_priv.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/procs_priv.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/procs_priv.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/proxies_priv.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/proxies_priv.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/proxies_priv.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/servers.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/servers.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/servers.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/slave_master_info.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/slave_master_info.ibd
+/packages/MySQL/MySQL Server 5.6/data/mysql/slave_relay_log_info.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/slave_relay_log_info.ibd
+/packages/MySQL/MySQL Server 5.6/data/mysql/slave_worker_info.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/slave_worker_info.ibd
+/packages/MySQL/MySQL Server 5.6/data/mysql/slow_log.CSM
+/packages/MySQL/MySQL Server 5.6/data/mysql/slow_log.CSV
+/packages/MySQL/MySQL Server 5.6/data/mysql/slow_log.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/tables_priv.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/tables_priv.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/tables_priv.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_leap_second.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_leap_second.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_leap_second.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_name.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_name.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_name.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_transition.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_transition.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_transition.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_transition_type.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_transition_type.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/time_zone_transition_type.frm
+/packages/MySQL/MySQL Server 5.6/data/mysql/user.MYD
+/packages/MySQL/MySQL Server 5.6/data/mysql/user.MYI
+/packages/MySQL/MySQL Server 5.6/data/mysql/user.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/accounts.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/cond_instances.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/db.opt
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_stages_current.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_stages_history.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_stages_history_long.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_stages_summary_by_account_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_stages_summary_by_host_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_stages_summary_by_thread_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_stages_summary_by_user_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_stages_summary_global_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_statements_current.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_statements_history.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_statements_history_long.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_statements_summary_by_account_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_statements_summary_by_digest.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_statements_summary_by_host_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_statements_summary_by_thread_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_statements_summary_by_user_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_statements_summary_global_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_waits_current.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_waits_history.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_waits_history_long.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_waits_summary_by_account_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_waits_summary_by_host_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_waits_summary_by_instance.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_waits_summary_by_thread_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_waits_summary_by_user_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/events_waits_summary_global_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/file_instances.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/file_summary_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/file_summary_by_instance.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/host_cache.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/hosts.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/mutex_instances.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/objects_summary_global_by_type.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/performance_timers.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/rwlock_instances.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/session_account_connect_attrs.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/session_connect_attrs.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/setup_actors.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/setup_consumers.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/setup_instruments.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/setup_objects.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/setup_timers.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/socket_instances.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/socket_summary_by_event_name.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/socket_summary_by_instance.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/table_io_waits_summary_by_index_usage.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/table_io_waits_summary_by_table.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/table_lock_waits_summary_by_table.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/threads.frm
+/packages/MySQL/MySQL Server 5.6/data/performance_schema/users.frm
+/packages/MySQL/MySQL Server 5.6/include/big_endian.h
+/packages/MySQL/MySQL Server 5.6/include/byte_order_generic.h
+/packages/MySQL/MySQL Server 5.6/include/byte_order_generic_x86.h
+/packages/MySQL/MySQL Server 5.6/include/byte_order_generic_x86_64.h
+/packages/MySQL/MySQL Server 5.6/include/decimal.h
+/packages/MySQL/MySQL Server 5.6/include/errmsg.h
+/packages/MySQL/MySQL Server 5.6/include/keycache.h
+/packages/MySQL/MySQL Server 5.6/include/little_endian.h
+/packages/MySQL/MySQL Server 5.6/include/m_ctype.h
+/packages/MySQL/MySQL Server 5.6/include/m_string.h
+/packages/MySQL/MySQL Server 5.6/include/my_alloc.h
+/packages/MySQL/MySQL Server 5.6/include/my_attribute.h
+/packages/MySQL/MySQL Server 5.6/include/my_byteorder.h
+/packages/MySQL/MySQL Server 5.6/include/my_compiler.h
+/packages/MySQL/MySQL Server 5.6/include/my_config.h
+/packages/MySQL/MySQL Server 5.6/include/my_dbug.h
+/packages/MySQL/MySQL Server 5.6/include/my_dir.h
+/packages/MySQL/MySQL Server 5.6/include/my_getopt.h
+/packages/MySQL/MySQL Server 5.6/include/my_global.h
+/packages/MySQL/MySQL Server 5.6/include/my_list.h
+/packages/MySQL/MySQL Server 5.6/include/my_net.h
+/packages/MySQL/MySQL Server 5.6/include/my_pthread.h
+/packages/MySQL/MySQL Server 5.6/include/my_sys.h
+/packages/MySQL/MySQL Server 5.6/include/my_xml.h
+/packages/MySQL/MySQL Server 5.6/include/mysql.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/client_authentication.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/client_plugin.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/client_plugin.h.pp
+/packages/MySQL/MySQL Server 5.6/include/mysql/get_password.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/innodb_priv.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/plugin.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/plugin_audit.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/plugin_audit.h.pp
+/packages/MySQL/MySQL Server 5.6/include/mysql/plugin_auth.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/plugin_auth.h.pp
+/packages/MySQL/MySQL Server 5.6/include/mysql/plugin_auth_common.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/plugin_ftparser.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/plugin_ftparser.h.pp
+/packages/MySQL/MySQL Server 5.6/include/mysql/plugin_validate_password.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/psi/mysql_file.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/psi/mysql_idle.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/psi/mysql_socket.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/psi/mysql_stage.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/psi/mysql_statement.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/psi/mysql_table.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/psi/mysql_thread.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/psi/psi.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/service_my_plugin_log.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/service_my_snprintf.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/service_mysql_string.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/service_thd_alloc.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/service_thd_wait.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/service_thread_scheduler.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/services.h
+/packages/MySQL/MySQL Server 5.6/include/mysql/thread_pool_priv.h
+/packages/MySQL/MySQL Server 5.6/include/mysql_com.h
+/packages/MySQL/MySQL Server 5.6/include/mysql_com_server.h
+/packages/MySQL/MySQL Server 5.6/include/mysql_embed.h
+/packages/MySQL/MySQL Server 5.6/include/mysql_time.h
+/packages/MySQL/MySQL Server 5.6/include/mysql_version.h
+/packages/MySQL/MySQL Server 5.6/include/mysqld_ername.h
+/packages/MySQL/MySQL Server 5.6/include/mysqld_error.h
+/packages/MySQL/MySQL Server 5.6/include/plugin.h
+/packages/MySQL/MySQL Server 5.6/include/plugin_audit.h
+/packages/MySQL/MySQL Server 5.6/include/plugin_ftparser.h
+/packages/MySQL/MySQL Server 5.6/include/plugin_validate_password.h
+/packages/MySQL/MySQL Server 5.6/include/sql_common.h
+/packages/MySQL/MySQL Server 5.6/include/sql_state.h
+/packages/MySQL/MySQL Server 5.6/include/sslopt-case.h
+/packages/MySQL/MySQL Server 5.6/include/sslopt-longopts.h
+/packages/MySQL/MySQL Server 5.6/include/sslopt-vars.h
+/packages/MySQL/MySQL Server 5.6/include/typelib.h
+/packages/MySQL/MySQL Server 5.6/lib/libmysql.dll
+/packages/MySQL/MySQL Server 5.6/lib/libmysql.lib
+/packages/MySQL/MySQL Server 5.6/lib/mysqlclient.lib
+/packages/MySQL/MySQL Server 5.6/lib/plugin/adt_null.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/auth.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/auth_test_plugin.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/libdaemon_example.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/mypluglib.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/mysql_no_login.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/qa_auth_client.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/qa_auth_interface.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/qa_auth_server.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/semisync_master.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/semisync_slave.dll
+/packages/MySQL/MySQL Server 5.6/lib/plugin/validate_password.dll
+/packages/MySQL/MySQL Server 5.6/my-default.ini
+/packages/MySQL/MySQL Server 5.6/share/bulgarian/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/charsets/Index.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/README
+/packages/MySQL/MySQL Server 5.6/share/charsets/armscii8.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/ascii.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/cp1250.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/cp1251.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/cp1256.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/cp1257.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/cp850.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/cp852.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/cp866.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/dec8.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/geostd8.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/greek.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/hebrew.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/hp8.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/keybcs2.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/koi8r.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/koi8u.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/latin1.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/latin2.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/latin5.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/latin7.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/macce.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/macroman.xml
+/packages/MySQL/MySQL Server 5.6/share/charsets/swe7.xml
+/packages/MySQL/MySQL Server 5.6/share/czech/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/danish/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/dictionary.txt
+/packages/MySQL/MySQL Server 5.6/share/dutch/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/english/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/errmsg-utf8.txt
+/packages/MySQL/MySQL Server 5.6/share/estonian/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/fill_help_tables.sql
+/packages/MySQL/MySQL Server 5.6/share/french/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/german/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/greek/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/hungarian/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/innodb_memcached_config.sql
+/packages/MySQL/MySQL Server 5.6/share/italian/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/japanese/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/korean/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/mysql_security_commands.sql
+/packages/MySQL/MySQL Server 5.6/share/mysql_system_tables.sql
+/packages/MySQL/MySQL Server 5.6/share/mysql_system_tables_data.sql
+/packages/MySQL/MySQL Server 5.6/share/mysql_test_data_timezone.sql
+/packages/MySQL/MySQL Server 5.6/share/norwegian-ny/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/norwegian/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/polish/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/portuguese/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/romanian/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/russian/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/serbian/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/slovak/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/spanish/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/swedish/errmsg.sys
+/packages/MySQL/MySQL Server 5.6/share/ukrainian/errmsg.sys
+/packages/MySQL/Samples and Examples 5.6/Sample Databases/Sakila/sakila-data.sql
+/packages/MySQL/Samples and Examples 5.6/Sample Databases/Sakila/sakila-schema.sql
+/packages/MySQL/Samples and Examples 5.6/Sample Databases/Sakila/sakila.mwb
+/packages/MySQL/Samples and Examples 5.6/Sample Databases/World/world-schema.sql
+/packages/Newtonsoft.Json.11.0.1/lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.1/lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.11.0.1/lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.1/lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.11.0.2/LICENSE.md
+/packages/Newtonsoft.Json.11.0.2/Newtonsoft.Json.11.0.2.nupkg
+/packages/Newtonsoft.Json.11.0.2/lib/net20/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.2/lib/net20/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.11.0.2/lib/net35/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.2/lib/net35/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.11.0.2/lib/net40/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.2/lib/net40/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.11.0.2/lib/net45/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.2/lib/net45/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.11.0.2/lib/netstandard1.0/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.2/lib/netstandard1.0/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.11.0.2/lib/netstandard1.3/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.2/lib/netstandard1.3/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.11.0.2/lib/netstandard2.0/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.2/lib/netstandard2.0/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.11.0.2/lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.2/lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.11.0.2/lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.11.0.2/lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml
+/packages/PowerCollections.dll
+/packages/System.Diagnostics.DiagnosticSource.4.4.1/lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.dll
+/packages/System.Diagnostics.DiagnosticSource.4.4.1/lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.xml
+/packages/System.Xml.Linq.3.5.21022.801/System.Xml.Linq.3.5.21022.801.nupkg
+/packages/System.Xml.Linq.3.5.21022.801/lib/net20/System.Xml.Linq.dll
+/packages/XMLConnections.dll
+/packages/itextsharp.dll
+/packages/log4net.1.2.10/lib/1.0/log4net.dll
+/packages/log4net.1.2.10/lib/1.0/log4net.xml
+/packages/log4net.1.2.10/lib/1.1/log4net.dll
+/packages/log4net.1.2.10/lib/1.1/log4net.xml
+/packages/log4net.1.2.10/lib/2.0/log4net.dll
+/packages/log4net.1.2.10/lib/2.0/log4net.xml
+/packages/log4net.1.2.10/log4net.1.2.10.nupkg
+/personal/Bin/CrystalDecisions.CrystalReports.Engine.dll
+/personal/Bin/CrystalDecisions.ReportSource.dll
+/personal/Bin/CrystalDecisions.Shared.dll
+/personal/Bin/CrystalDecisions.Windows.Forms.dll
+/personal/Bin/Google.Protobuf.dll
+/personal/Bin/MySql.Data.dll
+/ExampleProjects/dynamic example/dynamic example/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/ExampleProjects/dynamic example/dynamic example/obj/Debug/dynamic example.csproj.CoreCompileInputs.cache
+/ExampleProjects/dynamic example/dynamic example/obj/Debug/dynamic example.csprojAssemblyReference.cache
+/ExampleProjects/visitor example/visitor example/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/ExampleProjects/visitor example/visitor example/obj/Debug/visitor example.csproj.CoreCompileInputs.cache
+/ExampleProjects/visitor example/visitor example/obj/Debug/visitor example.csprojAssemblyReference.cache
+/RenamePDFWithBJPIN/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/RenamePDFWithBJPIN/obj/Debug/RenamePDFWithBJPIN.csproj.CoreCompileInputs.cache
+/RenamePDFWithBJPIN/obj/Debug/RenamePDFWithBJPIN.csprojAssemblyReference.cache
+/ExampleProjects/dynamic example/dynamic example/bin/Debug/dynamic example.exe.config
+/ExampleProjects/visitor example/visitor example/bin/Debug/visitor example.exe.config
+/RenamePDFWithBJPIN/bin/Debug/RenamePDFWithBJPIN.exe.config
+/RenamePDFWithBJPIN/obj/Debug/RenamePDFWithBJPIN.csproj.CopyComplete
+/ExampleProjects/dynamic example/dynamic example/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/ExampleProjects/dynamic example/dynamic example/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/ExampleProjects/dynamic example/dynamic example/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/ExampleProjects/visitor example/visitor example/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/ExampleProjects/visitor example/visitor example/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/ExampleProjects/visitor example/visitor example/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/RenamePDFWithBJPIN/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/RenamePDFWithBJPIN/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/RenamePDFWithBJPIN/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/circulationof/bin/Debug/LibflClassLibrary.dll
+/circulationof/bin/Debug/MySql.Data.dll
+/circulationof/bin/Debug/Newtonsoft.Json.dll
 /CirculationSCC/bin/Debug/LibflClassLibrary.dll
-/CirculationSCC/bin/Debug/LibflClassLibrary.pdb
 /CirculationSCC/bin/Debug/MySql.Data.dll
 /CirculationSCC/bin/Debug/Newtonsoft.Json.dll
-/CirculationSCC/bin/Debug/Newtonsoft.Json.xml
+/packages/Bytescout.PDFExtractor.9.1.0.3170/lib/net20/Bytescout.PDFExtractor.dll
+/packages/Bytescout.PDFExtractor.9.1.0.3170/lib/net20/Bytescout.PDFExtractor.OCRExtension.dll
+/packages/Bytescout.PDFExtractor.9.1.0.3170/lib/net40/Bytescout.PDFExtractor.dll
+/packages/Bytescout.PDFExtractor.9.1.0.3170/lib/net40/Bytescout.PDFExtractor.OCRExtension.dll
+/packages/Google.Apis.1.35.2/lib/net45/Google.Apis.dll
+/packages/Google.Apis.1.35.2/lib/net45/Google.Apis.PlatformServices.dll
+/packages/Google.Apis.1.35.2/lib/netstandard1.3/Google.Apis.dll
+/packages/Google.Apis.1.35.2/lib/netstandard2.0/Google.Apis.dll
+/packages/Google.Apis.Auth.1.35.2/lib/net45/Google.Apis.Auth.dll
+/packages/Google.Apis.Auth.1.35.2/lib/net45/Google.Apis.Auth.PlatformServices.dll
+/packages/Google.Apis.Auth.1.35.2/lib/netstandard1.3/Google.Apis.Auth.dll
+/packages/Google.Apis.Auth.1.35.2/lib/netstandard1.3/Google.Apis.Auth.PlatformServices.dll
+/packages/Google.Apis.Auth.1.35.2/lib/netstandard2.0/Google.Apis.Auth.dll
+/packages/Google.Apis.Auth.1.35.2/lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll
+/packages/Google.Apis.Core.1.35.2/lib/net45/Google.Apis.Core.dll
+/packages/Google.Apis.Core.1.35.2/lib/netstandard1.3/Google.Apis.Core.dll
+/packages/Google.Apis.Core.1.35.2/lib/netstandard2.0/Google.Apis.Core.dll
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/net40/Google.Apis.Drive.v3.dll
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/net45/Google.Apis.Drive.v3.dll
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/netstandard1.0/Google.Apis.Drive.v3.dll
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/netstandard1.3/Google.Apis.Drive.v3.dll
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/netstandard2.0/Google.Apis.Drive.v3.dll
+/packages/Newtonsoft.Json.10.0.2/lib/net20/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.10.0.2/lib/net35/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.10.0.2/lib/net40/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.10.0.2/lib/net45/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.10.0.2/lib/netstandard1.0/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.10.0.2/lib/netstandard1.3/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.10.0.2/lib/portable-net40+sl5+win8+wpa81+wp8/Newtonsoft.Json.dll
+/packages/Newtonsoft.Json.10.0.2/lib/portable-net45+win8+wpa81+wp8/Newtonsoft.Json.dll
+/RenamePDFWithBJPIN/bin/Debug/Bytescout.PDFExtractor.dll
+/RenamePDFWithBJPIN/bin/Debug/Bytescout.PDFExtractor.OCRExtension.dll
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.Auth.dll
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.Auth.PlatformServices.dll
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.Core.dll
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.dll
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.Drive.v3.dll
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.PlatformServices.dll
+/RenamePDFWithBJPIN/bin/Debug/Newtonsoft.Json.dll
+/ExampleProjects/dynamic example/dynamic example/bin/Debug/dynamic example.exe
+/ExampleProjects/dynamic example/dynamic example/obj/Debug/dynamic example.exe
+/ExampleProjects/visitor example/visitor example/bin/Debug/visitor example.exe
+/ExampleProjects/visitor example/visitor example/obj/Debug/visitor example.exe
+/RenamePDFWithBJPIN/bin/Debug/RenamePDFWithBJPIN.exe
+/RenamePDFWithBJPIN/obj/Debug/RenamePDFWithBJPIN.exe
+/ExampleProjects/dynamic example/.vs/dynamic example/v15/Server/sqlite3/storage.ide
+/ExampleProjects/visitor example/.vs/visitor example/v15/Server/sqlite3/storage.ide
+/ExampleProjects/dynamic example/.vs/dynamic example/v15/Server/sqlite3/storage.ide-shm
+/ExampleProjects/visitor example/.vs/visitor example/v15/Server/sqlite3/storage.ide-shm
+/ExampleProjects/dynamic example/.vs/dynamic example/v15/Server/sqlite3/storage.ide-wal
+/ExampleProjects/visitor example/.vs/visitor example/v15/Server/sqlite3/storage.ide-wal
+/RenamePDFWithBJPIN/bin/Debug/credentials.json
+/ExampleProjects/dynamic example/.vs/dynamic example/v15/Server/sqlite3/db.lock
+/ExampleProjects/visitor example/.vs/visitor example/v15/Server/sqlite3/db.lock
+/packages/Newtonsoft.Json.10.0.2/LICENSE.md
+/packages/Bytescout.PDFExtractor.9.1.0.3170/Bytescout.PDFExtractor.9.1.0.3170.nupkg
+/packages/Google.Apis.1.35.2/Google.Apis.1.35.2.nupkg
+/packages/Google.Apis.Auth.1.35.2/Google.Apis.Auth.1.35.2.nupkg
+/packages/Google.Apis.Core.1.35.2/Google.Apis.Core.1.35.2.nupkg
+/packages/Google.Apis.Drive.v3.1.35.2.1354/Google.Apis.Drive.v3.1.35.2.1354.nupkg
+/packages/Newtonsoft.Json.10.0.2/Newtonsoft.Json.10.0.2.nupkg
+/packages/Google.Apis.1.35.2/.signature.p7s
+/packages/Google.Apis.Auth.1.35.2/.signature.p7s
+/packages/Google.Apis.Core.1.35.2/.signature.p7s
+/packages/Google.Apis.Drive.v3.1.35.2.1354/.signature.p7s
+/circulationof/bin/Debug/LibflClassLibrary.pdb
+/CirculationSCC/bin/Debug/LibflClassLibrary.pdb
+/ExampleProjects/dynamic example/dynamic example/bin/Debug/dynamic example.pdb
+/ExampleProjects/dynamic example/dynamic example/obj/Debug/dynamic example.pdb
+/ExampleProjects/visitor example/visitor example/bin/Debug/visitor example.pdb
+/ExampleProjects/visitor example/visitor example/obj/Debug/visitor example.pdb
+/packages/Google.Apis.1.35.2/lib/net45/Google.Apis.pdb
+/packages/Google.Apis.1.35.2/lib/netstandard1.3/Google.Apis.pdb
+/packages/Google.Apis.1.35.2/lib/netstandard2.0/Google.Apis.pdb
+/packages/Google.Apis.Auth.1.35.2/lib/net45/Google.Apis.Auth.pdb
+/packages/Google.Apis.Auth.1.35.2/lib/netstandard1.3/Google.Apis.Auth.pdb
+/packages/Google.Apis.Auth.1.35.2/lib/netstandard2.0/Google.Apis.Auth.pdb
+/packages/Google.Apis.Core.1.35.2/lib/net45/Google.Apis.Core.pdb
+/packages/Google.Apis.Core.1.35.2/lib/netstandard1.3/Google.Apis.Core.pdb
+/packages/Google.Apis.Core.1.35.2/lib/netstandard2.0/Google.Apis.Core.pdb
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/net40/Google.Apis.Drive.v3.pdb
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/net45/Google.Apis.Drive.v3.pdb
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/netstandard1.0/Google.Apis.Drive.v3.pdb
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/netstandard1.3/Google.Apis.Drive.v3.pdb
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/netstandard2.0/Google.Apis.Drive.v3.pdb
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.Auth.pdb
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.Core.pdb
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.Drive.v3.pdb
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.pdb
+/RenamePDFWithBJPIN/bin/Debug/RenamePDFWithBJPIN.pdb
+/RenamePDFWithBJPIN/obj/Debug/RenamePDFWithBJPIN.pdb
+/packages/Newtonsoft.Json.10.0.2/tools/install.ps1
 /CirculationSCC/obj/Debug/CirculationSCC.Auth.resources
 /CirculationSCC/obj/Debug/CirculationSCC.DatePeriod.resources
 /CirculationSCC/obj/Debug/CirculationSCC.EmailSending.resources
@@ -2809,46 +4124,50 @@
 /CirculationSCC/obj/Debug/CirculationSCC.Properties.Resources.resources
 /CirculationSCC/obj/Debug/CirculationSCC.ReaderInformation.resources
 /CirculationSCC/obj/Debug/CirculationSCC.ViewFullSizePhoto.resources
-/ExampleProjects/dynamic example/dynamic example/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-/ExampleProjects/dynamic example/dynamic example/obj/Debug/dynamic example.csproj.CoreCompileInputs.cache
-/ExampleProjects/dynamic example/dynamic example/obj/Debug/dynamic example.csprojAssemblyReference.cache
-/ExampleProjects/visitor example/visitor example/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-/ExampleProjects/visitor example/visitor example/obj/Debug/visitor example.csproj.CoreCompileInputs.cache
-/ExampleProjects/visitor example/visitor example/obj/Debug/visitor example.csprojAssemblyReference.cache
-/ExampleProjects/dynamic example/dynamic example/bin/Debug/dynamic example.exe.config
-/ExampleProjects/visitor example/visitor example/bin/Debug/visitor example.exe.config
-/ExportBJ_XMLRUSMARC/bin/Debug/ExportBJ_XMLRUSMARC.exe.config
-/ExampleProjects/dynamic example/dynamic example/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
-/ExampleProjects/dynamic example/dynamic example/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
-/ExampleProjects/dynamic example/dynamic example/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
-/ExampleProjects/visitor example/visitor example/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
-/ExampleProjects/visitor example/visitor example/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
-/ExampleProjects/visitor example/visitor example/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
-/circulationof/bin/Debug/LibflClassLibrary.dll
-/circulationof/bin/Debug/MySql.Data.dll
-/circulationof/bin/Debug/Newtonsoft.Json.dll
-/ExportBJ_XMLRUSMARC/bin/Debug/MySql.Data.dll
-/InsertElectronicExemplarBJ/bin/Debug/MySql.Data.dll
-/ExampleProjects/dynamic example/dynamic example/bin/Debug/dynamic example.exe
-/ExampleProjects/dynamic example/dynamic example/obj/Debug/dynamic example.exe
-/ExampleProjects/visitor example/visitor example/bin/Debug/visitor example.exe
-/ExampleProjects/visitor example/visitor example/obj/Debug/visitor example.exe
-/ExampleProjects/dynamic example/.vs/dynamic example/v15/Server/sqlite3/storage.ide
-/ExampleProjects/visitor example/.vs/visitor example/v15/Server/sqlite3/storage.ide
-/ExampleProjects/dynamic example/.vs/dynamic example/v15/Server/sqlite3/storage.ide-shm
-/ExampleProjects/visitor example/.vs/visitor example/v15/Server/sqlite3/storage.ide-shm
-/ExampleProjects/dynamic example/.vs/dynamic example/v15/Server/sqlite3/storage.ide-wal
-/ExampleProjects/visitor example/.vs/visitor example/v15/Server/sqlite3/storage.ide-wal
-/ExampleProjects/dynamic example/.vs/dynamic example/v15/Server/sqlite3/db.lock
-/ExampleProjects/visitor example/.vs/visitor example/v15/Server/sqlite3/db.lock
-/circulationof/bin/Debug/LibflClassLibrary.pdb
-/ExampleProjects/dynamic example/dynamic example/bin/Debug/dynamic example.pdb
-/ExampleProjects/dynamic example/dynamic example/obj/Debug/dynamic example.pdb
-/ExampleProjects/visitor example/visitor example/bin/Debug/visitor example.pdb
-/ExampleProjects/visitor example/visitor example/obj/Debug/visitor example.pdb
 /LibflClassLibrary/obj/Debug/LibflClassLibrary.Controls.Readers.ReaderRightsView.resources
 /ExampleProjects/dynamic example/.vs/dynamic example/v15/.suo
 /ExampleProjects/visitor example/.vs/visitor example/v15/.suo
+/RenamePDFWithBJPIN/bin/Debug/token.json/Google.Apis.Auth.OAuth2.Responses.TokenResponse-user
+/circulationof/tessdata/deu.traineddata
+/circulationof/tessdata/eng.traineddata
+/circulationof/tessdata/fra.traineddata
+/circulationof/tessdata/spa.traineddata
+/packages/Bytescout.PDFExtractor.9.1.0.3170/content/tessdata/deu.traineddata
+/packages/Bytescout.PDFExtractor.9.1.0.3170/content/tessdata/eng.traineddata
+/packages/Bytescout.PDFExtractor.9.1.0.3170/content/tessdata/fra.traineddata
+/packages/Bytescout.PDFExtractor.9.1.0.3170/content/tessdata/spa.traineddata
 /ExampleProjects/dynamic example/dynamic example/obj/Debug/dynamic example.csproj.FileListAbsolute.txt
 /ExampleProjects/visitor example/visitor example/obj/Debug/visitor example.csproj.FileListAbsolute.txt
+/RenamePDFWithBJPIN/obj/Debug/RenamePDFWithBJPIN.csproj.FileListAbsolute.txt
 /circulationof/bin/Debug/Newtonsoft.Json.xml
+/CirculationSCC/bin/Debug/Newtonsoft.Json.xml
+/packages/Bytescout.PDFExtractor.9.1.0.3170/lib/net20/Bytescout.PDFExtractor.XML
+/packages/Bytescout.PDFExtractor.9.1.0.3170/lib/net40/Bytescout.PDFExtractor.XML
+/packages/Google.Apis.1.35.2/lib/net45/Google.Apis.xml
+/packages/Google.Apis.1.35.2/lib/netstandard1.3/Google.Apis.xml
+/packages/Google.Apis.1.35.2/lib/netstandard2.0/Google.Apis.xml
+/packages/Google.Apis.Auth.1.35.2/lib/net45/Google.Apis.Auth.xml
+/packages/Google.Apis.Auth.1.35.2/lib/netstandard1.3/Google.Apis.Auth.xml
+/packages/Google.Apis.Auth.1.35.2/lib/netstandard2.0/Google.Apis.Auth.xml
+/packages/Google.Apis.Core.1.35.2/lib/net45/Google.Apis.Core.xml
+/packages/Google.Apis.Core.1.35.2/lib/netstandard1.3/Google.Apis.Core.xml
+/packages/Google.Apis.Core.1.35.2/lib/netstandard2.0/Google.Apis.Core.xml
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/net40/Google.Apis.Drive.v3.xml
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/net45/Google.Apis.Drive.v3.xml
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/netstandard1.0/Google.Apis.Drive.v3.xml
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/netstandard1.3/Google.Apis.Drive.v3.xml
+/packages/Google.Apis.Drive.v3.1.35.2.1354/lib/netstandard2.0/Google.Apis.Drive.v3.xml
+/packages/Newtonsoft.Json.10.0.2/lib/net20/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.10.0.2/lib/net35/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.10.0.2/lib/net40/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.10.0.2/lib/net45/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.10.0.2/lib/netstandard1.0/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.10.0.2/lib/netstandard1.3/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.10.0.2/lib/portable-net40+sl5+win8+wpa81+wp8/Newtonsoft.Json.xml
+/packages/Newtonsoft.Json.10.0.2/lib/portable-net45+win8+wpa81+wp8/Newtonsoft.Json.xml
+/RenamePDFWithBJPIN/bin/Debug/Bytescout.PDFExtractor.xml
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.Auth.xml
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.Core.xml
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.Drive.v3.xml
+/RenamePDFWithBJPIN/bin/Debug/Google.Apis.xml
+/RenamePDFWithBJPIN/bin/Debug/Newtonsoft.Json.xml
