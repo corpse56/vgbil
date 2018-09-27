@@ -38,34 +38,43 @@ namespace RenamePDFWithBJPIN
                     new FileDataStore(credPath, true)).Result;
                 Console.WriteLine("Credential file saved to: " + credPath);
             }
-
+            
             // Create Drive API service.
             var service = new DriveService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
             });
-
             // Define parameters of request.
             FilesResource.ListRequest listRequest = service.Files.List();
-            listRequest.PageSize = 10;
-            listRequest.Fields = "nextPageToken, files(id, name)";
+            listRequest.PageSize = 1000;
+            listRequest.Fields = "nextPageToken, files(id, name, kind, mimeType )";
+            //Files.List request = mService.files().list().setQ("'Your Folder ID Here' in parents");
+            //FileList files = request.execute();
 
+            listRequest.Q = "'1V-FkGyvTWMjfyeJtRu662ZywWF-edOKV' in parents and mimeType = 'application/pdf'";
+
+
+            listRequest.IncludeTeamDriveItems = true;
+            listRequest.Corpora = "teamDrive";
+            listRequest.SupportsTeamDrives = true;
+            listRequest.TeamDriveId = "0AObEmuax3_3MUk9PVA";
             // List files.
-            IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
-                .Files;
+            IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute().Files;
             Console.WriteLine("Files:");
             if (files != null && files.Count > 0)
             {
                 foreach (var file in files)
                 {
-                    Console.WriteLine("{0} ({1})", file.Name, file.Id);
+                    Console.WriteLine("{0} ({1}) {2} ", file.Name, file.Id, file.MimeType );
                 }
             }
             else
             {
                 Console.WriteLine("No files found.");
             }
+
+
             Console.Read();
 
         }
