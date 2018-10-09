@@ -1,5 +1,7 @@
 ﻿using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
+using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.DB;
+using LibflClassLibrary.Books.BookJSONViewers;
 using LibflClassLibrary.Readers;
 using Newtonsoft.Json;
 using System;
@@ -104,6 +106,13 @@ namespace ALISAPI_TEST
             //    tbResponse.Text = result;
             //}
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            BJBookInfo b = BJBookInfo.GetBookInfoByPIN(1456705,"BJVVV");
+            BookJSONShortViewer viewer = new BookJSONShortViewer();
+            tbResponse.Text = viewer.GetView(b);
         }
     }
 

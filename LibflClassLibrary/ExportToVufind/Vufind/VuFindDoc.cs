@@ -7,12 +7,15 @@ using System.Reflection;
 using System.Security;
 using Utilities;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using Newtonsoft.Json;
 
 namespace LibflClassLibrary.ExportToVufind.Vufind
 {
+
+    [JsonObject(MemberSerialization.Fields)]
     public class VufindDoc
     {
-        public VufindDoc() 
+        public VufindDoc()
         {
             this.AccompayingMaterial = new VufindField();
             this.AccompayingMaterialLanguage = new VufindField();
@@ -47,67 +50,67 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
             this.genre = new VufindField();
             this.genre_facet = new VufindField();
             this.GeoNamePlaceOfPublication = new VufindField();
-            this.GeoNamePlaceOfPublication_AF_All  = new VufindField();
+            this.GeoNamePlaceOfPublication_AF_All = new VufindField();
             this.HyperLink = new VufindField();
             this.HyperLinkNewViewer = new VufindField();
             this.id = "";
-            this.IllustrationMaterial  = new VufindField();
-            this.Illustrations  = new VufindField();
-            this.IncorrectISBN  = new VufindField();
-            this.IncorrectISSN  = new VufindField();
-            this.Info_pertaining_title  = new VufindField();
-            this.Info_title_alt  = new VufindField();
-            this.IntermediateTranslateLanguage  = new VufindField();
-            this.isbn  = new VufindField();
-            this.issn  = new VufindField();
-            this.language  = new VufindField();
-            this.Language_title_alt  = new VufindField();
-            this.Level  = "";
-            this.Level_id  = "";
-            this.Location  = new VufindField();
-            this.MethodOfAccess  = new VufindField();
-            this.NumberInSeries  = new VufindField();
-            this.NumberInSubseries  = new VufindField();
-            this.Organization_nature  = new VufindField();
-            this.OwnerExemplar  = new VufindField();
-            this.OwnerOrganization  = new VufindField();
-            this.OwnerOrganization_AF_All  = new VufindField();
-            this.OwnerPerson  = new VufindField();
-            this.OwnerPerson_AF_All  = new VufindField();
-            this.Ownership  = new VufindField();
-            this.Parallel_title  = new VufindField();
-            this.Part_number  = new VufindField();
-            this.Part_title  = new VufindField();
-            this.PlaceOfPublication  = new VufindField();
-            this.PlaceOfPublication_AF_All  = new VufindField();
-            this.PlacingCipher  = new VufindField();
-            this.Printing  = new VufindField();
-            this.PrintingHouse  = new VufindField();
-            this.PrintingHouse_AF_All  = new VufindField();
-            this.Publication_info  = new VufindField();
-            this.publishDate  = new VufindField();
-            this.publisher  = new VufindField();
-            this.Responsibility_statement  = new VufindField();
-            this.SummaryLanguage  = new VufindField();
-            this.TableOfContentsLanguage  = new VufindField();
-            this.title  = new VufindField();
-            this.title_alt  = new VufindField();
-            this.title_alt  = new VufindField();
-            this.Title_another_chart  = new VufindField();
-            this.Title_same_author  = new VufindField();
-            this.title_short  = new VufindField();
-            this.title_sort  = new VufindField();
-            this.Title_unified  = new VufindField();
-            this.TitlePageLanguage  = new VufindField();
-            this.topic  = new VufindField();
-            this.topic_facet  = new VufindField();
-            this.Unified_Caption  = new VufindField();
-            this.Unified_Caption_AF_All  = new VufindField();
-            this.Volume  = new VufindField();
+            this.IllustrationMaterial = new VufindField();
+            this.Illustrations = new VufindField();
+            this.IncorrectISBN = new VufindField();
+            this.IncorrectISSN = new VufindField();
+            this.Info_pertaining_title = new VufindField();
+            this.Info_title_alt = new VufindField();
+            this.IntermediateTranslateLanguage = new VufindField();
+            this.isbn = new VufindField();
+            this.issn = new VufindField();
+            this.language = new VufindField();
+            this.Language_title_alt = new VufindField();
+            this.Level = "";
+            this.Level_id = "";
+            this.Location = new VufindField();
+            this.MethodOfAccess = new VufindField();
+            this.NumberInSeries = new VufindField();
+            this.NumberInSubseries = new VufindField();
+            this.Organization_nature = new VufindField();
+            this.OwnerExemplar = new VufindField();
+            this.OwnerOrganization = new VufindField();
+            this.OwnerOrganization_AF_All = new VufindField();
+            this.OwnerPerson = new VufindField();
+            this.OwnerPerson_AF_All = new VufindField();
+            this.Ownership = new VufindField();
+            this.Parallel_title = new VufindField();
+            this.Part_number = new VufindField();
+            this.Part_title = new VufindField();
+            this.PlaceOfPublication = new VufindField();
+            this.PlaceOfPublication_AF_All = new VufindField();
+            this.PlacingCipher = new VufindField();
+            this.Printing = new VufindField();
+            this.PrintingHouse = new VufindField();
+            this.PrintingHouse_AF_All = new VufindField();
+            this.Publication_info = new VufindField();
+            this.publishDate = new VufindField();
+            this.publisher = new VufindField();
+            this.Responsibility_statement = new VufindField();
+            this.SummaryLanguage = new VufindField();
+            this.TableOfContentsLanguage = new VufindField();
+            this.title = new VufindField();
+            this.title_alt = new VufindField();
+            this.title_alt = new VufindField();
+            this.Title_another_chart = new VufindField();
+            this.Title_same_author = new VufindField();
+            this.title_short = new VufindField();
+            this.title_sort = new VufindField();
+            this.Title_unified = new VufindField();
+            this.TitlePageLanguage = new VufindField();
+            this.topic = new VufindField();
+            this.topic_facet = new VufindField();
+            this.Unified_Caption = new VufindField();
+            this.Unified_Caption_AF_All = new VufindField();
+            this.Volume = new VufindField();
             this.ExemplarsJSON = "";
 
             this.hierarchy_top_id = new VufindField();
-            this.hierarchy_top_title  = new VufindField();
+            this.hierarchy_top_title = new VufindField();
             this.hierarchy_parent_title = new VufindField();
             this.hierarchy_parent_id = new VufindField();
             this.is_hierarchy_id = new VufindField();
@@ -117,7 +120,7 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
             //this.NewArrivals = "";
         }
 
-        public string id ;
+        public string id { get; set; }
         public string fund ;
         public string allfields ;
         public string Level ;

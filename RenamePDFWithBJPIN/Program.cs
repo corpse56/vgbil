@@ -25,8 +25,6 @@ namespace RenamePDFWithBJPIN
         static void Main(string[] args)
         {
 
-            bool ebana = File.Exists(@"M:\Общие диски\Эл.книги НЭБ\2017-2018\Флинта-2018 PDF\Novikova_Glag6ol.pdf");
-
             UserCredential credential;
 
             using (var stream =
@@ -50,9 +48,12 @@ namespace RenamePDFWithBJPIN
             });
 
             //DoTheJob("1xXd29WijUSDzCAG7zXZhborD-VgdS6h6", "ЦК_Рудомино книги для НЭБ 2017-2018", "f:\\ЦК_Рудомино книги для НЭБ 2017-2018.xlsx", service);
-            DoTheJob("1ylpFLChZrDBiX_pkLH8xYWNay3fERftH", "Флинта-ВГБИЛ книги для НЭБ 2017-2018", "f:\\Флинта-ВГБИЛ книги для НЭБ 2017-2018.xlsx", service);
+            //DoTheJob("1ylpFLChZrDBiX_pkLH8xYWNay3fERftH", "Флинта-ВГБИЛ книги для НЭБ 2017-2018", "f:\\Флинта-ВГБИЛ книги для НЭБ 2017-2018.xlsx", service);
             //DoTheJob("1V-FkGyvTWMjfyeJtRu662ZywWF-edOKV", "Златоуст-ВГБИЛ книги для НЭБ 2017-2018", "f:\\Златоуст-ВГБИЛ книги для НЭБ 2017-2018.xlsx", service);
 
+            //DoTheJobLocalFiles("f:\\Златоуст-ВГБИЛ книги для НЭБ 2017-2018.xlsx", @"f:\pdfa\зла\", "Златоуст-ВГБИЛ книги для НЭБ 2017-2018", service, "1V-FkGyvTWMjfyeJtRu662ZywWF-edOKV");
+            DoTheJobLocalFiles("f:\\Флинта-ВГБИЛ книги для НЭБ 2017-2018.xlsx", @"f:\pdfa\флинт\", "Флинта-ВГБИЛ книги для НЭБ 2017-2018", service, "1ylpFLChZrDBiX_pkLH8xYWNay3fERftH");
+            //DoTheJobLocalFiles("f:\\ЦК_Рудомино книги для НЭБ 2017-2018.xlsx", @"f:\pdfa\цк рудомино\", "ЦК_Рудомино книги для НЭБ 2017-2018", service, "1xXd29WijUSDzCAG7zXZhborD-VgdS6h6");
 
             Console.Read();
 
@@ -110,13 +111,73 @@ namespace RenamePDFWithBJPIN
                 ExcelFileID = ExcelFileID.Substring(pos);
                 Google.Apis.Drive.v3.Data.File pdf = files.Where(x => x.Id == ExcelFileID).First();
                 Console.WriteLine("{0}   {1}   {2}", PinExcel, ExcelFileID, pdf.Name);
-                if (File.Exists("i:\\PDF\\" + FolderName + "\\" + PinExcel + ".pdf"))
+                if (File.Exists(@"M:\Общие диски\Эл.книги НЭБ\2017-2018\для пакетной загрузки в хранилище\2017-2018\PDF\" + FolderName + "\\" + PinExcel + ".pdf"))
                 {
                     Console.WriteLine("Already exists. Skiping...");
                     continue;
                 }
-                DownloadFile(pdf, service, "i:\\PDF\\"+ FolderName+"\\" + PinExcel + ".pdf");
+                DownloadFile(pdf, service, @"M:\Общие диски\Эл.книги НЭБ\2017-2018\для пакетной загрузки в хранилище\2017-2018\PDF\" + FolderName+"\\" + PinExcel + ".pdf");
             } while (true);
+
+        }
+
+        public static void DoTheJobLocalFiles(string ExcelFilePath, string InputFilesPath, string TargetFolder, DriveService service, string TeamFolderID)
+        {
+            // Define parameters of request.
+            FilesResource.ListRequest listRequest = service.Files.List();
+            listRequest.PageSize = 1000;
+            listRequest.Fields = "nextPageToken, files(id, name, kind, mimeType )";
+            //Files.List request = mService.files().list().setQ("'Your Folder ID Here' in parents");
+            //FileList files = request.execute();
+            //ЦК_Рудомино книги для НЭБ 2017 - 2018
+            listRequest.Q = "'" + TeamFolderID + "' in parents and mimeType = 'application/pdf'";
+
+
+            listRequest.IncludeTeamDriveItems = true;
+            listRequest.Corpora = "teamDrive";
+            listRequest.SupportsTeamDrives = true;
+            listRequest.TeamDriveId = "0AObEmuax3_3MUk9PVA";
+            // List files.
+            IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute().Files;
+
+
+            DirectoryInfo di = new DirectoryInfo(InputFilesPath);
+            List<FileInfo> inputFiles = di.GetFiles().ToList();
+            Excel.Application excel = new Excel.Application();
+            Excel.Workbook wb = excel.Workbooks.Open(ExcelFilePath);
+            Excel.Worksheet ws;
+            ws = (Excel.Worksheet)wb.Worksheets[1];
+
+            string PinExcel = "";
+            string ExcelFileID = "";
+            string Url = "";
+            int i = 1;
+            do
+            {
+                i++;
+                if (ws.Cells[i, 2].Value == null) break;
+                PinExcel = ws.Cells[i, 2].Value.ToString();
+                ExcelFileID = ws.Cells[i, 13].Value.ToString();
+                Url = ws.Cells[i, 13].Value.ToString();
+                int pos = ExcelFileID.IndexOf("id=") + 3;
+                ExcelFileID = ExcelFileID.Substring(pos);
+                Google.Apis.Drive.v3.Data.File pdf = files.Where(x => x.Id == ExcelFileID).First();
+                foreach (var file in inputFiles)
+                {
+                    if (file.Name == pdf.Name)
+                    {
+                        if (File.Exists(@"M:\Общие диски\Эл.книги НЭБ\2017-2018\для пакетной загрузки в хранилище\2017-2018\PDFA\" + TargetFolder + "\\" + PinExcel + ".pdf"))
+                        {
+                            Console.WriteLine("Already exists. Skiping...");
+                            break;
+                        }
+                        file.CopyTo(@"M:\Общие диски\Эл.книги НЭБ\2017-2018\для пакетной загрузки в хранилище\2017-2018\PDFA\" + TargetFolder + "\\" + PinExcel + ".pdf");
+                        Console.WriteLine("{0}   {1}   {2}    {3}", PinExcel, ExcelFileID, pdf.Name, file.Name);
+                        break;
+                    }
+                }
+            } while (true);
+
 
         }
         public static void DownloadFile(Google.Apis.Drive.v3.Data.File file, DriveService driveService, string path)

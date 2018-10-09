@@ -58,6 +58,30 @@ namespace LibflClassLibrary.ExportToVufind
                 return connectionString;
             }
         }
+        static public string IPAddressBackupFileServer
+        {
+            get
+            {
+                string connectionString = "192.168.6.65";
+                return connectionString;
+            }
+        }
+        static public string LoginBackupFileServerRead
+        {
+            get
+            {
+                string connectionString = "DgtPeriodic";
+                return connectionString;
+            }
+        }
+        static public string PasswordBackupFileServerRead
+        {
+            get
+            {
+                string connectionString = "Periodic_DGT";
+                return connectionString;
+            }
+        }
         static public string BookStatusConnection
         {
             get
@@ -112,7 +136,11 @@ namespace LibflClassLibrary.ExportToVufind
         {
             get
             {
-                return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=oauth;Pwd=oauthpwd;Database=oauth";
+                //старый пароль до аварии
+                //return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=oauth;Pwd=oauthpwd;Database=oauth";
+                //новый пароль и пользователь. Доступ только с 80.250.173.142 и с моих локальных айпишников
+                return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=alisapi;Pwd=api_alis_pwd;Database=libfl_oauth;SslMode=None";
+                //return "Server=https://oauth.libfl.ru;Port=3306;Character Set=utf8;Uid=alisapi;Pwd=api_alis_pwd;Database=libfl_oauth";
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.ExportToVufind.Vufind;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,14 @@ namespace LibflClassLibrary.Books
 
         public List<BookExemplarBase> Exemplars { get; set; } = new List<BookExemplarBase>();
 
-        public virtual string ToJsonString()
+        public virtual VufindDoc GetVufindDocument()
         {
-            return "simpleBook";
+            return null;
+        }
+
+        internal string ToJsonString()
+        {
+            throw new NotImplementedException();
         }
 
         //public static BookBase GetBook(string Id)

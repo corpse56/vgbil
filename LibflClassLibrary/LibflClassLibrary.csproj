@@ -76,8 +76,9 @@
     <Reference Include="MySql.Data">
       <HintPath>..\packages\MySQL\Connector.NET 6.9\Assemblies\v2.0\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net20\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -106,12 +107,11 @@
   <ItemGroup>
     <Compile Include="ALISAPI\RequestObjects\Readers\AuthorizeInfo.cs" />
     <Compile Include="Books\BJBooks\BJBookJsonConverter.cs" />
-    <Compile Include="Books\BookAPIViews\BookFullView.cs" />
-    <Compile Include="Books\BookAPIViews\BookViewField.cs" />
-    <Compile Include="Books\BookAPIViews\ExemplarFullView.cs" />
     <Compile Include="Books\BookBase.cs" />
     <Compile Include="Books\BookExemplarBase.cs" />
     <Compile Include="Books\BookJsonConverter.cs" />
+    <Compile Include="Books\BookJSONViewers\BookJSONFullViewer.cs" />
+    <Compile Include="Books\BookJSONViewers\BookJSONShortViewer.cs" />
     <Compile Include="CirculationACC\Classes\BJRecord.cs" />
     <Compile Include="CirculationACC\Classes\BookVO.cs" />
     <Compile Include="CirculationACC\Classes\DataGridViewDisableButtonCell.cs" />
@@ -180,7 +180,7 @@
     <Compile Include="Utilites\Extensions.cs" />
     <Compile Include="ExportToVufind\Vufind\VuFindConverter.cs" />
     <Compile Include="ExportToVufind\Vufind\VuFindConverterEventArgs.cs" />
-    <Compile Include="ExportToVufind\Vufind\VuFindDoc.cs" />
+    <Compile Include="ExportToVufind\Vufind\VufindDoc.cs" />
     <Compile Include="ExportToVufind\Vufind\VufindField.cs" />
     <Compile Include="LIBFLDataProviderAPI\Loaders\BaseLoader.cs" />
     <Compile Include="LIBFLDataProviderAPI\Loaders\BJBookLoader.cs" />
@@ -221,7 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Books\BJBooks\BJExemplars\Viewes\" />
-    <Folder Include="Books\BJBooks\Viewes\" />
     <Folder Include="Circulation\" />
   </ItemGroup>
   <ItemGroup>

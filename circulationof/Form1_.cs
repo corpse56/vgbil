@@ -1146,7 +1146,7 @@ namespace Circulation
                 {
                     if (dt < DateTime.Now)
                     {
-                        DialogResult dr = MessageBox.Show("У читателя закончился срок индивидуального абонемента! Всё равно выдать?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                        DialogResult dr = MessageBox.Show("У читателя закончился срок бесплатного абонемента! Всё равно выдать?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                         if (dr == DialogResult.No)
                         {
                             CancelIssueInterface();
@@ -1426,7 +1426,25 @@ namespace Circulation
                                 }
                                 else
                                 {
-                                    dbw.setBookForReaderHome(BookRecord, ReaderRecord);
+                                    if ((ReaderRecord.ReaderRights & dbReader.Rights.ABON) == dbReader.Rights.ABON)
+                                    {
+                                        dbw.setBookForReaderHome(BookRecord, ReaderRecord);
+                                    }
+                                    else
+                                    {
+                                        DialogResult dr = MessageBox.Show("У читателя нет прав бесплатного абонемента. Хотите выдать ему такие права вместе с книгой?", " Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                                        if (dr == DialogResult.Yes)
+                                        {
+                                            ReaderRecord.setReaderRight();
+                                            ReaderRecord = new dbReader(ReaderRecord.IntID);
+                                            dbw.setBookForReaderHome(BookRecord, ReaderRecord);
+                                        }
+                                        else
+                                        {
+                                            CancelIssueInterface();
+                                            return true;
+                                        }
+                                    }
                                 }
                             }
                             else

@@ -110,7 +110,7 @@ namespace DataProviderAPI.Loaders
                 result.IsExistsLQ = (lq.Exists) ? true : false;
                 result.Path_LQ = (lq.Exists)? lq.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/") : null;
 
-                fi = hq.GetFiles("*.jpg").OrderBy(f => f.LastWriteTime).ToArray(); //сортируем по дате изменения. именно в таком порядке они сканировались. а вообще вопрос непростой, поскольку попадаются файлы, выпадающие из этого условия
+                fi = hq.GetFiles("*.jpg").OrderBy(f => f.Name).ToArray(); //сортируем по дате изменения. именно в таком порядке они сканировались. а вообще вопрос непростой, поскольку попадаются файлы, выпадающие из этого условия
                 
                 foreach (FileInfo f in fi)
                 {
@@ -137,7 +137,7 @@ namespace DataProviderAPI.Loaders
             result.Status = (cnt > 0) ? "unavailable" : "available";
 
 
-            Image img = Image.FromFile(fi[0].FullName);
+            Image img = Image.FromFile(fi[1].FullName);//берём вторую страницу, потому что первая бывает с пустым разворотом
             result.WidthFirstFile = img.Width;
             result.HeightFirstFile = img.Height;
             result.IsElectronicCopy = true;
@@ -154,6 +154,11 @@ namespace DataProviderAPI.Loaders
             {
                 result.IsIssued = true;
                 result.IDReaderTooked = Extensions.HashReaderId(table.Rows[0]["IDREADER"].ToString());
+                foreach (DataRow row in table.Rows)
+                {
+                    result.IDReadersTooked.Add(Extensions.HashReaderId(row["IDREADER"].ToString()));
+                }
+                 
                 result.DateReturn = ((DateTime)table.Rows[0]["DATERETURN"]).ToString("dd.MM.yyyy");
             }
 

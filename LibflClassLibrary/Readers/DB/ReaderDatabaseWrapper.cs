@@ -61,6 +61,7 @@ namespace LibflClassLibrary.Readers.DB
             DataTable table = new DataTable();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
+                
                 MySqlDataAdapter dataAdapter = new MySqlDataAdapter(ReaderQueries.GET_READER_ID_BY_OAUTH_TOKEN, connection);
                 dataAdapter.SelectCommand.Parameters.AddWithValue("token", token);
                 dataAdapter.Fill(table);
@@ -149,6 +150,8 @@ namespace LibflClassLibrary.Readers.DB
                 command.Parameters.Add("RegistrationFlat", SqlDbType.NVarChar).Value = readerInfo.RegistrationFlat;
                 command.Parameters.Add("NumberReader", SqlDbType.NVarChar).Value = readerInfo.NumberReader;
                 command.Parameters.Add("MobileTelephone", SqlDbType.NVarChar).Value = readerInfo.MobileTelephone;
+                command.Parameters.Add("Email", SqlDbType.NVarChar).Value = readerInfo.Email;
+
                 connection.Open();
                 command.ExecuteNonQuery();
                 connection.Close();

@@ -14,6 +14,8 @@ using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Books.BJBooks.DB;
 using Newtonsoft.Json;
 using LibflClassLibrary.Readers;
+using LibflClassLibrary.ExportToVufind.Vufind;
+using LibflClassLibrary.ExportToVufind.BJ;
 
 /// <summary>
 /// Сводное описание для BookInfo
@@ -42,6 +44,9 @@ namespace LibflClassLibrary.Books.BJBooks
 
         #endregion
 
+        public ElectronicExemplarInfo DigitalCopy = null;
+        public bool IsExistsDigitalCopy => this.DigitalCopy != null;
+
         public static BJBookInfo GetBookInfoByPIN(int pin, string fund)
         {
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
@@ -55,7 +60,14 @@ namespace LibflClassLibrary.Books.BJBooks
             {
                 if ((int)row["IDBLOCK"] != 260)
                 {
-                    result.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+                    if ((int)row["IDBLOCK"] == 270)//если есть гиперссылка
+                    {
+                        result.DigitalCopy = new ElectronicExemplarInfo(-1);
+                    }
+                    else
+                    {
+                        result.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+                    }
                 }
                 else
                 {
@@ -105,6 +117,8 @@ namespace LibflClassLibrary.Books.BJBooks
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
             DataTable table = dbw.GetNearestFreeDateForElectronicIssue(this.ID);
             if (table.Rows.Count == 0) return DateTime.Today;
+            object o = table.Rows[0][0];
+            if (o == DBNull.Value) return DateTime.Today;
             return (DateTime)table.Rows[0][0];
         }
 
@@ -158,9 +172,23 @@ namespace LibflClassLibrary.Books.BJBooks
             dbw.IssueElectronicCopyToReader(this.ID, IssuePeriodDays, ViewKey, IDREADER, reader.TypeReader);
         }
 
-        public override string ToJsonString()
+        public override VufindDoc GetVufindDocument()
         {
-            return "BJBookDEMOCONVERT";
+            BJVuFindConverter converter = new BJVuFindConverter(this.Fund);
+            BJDatabaseWrapper wrpapper = new BJDatabaseWrapper(this.Fund);
+            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(this.ID, this.Fund);
+            
+
+
+
+
+
+            return null;// converter.CreateVufindDoc();
+        }
+
+        internal string ToJsonString()
+        {
+            throw new NotImplementedException();
         }
     }
 }

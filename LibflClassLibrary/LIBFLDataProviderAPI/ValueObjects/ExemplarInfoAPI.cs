@@ -44,6 +44,7 @@ namespace DataProviderAPI.ValueObjects
         //для информации о выдаче
         public bool IsIssued { get; set; }
         public string IDReaderTooked { get; set; }
+        public List<string> IDReadersTooked { get; set; } = new List<string>();
         public string DateReturn { get; set; }
 
 

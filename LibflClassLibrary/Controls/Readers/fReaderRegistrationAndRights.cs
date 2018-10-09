@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace LibflClassLibrary.Controls.Readers
@@ -38,7 +39,7 @@ namespace LibflClassLibrary.Controls.Readers
             tbHouse.Text = reader.RegistrationHouse;
             tbFlat.Text = reader.RegistrationFlat;
             tbMobilePhone.Text = reader.MobileTelephone;
-
+            tbEmail.Text = reader.Email;
             readerRightsView1.Init(NumberReader);
 
             DisableAll();
@@ -56,6 +57,7 @@ namespace LibflClassLibrary.Controls.Readers
             tbProvince.Enabled = false;
             tbRegion.Enabled = false;
             tbStreet.Enabled = false;
+            tbEmail.Enabled = false;
             bSave.Enabled = false;
             bEdit.Enabled = true;
             AllEnabled = false;
@@ -72,6 +74,7 @@ namespace LibflClassLibrary.Controls.Readers
             tbRegion.Enabled = true;
             tbStreet.Enabled = true;
             bSave.Enabled = true;
+            tbEmail.Enabled = true;
             bEdit.Enabled = false;
             AllEnabled = true;
         }
@@ -88,11 +91,13 @@ namespace LibflClassLibrary.Controls.Readers
                 MessageBox.Show("Права бесплатного абонемента уже выданы!");
                 return;
             }
-            if (reader.RegistrationCountry == 1 || reader.RegistrationCity == "")
+            if (reader.RegistrationCountry == 1 || reader.RegistrationCity == "" || reader.RegistrationStreet == "" ||
+                reader.RegistrationHouse == "" || reader.RegistrationFlat == "" || reader.MobileTelephone == "") 
             {
-                MessageBox.Show("Перед выдачей прав необходимо обязательно указать страну и город!");
+                MessageBox.Show("Перед выдачей прав необходимо обязательно указать все поля, отмеченные звёздочкой!");
                 return;
             }
+            
             reader.Rights.GiveFreeAbonementRight();
             reader = ReaderInfo.GetReader(reader.NumberReader);
             this.Init(reader.NumberReader);
@@ -111,6 +116,14 @@ namespace LibflClassLibrary.Controls.Readers
                 MessageBox.Show("Поле Мобильный телефон не может содержать более 14 символов!");
                 return;
             }
+            if (!Regex.IsMatch(tbEmail.Text,
+                   @"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))" +
+                   @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$"))
+            {
+                MessageBox.Show("Поле Email имеет неверный формат!");
+                return;
+            }
+
 
             reader.RegistrationCity = tbCity.Text;
             reader.RegistrationCountry = (int)cbCountry.SelectedValue;
@@ -121,7 +134,7 @@ namespace LibflClassLibrary.Controls.Readers
             reader.RegistrationRegion = tbRegion.Text;
             reader.RegistrationStreet = tbStreet.Text;
             reader.MobileTelephone = tbMobilePhone.Text;
-
+            reader.Email = tbEmail.Text;
 
             reader.UpdateRegistrationFields();
             DisableAll();

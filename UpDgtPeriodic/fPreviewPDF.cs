@@ -367,6 +367,7 @@ namespace UpDgtPeriodic
                     settings.Density = new MagickGeometry(300, 300);//качество изображения
                     settings.FrameIndex = i; // Первая страница
                     settings.FrameCount = 1; // Количество страниц. (10 значит 10, а не 11)
+                    
                     images.Read(fPDF.FullName, settings);
                     DirectoryInfo To = new DirectoryInfo(TargetFolder.FullName);
                     DirectoryInfo ToOutside = new DirectoryInfo(TargetFolderOutside.FullName);

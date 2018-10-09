@@ -57,7 +57,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
 
                 
                 DataTable record = dbWrapper.GetBJRecord(_lastID);
-                if (record.Rows.Count == 0) continue; //если сводный уровень, то пропускаем пока.
+                if (record.Rows.Count == 0) continue; //если сводный уровень, то пропускаем пока. тут ещё может пин не существовать
                 try
                 {
                     vfDoc = CreateVufindDoc( record );

@@ -1337,7 +1337,9 @@ public partial class _Default : System.Web.UI.Page
         int IDRequest = Convert.ToInt32(o);
         DA.InsertCommand.Connection.Close();
 
-
+        //следующие ниже комментарии не реализованы. их нужно реализовать!!!!!!!!!
+        //запрос забирает не все изменения. надо переделать.
+        //ещё PDF запрашивается, а высылается ссылка на PDFA, которого может не быть. надо проверять его наличие вручную
 
         DA.InsertCommand.Parameters.Clear();
         DA.InsertCommand.CommandText =
