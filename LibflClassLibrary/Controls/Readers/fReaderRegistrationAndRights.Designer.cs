@@ -52,9 +52,12 @@
             this.bSave = new System.Windows.Forms.Button();
             this.bGiveFreeAbonementRight = new System.Windows.Forms.Button();
             this.bEdit = new System.Windows.Forms.Button();
-            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.label12 = new System.Windows.Forms.Label();
             this.tbEmail = new System.Windows.Forms.TextBox();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
+            this.label13 = new System.Windows.Forms.Label();
+            this.tbMobilePhoneCode = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -211,9 +214,9 @@
             // 
             // tbMobilePhone
             // 
-            this.tbMobilePhone.Location = new System.Drawing.Point(216, 340);
+            this.tbMobilePhone.Location = new System.Drawing.Point(296, 340);
             this.tbMobilePhone.Name = "tbMobilePhone";
-            this.tbMobilePhone.Size = new System.Drawing.Size(542, 22);
+            this.tbMobilePhone.Size = new System.Drawing.Size(129, 22);
             this.tbMobilePhone.TabIndex = 3;
             // 
             // cbCountry
@@ -265,6 +268,22 @@
             this.bEdit.UseVisualStyleBackColor = true;
             this.bEdit.Click += new System.EventHandler(this.bEdit_Click);
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(14, 377);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(42, 16);
+            this.label12.TabIndex = 1;
+            this.label12.Text = "Email";
+            // 
+            // tbEmail
+            // 
+            this.tbEmail.Location = new System.Drawing.Point(216, 374);
+            this.tbEmail.Name = "tbEmail";
+            this.tbEmail.Size = new System.Drawing.Size(542, 22);
+            this.tbEmail.TabIndex = 3;
+            // 
             // readerRightsView1
             // 
             this.readerRightsView1.Location = new System.Drawing.Point(216, 426);
@@ -273,21 +292,30 @@
             this.readerRightsView1.Size = new System.Drawing.Size(542, 82);
             this.readerRightsView1.TabIndex = 7;
             // 
-            // label12
+            // label13
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(14, 377);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(47, 16);
-            this.label12.TabIndex = 1;
-            this.label12.Text = "Email*";
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(213, 343);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(26, 16);
+            this.label13.TabIndex = 1;
+            this.label13.Text = "+7(";
             // 
-            // tbEmail
+            // tbMobilePhoneCode
             // 
-            this.tbEmail.Location = new System.Drawing.Point(216, 374);
-            this.tbEmail.Name = "tbEmail";
-            this.tbEmail.Size = new System.Drawing.Size(542, 22);
-            this.tbEmail.TabIndex = 3;
+            this.tbMobilePhoneCode.Location = new System.Drawing.Point(235, 340);
+            this.tbMobilePhoneCode.Name = "tbMobilePhoneCode";
+            this.tbMobilePhoneCode.Size = new System.Drawing.Size(51, 22);
+            this.tbMobilePhoneCode.TabIndex = 3;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(286, 343);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(12, 16);
+            this.label14.TabIndex = 1;
+            this.label14.Text = ")";
             // 
             // fReaderRegistrationAndRights
             // 
@@ -301,6 +329,7 @@
             this.Controls.Add(this.bCancel);
             this.Controls.Add(this.cbCountry);
             this.Controls.Add(this.tbEmail);
+            this.Controls.Add(this.tbMobilePhoneCode);
             this.Controls.Add(this.tbMobilePhone);
             this.Controls.Add(this.tbFlat);
             this.Controls.Add(this.tbHouse);
@@ -310,6 +339,8 @@
             this.Controls.Add(this.tbProvince);
             this.Controls.Add(this.tbRegion);
             this.Controls.Add(this.label11);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
@@ -361,5 +392,8 @@
         private ReaderRightsView readerRightsView1;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tbEmail;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox tbMobilePhoneCode;
+        private System.Windows.Forms.Label label14;
     }
 }

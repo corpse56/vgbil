@@ -57,16 +57,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalDecisions.CrystalReports.Engine.1.0.0\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
-    </Reference>
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalDecisions.ReportSource.1.0.0\lib\CrystalDecisions.ReportSource.dll</HintPath>
-    </Reference>
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalDecisions.Windows.Forms.1.0.0\lib\CrystalDecisions.Windows.Forms.dll</HintPath>
-    </Reference>
     <Reference Include="Itenso.Rtf.Converter.Html, Version=1.4.0.0, Culture=neutral, PublicKeyToken=d7f23b760ed5c748, processorArchitecture=MSIL">
       <HintPath>..\packages\Intenso\Itenso.Rtf.Converter.Html.dll</HintPath>
     </Reference>
@@ -125,12 +115,6 @@
     <Compile Include="Classes\DB.cs" />
     <Compile Include="Classes\DBReaderVO.cs" />
     <Compile Include="Classes\ReaderVO.cs" />
-    <Compile Include="CrystalReport1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrystalReport1.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Classes\DataGridViewPrinter.cs" />
     <Compile Include="Classes\dbbook.cs" />
     <Compile Include="Classes\dbreader.cs" />
@@ -296,10 +280,6 @@
     <Compile Include="PrintDemand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CrystalReport1.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport1.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="DateSelect.resx">
       <DependentUpon>DateSelect.cs</DependentUpon>
     </EmbeddedResource>
@@ -409,10 +389,6 @@
       <DependentUpon>RoundProgress.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="tst.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>tst.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="ViewFullSizePhoto.resx">
       <DependentUpon>ViewFullSizePhoto.cs</DependentUpon>
     </EmbeddedResource>
@@ -469,12 +445,6 @@
     </Compile>
     <Compile Include="spravki.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tst.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>tst.rpt</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewFullSizePhoto.cs">
       <SubType>Form</SubType>

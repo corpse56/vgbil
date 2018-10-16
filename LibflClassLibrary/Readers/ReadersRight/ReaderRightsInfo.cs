@@ -31,7 +31,7 @@ namespace LibflClassLibrary.Readers.ReadersRight
         
         public static ReaderRightsInfo GetReaderRights(int NumberReader)
         {
-            ReaderRightsInfo result = null;
+            ReaderRightsInfo result = new ReaderRightsInfo();
             ReaderLoader loader = new ReaderLoader();
             result = loader.GetReaderRights(NumberReader);
             result.NumberReader = NumberReader;

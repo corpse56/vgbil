@@ -22,6 +22,9 @@ namespace ALISAPI_TEST
 {
     public partial class Form1 : Form
     {
+
+
+        readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
         public Form1()
         {
             InitializeComponent();
@@ -34,7 +37,7 @@ namespace ALISAPI_TEST
                 client.Encoding = Encoding.UTF8;
                 HttpRequestHeader AcceptHeader = HttpRequestHeader.Accept;
                 client.Headers[AcceptHeader] = "application/json";
-                string result = client.DownloadString("http://80.250.173.142/Readers/189245");
+                string result = client.DownloadString(ALIS_ADDRESS+"Readers/189245");
                 ReaderInfo reader = JsonConvert.DeserializeObject<ReaderInfo>(result);
                 tbResponse.Text = result;
             }
@@ -77,7 +80,7 @@ namespace ALISAPI_TEST
             using (HttpClient client = new HttpClient())
             {
 
-                var response = client.PostAsync("http://80.250.173.142/Readers/Authorize/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                var response = client.PostAsync(ALIS_ADDRESS+"Readers/Authorize/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
 
             }
@@ -108,9 +111,27 @@ namespace ALISAPI_TEST
 
         }
 
+        
+
+
+        private void ReadersGetByOauthToken_Click(object sender, EventArgs e)
+        {
+            AccessToken request = new AccessToken();
+            request.TokenValue = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1MzkzNTQzOTEsImlzcyI6Im9hdXRoLmxpYmZsLnJ1IiwiZXhwIjoxNTM5MzU0OTkxLCJ1aWQiOjE4OTI0NSwiY2lkIjoiYWdncmVnaW9uIn0.ignwAP_dJFkkl_I45VRC0HDAvKPKGDXkgdNy4XqrUY4";
+            string jsonData = JsonConvert.SerializeObject(request);
+
+            using (HttpClient client = new HttpClient())
+            {
+
+                var response = client.PostAsync(ALIS_ADDRESS+"Readers/GetByOauthToken", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
+            }
+
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
-            BJBookInfo b = BJBookInfo.GetBookInfoByPIN(1456705,"BJVVV");
+            BJBookInfo b = BJBookInfo.GetBookInfoByPIN(1456705, "BJVVV");
             BookJSONShortViewer viewer = new BookJSONShortViewer();
             tbResponse.Text = viewer.GetView(b);
         }

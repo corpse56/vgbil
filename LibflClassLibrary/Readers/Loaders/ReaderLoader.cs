@@ -166,12 +166,13 @@ namespace LibflClassLibrary.Readers.Loaders
         {
             ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             DataTable table = dbw.GetReaderRights(NumberReader);
+            ReaderRightsInfo result = new ReaderRightsInfo();
             if (table.Rows.Count == 0)
             {
-                return null;
+                return result;
             }
 
-            ReaderRightsInfo result = new ReaderRightsInfo();
+            
             foreach (DataRow row in table.Rows)
             {
                 ReaderRight right = new ReaderRight();

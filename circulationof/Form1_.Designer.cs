@@ -1,4 +1,3 @@
-using CrystalDecisions.Windows.Forms;
 namespace Circulation
 {
     partial class Form1
@@ -105,7 +104,6 @@ namespace Circulation
             this.label20 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.crystalReportViewer1 = new Circulation.DBCrystalReportViewer();
             this.numericUpDown3 = new Circulation.DBNumericUpDown();
             this.Formular = new Circulation.DBDataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -832,7 +830,6 @@ namespace Circulation
             this.tabPage4.Controls.Add(this.label20);
             this.tabPage4.Controls.Add(this.label24);
             this.tabPage4.Controls.Add(this.label17);
-            this.tabPage4.Controls.Add(this.crystalReportViewer1);
             this.tabPage4.Controls.Add(this.numericUpDown3);
             this.tabPage4.Controls.Add(this.Formular);
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
@@ -1024,18 +1021,18 @@ namespace Circulation
             this.label17.Size = new System.Drawing.Size(99, 24);
             this.label17.TabIndex = 3;
             this.label17.Text = "„итатель:";
-            // 
-            // crystalReportViewer1
-            // 
-            this.crystalReportViewer1.ActiveViewIndex = -1;
-            this.crystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.crystalReportViewer1.Location = new System.Drawing.Point(128, 157);
-            this.crystalReportViewer1.Name = "crystalReportViewer1";
-            this.crystalReportViewer1.SelectionFormula = "";
-            this.crystalReportViewer1.Size = new System.Drawing.Size(99, 127);
-            this.crystalReportViewer1.TabIndex = 13;
-            this.crystalReportViewer1.ViewTimeSelectionFormula = "";
-            this.crystalReportViewer1.Visible = false;
+            //// 
+            //// crystalReportViewer1
+            //// 
+            //this.crystalReportViewer1.ActiveViewIndex = -1;
+            //this.crystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            //this.crystalReportViewer1.Location = new System.Drawing.Point(128, 157);
+            //this.crystalReportViewer1.Name = "crystalReportViewer1";
+            //this.crystalReportViewer1.SelectionFormula = "";
+            //this.crystalReportViewer1.Size = new System.Drawing.Size(99, 127);
+            //this.crystalReportViewer1.TabIndex = 13;
+            //this.crystalReportViewer1.ViewTimeSelectionFormula = "";
+            //this.crystalReportViewer1.Visible = false;
             // 
             // numericUpDown3
             // 
@@ -2200,7 +2197,6 @@ namespace Circulation
         private DBDataGridView PaidServiceGrid;
         private DBDataGridView dataGridView1;
         private DBDataGridView dgwHome;
-        private DBCrystalReportViewer crystalReportViewer1;
         private System.Windows.Forms.Button button29;
         private System.Windows.Forms.ToolStripMenuItem список„итателей» ниг¬ыданныхЌаƒом—ѕросроченным—роком—дачиToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker backgroundWorker13;

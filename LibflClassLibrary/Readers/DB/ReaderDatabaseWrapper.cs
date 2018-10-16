@@ -150,6 +150,10 @@ namespace LibflClassLibrary.Readers.DB
                 command.Parameters.Add("RegistrationFlat", SqlDbType.NVarChar).Value = readerInfo.RegistrationFlat;
                 command.Parameters.Add("NumberReader", SqlDbType.NVarChar).Value = readerInfo.NumberReader;
                 command.Parameters.Add("MobileTelephone", SqlDbType.NVarChar).Value = readerInfo.MobileTelephone;
+                if (command.Parameters["MobileTelephone"].Value.ToString() == string.Empty)
+                {
+                    command.Parameters["MobileTelephone"].Value = DBNull.Value;
+                }
                 command.Parameters.Add("Email", SqlDbType.NVarChar).Value = readerInfo.Email;
 
                 connection.Open();

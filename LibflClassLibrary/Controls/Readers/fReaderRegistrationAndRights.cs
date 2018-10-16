@@ -38,7 +38,11 @@ namespace LibflClassLibrary.Controls.Readers
             tbStreet.Text = reader.RegistrationStreet;
             tbHouse.Text = reader.RegistrationHouse;
             tbFlat.Text = reader.RegistrationFlat;
-            tbMobilePhone.Text = reader.MobileTelephone;
+            if (reader.MobileTelephone.Length == 14)
+            {
+                tbMobilePhoneCode.Text = reader.MobileTelephone.Substring(3, 3);
+                tbMobilePhone.Text = reader.MobileTelephone.Substring(7, 7);
+            }
             tbEmail.Text = reader.Email;
             readerRightsView1.Init(NumberReader);
 
@@ -50,6 +54,7 @@ namespace LibflClassLibrary.Controls.Readers
         {
             cbCountry.Enabled = false;
             tbMobilePhone.Enabled = false;
+            tbMobilePhoneCode.Enabled = false;
             tbCity.Enabled = false;
             tbDistrict.Enabled = false;
             tbFlat.Enabled = false;
@@ -66,6 +71,7 @@ namespace LibflClassLibrary.Controls.Readers
         {
             cbCountry.Enabled = true;
             tbMobilePhone.Enabled = true;
+            tbMobilePhoneCode.Enabled = true;
             tbCity.Enabled = true;
             tbDistrict.Enabled = true;
             tbFlat.Enabled = true;
@@ -97,7 +103,15 @@ namespace LibflClassLibrary.Controls.Readers
                 MessageBox.Show("Перед выдачей прав необходимо обязательно указать все поля, отмеченные звёздочкой!");
                 return;
             }
-            
+
+            TimeSpan Age = (DateTime.Now - reader.DateBirth);
+            DateTime zeroTime = new DateTime(1, 1, 1);
+            int Years = (zeroTime + Age).Year - 1;
+            if (Years < 14)
+            {
+                MessageBox.Show("Бесплатный абонемент не выдаётся до достижения 14 летнего возраста!");
+                return;
+            }
             reader.Rights.GiveFreeAbonementRight();
             reader = ReaderInfo.GetReader(reader.NumberReader);
             this.Init(reader.NumberReader);
@@ -116,11 +130,40 @@ namespace LibflClassLibrary.Controls.Readers
                 MessageBox.Show("Поле Мобильный телефон не может содержать более 14 символов!");
                 return;
             }
-            if (!Regex.IsMatch(tbEmail.Text,
+            if (tbEmail.Text != string.Empty
+                &&
+                !Regex.IsMatch(tbEmail.Text,
                    @"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))" +
                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$"))
             {
                 MessageBox.Show("Поле Email имеет неверный формат!");
+                return;
+            }
+            if (tbMobilePhone.Text == string.Empty
+                ||
+                tbMobilePhoneCode.Text == string.Empty)
+            {
+                MessageBox.Show("Мобильный телефон не заполнен полностью!");
+                return;
+            }
+            if (tbMobilePhoneCode.Text.Length != 3)
+            {
+                MessageBox.Show("Код мобильного телефона должен содержать 3 цифры!");
+                return;
+            }
+            if (tbMobilePhone.Text.Length != 7)
+            {
+                MessageBox.Show("Номер мобильного телефона должен содержать 7 цифр!");
+                return;
+            }
+            if (!int.TryParse(tbMobilePhoneCode.Text, out int ParsedPhone))
+            {
+                MessageBox.Show("Код мобильного телефона имеет неверный формат!");
+                return;
+            }
+            if (!int.TryParse(tbMobilePhone.Text, out ParsedPhone))
+            {
+                MessageBox.Show("Код мобильного телефона имеет неверный формат!");
                 return;
             }
 
@@ -133,7 +176,7 @@ namespace LibflClassLibrary.Controls.Readers
             reader.RegistrationProvince = tbProvince.Text;
             reader.RegistrationRegion = tbRegion.Text;
             reader.RegistrationStreet = tbStreet.Text;
-            reader.MobileTelephone = tbMobilePhone.Text;
+            reader.MobileTelephone = (tbMobilePhoneCode.Text == string.Empty) ? string.Empty : $"+7({tbMobilePhoneCode.Text}){tbMobilePhone.Text}";
             reader.Email = tbEmail.Text;
 
             reader.UpdateRegistrationFields();

@@ -11,14 +11,12 @@ using System.Data.OleDb;
 using System.Globalization;
 using System.Xml;
 using System.Windows.Forms.VisualStyles;
-using CrystalDecisions.CrystalReports.Engine;
 using System.Threading;
 using Microsoft.Win32;
 using System.IO;
 using ExtGui;
 using System.Diagnostics;
 using System.IO.Ports;
-using CrystalDecisions.Windows.Forms;
 using System.ServiceModel;
 using LibflClassLibrary.Controls.Readers;
 
@@ -2266,19 +2264,19 @@ namespace Circulation
             //R.Tables.Add("form");
 
             int i = Conn.SQLDA.Fill(R,"form");
-            CrystalReport1 cr1 = new CrystalReport1();
-            cr1.SetDataSource(R.Tables["form"]);
-            crystalReportViewer1.ReportSource = cr1;
+            //CrystalReport1 cr1 = new CrystalReport1();
+            //cr1.SetDataSource(R.Tables["form"]);
+            //crystalReportViewer1.ReportSource = cr1;
 
-            CrystalDecisions.CrystalReports.Engine.TextObject txtReaderName;
-            CrystalDecisions.CrystalReports.Engine.TextObject txtReaderNum;
-            txtReaderName = cr1.ReportDefinition.ReportObjects["Text19"] as TextObject;
-            txtReaderNum = cr1.ReportDefinition.ReportObjects["Text20"] as TextObject;
+            //CrystalDecisions.CrystalReports.Engine.TextObject txtReaderName;
+            //CrystalDecisions.CrystalReports.Engine.TextObject txtReaderNum;
+            //txtReaderName = cr1.ReportDefinition.ReportObjects["Text19"] as TextObject;
+            //txtReaderNum = cr1.ReportDefinition.ReportObjects["Text20"] as TextObject;
 
-            txtReaderName.Text = reader.Surname + " " + reader.Name + " " + reader.SecondName;
-            txtReaderNum.Text = reader.id;
-            //crystalReportViewer1.PrintReport();
-            cr1.PrintToPrinter(1, false, 1, 99999);
+            //txtReaderName.Text = reader.Surname + " " + reader.Name + " " + reader.SecondName;
+            //txtReaderNum.Text = reader.id;
+            ////crystalReportViewer1.PrintReport();
+            //cr1.PrintToPrinter(1, false, 1, 99999);
         }
 
 
@@ -4739,24 +4737,6 @@ namespace Circulation
 
     }
     
-    class DBCrystalReportViewer : CrystalReportViewer
-    {
-
-        public DBCrystalReportViewer()
-        {
-            this.DoubleBuffered = true;
-        }
-
-    }
-    class DBCrystalReport1 : CrystalReport1
-    {
-
-        public DBCrystalReport1()
-        {
-            
-        }
-
-    }
     class DBNumericUpDown : NumericUpDown
     {
         public DBNumericUpDown()

@@ -55,58 +55,32 @@ namespace ALISAPI.Controllers
         /// Получить читателя по oauth-токену
         /// </summary>
         /// <param name="token">Токен, выданный читателю при авторизации</param>
-        /// <returns>ReaderInfo</returns>
-        [HttpGet]
-        [Route("Readers/GetByOauthToken/{token}")]
-        public HttpResponseMessage GetByOauthToken(string token)
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Readers/GetByOauthToken")]
+        public HttpResponseMessage GetByOauthToken()
         {
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            AccessToken request = JsonConvert.DeserializeObject<AccessToken>(JSONRequest);
+
             ReaderInfo reader;
             try
             {
-                reader = ReaderInfo.GetReaderByOAuthToken(token);
+                reader = ReaderInfo.GetReaderByOAuthToken(request);
             }
             catch (Exception ex)
             {
-                //HttpResponseMessage resp = new HttpResponseMessage(HttpStatusCode.NotFound)
-                //{
-                //    Content = new StringContent("R002"),
-                //    ReasonPhrase = "Токен не найден или не действителен"
-                //};
-                //throw new HttpResponseException(resp);
                 JObject jo = new JObject();
-
-                jo.Add("Error", ex.Message);
+                jo.Add("Error " +JSONRequest , ex.Message);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, jo);
             }
-            return Request.CreateResponse(HttpStatusCode.OK, reader);
+
+            string json = JsonConvert.SerializeObject(reader, Formatting.Indented);
+            HttpResponseMessage result = this.Request.CreateResponse(HttpStatusCode.OK);
+            result.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            return result;
         }
 
-        /// <summary>
-        /// Получить тип логина для заданного логина. 
-        /// </summary>
-        /// <param name="Login"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("Readers/GetLoginType/{login}")]
-        public HttpResponseMessage GetLoginType(string Login)
-        {
-            string result = ReaderInfo.GetLoginType(Login);
-            if (result.ToLower() == "notdefined")
-            {
-                HttpResponseMessage resp = new HttpResponseMessage(HttpStatusCode.NotFound)
-                {
-                    Content = new StringContent("R003"),
-                    ReasonPhrase = "Неизвестный тип логина"
-                };
-                throw new HttpResponseException(resp);
-
-            }
-            JObject jo = new JObject();
-            jo.Add("LoginType", result);
-            //return IHttpActionResult
-            return Request.CreateResponse(HttpStatusCode.OK, jo);
-
-        }
 
         /// <summary>
         /// Авторизовать пользователя. Если авторизация успешна, то вернуть полный профиль 
@@ -145,6 +119,32 @@ namespace ALISAPI.Controllers
 
         }
 
+        /// <summary>
+        /// Получить тип логина для заданного логина. 
+        /// </summary>
+        /// <param name="Login"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Readers/GetLoginType/{login}")]
+        public HttpResponseMessage GetLoginType(string Login)
+        {
+            string result = ReaderInfo.GetLoginType(Login);
+            if (result.ToLower() == "notdefined")
+            {
+                HttpResponseMessage resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent("R003"),
+                    ReasonPhrase = "Неизвестный тип логина"
+                };
+                throw new HttpResponseException(resp);
+
+            }
+            JObject jo = new JObject();
+            jo.Add("LoginType", result);
+            //return IHttpActionResult
+            return Request.CreateResponse(HttpStatusCode.OK, jo);
+
+        }
 
         //// POST api/Readers
         //public void Post([FromBody]string value)

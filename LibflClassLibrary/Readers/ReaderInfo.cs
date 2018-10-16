@@ -87,10 +87,10 @@ namespace LibflClassLibrary.Readers
             return strHashPass;
         }
 
-        public static ReaderInfo GetReaderByOAuthToken(string token)
+        public static ReaderInfo GetReaderByOAuthToken(AccessToken token)
         {
             ReaderLoader loader = new ReaderLoader();
-            int Id = loader.GetReaderIdByOAuthToken(token);
+            int Id = loader.GetReaderIdByOAuthToken(token.TokenValue);
             ReaderInfo result = loader.LoadReader(Id);
             return result;
         }

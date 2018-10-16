@@ -27,7 +27,7 @@ namespace LibflClassLibrary.Readers.DB
         {
             get
             {
-                return "select user_id from oauth_access_tokens where id = @token and expires_at >= CURDATE()";
+                return "select user_id from oauth_access_tokens where access_token = @token and expires >= CURDATE()";
             }
         }
 

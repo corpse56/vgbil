@@ -24,7 +24,7 @@ namespace LibflClassLibrary.Controls.Readers
             lvRights.Items.Clear();
             foreach (var right in rights.RightsList)
             {
-                lvRights.Items.Add(right.ToString());
+                lvRights.Items.Add($"{right.ToString()} до {right.DateEndReaderRight.ToString("dd.MM.yyyy")}");
             }
 
         }
