@@ -49,7 +49,6 @@ namespace Circulation
                 this.Close();
                 return;
             }
-            this.canshow = true;
             richTextBox1.Text = "Уважаемый(ая) " + reader.Name + " " + reader.SecondName + "!" + rn +
                 "Вы задерживаете книги:" + rn + rn;
             foreach (DataGridViewRow r in formular.Rows)
@@ -110,6 +109,7 @@ namespace Circulation
             }
             htmltext = ConvertRtfToHtml(richTextBox1.Rtf);
             label2.Text += (dbw.GetLastEmailDate(reader) == "noemail") ?  " (нет)": " " +dbw.GetLastEmailDate(reader);
+            this.canshow = true;
         }
         private static string ConvertRtfToHtml(string rtfText)
         {

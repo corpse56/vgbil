@@ -7,6 +7,7 @@ namespace LibflClassLibrary.Readers.DB
 {
     public class Reader
     {
+
         public string GET_READER
         {
             get
@@ -93,6 +94,25 @@ namespace LibflClassLibrary.Readers.DB
                         " Email = @Email, " +
                         " MobileTelephone = @MobileTelephone " +
                         " where NumberReader = @NumberReader";
+            }
+        }
+        public string UPDATE_LIVE_FIELDS
+        {
+            get
+            {
+                return "update Readers..Main " +
+                        "set " +
+                        " LiveRegion = @LiveRegion, " +
+                        " LiveProvince = @LiveProvince, " +
+                        " LiveDistrict = @LiveDistrict, " +
+                        " LiveCity = @LiveCity, " +
+                        " LiveStreet = @LiveStreet, " +
+                        " LiveHouse = @LiveHouse, " +
+                        " LiveFlat = @LiveFlat, " +
+                        " Email = @Email, " +
+                        " MobileTelephone = @MobileTelephone " +
+                        " where NumberReader = @NumberReader";
+
             }
         }
 

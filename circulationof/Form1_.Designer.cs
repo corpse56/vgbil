@@ -87,6 +87,8 @@ namespace Circulation
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.bReaderRegistrationAndRights = new System.Windows.Forms.Button();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.button30 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.button29 = new System.Windows.Forms.Button();
@@ -210,8 +212,7 @@ namespace Circulation
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.zAKAZBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
-            this.bReaderRegistrationAndRights = new System.Windows.Forms.Button();
+            this.bFormularEmail = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -811,6 +812,7 @@ namespace Circulation
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.bFormularEmail);
             this.tabPage4.Controls.Add(this.bReaderRegistrationAndRights);
             this.tabPage4.Controls.Add(this.readerRightsView1);
             this.tabPage4.Controls.Add(this.button30);
@@ -839,6 +841,24 @@ namespace Circulation
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Формуляр читателя";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // bReaderRegistrationAndRights
+            // 
+            this.bReaderRegistrationAndRights.Location = new System.Drawing.Point(825, 123);
+            this.bReaderRegistrationAndRights.Name = "bReaderRegistrationAndRights";
+            this.bReaderRegistrationAndRights.Size = new System.Drawing.Size(288, 27);
+            this.bReaderRegistrationAndRights.TabIndex = 27;
+            this.bReaderRegistrationAndRights.Text = "Выдать права бесплатного абонемента";
+            this.bReaderRegistrationAndRights.UseVisualStyleBackColor = true;
+            this.bReaderRegistrationAndRights.Click += new System.EventHandler(this.bReaderRegistrationAndRights_Click);
+            // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(7, 55);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(533, 95);
+            this.readerRightsView1.TabIndex = 26;
             // 
             // button30
             // 
@@ -1021,18 +1041,6 @@ namespace Circulation
             this.label17.Size = new System.Drawing.Size(99, 24);
             this.label17.TabIndex = 3;
             this.label17.Text = "Читатель:";
-            //// 
-            //// crystalReportViewer1
-            //// 
-            //this.crystalReportViewer1.ActiveViewIndex = -1;
-            //this.crystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            //this.crystalReportViewer1.Location = new System.Drawing.Point(128, 157);
-            //this.crystalReportViewer1.Name = "crystalReportViewer1";
-            //this.crystalReportViewer1.SelectionFormula = "";
-            //this.crystalReportViewer1.Size = new System.Drawing.Size(99, 127);
-            //this.crystalReportViewer1.TabIndex = 13;
-            //this.crystalReportViewer1.ViewTimeSelectionFormula = "";
-            //this.crystalReportViewer1.Visible = false;
             // 
             // numericUpDown3
             // 
@@ -1972,23 +1980,15 @@ namespace Circulation
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
             // 
-            // readerRightsView1
+            // bFormularEmail
             // 
-            this.readerRightsView1.Location = new System.Drawing.Point(7, 55);
-            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.readerRightsView1.Name = "readerRightsView1";
-            this.readerRightsView1.Size = new System.Drawing.Size(533, 95);
-            this.readerRightsView1.TabIndex = 26;
-            // 
-            // bReaderRegistrationAndRights
-            // 
-            this.bReaderRegistrationAndRights.Location = new System.Drawing.Point(825, 123);
-            this.bReaderRegistrationAndRights.Name = "bReaderRegistrationAndRights";
-            this.bReaderRegistrationAndRights.Size = new System.Drawing.Size(288, 27);
-            this.bReaderRegistrationAndRights.TabIndex = 27;
-            this.bReaderRegistrationAndRights.Text = "Выдать права бесплатного абонемента";
-            this.bReaderRegistrationAndRights.UseVisualStyleBackColor = true;
-            this.bReaderRegistrationAndRights.Click += new System.EventHandler(this.bReaderRegistrationAndRights_Click);
+            this.bFormularEmail.Location = new System.Drawing.Point(575, 125);
+            this.bFormularEmail.Name = "bFormularEmail";
+            this.bFormularEmail.Size = new System.Drawing.Size(244, 26);
+            this.bFormularEmail.TabIndex = 28;
+            this.bFormularEmail.Text = "Выслать Email c задолжностями";
+            this.bFormularEmail.UseVisualStyleBackColor = true;
+            this.bFormularEmail.Click += new System.EventHandler(this.bFormularEmail_Click);
             // 
             // Form1
             // 
@@ -2239,6 +2239,7 @@ namespace Circulation
         private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
         private System.Windows.Forms.Button bReaderRegistrationAndRights;
         private LibflClassLibrary.Controls.Readers.ReaderRightsView readerRightsView1;
+        private System.Windows.Forms.Button bFormularEmail;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         //private CrystalReport1 CrystalReport11;

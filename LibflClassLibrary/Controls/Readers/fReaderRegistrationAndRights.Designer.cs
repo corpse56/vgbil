@@ -58,6 +58,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.tbMobilePhoneCode = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.tbCountry = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -78,9 +79,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 83);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 16);
+            this.label2.Size = new System.Drawing.Size(56, 16);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Страна *";
+            this.label2.Text = "Страна";
             // 
             // label3
             // 
@@ -223,10 +224,11 @@
             // 
             this.cbCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCountry.FormattingEnabled = true;
-            this.cbCountry.Location = new System.Drawing.Point(216, 80);
+            this.cbCountry.Location = new System.Drawing.Point(15, 484);
             this.cbCountry.Name = "cbCountry";
-            this.cbCountry.Size = new System.Drawing.Size(542, 24);
+            this.cbCountry.Size = new System.Drawing.Size(82, 24);
             this.cbCountry.TabIndex = 4;
+            this.cbCountry.Visible = false;
             // 
             // bCancel
             // 
@@ -317,6 +319,15 @@
             this.label14.TabIndex = 1;
             this.label14.Text = ")";
             // 
+            // tbCountry
+            // 
+            this.tbCountry.Enabled = false;
+            this.tbCountry.Location = new System.Drawing.Point(216, 83);
+            this.tbCountry.Name = "tbCountry";
+            this.tbCountry.Size = new System.Drawing.Size(542, 22);
+            this.tbCountry.TabIndex = 3;
+            this.tbCountry.Text = "Россия";
+            // 
             // fReaderRegistrationAndRights
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -337,6 +348,7 @@
             this.Controls.Add(this.tbCity);
             this.Controls.Add(this.tbDistrict);
             this.Controls.Add(this.tbProvince);
+            this.Controls.Add(this.tbCountry);
             this.Controls.Add(this.tbRegion);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label14);
@@ -395,5 +407,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox tbMobilePhoneCode;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox tbCountry;
     }
 }

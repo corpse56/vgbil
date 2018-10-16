@@ -2894,7 +2894,6 @@
 /Circulation/bin/Debug/zh-CHT/CrystalDecisions.ReportSource.resources.dll
 /Circulation/bin/Debug/zh-CHT/CrystalDecisions.Shared.resources.dll
 /Circulation/bin/Debug/zh-CHT/CrystalDecisions.Windows.Forms.resources.dll
-/Circulation/packages.config
 /CirculationACC/bin/Debug/FlashControlV71.dll
 /CirculationACC/bin/Debug/LibflClassLibrary.dll.config
 /CirculationACC/bin/Debug/ShockwaveFlashObjects.dll
@@ -2930,7 +2929,6 @@
 /CirculationSCC/bin/Debug/ShockwaveFlashObjects.dll
 /CountOfDigitizedPages/bin/Debug/Microsoft.Office.Interop.Excel.dll
 /CountOfDigitizedPages/bin/Debug/stdole.dll
-/CountOfDigitizedPages/packages.config
 /DocList/bin/Debug/CrystalDecisions.ReportAppServer.CommLayer.dll
 /DocList/bin/Debug/CrystalDecisions.ReportAppServer.CommonObjectModel.dll
 /DocList/bin/Debug/CrystalDecisions.ReportAppServer.Controllers.dll
@@ -3011,7 +3009,6 @@
 /LibflClassLibrary/bin/Debug/Microsoft.Office.Interop.Word.dll
 /LibflClassLibrary/bin/Debug/ShockwaveFlashObjects.dll
 /LibflClassLibrary/bin/Debug/stdole.dll
-/LibflClassLibrary/packages.config
 /OAI-PMH/Bin/CrystalDecisions.CrystalReports.Engine.dll
 /OAI-PMH/Bin/CrystalDecisions.ReportSource.dll
 /OAI-PMH/Bin/CrystalDecisions.Shared.dll
@@ -4208,3 +4205,4 @@
 /CirculationSCC/obj/Debug/build.force
 /LIBFLDataProviderAPI/Bin/FlashControlV71.dll
 /LIBFLDataProviderAPI/Bin/ShockwaveFlashObjects.dll
+/CirculationFCC/obj/Debug/DesignTimeResolveAssemblyReferences.cache

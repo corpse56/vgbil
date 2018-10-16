@@ -6,6 +6,7 @@ using System.Data;
 using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.Readers.DB;
 using LibflClassLibrary.Readers.ReadersRight;
+using Utilities;
 
 namespace LibflClassLibrary.Readers.Loaders
 {
@@ -104,6 +105,27 @@ namespace LibflClassLibrary.Readers.Loaders
                     case "RegistrationFlat":
                         reader.RegistrationFlat = row[col].ToString();
                         break;
+                    case "LiveRegion":
+                        reader.LiveRegion = row[col].ToString();
+                        break;
+                    case "LiveProvince":
+                        reader.LiveProvince = row[col].ToString();
+                        break;
+                    case "LiveDistrict":
+                        reader.LiveDistrict = row[col].ToString();
+                        break;
+                    case "LiveCity":
+                        reader.LiveCity = row[col].ToString();
+                        break;
+                    case "LiveStreet":
+                        reader.LiveStreet = row[col].ToString();
+                        break;
+                    case "LiveHouse":
+                        reader.LiveHouse = row[col].ToString();
+                        break;
+                    case "LiveFlat":
+                        reader.LiveFlat = row[col].ToString();
+                        break;
                 }
             }
             reader.Rights = ReaderRightsInfo.GetReaderRights(reader.NumberReader);
@@ -115,6 +137,7 @@ namespace LibflClassLibrary.Readers.Loaders
             ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             dbw.GiveFreeAbonementRight(numberReader);
         }
+
 
         internal int GetReaderIdByOAuthToken(string token)
         {
@@ -138,6 +161,11 @@ namespace LibflClassLibrary.Readers.Loaders
         {
             ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             dbw.UpdateRegistrationFields(readerInfo);
+        }
+        internal void UpdateLiveFields(ReaderInfo readerInfo)
+        {
+            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
+            dbw.UpdateLiveFields(readerInfo);
         }
 
         internal ReaderInfo Authorize(int numberReader, string password)

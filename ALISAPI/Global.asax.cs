@@ -20,9 +20,17 @@ namespace ALISAPI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+
+            //var formatters = GlobalConfiguration.Configuration.Formatters;
+            //formatters.Remove(formatters.XmlFormatter);
+
+            //var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+
+            //json.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local;
             //json formatter settings
-            var jsonFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
-            jsonFormatter.SerializerSettings.DateFormatString = "yyyy-MM-ddThh:mm:sszz";
+            //var jsonFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            //jsonFormatter.SerializerSettings.DateFormatString = "yyyy-MM-ddThh::mm:sszz";
+            //jsonFormatter.SerializerSettings.DateFormatString = "yyyy";
         }
     }
 }

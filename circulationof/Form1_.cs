@@ -4654,6 +4654,22 @@ namespace Circulation
             frr.ShowDialog();
         }
 
+        private void bFormularEmail_Click(object sender, EventArgs e)
+        {
+            if (label25.Text == "")
+            {
+                MessageBox.Show("¬ведите номер или считайте штрихкод читател€!");
+                return;
+            }
+
+            OverdueEmail oe = new OverdueEmail(this, new dbReader(ReaderRecordFormular.IntID), this.Formular, dbw);
+            if (oe.canshow)
+            {
+                oe.ShowDialog();
+            }
+
+        }
+
         //private void список„итателей» ниг¬ыданныхЌаƒом—ѕросроченным—роком—дачиToolStripMenuItem_Click(object sender, EventArgs e)
         //{
 

@@ -16,6 +16,8 @@ namespace Circulation
         public string F899b;
         public int F899a_Id;
         public string F899a;
+        public int F921c_Id;
+        public string F921c;
         //===========
         public int IDMAIN;
         public string TITLE;
@@ -71,6 +73,7 @@ namespace Circulation
             }
             this.IDISSUED = dbb.GetIDISSUED(this.IDDATA, this.FUND);
 
+            //фонд
             iddata = from BJRecord x in BookRecord
                      where x.IDDATA == this.IDDATA && x.MNFIELD == 899 && x.MSFIELD == "$b"
                      select x;
@@ -97,6 +100,20 @@ namespace Circulation
                 this.F899a = iddata.ToList()[0].PLAIN;
                 this.F899a_Id = iddata.ToList()[0].IDINLIST;
             }
+            //класс издания
+            iddata = from BJRecord x in BookRecord
+                     where x.IDDATA == this.IDDATA && x.MNFIELD == 921 && x.MSFIELD == "$c"
+                     select x;
+            if (iddata.Count() == 0)//поле 921c не заполнено.
+            {
+                this.F921c = "<нет>";
+            }
+            else
+            {
+                this.F921c = iddata.ToList()[0].PLAIN;
+                this.F921c_Id = iddata.ToList()[0].IDINLIST;
+            }
+
         }
 
         public List<BJRecord> BookRecord;

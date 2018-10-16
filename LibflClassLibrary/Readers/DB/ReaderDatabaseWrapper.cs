@@ -161,5 +161,33 @@ namespace LibflClassLibrary.Readers.DB
                 connection.Close();
             }
         }
+
+        internal void UpdateLiveFields(ReaderInfo readerInfo)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(ReaderQueries.UPDATE_LIVE_FIELDS, connection);
+                command.Parameters.Add("LiveRegion", SqlDbType.NVarChar).Value = readerInfo.LiveRegion;
+                command.Parameters.Add("LiveProvince", SqlDbType.NVarChar).Value = readerInfo.LiveProvince;
+                command.Parameters.Add("LiveDistrict", SqlDbType.NVarChar).Value = readerInfo.LiveDistrict;
+                command.Parameters.Add("LiveCity", SqlDbType.NVarChar).Value = readerInfo.LiveCity;
+                command.Parameters.Add("LiveStreet", SqlDbType.NVarChar).Value = readerInfo.LiveStreet;
+                command.Parameters.Add("LiveHouse", SqlDbType.NVarChar).Value = readerInfo.LiveHouse;
+                command.Parameters.Add("LiveFlat", SqlDbType.NVarChar).Value = readerInfo.LiveFlat;
+                command.Parameters.Add("NumberReader", SqlDbType.NVarChar).Value = readerInfo.NumberReader;
+                command.Parameters.Add("MobileTelephone", SqlDbType.NVarChar).Value = readerInfo.MobileTelephone;
+                if (command.Parameters["MobileTelephone"].Value.ToString() == string.Empty)
+                {
+                    command.Parameters["MobileTelephone"].Value = DBNull.Value;
+                }
+                command.Parameters.Add("Email", SqlDbType.NVarChar).Value = readerInfo.Email;
+
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
     }
 }

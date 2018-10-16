@@ -50,6 +50,15 @@ namespace LibflClassLibrary.Readers
         public string RegistrationFlat { get; set; }
         public string RegistrationTelephone { get; set; }
 
+        public string LiveRegion { get; set; }
+        public string LiveProvince { get; set; }
+        public string LiveDistrict { get; set; }
+        public string LiveCity { get; set; }
+        public string LiveStreet { get; set; }
+        public string LiveHouse { get; set; }
+        public string LiveFlat { get; set; }
+
+
         public ReaderRightsInfo Rights = null;
 
 
@@ -147,6 +156,11 @@ namespace LibflClassLibrary.Readers
             ReaderLoader loader = new ReaderLoader();
             loader.UpdateRegistrationFields(this);
         }
+        internal void UpdateLiveFields()
+        {
+            ReaderLoader loader = new ReaderLoader();
+            loader.UpdateLiveFields(this);
+        }
 
         public static ReaderInfo Authorize(AuthorizeInfo request)
         {
@@ -180,5 +194,6 @@ namespace LibflClassLibrary.Readers
         {
             return ReaderLoader.GetReaderCountries();
         }
+
     }
 }

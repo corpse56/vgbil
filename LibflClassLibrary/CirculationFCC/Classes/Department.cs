@@ -117,7 +117,7 @@ namespace Circulation
                     }
                 }
             }
-            else
+            else//Эта книга из основного фонда.
             {
                 if ((ScannedReader.ReaderRights & Rights.EMPL) == Rights.EMPL)//если сотрудник выдаем сразу на дом
                 {
@@ -127,11 +127,22 @@ namespace Circulation
                 {
                     if (ScannedBook.F899b == "ВХ")
                     {
-                        if (!CheckFreeAbonementRights())
+                        if (ScannedBook.F921c == "ДП")
                         {
-                            return 1;
+                            if (!CheckFreeAbonementRights())
+                            {
+                                return 1;
+                            }
+                            dbg.IssueInHall(ScannedBook, ScannedReader, IDEMP);
                         }
-                        dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
+                        else
+                        {
+                            if (!CheckFreeAbonementRights())
+                            {
+                                return 1;
+                            }
+                            dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
+                        }
                     }
                     else
                     {

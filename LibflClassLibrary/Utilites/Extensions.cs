@@ -174,6 +174,11 @@ namespace Utilities
             value.Length = 0;
             value.Capacity = 0;
         }
+        public static DateTime Truncate(this DateTime dateTime, TimeSpan timeSpan)
+        {
+            if (timeSpan == TimeSpan.Zero) return dateTime; // Or could throw an ArgumentException
+            return dateTime.AddTicks(-(dateTime.Ticks % timeSpan.Ticks));
+        }
     }
 }
 namespace System.Runtime.CompilerServices

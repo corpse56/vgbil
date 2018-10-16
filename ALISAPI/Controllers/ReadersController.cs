@@ -17,6 +17,12 @@ namespace ALISAPI.Controllers
 {
     public class ReadersController : ApiController
     {
+        JsonSerializerSettings ALISDateFormatJSONSettings = new JsonSerializerSettings
+        {
+            DateFormatHandling = DateFormatHandling.IsoDateFormat,
+            DateFormatString = "yyyy-MM-ddTHH:mm:sszz",
+        };
+
         //// GET api/values
         //public IEnumerable<string> Get()
         //{
@@ -34,7 +40,7 @@ namespace ALISAPI.Controllers
         public HttpResponseMessage Get(int id)
         {
             ReaderInfo reader = ReaderInfo.GetReader(id);
-            string json = JsonConvert.SerializeObject(reader, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISDateFormatJSONSettings);
 
             HttpResponseMessage result = this.Request.CreateResponse(HttpStatusCode.OK);
             result.Content = new StringContent(json,Encoding.UTF8, "application/json");

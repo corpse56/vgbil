@@ -23,7 +23,7 @@ namespace LibflClassLibrary.Controls.Readers
         public void Init(int NumberReader)
         {
             reader = ReaderInfo.GetReader(NumberReader);
-            label1.Text = "Регистрационные данные читателя №" + reader.NumberReader + ".\n " + reader.FamilyName + " " + reader.Name + " " + reader.FatherName;
+            label1.Text = "Адрес фактического проживания или временной регистрации в России №" + reader.NumberReader + ".\n " + reader.FamilyName + " " + reader.Name + " " + reader.FatherName;
 
             DataTable CountryTable = ReaderInfo.GetReaderCountries();
             cbCountry.DataSource = CountryTable;
@@ -97,7 +97,7 @@ namespace LibflClassLibrary.Controls.Readers
                 MessageBox.Show("Права бесплатного абонемента уже выданы!");
                 return;
             }
-            if (reader.RegistrationCountry == 1 || reader.RegistrationCity == "" || reader.RegistrationStreet == "" ||
+            if (reader.RegistrationCity == "" || reader.RegistrationStreet == "" ||
                 reader.RegistrationHouse == "" || reader.RegistrationFlat == "" || reader.MobileTelephone == "") 
             {
                 MessageBox.Show("Перед выдачей прав необходимо обязательно указать все поля, отмеченные звёздочкой!");
@@ -168,18 +168,19 @@ namespace LibflClassLibrary.Controls.Readers
             }
 
 
-            reader.RegistrationCity = tbCity.Text;
-            reader.RegistrationCountry = (int)cbCountry.SelectedValue;
-            reader.RegistrationDistrict = tbDistrict.Text;
-            reader.RegistrationFlat = tbFlat.Text;
-            reader.RegistrationHouse = tbHouse.Text;
-            reader.RegistrationProvince = tbProvince.Text;
-            reader.RegistrationRegion = tbRegion.Text;
-            reader.RegistrationStreet = tbStreet.Text;
+            //reader.RegistrationCountry = (int)cbCountry.SelectedValue;
+            reader.LiveCity = tbCity.Text;
+            reader.LiveDistrict = tbDistrict.Text;
+            reader.LiveFlat = tbFlat.Text;
+            reader.LiveHouse = tbHouse.Text;
+            reader.LiveProvince = tbProvince.Text;
+            reader.LiveRegion = tbRegion.Text;
+            reader.LiveStreet = tbStreet.Text;
             reader.MobileTelephone = (tbMobilePhoneCode.Text == string.Empty) ? string.Empty : $"+7({tbMobilePhoneCode.Text}){tbMobilePhone.Text}";
             reader.Email = tbEmail.Text;
 
-            reader.UpdateRegistrationFields();
+            //reader.UpdateRegistrationFields();
+            reader.UpdateLiveFields();
             DisableAll();
             reader = ReaderInfo.GetReader(reader.NumberReader);
             MessageBox.Show("Регистрационные данные обновлены");
