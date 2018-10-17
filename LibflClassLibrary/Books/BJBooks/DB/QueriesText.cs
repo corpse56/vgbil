@@ -378,6 +378,13 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        public string BOOK_AUTHOR_RIGHTS
+        {
+            get
+            {
+                return "select * from BookAddInf..BookProject where IDBook = @IDMAIN and IDProject = @IDProject and IDBase = " + ((this.Fund == "BJVVV") ? "1" : "2");
+            }
+        }
     }
 
    

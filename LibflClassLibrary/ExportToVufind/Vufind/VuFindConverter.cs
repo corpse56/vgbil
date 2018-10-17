@@ -10,18 +10,7 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
 
     public abstract class VuFindConverter
     {
-        public string Fund
-        { 
-            get 
-            {
-                return this._fund; 
-            }
-            protected set
-            {
-                this._fund = value;
-            }
-        }
-        private string _fund = "unknown";
+        public string Fund { get; protected set; } = "unknown";
 
         public event EventHandler RecordExported;
         //public event EventHandler<VuFindConverterEventArgs> OnDatabaseTimeout;
@@ -31,8 +20,6 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
         {
 
             
-
-
         }
 
         public abstract void Export();
@@ -40,6 +27,7 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
         public abstract void ExportCovers();
         public abstract void ExportSingleCover(object idRecord);
 
+        public abstract VufindDoc CreateVufindDocument(object Record);
 
         protected virtual void OnRecordExported(EventArgs e)
         {

@@ -31,13 +31,13 @@ namespace LibflClassLibrary.Controls.Readers
             cbCountry.DisplayMember = "NameCountry";
             cbCountry.SelectedValue = reader.RegistrationCountry;
 
-            tbRegion.Text = reader.RegistrationRegion;
-            tbProvince.Text = reader.RegistrationProvince;
-            tbDistrict.Text = reader.RegistrationDistrict;
-            tbCity.Text = reader.RegistrationCity;
-            tbStreet.Text = reader.RegistrationStreet;
-            tbHouse.Text = reader.RegistrationHouse;
-            tbFlat.Text = reader.RegistrationFlat;
+            tbRegion.Text = reader.LiveRegion;
+            tbProvince.Text = reader.LiveProvince;
+            tbDistrict.Text = reader.LiveDistrict;
+            tbCity.Text = reader.LiveCity;
+            tbStreet.Text = reader.LiveStreet;
+            tbHouse.Text = reader.LiveHouse;
+            tbFlat.Text = reader.LiveFlat;
             if (reader.MobileTelephone.Length == 14)
             {
                 tbMobilePhoneCode.Text = reader.MobileTelephone.Substring(3, 3);

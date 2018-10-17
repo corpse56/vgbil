@@ -19,6 +19,7 @@ using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using System.Security.Cryptography;
 using System.Drawing.Imaging;
 using System.Security.AccessControl;
+using LibflClassLibrary.Books.BJBooks.Loaders;
 
 namespace LibflClassLibrary.ExportToVufind.BJ
 {
@@ -28,17 +29,17 @@ namespace LibflClassLibrary.ExportToVufind.BJ
         public BJVuFindConverter(string fund)
         {
             this.Fund = fund;
-            this.dbWrapper = new BJDatabaseWrapper(fund);
+            this.BJLoader = new BJBookLoader(fund);
         }
 
         private int _lastID = 1;
-        private BJDatabaseWrapper dbWrapper;
+        private BJBookLoader BJLoader;
         private List<string> errors = new List<string>();
         private VufindXMLWriter writer;
         public override void Export()
         {
             writer = new VufindXMLWriter(this.Fund);
-            writer.StartVufindXML(@"F:\import\" + Fund.ToLower() + ".xml");
+            writer.StartVufindXML(@"E:\import\" + Fund.ToLower() + ".xml");
             /////////////////////////////////////////////////////////////////////////////////////////////
             //////////////////////////////////BJVVV/////////////////////////////////////////////////////
             /////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,18 +50,16 @@ namespace LibflClassLibrary.ExportToVufind.BJ
         private void StartExportFrom( int previous )
         {
             int step = 1;
-            int MaxIDMAIN = GetMaxIDMAIN();
+            int MaxIDMAIN = BJLoader.GetMaxIDMAIN();
             VufindDoc vfDoc = new VufindDoc();
             for (int i = previous; i < MaxIDMAIN; i += step)
             {
                 _lastID = i;
-
-                
-                DataTable record = dbWrapper.GetBJRecord(_lastID);
-                if (record.Rows.Count == 0) continue; //если сводный уровень, то пропускаем пока. тут ещё может пин не существовать
+                //DataTable record = BJLoader.GetBJRecord(_lastID);
+                //if (record.Rows.Count == 0) continue; //если сводный уровень, то пропускаем пока. тут ещё может пин не существовать
                 try
                 {
-                    vfDoc = CreateVufindDoc( record );
+                    vfDoc = CreateVufindDocument( i );
                     if (vfDoc == null) continue;//одна из причин - все экземпляры списаны и нет электронного экземпляра
                 }
                 catch (Exception ex)
@@ -76,7 +75,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 OnRecordExported(args);
             }
             writer.FinishWriting();
-            File.WriteAllLines(@"f:\import\importErrors\" + this.Fund + "Errors.txt", errors.ToArray());
+            File.WriteAllLines(@"e:\import\importErrors\" + this.Fund + "Errors.txt", errors.ToArray());
 
         }
         public override void ExportSingleRecord( int idmain )
@@ -84,8 +83,8 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             VufindXMLWriter writer = new VufindXMLWriter(this.Fund);
             VufindDoc vfDoc = new VufindDoc();
 
-            DataTable record = dbWrapper.GetBJRecord(idmain); 
-            vfDoc = CreateVufindDoc(record);
+            DataTable record = BJLoader.GetBJRecord(idmain); 
+            vfDoc = CreateVufindDocument(record);
             if (vfDoc == null)
             {
                 MessageBox.Show("Запись не имеет экземпляров.");
@@ -112,405 +111,15 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             return true;
         }
 
-        public VufindDoc CreateVufindDoc( DataTable BJBook )
-        {
-            int currentIDMAIN = (int)BJBook.Rows[0]["IDMAIN"];
-            if (!SpecialFilter(currentIDMAIN)) return null;
-            string level = BJBook.Rows[0]["Level"].ToString();
-            string level_id = BJBook.Rows[0]["level_id"].ToString();
-            int lev_id = int.Parse(level_id);
-            if (lev_id < 0) return null;
-            StringBuilder allFields = new StringBuilder();
-            AuthoritativeFile AF_all = new AuthoritativeFile();
-            bool wasTitle = false;//встречается ошибка: два заглавия в одном пине
-            bool wasAuthor = false;//был ли автор. если был, то сортировочное поле уже заполнено
-            string description = "";//все 3хх поля
-            DataTable clarify;
-            string Annotation = "";
-            int CarrierCode;
-            VufindDoc result = new VufindDoc();
-
-#region field analyse
-            //BJBookInfo book = new BJBookInfo();
-            foreach (DataRow r in BJBook.Rows)
-            {
-
-                allFields.AppendFormat(" {0}", r["PLAIN"].ToString());
-                switch (r["code"].ToString())
-                {
-                    //=======================================================================Родные поля вуфайнд=======================
-                    case "200$a":
-                        if (wasTitle) break;
-                        result.title.Add(r["PLAIN"].ToString());
-                        result.title_short.Add(r["PLAIN"].ToString());
-                        result.title_sort.Add(r["SORT"].ToString());
-                        wasTitle = true;
-                        break;
-                    case "700$a":
-                        result.author.Add(r["PLAIN"].ToString());
-                        if (!wasAuthor)
-                        {
-                            //AddField("author_sort", r["SORT"].ToString());
-                            result.author_sort.Add(r["SORT"].ToString());
-                        }
-                        wasAuthor = true;
-                        //забрать все варианты написания автора из авторитетного файла и вставить в скрытое, но поисковое поле
-                        break;
-                    case "701$a":
-                        result.author2.Add(r["PLAIN"].ToString());
-                        break;
-                    case "710$a":
-                        result.author_corporate.Add(r["PLAIN"].ToString());
-                        break;
-                    case "710$4":
-                        result.author_corporate_role.Add(r["PLAIN"].ToString());
-                        break;
-                    case "700$4":
-                        result.author_role.Add(r["PLAIN"].ToString());
-                        break;
-                    case "701$4":
-                        result.author2_role.Add(r["PLAIN"].ToString());
-                        break;
-                    case "921$a":
-                        CarrierCode = KeyValueMapping.CarrierNameToCode.GetValueOrDefault(r["PLAIN"].ToString(), 3001);
-                        result.format.Add(CarrierCode.ToString());
-                        break;
-                    case "922$e":
-                        result.genre.Add(r["PLAIN"].ToString());
-                        result.genre_facet.Add(r["PLAIN"].ToString());
-                        break;
-                    case "10$a":
-                        clarify = dbWrapper.Clarify_10a((int)r["IDDATA"]);
-                        string add = r["PLAIN"].ToString();
-                        if (clarify.Rows.Count != 0)
-                        {
-                            add = r["PLAIN"].ToString() + " (" + clarify.Rows[0]["PLAIN"].ToString() + ")";
-                        }
-                        result.isbn.Add(add);
-                        break;
-                    case "11$a":
-                        result.issn.Add(r["PLAIN"].ToString());
-                        break;
-                    case "101$a":
-                        clarify = dbWrapper.Clarify_101a((int)r["IDINLIST"]);
-                        if (clarify.Rows.Count == 0)
-                        {
-                            result.language.Add(r["PLAIN"].ToString());
-                        }
-                        else
-                        {
-                            result.language.Add(clarify.Rows[0]["NAME"].ToString());
-                        }
-                        break;
-                    case "2100$d":
-                        result.publishDate.Add(r["PLAIN"].ToString());
-                        break;
-                    case "210$c":
-                        result.publisher.Add(r["PLAIN"].ToString());
-                        break;
-                    case "517$a":
-                        clarify = dbWrapper.Clarify_517a((int)r["IDDATA"]);
-                        string fieldValue;
-                        fieldValue = (clarify.Rows.Count != 0) ?
-                            "(" + clarify.Rows[0]["PLAIN"].ToString() + ")" + r["PLAIN"].ToString() :
-                            r["PLAIN"].ToString();
-
-                        result.title_alt.Add(fieldValue);
-                        //нужно специальным образом обрабатывать
-                        break;
-                    //=======================================================================добавленные поля в Вуфайнд=======================
-                    case "210$a":
-                        result.PlaceOfPublication.Add(r["PLAIN"].ToString());
-                        break;
-                    case "200$6":
-                        result.Title_another_chart.Add(r["PLAIN"].ToString());
-                        break;
-                    case "200$b":
-                        result.Title_same_author.Add(r["PLAIN"].ToString());
-                        break;
-                    case "200$d":
-                        result.Parallel_title.Add(r["PLAIN"].ToString());
-                        break;
-                    case "200$e":
-                        result.Info_pertaining_title.Add(r["PLAIN"].ToString());
-                        break;
-                    case "200$f":
-                        result.Responsibility_statement.Add(r["PLAIN"].ToString());
-                        break;
-                    case "200$h":
-                        result.Part_number.Add(r["PLAIN"].ToString());
-                        break;
-                    case "200$i":
-                        result.Part_title.Add(r["PLAIN"].ToString());
-                        break;
-                    case "200$z":
-                        result.Language_title_alt.Add(r["PLAIN"].ToString());
-                        break;
-                    case "500$a":
-                        result.Title_unified.Add(r["PLAIN"].ToString());
-                        break;
-                    case "500$3"://$3 is deprecated!!!
-                        AF_all = GetAFAll( (int)r["AFLINKID"], "AFHEADERVAR");
-                        result.Title_unified.Add(AF_all.ToString());
-                        break;
-                    case "517$e":
-                        result.Info_title_alt.Add(r["PLAIN"].ToString());
-                        break;
-                    case "517$z":
-                        result.Language_title_alt.Add(r["PLAIN"].ToString());
-                        break;
-                    case "700$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
-                        foreach (string av in AF_all.AFValues)
-                        {
-                            result.author_variant.Add(av);
-                        }
-                        break;
-                    case "701$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
-                        result.Another_author_AF_all.Add(AF_all.ToString());//хранить но не отображать
-                        break;
-                    case "501$a":
-                        result.Another_title.Add(r["PLAIN"].ToString());
-                        break;
-                    case "501$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFHEADERVAR");
-                        result.Another_title_AF_All.Add(AF_all.ToString());
-                        break;
-                    case "503$a":
-                        result.Unified_Caption.Add(r["PLAIN"].ToString());
-                        break;
-                    case "503$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFHEADERVAR");
-                        result.Unified_Caption_AF_All.Add(AF_all.ToString());
-                        break;
-                    case "700$6":
-                        result.Author_another_chart.Add(r["PLAIN"].ToString());
-                        break;
-                    case "702$a":
-                        result.Editor.Add(r["PLAIN"].ToString());
-                        break;
-                    case "702$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
-                        result.Editor_AF_all.Add(AF_all.ToString());
-                        break;
-                    case "702$4":
-                        result.Editor_role.Add(r["PLAIN"].ToString());
-                        break;
-                    case "710$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
-                        result.Collective_author_all.Add(AF_all.ToString());
-                        break;
-                    case "710$9":
-                        result.Organization_nature.Add(r["PLAIN"].ToString());
-                        break;
-                    case "11$9":
-                        result.Printing.Add(r["PLAIN"].ToString());
-                        break;
-                    case "205$a":
-                        string PublicationInfo = r["PLAIN"].ToString();
-
-                        // 205$b
-                         
-                        clarify = dbWrapper.Clarify_205a_1((int)r["IDDATA"]);
-                        foreach (DataRow rr in clarify.Rows)
-                        {
-                            PublicationInfo += "; " + rr["PLAIN"].ToString();
-                        }
-                        // 205$f
-                        clarify = dbWrapper.Clarify_205a_2((int)r["IDDATA"]);
-                        foreach (DataRow rr in clarify.Rows)
-                        {
-                            PublicationInfo += " / " + rr["PLAIN"].ToString();
-                        }
-                        // 205$g
-                        clarify = dbWrapper.Clarify_205a_3((int)r["IDDATA"]);
-                        foreach (DataRow rr in clarify.Rows)
-                        {
-                            PublicationInfo += "; " + rr["PLAIN"].ToString();
-                        }
-                        result.Publication_info.Add(PublicationInfo);
-                        break;
-                    case "921$b":
-                        result.EditionType.Add(r["PLAIN"].ToString());
-                        break;
-                    case "102$a":
-                        result.Country.Add(r["PLAIN"].ToString());
-                        break;
-                    case "210$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
-                        result.PlaceOfPublication_AF_All.Add(AF_all.ToString());
-                        break;
-                    case "2110$g":
-                        result.PrintingHouse.Add(r["PLAIN"].ToString()); 
-                        break;
-                    case "2110$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
-                        result.PrintingHouse_AF_All.Add(AF_all.ToString());
-                        break;
-                    case "2111$e":
-                        result.GeoNamePlaceOfPublication.Add(r["PLAIN"].ToString());
-                        break;
-                    case "2111$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFGEOVAR");
-                        result.GeoNamePlaceOfPublication_AF_All.Add(AF_all.ToString());
-                        break;
-                    case "10$z":
-                        result.IncorrectISBN.Add(r["PLAIN"].ToString()); 
-                        break;
-                    case "11$z":
-                        result.IncorrectISSN.Add(r["PLAIN"].ToString());
-                        break;
-                    case "11$y":
-                        result.CanceledISSN.Add(r["PLAIN"].ToString());
-                        break;
-                    case "101$b":
-                        result.IntermediateTranslateLanguage.Add(r["PLAIN"].ToString());
-                        break;
-                    case "101$d":
-                        result.SummaryLanguage.Add(r["PLAIN"].ToString());
-                        break;
-                    case "101$e":
-                        result.TableOfContentsLanguage.Add(r["PLAIN"].ToString()); 
-                        break;
-                    case "101$f":
-                        result.TitlePageLanguage.Add(r["PLAIN"].ToString());
-                        break;
-                    case "101$g":
-                        result.BasicTitleLanguage.Add(r["PLAIN"].ToString()); 
-                        break;
-                    case "101$i":
-                        result.AccompayingMaterialLanguage.Add(r["PLAIN"].ToString());
-                        break;
-                    case "215$a":
-                        result.Volume.Add(r["PLAIN"].ToString());
-                        break;
-                    case "215$b":
-                        result.Illustrations.Add(r["PLAIN"].ToString());
-                        break;
-                    case "215$c":
-                        result.Dimensions.Add(r["PLAIN"].ToString()); 
-                        break;
-                    case "215$d":
-                        result.AccompayingMaterial.Add(r["PLAIN"].ToString()); 
-                        break;
-                    case "225$a":
-                        if (r["PLAIN"].ToString() == "") break;
-                        if (r["PLAIN"].ToString() == "-1") break;
-                        //AddHierarchyFields(Convert.ToInt32(r["PLAIN"]), Convert.ToInt32(r["IDMAIN"]), result);
-                        break;
-                    case "225$h":
-                        result.NumberInSeries.Add(r["PLAIN"].ToString()); 
-                        break;
-                    case "225$v":
-                        result.NumberInSubseries.Add(r["PLAIN"].ToString()); 
-                        break;
-                    case "300$a":
-                    case "301$a":
-                    case "316$a":
-                    case "320$a":
-                    case "326$a":
-                    case "336$a":
-                    case "337$a":
-                        description += r["PLAIN"].ToString() + " ; ";
-                        break;
-                    case "327$a":
-                    case "330$a":
-                        Annotation += r["PLAIN"].ToString() + " ; ";
-                        break;
-                    case "830$a":
-                        result.CatalogerNote.Add(r["PLAIN"].ToString());
-                        break;
-                    case "831$a":
-                        result.DirectoryNote.Add(r["PLAIN"].ToString());
-                        break;
-                    case "924$a":
-                        result.AdditionalBibRecord.Add(r["PLAIN"].ToString());
-                        break;
-                    case "940$a":
-                        result.HyperLink.Add(r["PLAIN"].ToString()); 
-                        break;
-                    case "606$a"://"""""" • """"""
-                        int IDChain = 0;
-                        string row = r["SORT"].ToString();
-                        if (!int.TryParse(row, out IDChain))
-                        {
-                            continue;
-                        }
-                        clarify = dbWrapper.Clarify_606a(IDChain);
-                        if (clarify.Rows.Count == 0) break;
-                        string TPR = "";
-                        foreach (DataRow rr in clarify.Rows)
-                        {
-                            TPR += rr["VALUE"].ToString() + " • ";
-                        }
-                        TPR = TPR.Substring(0, TPR.Length - 2);
-                        result.topic.Add(TPR);
-                        result.topic_facet.Add(TPR);
-                        break;
-                    case "3000$a":
-                        result.OwnerPerson.Add(r["PLAIN"].ToString());
-                        break;
-                    case "3000$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
-                        result.OwnerPerson_AF_All.Add(AF_all.ToString());
-                        break;
-                    case "3001$a":
-                        result.OwnerOrganization.Add(r["PLAIN"].ToString());
-                        break;
-                    case "3001$3":
-                        AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
-                        result.OwnerOrganization_AF_All.Add(AF_all.ToString());
-                        break;
-                    case "3002$a":
-                        result.Ownership.Add(r["PLAIN"].ToString()); 
-                        break;
-                    case "3003$a":
-                        result.OwnerExemplar.Add(r["PLAIN"].ToString());
-                        break;
-                    case "3200$a":
-                        result.IllustrationMaterial.Add(r["PLAIN"].ToString());
-                        break;
-                }
-
-            }
-#endregion
-            result.id = this.Fund + "_" + currentIDMAIN;
-            string rusFund = GetFundId(this.Fund);
-
-            result.fund = rusFund;
-            result.allfields = allFields.ToString();
-            result.Level = level;
-            result.Level_id = level_id;
-            result.Annotation.Add(Annotation);
-
-            if (description != "")
-            {
-                result.description.Add(description);
-            }
-            if (int.Parse(result.Level_id) < 0)
-            {
-                return result;
-            }
-            AddExemplarFields(currentIDMAIN, result, this.Fund);
-
-            if ((result.Exemplars.Count == 0))//все экземпляры отсеялись сами собой.
-            {
-                return null;
-            }
-
-            return result;
-        }
 
 
         private void AddExemplarFields(int idmain, VufindDoc result, string fund)
         {
 
-            DataTable table = dbWrapper.GetIdDataOfAllExemplars(idmain);
+            DataTable table = BJLoader.GetIdDataOfAllExemplars(idmain);
             if (table.Rows.Count == 0)
             {
-                DataTable IsElectronicCopyExists = dbWrapper.GetHyperLink(idmain);
-                if (IsElectronicCopyExists.Rows.Count == 0)
+                if (!BJLoader.IsElectronicCopyExists(idmain))
                 {
                     return;//все списано и нет электронных копий.
                 }
@@ -554,7 +163,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
 
             foreach (DataRow iddata in table.Rows)
             {
-                exemplar = dbWrapper.GetExemplar((int)iddata["IDDATA"]);
+                exemplar = BJLoader.GetExemplar((int)iddata["IDDATA"]);
                 ExemplarInfo bjExemplar = ExemplarInfo.GetExemplarByIdData((int)iddata["IDDATA"], this.Fund);
                 if (bjExemplar.ExemplarAccess.Access == 1020)//экстремистская литература. не выгружаем такое.
                 {
@@ -735,7 +344,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             }
 
             //смотрим есть ли гиперссылка
-            table = dbWrapper.GetHyperLink(IDMAIN);
+            table = BJLoader.GetHyperLink(IDMAIN);
             if (table.Rows.Count != 0)//если есть - вставляем отдельным экземпляром. после электронной инвентаризации этот кусок можно будет убрать
             {
                 //ExemplarInfo bjExemplar = new ExemplarInfo(-1);
@@ -754,29 +363,26 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 writer.WriteValue("/Bookreader/Viewer?bookID="+result.id+"&view_mode=HQ");
                 result.HyperLinkNewViewer.Add("/Bookreader/Viewer?bookID=" + result.id + "&view_mode=HQ");
 
-                DataTable hyperLinkTable = dbWrapper.GetBookScanInfo(IDMAIN);
-                bool ForAllReader = false;
+                DataTable hyperLinkTable = BJLoader.GetBookScanInfo(IDMAIN);
+                bool IsAuthorRightsExists = false;
                 if (hyperLinkTable.Rows.Count != 0)
                 {
-                    ForAllReader = (bool)hyperLinkTable.Rows[0]["ForAllReader"];
-                    //Exemplar += "Авторское право: " + ((ds.Tables["t"].Rows[0]["ForAllReader"].ToString() == "1") ? "нет" : "есть");
+                    //ForAllReader = (bool)hyperLinkTable.Rows[0]["ForAllReader"];
+                    IsAuthorRightsExists = BJLoader.IsAuthorRightsExists(IDMAIN, 1);//IDProject = 1 это значит для библиотеки. 2 - для НЭБ
                     writer.WritePropertyName("exemplar_copyright");
-                    writer.WriteValue( (ForAllReader) ? "нет" : "есть" );
-                    //Exemplar += "Ветхий оригинал: " + ((ds.Tables["t"].Rows[0]["OldBook"].ToString() == "1") ? "да" : "нет");
+                    writer.WriteValue( (IsAuthorRightsExists) ? "есть" : "нет");
                     writer.WritePropertyName("exemplar_old_original");
                     writer.WriteValue(((hyperLinkTable.Rows[0]["OldBook"].ToString() == "1") ? "да" : "нет"));
-                    //Exemplar += "Наличие PDF версии: " + ((ds.Tables["t"].Rows[0]["PDF"].ToString() == "1") ? "да" : "нет");
                     writer.WritePropertyName("exemplar_PDF_exists");
                     writer.WriteValue(((hyperLinkTable.Rows[0]["PDF"].ToString() == "1") ? "да" : "нет"));
-                    //Exemplar += "Доступ: Заказать через личный кабинет";
                     writer.WritePropertyName("exemplar_access");
                     writer.WriteValue(
-                        (ForAllReader) ?
-                        "1001" : "1002");
-                        //"Для прочтения онлайн необходимо перейти по ссылке" :
-                        //"Для прочтения онлайн необходимо положить в корзину и заказать через личный кабинет");
+                        (IsAuthorRightsExists) ?
+                          "1002" : "1001");
+                    //"Для прочтения онлайн необходимо положить в корзину и заказать через личный кабинет");
+                    //"Для прочтения онлайн необходимо перейти по ссылке" 
                     writer.WritePropertyName("exemplar_access_group");
-                    writer.WriteValue((ForAllReader) ? KeyValueMapping.AccessCodeToGroup[1001] : KeyValueMapping.AccessCodeToGroup[1002]);
+                    writer.WriteValue((IsAuthorRightsExists) ? KeyValueMapping.AccessCodeToGroup[1002] : KeyValueMapping.AccessCodeToGroup[1001]);
 
                     writer.WritePropertyName("exemplar_carrier");
                     //writer.WriteValue("Электронная книга");
@@ -809,7 +415,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
         public override void ExportCovers()
         {
             StringBuilder sb = new StringBuilder();
-            DataTable table = dbWrapper.GetAllIdmainWithImages();
+            DataTable table = BJLoader.GetAllIdmainWithImages();
             //List<string> errors = new List<string>();
             int j = 0;
             foreach(DataRow row in table.Rows)
@@ -853,7 +459,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 }
 
                 BJDatabaseWrapper wrapper = new BJDatabaseWrapper(Fund);
-                DataTable pics = dbWrapper.GetImage(IDMAIN);
+                DataTable pics = BJLoader.GetImage(IDMAIN);
                 foreach (DataRow pic in pics.Rows)//Копируем считанные из базы обложки на файловое хранилище
                 {
                     byte[] p = (byte[])pic["PIC"];
@@ -913,35 +519,28 @@ namespace LibflClassLibrary.ExportToVufind.BJ
 
         private void AddHierarchyFields(int ParentPIN, int CurrentPIN, VufindDoc vfDoc)
         {
-            DataTable table = dbWrapper.GetBJRecord(ParentPIN);
+            DataTable table = BJLoader.GetBJRecord(ParentPIN);
             int TopHierarchyId = GetTopId(ParentPIN);
             
             //AddField("hierarchy_top_id", this.Fund + "_" + TopHierarchyId);
             vfDoc.hierarchy_top_id.ValueList.Add(this.Fund + "_" + TopHierarchyId);
 
-            table = dbWrapper.GetTitle(TopHierarchyId);
-            if (table.Rows.Count != 0)
-            {
-                string hierarchy_top_title = table.Rows[0]["PLAIN"].ToString();
-                vfDoc.hierarchy_top_title.ValueList.Add(hierarchy_top_title);
-            }
+
+            string hierarchy_top_title = BJLoader.GetTitle(TopHierarchyId);
+            vfDoc.hierarchy_top_title.ValueList.Add(hierarchy_top_title);
+
             vfDoc.hierarchy_parent_id.ValueList.Add(this.Fund + "_" + ParentPIN);
-            table = dbWrapper.GetTitle(ParentPIN);
-            if (table.Rows.Count != 0)
-            {
-                string hierarchy_parent_title = table.Rows[0]["PLAIN"].ToString();
-                vfDoc.hierarchy_parent_title.ValueList.Add(hierarchy_parent_title);
-            }
+            string hierarchy_parent_title = BJLoader.GetTitle(ParentPIN);
+            vfDoc.hierarchy_parent_title.ValueList.Add(hierarchy_parent_title);
 
             if (vfDoc.is_hierarchy_id.ValueList.Count == 0)
             {
                 vfDoc.is_hierarchy_id.ValueList.Add(this.Fund + "_" + CurrentPIN);
             }
 
-            table = dbWrapper.GetTitle(CurrentPIN);
-            if (table.Rows.Count != 0)
+            string is_hierarchy_title = BJLoader.GetTitle(CurrentPIN);
+            if (is_hierarchy_title != null)
             {
-                string is_hierarchy_title = table.Rows[0]["PLAIN"].ToString();
                 if (vfDoc.is_hierarchy_title.ValueList.Count == 0)
                 {
                     vfDoc.is_hierarchy_title.ValueList.Add(is_hierarchy_title);
@@ -951,19 +550,10 @@ namespace LibflClassLibrary.ExportToVufind.BJ
         }
         private int GetTopId(int ParentPIN)
         {
-            DataTable table = dbWrapper.GetParentIDMAIN(ParentPIN);
-            if (table.Rows.Count == 0)
-            {
-                return ParentPIN;
-            }
-            ParentPIN = Convert.ToInt32(table.Rows[0]["SORT"]);
-            return GetTopId(ParentPIN);
+            int TopID = BJLoader.GetParentIDMAIN(ParentPIN);
+            return TopID;
         }
-        private int GetMaxIDMAIN()
-        {
-            DataTable table = dbWrapper.GetMaxIDMAIN();
-            return int.Parse(table.Rows[0][0].ToString());
-        }
+       
         private AuthoritativeFile GetAFAll( int AFLinkId, string AFTable)
         {
             //NAMES: (1) Персоналии
@@ -972,14 +562,363 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             //DEL: (5) Источник списания
             //GEO: (6) Географическое название
 
-            AuthoritativeFile result = new AuthoritativeFile();
-            DataTable table = dbWrapper.GetAFAllValues(AFTable, AFLinkId);
-            foreach (DataRow r in table.Rows)
-            {
-                result.Add(r["PLAIN"].ToString());
-            }
+            AuthoritativeFile result = BJLoader.GetAFAll(AFLinkId, AFTable);
             return result;
         }
 
+        public override VufindDoc CreateVufindDocument(object Record)//здесь принимаем int
+        {
+
+            int ID_BJ = (int)Record;
+            BJBookLoader loader = new Books.BJBooks.Loaders.BJBookLoader(this.Fund);
+            DataTable record = loader.GetBJRecord(ID_BJ);
+
+            int currentIDMAIN = (int)record.Rows[0]["IDMAIN"];
+            if (!SpecialFilter(currentIDMAIN)) return null;
+            string level = record.Rows[0]["Level"].ToString();
+            string level_id = record.Rows[0]["level_id"].ToString();
+            int lev_id = int.Parse(level_id);
+            if (lev_id < 0) return null;
+            StringBuilder allFields = new StringBuilder();
+            AuthoritativeFile AF_all = new AuthoritativeFile();
+            bool wasTitle = false;//встречается ошибка: два заглавия в одном пине
+            bool wasAuthor = false;//был ли автор. если был, то сортировочное поле уже заполнено
+            string description = "";//все 3хх поля
+            string Annotation = "";
+            int CarrierCode;
+            VufindDoc result = new VufindDoc();
+            string add = string.Empty;
+            #region field analyse
+            //BJBookInfo book = new BJBookInfo();
+            foreach (DataRow r in record.Rows)
+            {
+
+                allFields.AppendFormat(" {0}", r["PLAIN"].ToString());
+                switch (r["code"].ToString())
+                {
+                    //=======================================================================Родные поля вуфайнд=======================
+                    case "200$a":
+                        if (wasTitle) break;
+                        result.title.Add(r["PLAIN"].ToString());
+                        result.title_short.Add(r["PLAIN"].ToString());
+                        result.title_sort.Add(r["SORT"].ToString());
+                        wasTitle = true;
+                        break;
+                    case "700$a":
+                        result.author.Add(r["PLAIN"].ToString());
+                        if (!wasAuthor)
+                        {
+                            //AddField("author_sort", r["SORT"].ToString());
+                            result.author_sort.Add(r["SORT"].ToString());
+                        }
+                        wasAuthor = true;
+                        //забрать все варианты написания автора из авторитетного файла и вставить в скрытое, но поисковое поле
+                        break;
+                    case "701$a":
+                        result.author2.Add(r["PLAIN"].ToString());
+                        break;
+                    case "710$a":
+                        result.author_corporate.Add(r["PLAIN"].ToString());
+                        break;
+                    case "710$4":
+                        result.author_corporate_role.Add(r["PLAIN"].ToString());
+                        break;
+                    case "700$4":
+                        result.author_role.Add(r["PLAIN"].ToString());
+                        break;
+                    case "701$4":
+                        result.author2_role.Add(r["PLAIN"].ToString());
+                        break;
+                    case "921$a":
+                        CarrierCode = KeyValueMapping.CarrierNameToCode.GetValueOrDefault(r["PLAIN"].ToString(), 3001);
+                        result.format.Add(CarrierCode.ToString());
+                        break;
+                    case "922$e":
+                        result.genre.Add(r["PLAIN"].ToString());
+                        result.genre_facet.Add(r["PLAIN"].ToString());
+                        break;
+                    case "10$a":
+                        add = BJLoader.Clarify_10a((int)r["IDDATA"], r["PLAIN"].ToString());
+                        result.isbn.Add(add);
+                        break;
+                    case "11$a":
+                        result.issn.Add(r["PLAIN"].ToString());
+                        break;
+                    case "101$a":
+                        add = BJLoader.Clarify_101a((int)r["IDINLIST"], r["PLAIN"].ToString());
+                        result.language.Add(add);
+                        break;
+                    case "2100$d":
+                        result.publishDate.Add(r["PLAIN"].ToString());
+                        break;
+                    case "210$c":
+                        result.publisher.Add(r["PLAIN"].ToString());
+                        break;
+                    case "517$a":
+                        add = BJLoader.Clarify_517a((int)r["IDDATA"], r["PLAIN"].ToString());
+                        result.title_alt.Add(add);
+                        break;
+                    //=======================================================================добавленные поля в Вуфайнд=======================
+                    case "210$a":
+                        result.PlaceOfPublication.Add(r["PLAIN"].ToString());
+                        break;
+                    case "200$6":
+                        result.Title_another_chart.Add(r["PLAIN"].ToString());
+                        break;
+                    case "200$b":
+                        result.Title_same_author.Add(r["PLAIN"].ToString());
+                        break;
+                    case "200$d":
+                        result.Parallel_title.Add(r["PLAIN"].ToString());
+                        break;
+                    case "200$e":
+                        result.Info_pertaining_title.Add(r["PLAIN"].ToString());
+                        break;
+                    case "200$f":
+                        result.Responsibility_statement.Add(r["PLAIN"].ToString());
+                        break;
+                    case "200$h":
+                        result.Part_number.Add(r["PLAIN"].ToString());
+                        break;
+                    case "200$i":
+                        result.Part_title.Add(r["PLAIN"].ToString());
+                        break;
+                    case "200$z":
+                        result.Language_title_alt.Add(r["PLAIN"].ToString());
+                        break;
+                    case "500$a":
+                        result.Title_unified.Add(r["PLAIN"].ToString());
+                        break;
+                    case "500$3"://$3 is deprecated!!!
+                        AF_all = BJLoader.GetAFAll((int)r["AFLINKID"], "AFHEADERVAR");
+                        result.Title_unified.Add(AF_all.ToString());
+                        break;
+                    case "517$e":
+                        result.Info_title_alt.Add(r["PLAIN"].ToString());
+                        break;
+                    case "517$z":
+                        result.Language_title_alt.Add(r["PLAIN"].ToString());
+                        break;
+                    case "700$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
+                        foreach (string av in AF_all.AFValues)
+                        {
+                            result.author_variant.Add(av);
+                        }
+                        break;
+                    case "701$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
+                        result.Another_author_AF_all.Add(AF_all.ToString());//хранить но не отображать
+                        break;
+                    case "501$a":
+                        result.Another_title.Add(r["PLAIN"].ToString());
+                        break;
+                    case "501$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFHEADERVAR");
+                        result.Another_title_AF_All.Add(AF_all.ToString());
+                        break;
+                    case "503$a":
+                        result.Unified_Caption.Add(r["PLAIN"].ToString());
+                        break;
+                    case "503$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFHEADERVAR");
+                        result.Unified_Caption_AF_All.Add(AF_all.ToString());
+                        break;
+                    case "700$6":
+                        result.Author_another_chart.Add(r["PLAIN"].ToString());
+                        break;
+                    case "702$a":
+                        result.Editor.Add(r["PLAIN"].ToString());
+                        break;
+                    case "702$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
+                        result.Editor_AF_all.Add(AF_all.ToString());
+                        break;
+                    case "702$4":
+                        result.Editor_role.Add(r["PLAIN"].ToString());
+                        break;
+                    case "710$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
+                        result.Collective_author_all.Add(AF_all.ToString());
+                        break;
+                    case "710$9":
+                        result.Organization_nature.Add(r["PLAIN"].ToString());
+                        break;
+                    case "11$9":
+                        result.Printing.Add(r["PLAIN"].ToString());
+                        break;
+                    case "205$a":
+                        string PublicationInfo = BJLoader.Clarify_205a((int)r["IDDATA"], r["PLAIN"].ToString());
+                        result.Publication_info.Add(PublicationInfo);
+                        break;
+                    case "921$b":
+                        result.EditionType.Add(r["PLAIN"].ToString());
+                        break;
+                    case "102$a":
+                        result.Country.Add(r["PLAIN"].ToString());
+                        break;
+                    case "210$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
+                        result.PlaceOfPublication_AF_All.Add(AF_all.ToString());
+                        break;
+                    case "2110$g":
+                        result.PrintingHouse.Add(r["PLAIN"].ToString());
+                        break;
+                    case "2110$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
+                        result.PrintingHouse_AF_All.Add(AF_all.ToString());
+                        break;
+                    case "2111$e":
+                        result.GeoNamePlaceOfPublication.Add(r["PLAIN"].ToString());
+                        break;
+                    case "2111$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFGEOVAR");
+                        result.GeoNamePlaceOfPublication_AF_All.Add(AF_all.ToString());
+                        break;
+                    case "10$z":
+                        result.IncorrectISBN.Add(r["PLAIN"].ToString());
+                        break;
+                    case "11$z":
+                        result.IncorrectISSN.Add(r["PLAIN"].ToString());
+                        break;
+                    case "11$y":
+                        result.CanceledISSN.Add(r["PLAIN"].ToString());
+                        break;
+                    case "101$b":
+                        result.IntermediateTranslateLanguage.Add(r["PLAIN"].ToString());
+                        break;
+                    case "101$d":
+                        result.SummaryLanguage.Add(r["PLAIN"].ToString());
+                        break;
+                    case "101$e":
+                        result.TableOfContentsLanguage.Add(r["PLAIN"].ToString());
+                        break;
+                    case "101$f":
+                        result.TitlePageLanguage.Add(r["PLAIN"].ToString());
+                        break;
+                    case "101$g":
+                        result.BasicTitleLanguage.Add(r["PLAIN"].ToString());
+                        break;
+                    case "101$i":
+                        result.AccompayingMaterialLanguage.Add(r["PLAIN"].ToString());
+                        break;
+                    case "215$a":
+                        result.Volume.Add(r["PLAIN"].ToString());
+                        break;
+                    case "215$b":
+                        result.Illustrations.Add(r["PLAIN"].ToString());
+                        break;
+                    case "215$c":
+                        result.Dimensions.Add(r["PLAIN"].ToString());
+                        break;
+                    case "215$d":
+                        result.AccompayingMaterial.Add(r["PLAIN"].ToString());
+                        break;
+                    case "225$a":
+                        if (r["PLAIN"].ToString() == "") break;
+                        if (r["PLAIN"].ToString() == "-1") break;
+                        //AddHierarchyFields(Convert.ToInt32(r["PLAIN"]), Convert.ToInt32(r["IDMAIN"]), result);
+                        break;
+                    case "225$h":
+                        result.NumberInSeries.Add(r["PLAIN"].ToString());
+                        break;
+                    case "225$v":
+                        result.NumberInSubseries.Add(r["PLAIN"].ToString());
+                        break;
+                    case "300$a":
+                    case "301$a":
+                    case "316$a":
+                    case "320$a":
+                    case "326$a":
+                    case "336$a":
+                    case "337$a":
+                        description += r["PLAIN"].ToString() + " ; ";
+                        break;
+                    case "327$a":
+                    case "330$a":
+                        Annotation += r["PLAIN"].ToString() + " ; ";
+                        break;
+                    case "830$a":
+                        result.CatalogerNote.Add(r["PLAIN"].ToString());
+                        break;
+                    case "831$a":
+                        result.DirectoryNote.Add(r["PLAIN"].ToString());
+                        break;
+                    case "924$a":
+                        result.AdditionalBibRecord.Add(r["PLAIN"].ToString());
+                        break;
+                    case "940$a":
+                        result.HyperLink.Add(r["PLAIN"].ToString());
+                        break;
+                    case "606$a"://"""""" • """"""
+                        add = Clarify606a(r["SORT"].ToString());
+                        result.topic.Add(add);
+                        result.topic_facet.Add(add);
+                        break;
+                    case "3000$a":
+                        result.OwnerPerson.Add(r["PLAIN"].ToString());
+                        break;
+                    case "3000$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
+                        result.OwnerPerson_AF_All.Add(AF_all.ToString());
+                        break;
+                    case "3001$a":
+                        result.OwnerOrganization.Add(r["PLAIN"].ToString());
+                        break;
+                    case "3001$3":
+                        AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
+                        result.OwnerOrganization_AF_All.Add(AF_all.ToString());
+                        break;
+                    case "3002$a":
+                        result.Ownership.Add(r["PLAIN"].ToString());
+                        break;
+                    case "3003$a":
+                        result.OwnerExemplar.Add(r["PLAIN"].ToString());
+                        break;
+                    case "3200$a":
+                        result.IllustrationMaterial.Add(r["PLAIN"].ToString());
+                        break;
+                }
+
+            }
+            #endregion
+            result.id = this.Fund + "_" + currentIDMAIN;
+            string rusFund = GetFundId(this.Fund);
+
+            result.fund = rusFund;
+            result.allfields = allFields.ToString();
+            result.Level = level;
+            result.Level_id = level_id;
+            result.Annotation.Add(Annotation);
+
+            if (description != "")
+            {
+                result.description.Add(description);
+            }
+            if (int.Parse(result.Level_id) < 0)
+            {
+                return result;
+            }
+            AddExemplarFields(currentIDMAIN, result, this.Fund);
+
+            if ((result.Exemplars.Count == 0))//все экземпляры отсеялись сами собой.
+            {
+                return null;
+            }
+
+            return result;
+        }
+
+        private string Clarify606a(string SORT)
+        {
+            int IDChain = 0;
+            string row = SORT;
+            if (!int.TryParse(row, out IDChain))
+            {
+                return null;
+            }
+            string TPR = BJLoader.Clarify_606a(IDChain);
+            return TPR;
+        }
     }
 }

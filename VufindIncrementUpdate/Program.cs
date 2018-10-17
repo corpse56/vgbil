@@ -113,7 +113,7 @@ namespace VufindIncrementUpdate
                     {
                         continue;
                     }
-                    doc = converter.CreateVufindDoc(BJRecord);
+                    doc = converter.CreateVufindDocument(IDMAIN);
                     if (doc == null)
                     {
                         continue;

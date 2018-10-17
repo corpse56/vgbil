@@ -109,6 +109,11 @@ namespace LibflClassLibrary.ExportToVufind
         {
             throw new NotImplementedException();
         }
+
+        public override VufindDoc CreateVufindDocument(object Record)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

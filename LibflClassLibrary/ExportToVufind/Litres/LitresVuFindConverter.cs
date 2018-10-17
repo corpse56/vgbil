@@ -651,10 +651,9 @@ namespace LibflClassLibrary.ExportToVufind.Litres
 
         }
 
-
-
-
-
-
+        public override VufindDoc CreateVufindDocument(object Record)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -15,11 +15,6 @@ namespace LibflClassLibrary.Books
 
         public List<BookExemplarBase> Exemplars { get; set; } = new List<BookExemplarBase>();
 
-        public virtual VufindDoc GetVufindDocument()
-        {
-            return null;
-        }
-
         internal string ToJsonString()
         {
             throw new NotImplementedException();

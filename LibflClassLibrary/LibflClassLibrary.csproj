@@ -96,6 +96,7 @@
     <Compile Include="ALISAPI\RequestObjects\Readers\AccessToken.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\AuthorizeInfo.cs" />
     <Compile Include="Books\BJBooks\BJBookJsonConverter.cs" />
+    <Compile Include="Books\BJBooks\Loaders\BJBookLoader.cs" />
     <Compile Include="Books\BookBase.cs" />
     <Compile Include="Books\BookExemplarBase.cs" />
     <Compile Include="Books\BookJsonConverter.cs" />

@@ -130,6 +130,20 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        internal DataTable GetBookAuthorRights(int IDMAIN,int IDProject)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.BOOK_AUTHOR_RIGHTS, connection);
+                dataAdapter.SelectCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = IDMAIN;
+                dataAdapter.SelectCommand.Parameters.Add("IDProject", SqlDbType.Int).Value = IDProject;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+
+        }
+
         internal DataTable Clarify_606a(int idchain)
         {
             string connectionString = AppSettings.ConnectionString;

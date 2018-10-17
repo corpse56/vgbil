@@ -16,6 +16,8 @@ using Newtonsoft.Json;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.ExportToVufind.Vufind;
 using LibflClassLibrary.ExportToVufind.BJ;
+using LibflClassLibrary.ExportToVufind;
+using Utilities;
 
 /// <summary>
 /// Сводное описание для BookInfo
@@ -172,19 +174,7 @@ namespace LibflClassLibrary.Books.BJBooks
             dbw.IssueElectronicCopyToReader(this.ID, IssuePeriodDays, ViewKey, IDREADER, reader.TypeReader);
         }
 
-        public override VufindDoc GetVufindDocument()
-        {
-            BJVuFindConverter converter = new BJVuFindConverter(this.Fund);
-            BJDatabaseWrapper wrpapper = new BJDatabaseWrapper(this.Fund);
-            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(this.ID, this.Fund);
-            
-
-
-
-
-
-            return null;// converter.CreateVufindDoc();
-        }
+      
 
         internal string ToJsonString()
         {

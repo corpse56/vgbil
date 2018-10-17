@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.ExportToVufind.BJ;
 using LibflClassLibrary.ExportToVufind.Vufind;
 using Newtonsoft.Json;
 using System;
@@ -12,8 +13,9 @@ namespace LibflClassLibrary.Books.BookJSONViewers
     {
         public string GetView(BJBookInfo book)
         {
-            VufindDoc vfDoc = book.GetVufindDocument();
 
+            BJVuFindConverter converter = new BJVuFindConverter(book.Fund);
+            VufindDoc vfDoc = converter.CreateVufindDocument(book.ID);
             string json = JsonConvert.SerializeObject(book, Formatting.Indented);
 
             return json;

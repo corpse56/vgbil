@@ -277,7 +277,13 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
             XmlNode result = xmlDoc.CreateElement("doc");
             foreach (PropertyInfo propertyInfo in vfDocType.GetProperties())
             {
-                string pname = propertyInfo.Name;
+                if (propertyInfo.Name == "id")
+                {
+                    node = AddXmlField(propertyInfo.Name, propertyInfo.GetValue(this, null).ToString());
+                    node = xmlDoc.ImportNode(node, true);
+                    result.AppendChild(node);
+                    continue;
+                }
                 VufindField vfField = (VufindField)propertyInfo.GetValue(this, null);
                 foreach (string val in vfField.ValueList)
                 {
