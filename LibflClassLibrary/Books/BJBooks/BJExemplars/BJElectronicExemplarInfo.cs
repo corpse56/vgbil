@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibflClassLibrary.Books.BJBooks.Loaders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,18 +8,38 @@ using System.Web;
 
 namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 {
+    
+    
     /// <summary>
     /// Сводное описание для ElectronicExemplarInfo
     /// </summary>
 
-    public class ElectronicExemplarInfo : ExemplarInfo  //наследуем этот класс от  ExemplarInfo
+    public class BJElectronicExemplarInfo : BJExemplarInfo  //наследуем этот класс от  ExemplarInfo. нахуя?
     {
 
-        public ElectronicExemplarInfo(int idData)
-            : base(idData)
+        public BJElectronicExemplarInfo(int IDMAIN, string Fund)
+            //: base(idData)
         {
-
+            this.IDMAIN = IDMAIN;
+            this.Fund = Fund;
+            loader = new BJExemplarLoader(Fund);
+            Statuses = loader.LoadAvailabilityStatuses(IDMAIN, Fund);
         }
+
+        private BJExemplarLoader loader;
+        public int IDMAIN { get; set; }
+        public string Fund { get; set; }
+        public List<BJElectronicExemplarAvailabilityStatus> Statuses;
+        //public BJElectronicExemplarAvailabilityStatus this[BJElectronicAvailabilityProjects key]
+        //{
+        //    get
+        //    {
+        //        return Statuses.Find(x => x.Project == key);
+        //    }
+        //}
+
+
+
 
         public string Path;
         public List<string> JPGFiles = new List<string>();
@@ -33,6 +54,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         public int HeightFirstFile;
         public bool IsExistsLQ;
         public bool IsExistsHQ;
+
 
 
 
@@ -75,9 +97,5 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             }
             return @baseName + @"\" + @result[0] + @result[1] + @result[2] + @"\" + result[3] + result[4] + result[5] + @"\" + result[6] + result[7] + result[8] + @"\";
         }
-
-      
-
-
     }
 }

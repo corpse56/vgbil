@@ -9,9 +9,10 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
     /// <summary>
     /// Сводное описание для ExemplarInfo
     /// </summary>
-    public class ExemplarInfo : BookExemplarBase
+    public class BJExemplarInfo : BookExemplarBase
     {
-        public ExemplarInfo(int idData)
+        public BJExemplarInfo() { }
+        public BJExemplarInfo(int idData)
         {
             this._iddata = idData;
         }
@@ -36,10 +37,10 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 
         public BJFields Fields = new BJFields();
 
-        public ExemplarAccessInfo ExemplarAccess = new ExemplarAccessInfo(); 
+        public BJExemplarAccessInfo ExemplarAccess = new BJExemplarAccessInfo(); 
 
 
-        public static ExemplarInfo GetExemplarByInventoryNumber(string inv, string fund)
+        public static BJExemplarInfo GetExemplarByInventoryNumber(string inv, string fund)
         {
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetExemplar(inv);
@@ -47,14 +48,14 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             {
                 return null;
             }
-            ExemplarInfo exemplar = ExemplarInfo.GetExemplarByIdData((int)table.Rows[0]["IDDATA"], fund);
+            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData((int)table.Rows[0]["IDDATA"], fund);
             return exemplar;
         }
-        public static ExemplarInfo GetExemplarByIdData(int iddata, string fund)
+        public static BJExemplarInfo GetExemplarByIdData(int iddata, string fund)
         {
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetExemplar(iddata);
-            ExemplarInfo exemplar = new ExemplarInfo((int)table.Rows[0]["IDDATA"]);
+            BJExemplarInfo exemplar = new BJExemplarInfo((int)table.Rows[0]["IDDATA"]);
             exemplar.IDMAIN = (int)table.Rows[0]["IDMAIN"];
             exemplar.Fund = fund;
 
@@ -82,15 +83,15 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 }
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());//добавляем все поля блока 260 к объекту экземпляра
             }
-            exemplar.ExemplarAccess = ExemplarInfo.GetExemplarAccess(exemplar);
+            exemplar.ExemplarAccess = BJExemplarInfo.GetExemplarAccess(exemplar);
 
             return exemplar;
         }
 
-        private static ExemplarAccessInfo GetExemplarAccess(ExemplarInfo exemplar)
+        private static BJExemplarAccessInfo GetExemplarAccess(BJExemplarInfo exemplar)
         {
 
-            ExemplarAccessInfo access = new ExemplarAccessInfo();
+            BJExemplarAccessInfo access = new BJExemplarAccessInfo();
             //сначала суперусловия
             if (exemplar.Fields["899$x"].ToString().ToLower().Contains("э"))
             {
@@ -104,7 +105,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 case "BJVVV":
                     if (exemplar.Fields["482$a"].ToLower() != "")
                     {
-                        ExemplarInfo Convolute = ExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
+                        BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
                         if (Convolute != null)
                         {
                             access.MethodOfAccess = Convolute.ExemplarAccess.MethodOfAccess;
@@ -216,7 +217,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 case "REDKOSTJ":
                     if (exemplar.Fields["482$a"].ToLower() != "")
                     {
-                        ExemplarInfo Convolute = ExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
+                        BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
                         if (Convolute == null)
                         {
                             access.Access = 1016;
@@ -278,35 +279,6 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                     access.MethodOfAccess = 4005;
                     break;
             }
-
-
-           
-
-
-
-           
-            //if (f_921d == "Эл. свободный доступ")
-            //{
-            //    access = "1001";
-            //    AddField("MethodOfAccess", "4002");
-            //    return access;
-            //}
-            //if (f_921d == "Эл. через личный кабинет")
-            //{
-            //    access = "1002";
-            //    AddField("MethodOfAccess", "4002");
-            //    return access;
-            //}
-            //if (f_921d == "Эл. только в библиотеке")
-            //{
-            //    access = "1003";
-            //    AddField("MethodOfAccess", "4003");
-            //    return access;
-            //}
-            
-            ////невозможно определить
-            //access = "1010";
-            //AddField("MethodOfAccess", "4999");
             return access;
         }
 
@@ -314,7 +286,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 
 
 
-
+#region эти методы надо выносить в другой класс. Они относятся к книговыдаче
         public bool IsIssuedOrOrderedEmployee()
         {
             switch (this.Fund)
@@ -366,5 +338,6 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                     return "";
             }
         }
+        #endregion
     }
 }

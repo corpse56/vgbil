@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.ExportToVufind.Vufind;
 using Newtonsoft.Json;
 using System;

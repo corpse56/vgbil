@@ -320,7 +320,7 @@ namespace BookkeepingForOrder
             {
                 #region обычный читатель
                 BJBookInfo Book = BJBookInfo.GetBookInfoByInventoryNumber(dg.SelectedRows[0].Cells["inv"].Value.ToString(), "BJVVV");
-                ExemplarInfo Exemplar = ExemplarInfo.GetExemplarByInventoryNumber(dg.SelectedRows[0].Cells["inv"].Value.ToString(), "BJVVV");
+                BJExemplarInfo Exemplar = BJExemplarInfo.GetExemplarByInventoryNumber(dg.SelectedRows[0].Cells["inv"].Value.ToString(), "BJVVV");
 
                 string abonement = GetAbonement(dg.SelectedRows[0].Cells["fio"].Value.ToString());
                 string str = "Билет № " + dg.SelectedRows[0].Cells["fio"].Value.ToString();

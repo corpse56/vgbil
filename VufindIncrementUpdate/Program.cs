@@ -11,13 +11,16 @@ using LibflClassLibrary.ExportToVufind.Vufind;
 using LibflClassLibrary.ExportToVufind.BJ;
 using System.Data;
 using LibflClassLibrary.Books.BJBooks.DB;
+using NLog;
 
 namespace VufindIncrementUpdate
 {
     class Program
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
+            
             Program.LitresIncrementUpdate();
             Program.BJIncrementUpdate("BJVVV");
             Program.BJIncrementUpdate("REDKOSTJ");
@@ -32,9 +35,7 @@ namespace VufindIncrementUpdate
 
         static void BJIncrementUpdate(string Fund)
         {
-            using (Log log = new Log())
-            {
-                log.WriteLog("Начало инкрементной загрузки "+Fund+"...");
+                logger.Info("Начало инкрементной загрузки "+Fund+"...");
                 Console.WriteLine("Начало инкрементной загрузки " + Fund + "...");
                 BJVufindIndexUpdater bj = new BJVufindIndexUpdater(@"catalog.libfl.ru", Fund);
 
@@ -47,12 +48,12 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    log.WriteLog("Загрузка инкремента завершилось неудачей. " + ex.Message);
+                    logger.Info("Загрузка инкремента завершилось неудачей. " + ex.Message);
                     Console.WriteLine("Error...");
                     Console.ReadKey();
                     return;
                 }
-                log.WriteLog("Загрузка инкремента " + Fund + " успешно завершена...");
+                logger.Info("Загрузка инкремента " + Fund + " успешно завершена...");
                 Console.WriteLine("Загрузка инкремента " + Fund + " успешно завершена...");
 
                 //вычленияем удалённые записи и удаляем их из индекса
@@ -72,7 +73,7 @@ namespace VufindIncrementUpdate
                 }
 
                 Console.WriteLine("Начинаю удаление изменённых/удалённых " + Fund + " записей из индекса...");
-                log.WriteLog("Начинаю удаление изменённых/удалённых " + Fund + " записей из индекса...");
+                logger.Info("Начинаю удаление изменённых/удалённых " + Fund + " записей из индекса...");
 
                 try
                 {
@@ -80,7 +81,7 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    log.WriteLog("Удаление завершилось неудачей. \n" + ex.Message);
+                    logger.Info("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.WriteLine("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.ReadKey();
                     return;
@@ -90,12 +91,12 @@ namespace VufindIncrementUpdate
                     StringBuilder sb = new StringBuilder();
                     sb.AppendFormat("Запись {0} удалена из индекса", elt);
                     Console.WriteLine(sb.ToString());
-                    log.WriteLog(sb.ToString());
+                    logger.Info(sb.ToString());
                 }
 
                 //теперь добавляем новые и изменяем изменённые. Изменённые заменяться автоматически
                 Console.WriteLine("Начинаю обновление " + Fund + " изменённых записей...");
-                log.WriteLog("Начинаю обновление " + Fund + " изменённых записей...");
+                logger.Info("Начинаю обновление " + Fund + " изменённых записей...");
 
                 BJVuFindConverter converter = new BJVuFindConverter(Fund);
                 List<VufindDoc> UpdatedBooksList = new List<VufindDoc>();
@@ -129,7 +130,7 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    log.WriteLog("Добавление в индекс завершилось неудачей.  \n" + ex.Message);
+                    logger.Info("Добавление в индекс завершилось неудачей.  \n" + ex.Message);
                     Console.WriteLine("Error...");
                     Console.ReadKey();
                     return;
@@ -139,12 +140,12 @@ namespace VufindIncrementUpdate
                     StringBuilder sb = new StringBuilder();
                     sb.AppendFormat("Запись {0} обновлена. ", vfdoc.id);
                     Console.WriteLine(sb.ToString());
-                    log.WriteLog(sb.ToString());
+                    logger.Info(sb.ToString());
                 }
 
 
                 Console.WriteLine("Начинаю обновление обложек " + Fund + "...");
-                log.WriteLog("Начинаю обновление обложек " + Fund + "...");
+                logger.Info("Начинаю обновление обложек " + Fund + "...");
                 foreach (IncrementStruct elt in CoverUpdatedBooks)
                 {
                     //скачиваем обложечку
@@ -155,26 +156,22 @@ namespace VufindIncrementUpdate
                     catch (Exception ex)
                     {
                         Console.WriteLine("Скачивание  обложки " + elt.Id + " завершилось неудачей. " + ex.Message);
-                        log.WriteLog("Скачивание  обложки " + elt.Id + " завершилось неудачей. " + ex.Message);
+                        logger.Info("Скачивание  обложки " + elt.Id + " завершилось неудачей. " + ex.Message);
                         continue;
                     }
                     Console.WriteLine("Обложка  " + elt.Id + " скачана успешно. ");
-                    log.WriteLog("Обложка  " + elt.Id + " скачана успешно. ");
+                    logger.Info("Обложка  " + elt.Id + " скачана успешно. ");
                 }
 
 
                 bj.SetLastIncrementDate(Fund);
 
-                log.WriteLog("Завершено.");
+                logger.Info("Завершено.");
                 Console.WriteLine("Завершено.");
-            }
-
         }
         static void LitresIncrementUpdate()
         {
-            using (Log log = new Log())
-            {
-                log.WriteLog("Начало инкрементной загрузки Litres...");
+                logger.Info("Начало инкрементной загрузки Litres...");
                 Console.WriteLine("Начало инкрементной загрузки Litres...");
                 LitresVufindIndexUpdater litres = new LitresVufindIndexUpdater("catalog.libfl.ru");
 
@@ -186,12 +183,12 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    log.WriteLog("Загрузка инкремента завершилось неудачей. " + ex.Message);
+                    logger.Info("Загрузка инкремента завершилось неудачей. " + ex.Message);
                     Console.WriteLine("Error...");
                     Console.ReadKey();
                     return;
                 }
-                log.WriteLog("Загрузка инкремента Litres успешно завершена...");
+                logger.Info("Загрузка инкремента Litres успешно завершена...");
                 Console.WriteLine("Загрузка инкремента Litres успешно завершена...");
 
                 //для отладки 
@@ -229,7 +226,7 @@ namespace VufindIncrementUpdate
                 //    removedBookIDs.Add(sb.ToString());
                 //}
                 Console.WriteLine("Начинаю удаление изъятых Litres записей из индекса...");
-                log.WriteLog("Начинаю удаление изъятых Litres записей из индекса...");
+                logger.Info("Начинаю удаление изъятых Litres записей из индекса...");
 
                 try
                 {
@@ -237,7 +234,7 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    log.WriteLog("Удаление завершилось неудачей. \n" + ex.Message);
+                    logger.Info("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.WriteLine("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.ReadKey();
                     return;
@@ -247,10 +244,10 @@ namespace VufindIncrementUpdate
                     StringBuilder sb = new StringBuilder();
                     sb.AppendFormat("Запись Litres {0} удалена из индекса", elt);
                     Console.WriteLine(sb.ToString());
-                    log.WriteLog(sb.ToString());
+                    logger.Info(sb.ToString());
                 }
                 Console.WriteLine("Начинаю обновление обложек Litres...");
-                log.WriteLog("Начинаю обновление обложек Litres...");
+                logger.Info("Начинаю обновление обложек Litres...");
 
                 //теперь добавляем новые и изменяем изменённые. Изменённые заменяться автоматически
                 IEnumerable<XElement> UpdatedBooks = IncrementXML.Descendants("updated-book");
@@ -273,15 +270,15 @@ namespace VufindIncrementUpdate
                     catch (Exception ex)
                     {
                         Console.WriteLine("Скачивание Litres обложки " + elt.Attribute("id").Value + " завершилось неудачей. " + ex.Message);
-                        log.WriteLog("Скачивание Litres обложки " + elt.Attribute("id").Value + " завершилось неудачей. " + ex.Message);
+                        logger.Info("Скачивание Litres обложки " + elt.Attribute("id").Value + " завершилось неудачей. " + ex.Message);
                         continue;
                     }
                     Console.WriteLine("Обложка Litres " + elt.Attribute("id").Value + " скачана успешно. ");
-                    log.WriteLog("Обложка Litres " + elt.Attribute("id").Value + " скачана успешно. ");
+                    logger.Info("Обложка Litres " + elt.Attribute("id").Value + " скачана успешно. ");
                 }
 
                 Console.WriteLine("Начинаю обновление Litres записей...");
-                log.WriteLog("Начинаю обновление Litres записей...");
+                logger.Info("Начинаю обновление Litres записей...");
 
 
                 try
@@ -290,7 +287,7 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    log.WriteLog("Добавление в индекс завершилось неудачей.  \n" + ex.Message);
+                    logger.Info("Добавление в индекс завершилось неудачей.  \n" + ex.Message);
                     Console.WriteLine("Error...");
                     Console.ReadKey();
                     return;
@@ -300,14 +297,14 @@ namespace VufindIncrementUpdate
                     StringBuilder sb = new StringBuilder();
                     sb.AppendFormat("Запись {0} обновлена. ", vfdoc.id);
                     Console.WriteLine(sb.ToString());
-                    log.WriteLog(sb.ToString());
+                    logger.Info(sb.ToString());
                 }
 
                 litres.SetLastIncrementDate("Litres");
 
-                log.WriteLog("Завершено.");
+                logger.Info("Завершено.");
                 Console.WriteLine("Завершено.");
-            }
+            
 
         }
     }

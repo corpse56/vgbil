@@ -46,7 +46,7 @@ namespace LibflClassLibrary.Books.BJBooks
 
         #endregion
 
-        public ElectronicExemplarInfo DigitalCopy = null;
+        public BJElectronicExemplarInfo DigitalCopy = null;
         public bool IsExistsDigitalCopy => this.DigitalCopy != null;
 
         public static BJBookInfo GetBookInfoByPIN(int pin, string fund)
@@ -56,7 +56,7 @@ namespace LibflClassLibrary.Books.BJBooks
             BJBookInfo result = new BJBookInfo();
             result.ID = pin;
             result.Fund = fund;
-            ExemplarInfo exemplar = new ExemplarInfo(0);
+            BJExemplarInfo exemplar = new BJExemplarInfo(0);
             int CurrentIdData = 0;
             foreach (DataRow row in table.Rows)
             {
@@ -64,7 +64,7 @@ namespace LibflClassLibrary.Books.BJBooks
                 {
                     if ((int)row["IDBLOCK"] == 270)//если есть гиперссылка
                     {
-                        result.DigitalCopy = new ElectronicExemplarInfo(-1);
+                        result.DigitalCopy = new BJElectronicExemplarInfo(-1);
                     }
                     else
                     {
@@ -76,8 +76,8 @@ namespace LibflClassLibrary.Books.BJBooks
                     if (CurrentIdData != (int)row["IDDATA"])
                     {
                         CurrentIdData = (int)row["IDDATA"];
-                        result.Exemplars.Add(ExemplarInfo.GetExemplarByIdData(CurrentIdData, fund));
-                        exemplar = new ExemplarInfo((int)row["IDDATA"]);
+                        result.Exemplars.Add(BJExemplarInfo.GetExemplarByIdData(CurrentIdData, fund));
+                        exemplar = new BJExemplarInfo((int)row["IDDATA"]);
                         exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
                     }
                     else

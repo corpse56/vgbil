@@ -214,7 +214,7 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
         public VufindField Location { get; set; }
         public VufindField PlacingCipher { get; set; }
         public VufindField MethodOfAccess { get; set; }
-        public List<ExemplarInfo> Exemplars = new List<ExemplarInfo>();
+        public List<BJExemplarInfo> Exemplars = new List<BJExemplarInfo>();
         public string ExemplarsJSON;
 
         //поля для сводного уровня

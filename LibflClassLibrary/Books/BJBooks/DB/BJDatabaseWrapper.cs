@@ -37,6 +37,18 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        internal DataTable LoadAvailabilityStatuses(int IDMAIN, string fund)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_ELECTRONIC_EXEMPLAR_AVAILABILITY_STATUSES, connection);
+                dataAdapter.SelectCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = IDMAIN;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
+
         internal DataTable GetIncrementUpdate()
         {
             string connectionString = AppSettings.ConnectionString;
@@ -130,13 +142,13 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
-        internal DataTable GetBookAuthorRights(int IDMAIN,int IDProject)
+        internal DataTable GetElectronicExemplarAccessLevel(int IDMAIN,int IDProject)
         {
             string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.BOOK_AUTHOR_RIGHTS, connection);
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_ELECTRONIC_EXEMPLAR_ACCESS_LEVEL, connection);
                 dataAdapter.SelectCommand.Parameters.Add("IDMAIN", SqlDbType.Int).Value = IDMAIN;
                 dataAdapter.SelectCommand.Parameters.Add("IDProject", SqlDbType.Int).Value = IDProject;
                 return this.ExecuteSelectQuery(dataAdapter);

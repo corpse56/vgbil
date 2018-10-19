@@ -125,7 +125,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 }
             }
 
-            int IDMAIN = idmain;//(int)table.Rows[0]["IDMAIN"];
+            int IDMAIN = idmain;
 
             StringBuilder sb = new StringBuilder();
             StringWriter sw = new StringWriter(sb);
@@ -164,7 +164,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             foreach (DataRow iddata in table.Rows)
             {
                 exemplar = BJLoader.GetExemplar((int)iddata["IDDATA"]);
-                ExemplarInfo bjExemplar = ExemplarInfo.GetExemplarByIdData((int)iddata["IDDATA"], this.Fund);
+                BJExemplarInfo bjExemplar = BJExemplarInfo.GetExemplarByIdData((int)iddata["IDDATA"], this.Fund);
                 if (bjExemplar.ExemplarAccess.Access == 1020)//экстремистская литература. не выгружаем такое.
                 {
                     continue;
@@ -174,7 +174,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 writer.WriteStartObject();
 
                 //ExemplarInfo bjExemplar = new ExemplarInfo((int)iddata["IDDATA"]);
-                ExemplarInfo Convolute = null;
+                BJExemplarInfo Convolute = null;
                 #region FieldAnalyse
                 foreach (DataRow r in exemplar.Rows)
                 {
@@ -196,7 +196,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                             writer.WriteValue(r["PLAIN"].ToString());
                             
                             writer.WritePropertyName("exemplar_convolute");
-                            Convolute = ExemplarInfo.GetExemplarByInventoryNumber(r["PLAIN"].ToString(), this.Fund);
+                            Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(r["PLAIN"].ToString(), this.Fund);
                             if (Convolute == null)
                             {
                                 writer.WriteValue("Ошибка заполнения библиографического описания конволюта");
@@ -343,8 +343,13 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 writer.WriteEndObject();
             }
 
+
+
+            BJElectronicExemplarAvailabilityCodes ElectronincAccessLevel = BJLoader.GetElectronicExemplarAccessLevel(IDMAIN, 1);//IDProject = 1 это значит для библиотеки. 2 - для НЭБ
+
             //смотрим есть ли гиперссылка
             table = BJLoader.GetHyperLink(IDMAIN);
+
             if (table.Rows.Count != 0)//если есть - вставляем отдельным экземпляром. после электронной инвентаризации этот кусок можно будет убрать
             {
                 //ExemplarInfo bjExemplar = new ExemplarInfo(-1);
@@ -364,25 +369,25 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 result.HyperLinkNewViewer.Add("/Bookreader/Viewer?bookID=" + result.id + "&view_mode=HQ");
 
                 DataTable hyperLinkTable = BJLoader.GetBookScanInfo(IDMAIN);
-                bool IsAuthorRightsExists = false;
+
                 if (hyperLinkTable.Rows.Count != 0)
                 {
                     //ForAllReader = (bool)hyperLinkTable.Rows[0]["ForAllReader"];
-                    IsAuthorRightsExists = BJLoader.IsAuthorRightsExists(IDMAIN, 1);//IDProject = 1 это значит для библиотеки. 2 - для НЭБ
+
                     writer.WritePropertyName("exemplar_copyright");
-                    writer.WriteValue( (IsAuthorRightsExists) ? "есть" : "нет");
+                    writer.WriteValue( (ElectronincAccessLevel == BJElectronicExemplarAvailabilityCodes.vloginview) ? "есть" : "нет");
                     writer.WritePropertyName("exemplar_old_original");
                     writer.WriteValue(((hyperLinkTable.Rows[0]["OldBook"].ToString() == "1") ? "да" : "нет"));
                     writer.WritePropertyName("exemplar_PDF_exists");
                     writer.WriteValue(((hyperLinkTable.Rows[0]["PDF"].ToString() == "1") ? "да" : "нет"));
                     writer.WritePropertyName("exemplar_access");
                     writer.WriteValue(
-                        (IsAuthorRightsExists) ?
+                        (ElectronincAccessLevel == BJElectronicExemplarAvailabilityCodes.vloginview) ?
                           "1002" : "1001");
                     //"Для прочтения онлайн необходимо положить в корзину и заказать через личный кабинет");
                     //"Для прочтения онлайн необходимо перейти по ссылке" 
                     writer.WritePropertyName("exemplar_access_group");
-                    writer.WriteValue((IsAuthorRightsExists) ? KeyValueMapping.AccessCodeToGroup[1002] : KeyValueMapping.AccessCodeToGroup[1001]);
+                    writer.WriteValue((ElectronincAccessLevel == BJElectronicExemplarAvailabilityCodes.vloginview) ? KeyValueMapping.AccessCodeToGroup[1002] : KeyValueMapping.AccessCodeToGroup[1001]);
 
                     writer.WritePropertyName("exemplar_carrier");
                     //writer.WriteValue("Электронная книга");
@@ -402,7 +407,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             writer.WriteEndObject();
             writer.Flush();
             writer.Close();
-            ElectronicExemplarInfo ElExemplar = new ElectronicExemplarInfo(-1);//фейковый электронный экземпляр
+            BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(-1, string.Empty);//фейковый электронный экземпляр. если его не добавить и если бумажных экземпляров нет, то будет 0 экземпляров и документ не попадёт в индекс, хотя етсь электронный экземпляр
             result.Exemplars.Add(ElExemplar);
             result.ExemplarsJSON = sb.ToString();
             if (ExemplarsCreatedDateList.Count != 0)

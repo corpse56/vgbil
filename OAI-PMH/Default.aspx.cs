@@ -8,6 +8,8 @@ using System.Xml;
 using System.Data.SqlClient;
 using System.Data;
 using System.IO;
+using LibflClassLibrary.Books.BJBooks.Loaders;
+using LibflClassLibrary.Books.BJBooks;
 
 public partial class _Default : System.Web.UI.Page 
 {
@@ -1136,7 +1138,13 @@ public partial class _Default : System.Web.UI.Page
         {
             return RecordNode;
         }
+
+        //это по-старому
         ForAllReader = (bool)DS.Tables["pdf"].Rows[0]["ForAllReader"];
+        //теперь по-новому
+        BJBookLoader BJloader = new BJBookLoader(rm.BAZA);
+        BJBookInfo bjBook = BJBookInfo.GetBookInfoByPIN(int.Parse(IDMAIN), rm.BAZA);
+        bjBook.
         string path = DS.Tables["PDF"].Rows[0]["IDBook"].ToString();
         XmlNode subpdf;
         switch (path.Length)
@@ -1174,6 +1182,10 @@ public partial class _Default : System.Web.UI.Page
         {
             path = "/mnt/fs-share/REDKOSTJ/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
         }
+
+
+
+
         if (ForAllReader)
         {
             node = xmlDoc.CreateElement("marc", "datafield", "http://www.loc.gov/MARC21/slim");

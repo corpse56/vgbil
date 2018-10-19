@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.Books.BJBooks.DB;
+﻿using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.ExportToVufind.Vufind;
 using System;
 using System.Collections.Generic;
@@ -175,9 +176,9 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             return (table.Rows.Count != 0) ? table.Rows[0]["PLAIN"].ToString() : null;
         }
 
-        internal bool IsAuthorRightsExists(int IDMAIN, int IDProject)
+        internal BJElectronicExemplarAvailabilityCodes GetElectronicExemplarAccessLevel(int IDMAIN, int IDProject)
         {
-            DataTable table = dbWrapper.GetBookAuthorRights(IDMAIN, IDProject);
+            DataTable table = dbWrapper.GetElectronicExemplarAccessLevel(IDMAIN, IDProject);
             if (table.Rows.Count == 0)
             {
                 throw new Exception("В таблице BookProject нет такой записи!");
@@ -185,14 +186,22 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             switch (table.Rows[0]["CodeTypeProject"].ToString())
             {
                 case "v-stop":
-                    return true;
+                    return BJElectronicExemplarAvailabilityCodes.vstop;
                 case "v-free-view":
-                    return false;
+                    return BJElectronicExemplarAvailabilityCodes.vfreeview;
                 case "v-login-view":
-                    return true;
-            }
+                    return BJElectronicExemplarAvailabilityCodes.vloginview;
+                case "dlstop":
+                    return BJElectronicExemplarAvailabilityCodes.dlstop;
+                case "dlopen":
+                    return BJElectronicExemplarAvailabilityCodes.dlopen;
+                case "dlview":
+                    return BJElectronicExemplarAvailabilityCodes.dlview;
+                case "dllimit":
+                    return BJElectronicExemplarAvailabilityCodes.dllimit;
 
-            return true;
+            }
+            return BJElectronicExemplarAvailabilityCodes.vstop;
         }
     }
 }

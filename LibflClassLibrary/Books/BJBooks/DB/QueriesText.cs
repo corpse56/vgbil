@@ -378,11 +378,19 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
-        public string BOOK_AUTHOR_RIGHTS
+        public string GET_ELECTRONIC_EXEMPLAR_ACCESS_LEVEL
         {
             get
             {
                 return "select * from BookAddInf..BookProject where IDBook = @IDMAIN and IDProject = @IDProject and IDBase = " + ((this.Fund == "BJVVV") ? "1" : "2");
+            }
+        }
+
+        public string GET_ELECTRONIC_EXEMPLAR_AVAILABILITY_STATUSES
+        {
+            get
+            {
+                return "select * from BookAddInf..BookProject where IDBook = @IDMAIN and IDBase = " + ((this.Fund == "BJVVV") ? "1" : "2");
             }
         }
     }

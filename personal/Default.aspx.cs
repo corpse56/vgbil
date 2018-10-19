@@ -88,7 +88,7 @@ public partial class _Default : System.Web.UI.Page
             BJBookInfo book = BJBookInfo.GetBookInfoByPIN(Convert.ToInt32(r["IDMAIN"]), "BJVVV");
             for (int j = book.Exemplars.Count - 1; j >= 0; j-- )
             {
-                if (((ExemplarInfo)book.Exemplars[j]).Fields["921$c"].ToLower() == "списано")
+                if (((BJExemplarInfo)book.Exemplars[j]).Fields["921$c"].ToLower() == "списано")
                 {
                     book.Exemplars.RemoveAt(j);
                 }
@@ -144,7 +144,7 @@ public partial class _Default : System.Web.UI.Page
         foreach (BJBookInfo book in basket)
         {
             j++;
-            foreach (ExemplarInfo exemplar in book.Exemplars)
+            foreach (BJExemplarInfo exemplar in book.Exemplars)
             {
                 string location = KeyValueMapping.UnifiedLocationAccess.GetValueOrDefault(exemplar.Fields["899$a"].ToString(), "не указано");
                 StringBuilder Status = new StringBuilder();
@@ -238,7 +238,7 @@ public partial class _Default : System.Web.UI.Page
     }
     private int CreateOrd(string idreader,string iddata)
     {
-        ExemplarInfo exemplar = ExemplarInfo.GetExemplarByIdData(int.Parse(iddata), "BJVVV");
+        BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(int.Parse(iddata), "BJVVV");
         SqlCommand command = new SqlCommand();
         ZCon.Open();
         command = new SqlCommand("insert into Reservation_E..Orders (ID_Reader, ID_Book_EC, Status, Start_Date, InvNumber,  Form_Date,    IDDATA, ID_Book_CC, Duration) "+
