@@ -89,7 +89,7 @@ public partial class Default2 : System.Web.UI.Page
                 }
                 if (bjBook.Exemplars.Count != 0)
                 {
-                    foreach (ExemplarInfo exemplar in bjBook.Exemplars)
+                    foreach (BJExemplarInfo exemplar in bjBook.Exemplars)
                     {
                         strBody.Append("<p style=\"margin-top: 0px;margin-bottom: 10px;padding-bottom: 10px;padding-top: 0px;\">" + exemplar.Fields["899$p"].ToString());
                     }
@@ -109,7 +109,7 @@ public partial class Default2 : System.Web.UI.Page
                 }
                 if (bjBook.Exemplars.Count != 0)
                 {
-                    foreach (ExemplarInfo exemplar in bjBook.Exemplars)
+                    foreach (BJExemplarInfo exemplar in bjBook.Exemplars)
                     {
                         strBody.Append("<p style=\"margin-top: 0px;margin-bottom: 10px;padding-bottom: 10px;padding-top: 0px;\">" + exemplar.Fields["899$p"].ToString());
                     }

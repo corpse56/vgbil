@@ -20,6 +20,7 @@ using System.Text;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Utilities;
+using LibflClassLibrary.Readers;
 
 public partial class loginemployee : System.Web.UI.Page
 {
@@ -170,8 +171,9 @@ public static class CurrentCultureInfo
 
 
         //для входа под любым читателем. не забывать закомментироват
-        //CurReader.ID = "182123";
-        //CurReader.ReaderType = 0;
+        //CurReader.ID = "225831";
+        //ReaderInfo rrr = ReaderInfo.GetReader(200521);
+        //CurReader.ReaderType = 1;
         //FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
         //RedirectWithCookie("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + CurReader.ReaderType + "&litres=" + litres, CurReader);
         //для входа под любым читателем. не забывать закомментироват
@@ -367,7 +369,8 @@ public static class CurrentCultureInfo
             {
                 //Response.Redirect(RedirectUrlCheck + "&idreader=" + CurReader.ID + "&type=" + rtype.ToString() + "&litres=" + litres);
                 RedirectUrl = RedirectUrlCheck + "&idreader=" + CurReader.ID + "&type=" + CurReader.ReaderType.ToString() + "&litres=" + litres;
-                //RedirectUrl = @"http://localhost:12588/perosnal/OrderElCopy.aspx" + "&idreader=" + CurReader.ID + "&type=" + rtype.ToString() + "&litres=" + litres;
+                //RedirectUrl = @"http://localhost:12588/perosnal/OrderElCopy.aspx" + "?idreader=" + CurReader.ID + "&type=" + CurReader.ReaderType.ToString() + "&litres=" + litres;
+                //RedirectUrl = @"http://localhost:12588" + RedirectUrl.Substring(9);
                 RedirectWithCookie(RedirectUrl, CurReader);
             }
             else if (RedirectUrlCheck.Contains("Bookreader"))

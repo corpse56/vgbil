@@ -48,7 +48,7 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    logger.Info("Загрузка инкремента завершилось неудачей. " + ex.Message);
+                    logger.Error("Загрузка инкремента завершилось неудачей. " + ex.Message);
                     Console.WriteLine("Error...");
                     Console.ReadKey();
                     return;
@@ -81,7 +81,7 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    logger.Info("Удаление завершилось неудачей. \n" + ex.Message);
+                    logger.Error("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.WriteLine("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.ReadKey();
                     return;
@@ -130,7 +130,7 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    logger.Info("Добавление в индекс завершилось неудачей.  \n" + ex.Message);
+                    logger.Error("Добавление в индекс завершилось неудачей.  \n" + ex.Message);
                     Console.WriteLine("Error...");
                     Console.ReadKey();
                     return;
@@ -156,7 +156,7 @@ namespace VufindIncrementUpdate
                     catch (Exception ex)
                     {
                         Console.WriteLine("Скачивание  обложки " + elt.Id + " завершилось неудачей. " + ex.Message);
-                        logger.Info("Скачивание  обложки " + elt.Id + " завершилось неудачей. " + ex.Message);
+                        logger.Error("Скачивание  обложки " + elt.Id + " завершилось неудачей. " + ex.Message);
                         continue;
                     }
                     Console.WriteLine("Обложка  " + elt.Id + " скачана успешно. ");
@@ -183,7 +183,7 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    logger.Info("Загрузка инкремента завершилось неудачей. " + ex.Message);
+                    logger.Error("Загрузка инкремента завершилось неудачей. " + ex.Message);
                     Console.WriteLine("Error...");
                     Console.ReadKey();
                     return;
@@ -234,7 +234,7 @@ namespace VufindIncrementUpdate
                 }
                 catch (Exception ex)
                 {
-                    logger.Info("Удаление завершилось неудачей. \n" + ex.Message);
+                    logger.Error("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.WriteLine("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.ReadKey();
                     return;
@@ -270,7 +270,7 @@ namespace VufindIncrementUpdate
                     catch (Exception ex)
                     {
                         Console.WriteLine("Скачивание Litres обложки " + elt.Attribute("id").Value + " завершилось неудачей. " + ex.Message);
-                        logger.Info("Скачивание Litres обложки " + elt.Attribute("id").Value + " завершилось неудачей. " + ex.Message);
+                        logger.Error("Скачивание Litres обложки " + elt.Attribute("id").Value + " завершилось неудачей. " + ex.Message);
                         continue;
                     }
                     Console.WriteLine("Обложка Litres " + elt.Attribute("id").Value + " скачана успешно. ");

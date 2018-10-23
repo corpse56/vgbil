@@ -345,7 +345,6 @@ namespace LibflClassLibrary.ExportToVufind.BJ
 
 
 
-            BJElectronicExemplarAvailabilityCodes ElectronincAccessLevel = BJLoader.GetElectronicExemplarAccessLevel(IDMAIN, 1);//IDProject = 1 это значит для библиотеки. 2 - для НЭБ
 
             //смотрим есть ли гиперссылка
             table = BJLoader.GetHyperLink(IDMAIN);
@@ -373,6 +372,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 if (hyperLinkTable.Rows.Count != 0)
                 {
                     //ForAllReader = (bool)hyperLinkTable.Rows[0]["ForAllReader"];
+                    BJElectronicExemplarAvailabilityCodes ElectronincAccessLevel = BJLoader.GetElectronicExemplarAccessLevel(IDMAIN, 1);//IDProject = 1 это значит для библиотеки. 2 - для НЭБ
 
                     writer.WritePropertyName("exemplar_copyright");
                     writer.WriteValue( (ElectronincAccessLevel == BJElectronicExemplarAvailabilityCodes.vloginview) ? "есть" : "нет");

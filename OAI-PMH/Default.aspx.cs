@@ -10,6 +10,7 @@ using System.Data;
 using System.IO;
 using LibflClassLibrary.Books.BJBooks.Loaders;
 using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 
 public partial class _Default : System.Web.UI.Page 
 {
@@ -1114,7 +1115,7 @@ public partial class _Default : System.Web.UI.Page
         //$f book.pdf – имя файла
         //$y file – тип доступа
         int PdfExists = 0;
-        bool ForAllReader = false;
+        //bool ForAllReader = false;
         if (rm.BAZA == "BJVVV")
         {
             DA = new SqlDataAdapter();
@@ -1140,11 +1141,13 @@ public partial class _Default : System.Web.UI.Page
         }
 
         //это по-старому
-        ForAllReader = (bool)DS.Tables["pdf"].Rows[0]["ForAllReader"];
+        //ForAllReader = (bool)DS.Tables["pdf"].Rows[0]["ForAllReader"];
         //теперь по-новому
-        BJBookLoader BJloader = new BJBookLoader(rm.BAZA);
-        BJBookInfo bjBook = BJBookInfo.GetBookInfoByPIN(int.Parse(IDMAIN), rm.BAZA);
-        bjBook.
+        //BJBookLoader BJLoader = new BJBookLoader(rm.BAZA);
+        //BJElectronicExemplarAvailabilityCodes ElectronincAccessLevel = BJLoader.GetElectronicExemplarAccessLevel(int.Parse(IDMAIN), 2);//1 - VGBIL, 2 - NEB
+        BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(int.Parse(IDMAIN), rm.BAZA);
+        var Status = ElExemplar.Statuses.Find(x => x.Project ==  BJElectronicAvailabilityProjects.NEB);
+
         string path = DS.Tables["PDF"].Rows[0]["IDBook"].ToString();
         XmlNode subpdf;
         switch (path.Length)
@@ -1176,17 +1179,17 @@ public partial class _Default : System.Web.UI.Page
         }
         if (rm.BAZA == "BJVVV")
         {
-            path = "/mnt/fs-share/BJVVV/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
+            path = "/mnt/fs-share/BJVVV/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF";
         }
         else
         {
-            path = "/mnt/fs-share/REDKOSTJ/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
+            path = "/mnt/fs-share/REDKOSTJ/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF";
         }
 
 
 
 
-        if (ForAllReader)
+        if (Status.Code == BJElectronicExemplarAvailabilityCodes.dlopen || Status.Code == BJElectronicExemplarAvailabilityCodes.dlview)
         {
             node = xmlDoc.CreateElement("marc", "datafield", "http://www.loc.gov/MARC21/slim");
             attribute = xmlDoc.CreateAttribute("tag");
@@ -1241,7 +1244,7 @@ public partial class _Default : System.Web.UI.Page
         attribute = xmlDoc.CreateAttribute("code");
         attribute.Value = "a";
         subpdf.Attributes.Append(attribute);
-        subpdf.InnerText = ForAllReader ?  "0"  :  "1";
+        subpdf.InnerText = Status.Code == BJElectronicExemplarAvailabilityCodes.dlopen || Status.Code == BJElectronicExemplarAvailabilityCodes.dlview ?  "0"  :  "1";
         node.AppendChild(subpdf);
 
 

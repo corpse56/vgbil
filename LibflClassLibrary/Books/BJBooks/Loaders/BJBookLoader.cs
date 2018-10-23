@@ -176,7 +176,7 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             return (table.Rows.Count != 0) ? table.Rows[0]["PLAIN"].ToString() : null;
         }
 
-        internal BJElectronicExemplarAvailabilityCodes GetElectronicExemplarAccessLevel(int IDMAIN, int IDProject)
+        public BJElectronicExemplarAvailabilityCodes GetElectronicExemplarAccessLevel(int IDMAIN, int IDProject)
         {
             DataTable table = dbWrapper.GetElectronicExemplarAccessLevel(IDMAIN, IDProject);
             if (table.Rows.Count == 0)
