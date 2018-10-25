@@ -1,5 +1,7 @@
-﻿using DataProviderAPI.ValueObjects;
+﻿using ALISAPI.ALISErrors;
+using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
+using LibflClassLibrary.ALISAPI.ResponseObjects;
 using LibflClassLibrary.Readers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -17,11 +19,6 @@ namespace ALISAPI.Controllers
 {
     public class ReadersController : ApiController
     {
-        JsonSerializerSettings ALISDateFormatJSONSettings = new JsonSerializerSettings
-        {
-            DateFormatHandling = DateFormatHandling.IsoDateFormat,
-            DateFormatString = "yyyy-MM-ddTHH:mm:sszz",
-        };
 
         //// GET api/values
         //public IEnumerable<string> Get()
@@ -39,35 +36,36 @@ namespace ALISAPI.Controllers
         [Route("Readers/{id}")]
         public HttpResponseMessage Get(int id)
         {
-            ReaderInfo reader = ReaderInfo.GetReader(id);
-            string json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISDateFormatJSONSettings);
-
-            HttpResponseMessage result = this.Request.CreateResponse(HttpStatusCode.OK);
-            result.Content = new StringContent(json,Encoding.UTF8, "application/json");
-            return result;
-            //return Request.CreateResponse(HttpStatusCode.OK).Content. //, reader);
-            //return json;
-
-            //вот так нужно вставлять json а не строкой.
-            //string yourJson = GetJsonFromSomewhere();
-            //var response = this.Request.CreateResponse(HttpStatusCode.OK);
-            //response.Content = new StringContent(yourJson, Encoding.UTF8, "application/json");
-
+            ReaderInfo reader;
+            try
+            {
+                reader = ReaderInfo.GetReader(id);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
+            }
+            return ALISResponseFactory.CreateResponse(reader, Request);
         }
-
-
 
         /// <summary>
         /// Получить читателя по oauth-токену
         /// </summary>
-        /// <param name="token">Токен, выданный читателю при авторизации</param>
         /// <returns></returns>
         [HttpPost]
         [Route("Readers/GetByOauthToken")]
         public HttpResponseMessage GetByOauthToken()
         {
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
-            AccessToken request = JsonConvert.DeserializeObject<AccessToken>(JSONRequest);
+            AccessToken request;
+            try
+            {
+                request = JsonConvert.DeserializeObject<AccessToken>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+            }
 
             ReaderInfo reader;
             try
@@ -76,20 +74,55 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                JObject jo = new JObject();
-                jo.Add("Error " +JSONRequest , ex.Message);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, jo);
+                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
             }
 
-            string json = JsonConvert.SerializeObject(reader, Formatting.Indented);
-            HttpResponseMessage result = this.Request.CreateResponse(HttpStatusCode.OK);
-            result.Content = new StringContent(json, Encoding.UTF8, "application/json");
-            return result;
+            return ALISResponseFactory.CreateResponse(reader, Request);
+        }
+
+        /// <summary>
+        /// Изменить пароль читателя по номеру читателя и дате его рождения
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Readers/ChangePassword")]
+        public HttpResponseMessage ChangePassword()
+        {
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            ChangePassword request;
+            try
+            {
+                request = JsonConvert.DeserializeObject<ChangePassword>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+            }
+
+            ReaderInfo reader;
+            try
+            {
+                reader = ReaderInfo.GetReader(request.NumberReader);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.BadRequest);
+            }
+            try
+            {
+                reader.ChangePassword(request);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+            }
+
+            return ALISResponseFactory.CreateResponse(Request);
         }
 
 
         /// <summary>
-        /// Авторизовать пользователя. Если авторизация успешна, то вернуть полный профиль 
+        /// Авторизовать пользователя. Если авторизация успешна, то вернуть полный профиль. В качестве логина может быть использован как номер читателя, так и Email. 
         /// </summary>
         /// 
         /// <returns></returns>
@@ -98,7 +131,15 @@ namespace ALISAPI.Controllers
         public HttpResponseMessage Authorize()
         {
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
-            AuthorizeInfo request = JsonConvert.DeserializeObject<AuthorizeInfo>(JSONRequest);
+            AuthorizeInfo request;
+            try
+            {
+                request = JsonConvert.DeserializeObject<AuthorizeInfo>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+            }
             ReaderInfo reader;
 
             try
@@ -107,22 +148,9 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                HttpResponseMessage resp = new HttpResponseMessage(HttpStatusCode.NotFound)
-                {
-                    Content = new StringContent(ex.Message),
-                    ReasonPhrase = "Введён неверный логин или пароль"
-                };
-                throw new HttpResponseException(resp);
+                return ALISErrorFactory.CreateError("R001", Request, HttpStatusCode.NotFound);
             }
-
-
-            
-            string json = JsonConvert.SerializeObject(reader, Formatting.Indented);
-
-            HttpResponseMessage result = this.Request.CreateResponse(HttpStatusCode.OK);
-            result.Content = new StringContent(json, Encoding.UTF8, "application/json");
-            return result;
-
+            return ALISResponseFactory.CreateResponse(reader, Request);
         }
 
         /// <summary>
@@ -137,19 +165,11 @@ namespace ALISAPI.Controllers
             string result = ReaderInfo.GetLoginType(Login);
             if (result.ToLower() == "notdefined")
             {
-                HttpResponseMessage resp = new HttpResponseMessage(HttpStatusCode.NotFound)
-                {
-                    Content = new StringContent("R003"),
-                    ReasonPhrase = "Неизвестный тип логина"
-                };
-                throw new HttpResponseException(resp);
-
+                return ALISErrors.ALISErrorFactory.CreateError("R003", Request, HttpStatusCode.NotFound);
             }
-            JObject jo = new JObject();
-            jo.Add("LoginType", result);
-            //return IHttpActionResult
-            return Request.CreateResponse(HttpStatusCode.OK, jo);
-
+            LoginType type = new LoginType();
+            type.LoginTypeValue = result;
+            return ALISResponseFactory.CreateResponse(type, Request);
         }
 
         //// POST api/Readers

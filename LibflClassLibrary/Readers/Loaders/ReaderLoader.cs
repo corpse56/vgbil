@@ -7,15 +7,16 @@ using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.Readers.DB;
 using LibflClassLibrary.Readers.ReadersRight;
 using Utilities;
+using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 
 namespace LibflClassLibrary.Readers.Loaders
 {
     class ReaderLoader
     {
+        ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
         public ReaderLoader() { }
         public ReaderInfo LoadReader(string Email)
         {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             DataTable table = dbw.GetReaderByEmail(Email);
             if (table.Rows.Count != 0)
             {
@@ -29,7 +30,6 @@ namespace LibflClassLibrary.Readers.Loaders
 
         public ReaderInfo LoadReader(int Id)
         {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             DataTable table = dbw.GetReader(Id);
             ReaderInfo reader = new ReaderInfo();
             if (table.Rows.Count == 0)
@@ -134,14 +134,17 @@ namespace LibflClassLibrary.Readers.Loaders
 
         internal void GiveFreeAbonementRight(int numberReader)
         {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             dbw.GiveFreeAbonementRight(numberReader);
         }
 
+        internal void ChangePassword(ReaderInfo reader, ChangePassword request)
+        {
+            request.NewPassword = ReaderInfo.HashPass(request.NewPassword, reader.Salt);
+            dbw.ChangePassword(request.NumberReader, request.NewPassword);
+        }
 
         internal int GetReaderIdByOAuthToken(string token)
         {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             DataTable table = dbw.GetReaderIdByOAuthToken(token);
             if (table.Rows.Count == 0)
             {
@@ -152,25 +155,21 @@ namespace LibflClassLibrary.Readers.Loaders
 
         public bool IsFiveElBooksIssued(int Id)
         {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             DataTable table = dbw.IsFiveElBooksIssued(Id);
             return (table.Rows.Count >= 5) ? true : false;
         }
 
         internal void UpdateRegistrationFields(ReaderInfo readerInfo)
         {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             dbw.UpdateRegistrationFields(readerInfo);
         }
         internal void UpdateLiveFields(ReaderInfo readerInfo)
         {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             dbw.UpdateLiveFields(readerInfo);
         }
 
         internal ReaderInfo Authorize(int numberReader, string password)
         {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             DataTable table = dbw.AuthorizeReaderWithNumberReader(numberReader, password);
             if (table.Rows.Count == 0)
             {
@@ -181,7 +180,6 @@ namespace LibflClassLibrary.Readers.Loaders
         }
         internal ReaderInfo Authorize(string Email, string password)
         {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             DataTable table = dbw.AuthorizeReaderWithEmail(Email, password);
             if (table.Rows.Count == 0)
             {
@@ -192,7 +190,6 @@ namespace LibflClassLibrary.Readers.Loaders
         }
         internal ReaderRightsInfo GetReaderRights(int NumberReader)
         {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
             DataTable table = dbw.GetReaderRights(NumberReader);
             ReaderRightsInfo result = new ReaderRightsInfo();
             if (table.Rows.Count == 0)

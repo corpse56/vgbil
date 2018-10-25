@@ -117,7 +117,7 @@ public partial class PassRec : System.Web.UI.Page
             int rtype = Convert.ToInt32(DS.Tables["hit"].Rows[0]["TypeReader"]);
             if (rtype == 1)
             {
-                Response.Redirect("http://80.250.173.145/WebRemotePas/Default.aspx?id=" + Request["id"]);
+                Response.Redirect("http://opac.libfl.ru/WebRemotePas/Default.aspx?id=" + Request["id"]);
             }
         }
 

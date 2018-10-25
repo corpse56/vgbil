@@ -190,5 +190,21 @@ namespace LibflClassLibrary.Controls.Readers
         {
             EnableAll();
         }
+
+        private void bProlong_Click(object sender, EventArgs e)
+        {
+            if (reader.Rights[ReaderRightsEnum.FreeAbonement] != null)
+            {
+                if (reader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight.Date <= DateTime.Today.Date)
+                {
+                    reader.ProlongRights(ReaderRightsEnum.FreeAbonement);
+                }
+
+            }
+            else
+            {
+            }
+
+        }
     }
 }

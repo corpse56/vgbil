@@ -15,14 +15,18 @@ namespace LibflClassLibrary.Readers.DB
     {
 
         public Reader ReaderQueries;
+        private string ConnectionString;
         public ReaderDatabaseWrapper()
         {
             ReaderQueries = new Reader();
+            //для демо базы
+            ConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+            //ConnectionString = AppSettings.ConnectionString;
         }
 
         internal DataTable GetReaderByEmail(string Email)
         {
-            string connectionString = AppSettings.ConnectionString;
+            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -34,7 +38,7 @@ namespace LibflClassLibrary.Readers.DB
 
         internal DataTable GetReader(int Id)
         {
-            string connectionString = AppSettings.ConnectionString;
+            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -45,7 +49,7 @@ namespace LibflClassLibrary.Readers.DB
         }
         internal DataTable IsFiveElBooksIssued(int Id)
         {
-            string connectionString = AppSettings.ConnectionString;
+            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -72,7 +76,7 @@ namespace LibflClassLibrary.Readers.DB
 
         internal DataTable AuthorizeReaderWithNumberReader( int numberReader,  string password)
         {
-            string connectionString = AppSettings.ConnectionString;
+            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -85,7 +89,7 @@ namespace LibflClassLibrary.Readers.DB
 
         internal DataTable AuthorizeReaderWithEmail(string Email, string password)
         {
-            string connectionString = AppSettings.ConnectionString;
+            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -98,7 +102,7 @@ namespace LibflClassLibrary.Readers.DB
 
         internal DataTable GetReaderRights(int NumberReader)
         {
-            string connectionString = AppSettings.ConnectionString;
+            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -110,7 +114,7 @@ namespace LibflClassLibrary.Readers.DB
 
         internal void GiveFreeAbonementRight(int NumberReader)
         {
-            string connectionString = AppSettings.ConnectionString;
+            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -124,7 +128,7 @@ namespace LibflClassLibrary.Readers.DB
 
         internal DataTable GetReaderCountries()
         {
-            string connectionString = AppSettings.ConnectionString;
+            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -133,9 +137,24 @@ namespace LibflClassLibrary.Readers.DB
             }
         }
 
+        internal void ChangePassword(int NumberReader, string NewPassword)
+        {
+            string connectionString = this.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(ReaderQueries.CHANGE_PASSWORD, connection);
+                command.Parameters.Add("NumberReader", SqlDbType.Int).Value = NumberReader;
+                command.Parameters.Add("Password", SqlDbType.NVarChar).Value = NewPassword;
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
         internal void UpdateRegistrationFields(ReaderInfo readerInfo)
         {
-            string connectionString = AppSettings.ConnectionString;
+            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -164,7 +183,7 @@ namespace LibflClassLibrary.Readers.DB
 
         internal void UpdateLiveFields(ReaderInfo readerInfo)
         {
-            string connectionString = AppSettings.ConnectionString;
+            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

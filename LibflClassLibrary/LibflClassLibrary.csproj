@@ -95,6 +95,8 @@
   <ItemGroup>
     <Compile Include="ALISAPI\RequestObjects\Readers\AccessToken.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\AuthorizeInfo.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Readers\ChangePassword.cs" />
+    <Compile Include="ALISAPI\ResponseObjects\LoginType.cs" />
     <Compile Include="Books\BJBooks\BJBookJsonConverter.cs" />
     <Compile Include="Books\BJBooks\BJExemplars\BJElectronicExemplarAvailabilityStatus.cs" />
     <Compile Include="Books\BJBooks\Loaders\BJBookLoader.cs" />

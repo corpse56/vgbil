@@ -59,6 +59,7 @@
             this.tbMobilePhoneCode = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.tbCountry = new System.Windows.Forms.TextBox();
+            this.bProlong = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -69,7 +70,7 @@
             this.label1.Location = new System.Drawing.Point(4, 3);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(763, 74);
+            this.label1.Size = new System.Drawing.Size(843, 74);
             this.label1.TabIndex = 0;
             this.label1.Text = "label1";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -166,56 +167,56 @@
             // 
             // tbRegion
             // 
-            this.tbRegion.Location = new System.Drawing.Point(216, 110);
+            this.tbRegion.Location = new System.Drawing.Point(298, 107);
             this.tbRegion.Name = "tbRegion";
             this.tbRegion.Size = new System.Drawing.Size(542, 22);
             this.tbRegion.TabIndex = 3;
             // 
             // tbProvince
             // 
-            this.tbProvince.Location = new System.Drawing.Point(216, 140);
+            this.tbProvince.Location = new System.Drawing.Point(298, 137);
             this.tbProvince.Name = "tbProvince";
             this.tbProvince.Size = new System.Drawing.Size(542, 22);
             this.tbProvince.TabIndex = 3;
             // 
             // tbDistrict
             // 
-            this.tbDistrict.Location = new System.Drawing.Point(216, 168);
+            this.tbDistrict.Location = new System.Drawing.Point(298, 165);
             this.tbDistrict.Name = "tbDistrict";
             this.tbDistrict.Size = new System.Drawing.Size(542, 22);
             this.tbDistrict.TabIndex = 3;
             // 
             // tbCity
             // 
-            this.tbCity.Location = new System.Drawing.Point(216, 204);
+            this.tbCity.Location = new System.Drawing.Point(298, 201);
             this.tbCity.Name = "tbCity";
             this.tbCity.Size = new System.Drawing.Size(542, 22);
             this.tbCity.TabIndex = 3;
             // 
             // tbStreet
             // 
-            this.tbStreet.Location = new System.Drawing.Point(216, 236);
+            this.tbStreet.Location = new System.Drawing.Point(298, 233);
             this.tbStreet.Name = "tbStreet";
             this.tbStreet.Size = new System.Drawing.Size(542, 22);
             this.tbStreet.TabIndex = 3;
             // 
             // tbHouse
             // 
-            this.tbHouse.Location = new System.Drawing.Point(216, 270);
+            this.tbHouse.Location = new System.Drawing.Point(298, 267);
             this.tbHouse.Name = "tbHouse";
             this.tbHouse.Size = new System.Drawing.Size(542, 22);
             this.tbHouse.TabIndex = 3;
             // 
             // tbFlat
             // 
-            this.tbFlat.Location = new System.Drawing.Point(216, 306);
+            this.tbFlat.Location = new System.Drawing.Point(298, 303);
             this.tbFlat.Name = "tbFlat";
             this.tbFlat.Size = new System.Drawing.Size(542, 22);
             this.tbFlat.TabIndex = 3;
             // 
             // tbMobilePhone
             // 
-            this.tbMobilePhone.Location = new System.Drawing.Point(296, 340);
+            this.tbMobilePhone.Location = new System.Drawing.Point(378, 337);
             this.tbMobilePhone.Name = "tbMobilePhone";
             this.tbMobilePhone.Size = new System.Drawing.Size(129, 22);
             this.tbMobilePhone.TabIndex = 3;
@@ -224,7 +225,7 @@
             // 
             this.cbCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCountry.FormattingEnabled = true;
-            this.cbCountry.Location = new System.Drawing.Point(15, 484);
+            this.cbCountry.Location = new System.Drawing.Point(8, 456);
             this.cbCountry.Name = "cbCountry";
             this.cbCountry.Size = new System.Drawing.Size(82, 24);
             this.cbCountry.TabIndex = 4;
@@ -232,7 +233,7 @@
             // 
             // bCancel
             // 
-            this.bCancel.Location = new System.Drawing.Point(683, 515);
+            this.bCancel.Location = new System.Drawing.Point(765, 512);
             this.bCancel.Name = "bCancel";
             this.bCancel.Size = new System.Drawing.Size(75, 37);
             this.bCancel.TabIndex = 5;
@@ -242,7 +243,7 @@
             // 
             // bSave
             // 
-            this.bSave.Location = new System.Drawing.Point(583, 515);
+            this.bSave.Location = new System.Drawing.Point(665, 512);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(94, 37);
             this.bSave.TabIndex = 5;
@@ -252,7 +253,7 @@
             // 
             // bGiveFreeAbonementRight
             // 
-            this.bGiveFreeAbonementRight.Location = new System.Drawing.Point(175, 514);
+            this.bGiveFreeAbonementRight.Location = new System.Drawing.Point(257, 511);
             this.bGiveFreeAbonementRight.Name = "bGiveFreeAbonementRight";
             this.bGiveFreeAbonementRight.Size = new System.Drawing.Size(279, 37);
             this.bGiveFreeAbonementRight.TabIndex = 6;
@@ -262,7 +263,7 @@
             // 
             // bEdit
             // 
-            this.bEdit.Location = new System.Drawing.Point(460, 515);
+            this.bEdit.Location = new System.Drawing.Point(542, 512);
             this.bEdit.Name = "bEdit";
             this.bEdit.Size = new System.Drawing.Size(117, 37);
             this.bEdit.TabIndex = 5;
@@ -281,14 +282,14 @@
             // 
             // tbEmail
             // 
-            this.tbEmail.Location = new System.Drawing.Point(216, 374);
+            this.tbEmail.Location = new System.Drawing.Point(298, 371);
             this.tbEmail.Name = "tbEmail";
             this.tbEmail.Size = new System.Drawing.Size(542, 22);
             this.tbEmail.TabIndex = 3;
             // 
             // readerRightsView1
             // 
-            this.readerRightsView1.Location = new System.Drawing.Point(216, 426);
+            this.readerRightsView1.Location = new System.Drawing.Point(298, 423);
             this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
             this.readerRightsView1.Name = "readerRightsView1";
             this.readerRightsView1.Size = new System.Drawing.Size(542, 82);
@@ -297,7 +298,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(213, 343);
+            this.label13.Location = new System.Drawing.Point(295, 340);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(26, 16);
             this.label13.TabIndex = 1;
@@ -305,7 +306,7 @@
             // 
             // tbMobilePhoneCode
             // 
-            this.tbMobilePhoneCode.Location = new System.Drawing.Point(235, 340);
+            this.tbMobilePhoneCode.Location = new System.Drawing.Point(317, 337);
             this.tbMobilePhoneCode.Name = "tbMobilePhoneCode";
             this.tbMobilePhoneCode.Size = new System.Drawing.Size(51, 22);
             this.tbMobilePhoneCode.TabIndex = 3;
@@ -313,7 +314,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(286, 343);
+            this.label14.Location = new System.Drawing.Point(368, 340);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(12, 16);
             this.label14.TabIndex = 1;
@@ -322,17 +323,28 @@
             // tbCountry
             // 
             this.tbCountry.Enabled = false;
-            this.tbCountry.Location = new System.Drawing.Point(216, 83);
+            this.tbCountry.Location = new System.Drawing.Point(298, 80);
             this.tbCountry.Name = "tbCountry";
             this.tbCountry.Size = new System.Drawing.Size(542, 22);
             this.tbCountry.TabIndex = 3;
             this.tbCountry.Text = "Россия";
             // 
+            // bProlong
+            // 
+            this.bProlong.Location = new System.Drawing.Point(8, 511);
+            this.bProlong.Name = "bProlong";
+            this.bProlong.Size = new System.Drawing.Size(243, 36);
+            this.bProlong.TabIndex = 8;
+            this.bProlong.Text = "Продлить права бесп. абонемента";
+            this.bProlong.UseVisualStyleBackColor = true;
+            this.bProlong.Click += new System.EventHandler(this.bProlong_Click);
+            // 
             // fReaderRegistrationAndRights
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(772, 560);
+            this.ClientSize = new System.Drawing.Size(852, 560);
+            this.Controls.Add(this.bProlong);
             this.Controls.Add(this.readerRightsView1);
             this.Controls.Add(this.bGiveFreeAbonementRight);
             this.Controls.Add(this.bEdit);
@@ -408,5 +420,6 @@
         private System.Windows.Forms.TextBox tbMobilePhoneCode;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox tbCountry;
+        private System.Windows.Forms.Button bProlong;
     }
 }

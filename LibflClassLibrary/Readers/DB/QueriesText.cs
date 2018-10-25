@@ -116,6 +116,13 @@ namespace LibflClassLibrary.Readers.DB
             }
         }
 
+        public string CHANGE_PASSWORD
+        {
+            get
+            {
+                return "update Readers..Main set Password = @Password where NumberReader = @NumberReader";
+            }
+        }
     }
 
 }

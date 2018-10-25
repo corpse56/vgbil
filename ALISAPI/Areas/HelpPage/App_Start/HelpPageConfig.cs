@@ -2,7 +2,11 @@
 // package to your project.
 ////#define Handle_PageResultOfT
 
+using ALISAPI.Controllers;
 using DataProviderAPI.ValueObjects;
+using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
+using LibflClassLibrary.Readers;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -80,20 +84,50 @@ namespace ALISAPI.Areas.HelpPage
             //// The sample will be generated as if the controller named "Values" and action named "Post" were returning a string.
             //config.SetActualResponseType(typeof(string), "Values", "Post");
 
-            //config.SetActualResponseType(typeof(ReaderInfo), "Readers", "Get");
 
-            config.SetSampleResponse(
-                "{\n" +
-                "   \"id\" : 189245  \n" +
-                "   \"FamilyName\" : \"Иванов\"  \n" +
+            ReaderInfo reader = ReaderInfo.GetReader(189245);
+            //Readers.Get
+            string json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "Get");
 
-                "}", new MediaTypeHeaderValue("application/json"), "Readers", "GetByOauthToken");
-            config.SetSampleResponse(
-                "{\n" +
-                "   \"id\" : 189245  \n" +
-                "   \"FamilyName\" : \"Иванов\"  \n" +
-                "   \"Name\" : \"Иванов\"  \r\n" +
-                "}", new MediaTypeHeaderValue("application/json"), "Readers", "Get");
+
+            //Readers.GetByOauthToken
+            AccessToken token = new AccessToken();
+            token.TokenValue = "jhgfjfg*%&$*FKGfkfKfI^(*&^5&^TGVfjtgfdtre$E65r86T87t)(*7goYGV986T98^&Go8yg";
+            json = JsonConvert.SerializeObject(token, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetByOauthToken");
+
+            json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetByOauthToken");
+
+            //Readers.ChangePassword
+            ChangePassword password = new ChangePassword();
+            password.DateBirth = new DateTime(1984, 2, 14);
+            password.NewPassword = "123";
+            password.NumberReader = 189245;
+            json = JsonConvert.SerializeObject(password, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ChangePassword");
+
+            //Readers.Authorize
+            AuthorizeInfo aut = new AuthorizeInfo();
+            aut.login = "189245";
+            aut.password = "123";
+            json = JsonConvert.SerializeObject(aut, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
+            aut.login = "a@a.a";
+            json = JsonConvert.SerializeObject(aut, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
+
+            json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
+
+
+            //config.SetSampleResponse(
+            //    "{\n" +
+            //    "   \"id\" : 189245  \n" +
+            //    "   \"FamilyName\" : \"Иванов\"  \n" +
+            //    "   \"Name\" : \"Иван\"  \r\n" +
+            //    "}", new MediaTypeHeaderValue("application/json"), "Readers", "Get");
 
             //config.SetSampleForType(
             //    "{" +

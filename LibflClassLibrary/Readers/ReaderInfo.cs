@@ -10,6 +10,7 @@ using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.Loaders;
 using LibflClassLibrary.Readers.ReadersRight;
+using LibflClassLibrary.Readers.ReadersRights;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -24,6 +25,8 @@ namespace LibflClassLibrary.Readers
     /// </summary>
     public class ReaderInfo
     {
+        private ReaderLoader loader = new ReaderLoader();
+
         public string FamilyName { get; set; }
         public string Name { get; set; }
         public string FatherName { get; set; }
@@ -106,7 +109,6 @@ namespace LibflClassLibrary.Readers
 
         public bool IsFiveElBooksIssued()
         {
-            ReaderLoader loader = new ReaderLoader();
             bool result = loader.IsFiveElBooksIssued(this.NumberReader);
             return result;
         }
@@ -151,17 +153,31 @@ namespace LibflClassLibrary.Readers
             return "NotDefined";
         }
 
+        public void ChangePassword(ChangePassword request)
+        {
+            if (this.DateBirth.Date != request.DateBirth.Date)
+            {
+                throw new Exception("R005");
+            }
+            if (string.IsNullOrEmpty(request.NewPassword))
+            {
+                throw new Exception("R006");
+            }
+            loader.ChangePassword(this, request);
+        }
+
         internal void UpdateRegistrationFields()
         {
-            ReaderLoader loader = new ReaderLoader();
             loader.UpdateRegistrationFields(this);
         }
         internal void UpdateLiveFields()
         {
-            ReaderLoader loader = new ReaderLoader();
             loader.UpdateLiveFields(this);
         }
+        internal void ProlongRights(ReaderRightsEnum right)
+        {
 
+        }
         public static ReaderInfo Authorize(AuthorizeInfo request)
         {
             int NumberReader = 0;

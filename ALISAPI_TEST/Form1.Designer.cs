@@ -32,6 +32,7 @@
             this.tbResponse = new System.Windows.Forms.TextBox();
             this.ReadersAuthorize = new System.Windows.Forms.Button();
             this.ReadersGetByOauthToken = new System.Windows.Forms.Button();
+            this.bChangePwd = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -47,11 +48,11 @@
             // 
             // tbResponse
             // 
-            this.tbResponse.Location = new System.Drawing.Point(805, 19);
+            this.tbResponse.Location = new System.Drawing.Point(558, 14);
             this.tbResponse.Margin = new System.Windows.Forms.Padding(5);
             this.tbResponse.Multiline = true;
             this.tbResponse.Name = "tbResponse";
-            this.tbResponse.Size = new System.Drawing.Size(626, 854);
+            this.tbResponse.Size = new System.Drawing.Size(573, 590);
             this.tbResponse.TabIndex = 1;
             // 
             // ReadersAuthorize
@@ -75,11 +76,22 @@
             this.ReadersGetByOauthToken.UseVisualStyleBackColor = true;
             this.ReadersGetByOauthToken.Click += new System.EventHandler(this.ReadersGetByOauthToken_Click);
             // 
+            // bChangePwd
+            // 
+            this.bChangePwd.Location = new System.Drawing.Point(14, 164);
+            this.bChangePwd.Name = "bChangePwd";
+            this.bChangePwd.Size = new System.Drawing.Size(219, 55);
+            this.bChangePwd.TabIndex = 6;
+            this.bChangePwd.Text = "Readers/ChangePassword";
+            this.bChangePwd.UseVisualStyleBackColor = true;
+            this.bChangePwd.Click += new System.EventHandler(this.bChangePwd_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1445, 887);
+            this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.bChangePwd);
             this.Controls.Add(this.ReadersGetByOauthToken);
             this.Controls.Add(this.ReadersAuthorize);
             this.Controls.Add(this.tbResponse);
@@ -99,6 +111,7 @@
         private System.Windows.Forms.TextBox tbResponse;
         private System.Windows.Forms.Button ReadersAuthorize;
         private System.Windows.Forms.Button ReadersGetByOauthToken;
+        private System.Windows.Forms.Button bChangePwd;
     }
 }
 
