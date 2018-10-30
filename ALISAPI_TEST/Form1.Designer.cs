@@ -33,6 +33,7 @@
             this.ReadersAuthorize = new System.Windows.Forms.Button();
             this.ReadersGetByOauthToken = new System.Windows.Forms.Button();
             this.bChangePwd = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -86,11 +87,22 @@
             this.bChangePwd.UseVisualStyleBackColor = true;
             this.bChangePwd.Click += new System.EventHandler(this.bChangePwd_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(365, 260);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.bChangePwd);
             this.Controls.Add(this.ReadersGetByOauthToken);
             this.Controls.Add(this.ReadersAuthorize);
@@ -112,6 +124,7 @@
         private System.Windows.Forms.Button ReadersAuthorize;
         private System.Windows.Forms.Button ReadersGetByOauthToken;
         private System.Windows.Forms.Button bChangePwd;
+        private System.Windows.Forms.Button button1;
     }
 }
 

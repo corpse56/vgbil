@@ -22,9 +22,10 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
         {
             DataTable table = dbWrapper.LoadAvailabilityStatuses(IDMAIN, Fund);
             var listResult = new List<BJElectronicExemplarAvailabilityStatus>();
-            var result = new BJElectronicExemplarAvailabilityStatus();
+            BJElectronicExemplarAvailabilityStatus result;
             foreach (DataRow row in table.Rows)
             {
+                result = new BJElectronicExemplarAvailabilityStatus();
                 switch (row["CodeTypeProject"].ToString())
                 {
                     case "v-stop":

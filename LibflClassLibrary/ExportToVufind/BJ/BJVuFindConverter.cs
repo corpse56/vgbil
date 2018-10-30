@@ -94,6 +94,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             MessageBox.Show("Завершено");
         }
 
+        
 
         private bool SpecialFilter(int IDMAIN)
         {

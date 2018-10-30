@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LibflClassLibrary.Readers.DB
 {
-    public class Reader
+    public class ReaderQueries
     {
 
         public string GET_READER

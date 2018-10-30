@@ -43,7 +43,7 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
             string ID = id.Substring(id.LastIndexOf("_")+1);
             string result = "";
 
-            switch (ID.Length)//настроено на семизначный, но в будущем будет 9-значный айдишник
+            switch (ID.Length)
             {
                 case 1:
                     result = "00000000" + ID;

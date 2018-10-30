@@ -14,11 +14,11 @@ namespace LibflClassLibrary.Readers.DB
     class ReaderDatabaseWrapper : DatabaseWrapper
     {
 
-        public Reader ReaderQueries;
+        public ReaderQueries ReaderQueries;
         private string ConnectionString;
         public ReaderDatabaseWrapper()
         {
-            ReaderQueries = new Reader();
+            ReaderQueries = new ReaderQueries();
             //для демо базы
             ConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
             //ConnectionString = AppSettings.ConnectionString;

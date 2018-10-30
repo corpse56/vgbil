@@ -5,6 +5,7 @@
 using ALISAPI.Controllers;
 using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
+using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Readers;
 using Newtonsoft.Json;
 using System;
@@ -114,27 +115,26 @@ namespace ALISAPI.Areas.HelpPage
             aut.password = "123";
             json = JsonConvert.SerializeObject(aut, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
-            aut.login = "a@a.a";
-            json = JsonConvert.SerializeObject(aut, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
 
             json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
 
+            //Books.Get
+            BookSimpleView book;
+            book = ViewFactory.GetBookSimpleView("BJVVV_1411951");
+            json = JsonConvert.SerializeObject(book, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Books", "Get");
 
-            //config.SetSampleResponse(
-            //    "{\n" +
-            //    "   \"id\" : 189245  \n" +
-            //    "   \"FamilyName\" : \"Иванов\"  \n" +
-            //    "   \"Name\" : \"Иван\"  \r\n" +
-            //    "}", new MediaTypeHeaderValue("application/json"), "Readers", "Get");
+            //Circulation.Basket.get
+            List<BookSimpleView> list = new List<BookSimpleView>();
+            list.Add(book);
+            book = ViewFactory.GetBookSimpleView("BJVVV_1079436");
+            list.Add(book);
+            json = JsonConvert.SerializeObject(list, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation/Basket", "Get");
 
-            //config.SetSampleForType(
-            //    "{" +
-            //    "   id : 189245  " +
-            //    "}",
-            //    new MediaTypeHeaderValue("text/json"),
-            //    typeof(string));
+
+
 
         }
 

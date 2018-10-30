@@ -1,4 +1,6 @@
-﻿using LibflClassLibrary.Books;
+﻿using ALISAPI.ALISErrors;
+using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
+using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
 using System;
 using System.Collections.Generic;
@@ -6,20 +8,33 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace ALISAPI.Controllers
 {
     public class BooksController : ApiController
     {
 
+        /// <summary>
+        /// Получает сведения о книге по ID книги
+        /// </summary>
+        /// <param name="id">ID книги</param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("Books/{Id}")]
+        [Route("Books/{id}")]
+        [ResponseType(typeof(BookSimpleView))]
         public HttpResponseMessage Get(string id)
         {
-            BookBase bb = BJBookInfo.GetBookInfoByPIN(1456705, "BJVVV");
-            BJBookInfo bbb = BJBookInfo.GetBookInfoByPIN(1456705, "BJVVV");
-
-            return Request.CreateResponse(HttpStatusCode.OK, bb);
+            BookSimpleView book;
+            try
+            {
+                book = ViewFactory.GetBookSimpleView(id);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
+            }
+            return ALISResponseFactory.CreateResponse(book, Request);
         }
 
     }

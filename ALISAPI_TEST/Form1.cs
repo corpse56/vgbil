@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
+using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.Books.BookJSONViewers;
@@ -111,6 +112,11 @@ namespace ALISAPI_TEST
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            BookSimpleView book = ViewFactory.GetBookSimpleView("BJVVV_34");
         }
     }
 

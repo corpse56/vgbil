@@ -2,6 +2,7 @@
 using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects;
+using LibflClassLibrary.ALISAPI.ResponseObjects.Readers;
 using LibflClassLibrary.Readers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,6 +15,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Text;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace ALISAPI.Controllers
 {
@@ -30,10 +32,11 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Получает читателя по номеру читательского билета
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Номер читательского билета</param>
         /// <returns></returns>
         [HttpGet]
         [Route("Readers/{id}")]
+        [ResponseType(typeof(ReaderInfo))]
         public HttpResponseMessage Get(int id)
         {
             ReaderInfo reader;
@@ -54,6 +57,7 @@ namespace ALISAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Readers/GetByOauthToken")]
+        [ResponseType(typeof(ReaderInfo))]
         public HttpResponseMessage GetByOauthToken()
         {
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
@@ -86,8 +90,11 @@ namespace ALISAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Readers/ChangePassword")]
+        [ResponseType(typeof(ReaderInfo))]
+        //[RequestType(typeof(ChangePassword))]
         public HttpResponseMessage ChangePassword()
         {
+            
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
             ChangePassword request;
             try
@@ -128,6 +135,7 @@ namespace ALISAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Readers/Authorize")]
+        [ResponseType(typeof(ReaderInfo))]
         public HttpResponseMessage Authorize()
         {
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
@@ -156,10 +164,11 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Получить тип логина для заданного логина. 
         /// </summary>
-        /// <param name="Login"></param>
+        /// <param name="Login">Логин. Может быть номером читательского билета либо Email</param>
         /// <returns></returns>
         [HttpGet]
         [Route("Readers/GetLoginType/{login}")]
+        [ResponseType(typeof(string))]
         public HttpResponseMessage GetLoginType(string Login)
         {
             string result = ReaderInfo.GetLoginType(Login);
