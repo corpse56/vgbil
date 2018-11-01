@@ -193,18 +193,29 @@ namespace LibflClassLibrary.Controls.Readers
 
         private void bProlong_Click(object sender, EventArgs e)
         {
-            if (reader.Rights[ReaderRightsEnum.FreeAbonement] != null)
+            if (DialogResult.Yes == MessageBox.Show("Вы действительно хотите продлить права бесплатного абонемента?", "Подтверждение", MessageBoxButtons.YesNo))
             {
-                if (reader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight.Date <= DateTime.Today.Date)
+                if (reader.Rights[ReaderRightsEnum.FreeAbonement] != null)
                 {
-                    reader.ProlongRights(ReaderRightsEnum.FreeAbonement);
+                    if (reader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight.Date <= DateTime.Today.Date)
+                    {
+                        reader.ProlongRights(ReaderRightsEnum.FreeAbonement);
+                        reader = ReaderInfo.GetReader(reader.NumberReader);
+                        this.Init(reader.NumberReader);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Срок действия прав ещё не окончен!");
+                        return;
+                    }
                 }
-
+                else
+                {
+                    MessageBox.Show("Отсутствуют права бесплатного абонемента!");
+                    return;
+                }
+                MessageBox.Show("Права бесплатного абонемента успешно продлены!");
             }
-            else
-            {
-            }
-
         }
     }
 }

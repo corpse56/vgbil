@@ -30,8 +30,8 @@ namespace ALISAPI_TEST
         };
 
 
-        //readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
-        readonly string ALIS_ADDRESS = "http://localhost:27873/";
+        readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
+        //readonly string ALIS_ADDRESS = "http://localhost:27873/";
         public Form1()
         {
             InitializeComponent();
@@ -101,9 +101,9 @@ namespace ALISAPI_TEST
         private void bChangePwd_Click(object sender, EventArgs e)
         {
             ChangePassword request = new ChangePassword();
-            request.NumberReader = 189245;
-            request.DateBirth = new DateTime(1984, 02, 14, 7, 7, 7);
-            request.NewPassword = "12";
+            request.NumberReader = 222222;
+            request.DateBirth = new DateTime(1996, 01, 03, 7, 7, 7);
+            request.NewPassword = "222222";
             string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
             
             using (HttpClient client = new HttpClient())

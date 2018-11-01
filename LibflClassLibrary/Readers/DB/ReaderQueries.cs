@@ -7,6 +7,14 @@ namespace LibflClassLibrary.Readers.DB
 {
     public class ReaderQueries
     {
+        internal string PROLONG_RIGHT
+        {
+            get
+            {
+                return "update Readers..ReaderRight set DataEndReaderRight = DATEADD (year , 1 , getdate() ) where IDReader = @NumberReader and IDReaderRight = @Id";
+            }
+
+        }
 
         public string GET_READER
         {

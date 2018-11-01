@@ -3,6 +3,7 @@ using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Circulation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -18,11 +19,11 @@ namespace ALISAPI.Controllers
         /// Получает Содержимое корзины читателя по номеру читательского билета
         /// </summary>
         /// <param name="idReader">Номер читательского билета</param>
-        /// <returns></returns>
+        /// <returns>Список</returns>
         [HttpGet]
         [Route("Circulation/Basket/{idReader}")]
         [ResponseType(typeof(List<BookSimpleView>))]
-        public HttpResponseMessage Get(int idReader)
+        public HttpResponseMessage Get([Description("Номер чит билета")]int idReader)
         {
 
             CirculationInfo Circulation = new CirculationInfo();

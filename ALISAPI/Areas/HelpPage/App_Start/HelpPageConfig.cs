@@ -115,7 +115,8 @@ namespace ALISAPI.Areas.HelpPage
             aut.password = "123";
             json = JsonConvert.SerializeObject(aut, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
-
+            config.SetSampleForType(aut, new MediaTypeHeaderValue("application/json"), typeof(AuthorizeInfo));
+            config.SetActualRequestType(typeof(AuthorizeInfo), "Readers", "Authorize");
             json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
 

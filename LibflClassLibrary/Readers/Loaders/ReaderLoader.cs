@@ -153,6 +153,11 @@ namespace LibflClassLibrary.Readers.Loaders
             return Convert.ToInt32(table.Rows[0][0]);
         }
 
+        internal void ProlongRights(int id, int NumberReader)
+        {
+            dbw.ProlongRights(id, NumberReader);
+        }
+
         public bool IsFiveElBooksIssued(int Id)
         {
             DataTable table = dbw.IsFiveElBooksIssued(Id);

@@ -55,5 +55,38 @@ namespace LibflClassLibrary.Readers.ReadersRight
             }
             return result;
         }
+        public int ToIdDataBase()
+        {
+            int result = 0;
+            switch (this.ReaderRightValue)
+            {
+                case ReaderRightsEnum.None:
+                    result = 0;
+                    break;
+                case ReaderRightsEnum.BritSovet:
+                    result = 1;
+                    break;
+                case ReaderRightsEnum.ReadingRoomUser:
+                    result = 2;
+                    break;
+                case ReaderRightsEnum.Employee:
+                    result = 3;
+                    break;
+                case ReaderRightsEnum.FreeAbonement:
+                    result = 4;
+                    break;
+                case ReaderRightsEnum.PaidAbonement:
+                    result = 5;
+                    break;
+                case ReaderRightsEnum.CollectiveAbonement:
+                    result = 6;
+                    break;
+                case ReaderRightsEnum.Partner:
+                    result = 7;
+                    break;
+            }
+            return result;
+        }
+
     }
 }

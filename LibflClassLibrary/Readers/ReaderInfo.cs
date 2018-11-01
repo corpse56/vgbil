@@ -176,7 +176,8 @@ namespace LibflClassLibrary.Readers
         }
         internal void ProlongRights(ReaderRightsEnum right)
         {
-
+            int id = this.Rights[right].ToIdDataBase();
+            loader.ProlongRights(id, this.NumberReader);
         }
         public static ReaderInfo Authorize(AuthorizeInfo request)
         {

@@ -131,7 +131,7 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Авторизовать пользователя. Если авторизация успешна, то вернуть полный профиль. В качестве логина может быть использован как номер читателя, так и Email. 
         /// </summary>
-        /// 
+        /// <param name="Login">Логин. Может быть номером читательского билета либо Email</param>
         /// <returns></returns>
         [HttpPost]
         [Route("Readers/Authorize")]

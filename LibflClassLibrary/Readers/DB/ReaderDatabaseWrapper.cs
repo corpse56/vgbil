@@ -20,8 +20,8 @@ namespace LibflClassLibrary.Readers.DB
         {
             ReaderQueries = new ReaderQueries();
             //для демо базы
-            ConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
-            //ConnectionString = AppSettings.ConnectionString;
+            //ConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+            ConnectionString = AppSettings.ConnectionString;
         }
 
         internal DataTable GetReaderByEmail(string Email)
@@ -146,6 +146,21 @@ namespace LibflClassLibrary.Readers.DB
                 SqlCommand command = new SqlCommand(ReaderQueries.CHANGE_PASSWORD, connection);
                 command.Parameters.Add("NumberReader", SqlDbType.Int).Value = NumberReader;
                 command.Parameters.Add("Password", SqlDbType.NVarChar).Value = NewPassword;
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        internal void ProlongRights(int id, int numberReader)
+        {
+            string connectionString = this.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(ReaderQueries.PROLONG_RIGHT, connection);
+                command.Parameters.Add("ID", SqlDbType.Int).Value = id;
+                command.Parameters.Add("NumberReader", SqlDbType.Int).Value = numberReader;
                 connection.Open();
                 command.ExecuteNonQuery();
                 connection.Close();
