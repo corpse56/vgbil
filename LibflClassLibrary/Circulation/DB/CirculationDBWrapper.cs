@@ -31,5 +31,34 @@ namespace LibflClassLibrary.Circulation.DB
                 return table;
             }
         }
+
+        internal void InsertIntoUserBasket(int iDReader, string bookId)
+        {
+            string connectionString = this.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(Queries.INSERT_INTO_USER_BASKET, connection);
+                command.Parameters.Add("IDReader", SqlDbType.Int).Value = iDReader;
+                command.Parameters.Add("BookID", SqlDbType.NVarChar).Value = bookId;
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+        internal DataTable IsExistsInBasket(int iDReader, string bookId)
+        {
+            string connectionString = this.ConnectionString;
+            DataSet ds = new DataSet();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.IS_EXISTS_IN_BASKET, connection);
+                dataAdapter.SelectCommand.Parameters.Add("IDReader", SqlDbType.Int).Value = iDReader;
+                dataAdapter.SelectCommand.Parameters.Add("BookID", SqlDbType.NVarChar).Value = bookId;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
     }
 }

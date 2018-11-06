@@ -20,8 +20,8 @@ namespace LibflClassLibrary.Readers.DB
         {
             ReaderQueries = new ReaderQueries();
             //для демо базы
-            //ConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
-            ConnectionString = AppSettings.ConnectionString;
+            ConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+            //ConnectionString = AppSettings.ConnectionString;
         }
 
         internal DataTable GetReaderByEmail(string Email)

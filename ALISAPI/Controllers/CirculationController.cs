@@ -1,6 +1,7 @@
 ﻿using ALISAPI.ALISErrors;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Circulation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
 
 namespace ALISAPI.Controllers
 {
@@ -19,7 +21,7 @@ namespace ALISAPI.Controllers
         /// Получает Содержимое корзины читателя по номеру читательского билета
         /// </summary>
         /// <param name="idReader">Номер читательского билета</param>
-        /// <returns>Список</returns>
+        /// <returns>Содержимое корзины</returns>
         [HttpGet]
         [Route("Circulation/Basket/{idReader}")]
         [ResponseType(typeof(List<BookSimpleView>))]
@@ -44,6 +46,45 @@ namespace ALISAPI.Controllers
 
             return ALISResponseFactory.CreateResponse(result, Request);
         }
+
+        /// <summary>
+        /// Вставить в персональную корзину читателя список id книг. Метод нужно вызывать после авторизации.
+        /// </summary>
+        /// <returns>HTTP200</returns>
+        [HttpPost]
+        [Route("Circulation/InsertIntoUserBasket")]
+        //[ResponseType(typeof(ReaderInfo))]
+        public HttpResponseMessage InsertIntoUserBasket()
+        {
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            ImpersonalBasket request;
+            try
+            {
+                request = JsonConvert.DeserializeObject<ImpersonalBasket>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+            }
+
+            CirculationInfo Circulation = new CirculationInfo();
+
+
+            try
+            {
+                Circulation.InsertIntoUserBasket(request);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+            }
+            return ALISResponseFactory.CreateResponse(Request);
+        }
+
+
+
+
+
 
 
 

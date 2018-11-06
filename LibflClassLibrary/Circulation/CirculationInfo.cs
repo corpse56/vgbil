@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.Circulation.Loaders;
+﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
+using LibflClassLibrary.Circulation.Loaders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,11 @@ namespace LibflClassLibrary.Circulation
             return loader.GetBasket(ReaderId);
         }
 
+        public void InsertIntoUserBasket(ImpersonalBasket request)
+        {
+            if (request.BookIdArray.Count == 0) return;
+            loader.InsertIntoUserBasket(request);
 
+        }
     }
 }

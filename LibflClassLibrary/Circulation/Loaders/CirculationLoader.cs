@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.Circulation.DB;
+﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
+using LibflClassLibrary.Circulation.DB;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,6 +30,23 @@ namespace LibflClassLibrary.Circulation.Loaders
                 basket.Add(bi);
             }
             return basket;
+        }
+
+        internal void InsertIntoUserBasket(ImpersonalBasket request)
+        {
+            foreach(string BookId in request.BookIdArray)
+            {
+                if (!this.IsExistsInBasket(request.IDReader, BookId))
+                {
+                    dbWrapper.InsertIntoUserBasket(request.IDReader, BookId);
+                }
+            }
+        }
+
+        internal bool IsExistsInBasket(int readerId, string BookId)
+        {
+            DataTable table = dbWrapper.IsExistsInBasket(readerId, BookId);
+            return (table.Rows.Count != 0);
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
+﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
+using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.Books.BookJSONViewers;
+using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Readers;
 using Newtonsoft.Json;
 using System;
@@ -117,6 +119,16 @@ namespace ALISAPI_TEST
         private void button1_Click_1(object sender, EventArgs e)
         {
             BookSimpleView book = ViewFactory.GetBookSimpleView("BJVVV_34");
+        }
+
+        private void bInsertIntoBasket_Click(object sender, EventArgs e)
+        {
+            CirculationInfo circulation = new CirculationInfo();
+            ImpersonalBasket basket = new ImpersonalBasket();
+            basket.BookIdArray = new List<string>();
+            basket.BookIdArray.AddRange(new string[] { "BJVVV_1299121", "BJVVV_1304618", "REDKOSTJ_31866", "REDKOSTJ_43090" });
+            basket.IDReader = 189245;
+            circulation.InsertIntoUserBasket(basket);
         }
     }
 

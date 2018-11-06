@@ -44,7 +44,7 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
         {
             vfDoc.SpecialProcessing();
 
-            _objXmlWriter = XmlTextWriter.Create(@"F:\import\singleRecords\"+ vfDoc.id + ".xml");
+            _objXmlWriter = XmlTextWriter.Create(@"E:\import\singleRecords\"+ vfDoc.id + ".xml");
 
             _exportDocument = new XmlDocument();
             XmlNode decalrationNode = _exportDocument.CreateXmlDeclaration("1.0", "UTF-8", null);

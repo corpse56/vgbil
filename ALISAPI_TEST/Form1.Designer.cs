@@ -34,6 +34,7 @@
             this.ReadersGetByOauthToken = new System.Windows.Forms.Button();
             this.bChangePwd = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.bInsertIntoBasket = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -97,11 +98,22 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // bInsertIntoBasket
+            // 
+            this.bInsertIntoBasket.Location = new System.Drawing.Point(14, 225);
+            this.bInsertIntoBasket.Name = "bInsertIntoBasket";
+            this.bInsertIntoBasket.Size = new System.Drawing.Size(219, 58);
+            this.bInsertIntoBasket.TabIndex = 8;
+            this.bInsertIntoBasket.Text = "Circulation/InsertIntoBasket";
+            this.bInsertIntoBasket.UseVisualStyleBackColor = true;
+            this.bInsertIntoBasket.Click += new System.EventHandler(this.bInsertIntoBasket_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.bInsertIntoBasket);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.bChangePwd);
             this.Controls.Add(this.ReadersGetByOauthToken);
@@ -125,6 +137,7 @@
         private System.Windows.Forms.Button ReadersGetByOauthToken;
         private System.Windows.Forms.Button bChangePwd;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bInsertIntoBasket;
     }
 }
 

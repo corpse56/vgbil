@@ -83,8 +83,8 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             VufindXMLWriter writer = new VufindXMLWriter(this.Fund);
             VufindDoc vfDoc = new VufindDoc();
 
-            DataTable record = BJLoader.GetBJRecord(idmain); 
-            vfDoc = CreateVufindDocument(record);
+            //DataTable record = BJLoader.GetBJRecord(idmain); 
+            vfDoc = CreateVufindDocument(idmain);
             if (vfDoc == null)
             {
                 MessageBox.Show("Запись не имеет экземпляров.");
@@ -698,6 +698,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "500$3"://$3 is deprecated!!!
                         AF_all = BJLoader.GetAFAll((int)r["AFLINKID"], "AFHEADERVAR");
                         result.Title_unified.Add(AF_all.ToString());
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "517$e":
                         result.Info_title_alt.Add(r["PLAIN"].ToString());
@@ -711,10 +712,12 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                         {
                             result.author_variant.Add(av);
                         }
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "701$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
                         result.Another_author_AF_all.Add(AF_all.ToString());//хранить но не отображать
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "501$a":
                         result.Another_title.Add(r["PLAIN"].ToString());
@@ -722,6 +725,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "501$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFHEADERVAR");
                         result.Another_title_AF_All.Add(AF_all.ToString());
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "503$a":
                         result.Unified_Caption.Add(r["PLAIN"].ToString());
@@ -729,6 +733,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "503$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFHEADERVAR");
                         result.Unified_Caption_AF_All.Add(AF_all.ToString());
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "700$6":
                         result.Author_another_chart.Add(r["PLAIN"].ToString());
@@ -739,6 +744,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "702$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
                         result.Editor_AF_all.Add(AF_all.ToString());
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "702$4":
                         result.Editor_role.Add(r["PLAIN"].ToString());
@@ -746,6 +752,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "710$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
                         result.Collective_author_all.Add(AF_all.ToString());
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "710$9":
                         result.Organization_nature.Add(r["PLAIN"].ToString());
@@ -766,6 +773,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "210$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
                         result.PlaceOfPublication_AF_All.Add(AF_all.ToString());
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "2110$g":
                         result.PrintingHouse.Add(r["PLAIN"].ToString());
@@ -773,6 +781,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "2110$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
                         result.PrintingHouse_AF_All.Add(AF_all.ToString());
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "2111$e":
                         result.GeoNamePlaceOfPublication.Add(r["PLAIN"].ToString());
@@ -780,6 +789,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "2111$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFGEOVAR");
                         result.GeoNamePlaceOfPublication_AF_All.Add(AF_all.ToString());
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "10$z":
                         result.IncorrectISBN.Add(r["PLAIN"].ToString());
@@ -867,6 +877,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "3000$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFNAMESVAR");
                         result.OwnerPerson_AF_All.Add(AF_all.ToString());
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "3001$a":
                         result.OwnerOrganization.Add(r["PLAIN"].ToString());
@@ -874,6 +885,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "3001$3":
                         AF_all = GetAFAll((int)r["AFLINKID"], "AFORGSVAR");
                         result.OwnerOrganization_AF_All.Add(AF_all.ToString());
+                        allFields.AppendFormat(" {0}", AF_all);
                         break;
                     case "3002$a":
                         result.Ownership.Add(r["PLAIN"].ToString());

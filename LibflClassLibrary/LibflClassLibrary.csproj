@@ -93,6 +93,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ALISAPI\RequestObjects\Circulation\ImpersonalBasket.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\AccessToken.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\AuthorizeInfo.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\ChangePassword.cs" />

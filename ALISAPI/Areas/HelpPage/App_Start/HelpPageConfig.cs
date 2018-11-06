@@ -4,6 +4,7 @@
 
 using ALISAPI.Controllers;
 using DataProviderAPI.ValueObjects;
+using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Readers;
@@ -126,14 +127,13 @@ namespace ALISAPI.Areas.HelpPage
             json = JsonConvert.SerializeObject(book, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Books", "Get");
 
-            //Circulation.Basket.get
-            List<BookSimpleView> list = new List<BookSimpleView>();
-            list.Add(book);
-            book = ViewFactory.GetBookSimpleView("BJVVV_1079436");
-            list.Add(book);
-            json = JsonConvert.SerializeObject(list, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation/Basket", "Get");
-
+            //Circulation.InsertIntoUserBasket
+            ImpersonalBasket basket = new ImpersonalBasket();
+            basket.BookIdArray = new List<string>();
+            basket.BookIdArray.AddRange(new string[] { "BJVVV_1299121", "BJVVV_1304618", "REDKOSTJ_31866", "REDKOSTJ_43090" });
+            basket.IDReader = 189245;
+            json = JsonConvert.SerializeObject(basket, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "InsertIntoUserBasket");
 
 
 
