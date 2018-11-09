@@ -498,7 +498,7 @@ public partial class persacc : System.Web.UI.Page
                                        " left join BJVVV..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
                                        " where A.R_TYPE = " + reader.Type + " and A.IDREADER = " + reader.ID + " order by iss";
         DS = new DataSet();
-        DA.Fill(DS, "frm");
+        int y = DA.Fill(DS, "frm");
         Con.Close();
         return DS.Tables["frm"];
     }

@@ -147,7 +147,8 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
         internal bool IsElectronicCopyExists(int idmain)
         {
             DataTable table = dbWrapper.GetHyperLink(idmain);
-            return (table.Rows.Count == 0)? false : true;
+            DataTable table1 = dbWrapper.GetBookScanInfo(idmain);
+            return (table.Rows.Count == 1 && table1.Rows.Count == 1) ? true : false;
         }
 
         internal DataTable GetImage(int IDMAIN)

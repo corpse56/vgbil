@@ -132,29 +132,6 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             StringWriter sw = new StringWriter(sb);
             JsonWriter writer = new JsonTextWriter(sw);
 
-            //3901 - проверить, почему у этого пина удаленный доступ
-
-            //{"1":
-            //    {
-            //     "exemplar_location":"Абонемент",
-            //     "exemplar_collection":"ОФ",
-            //     "exemplar_placing_cipher":"08.B 4650",
-            //     "exemplar_carrier":"Бумага",
-            //     "exemplar_inventory_number":"2494125",
-            //     "exemplar_class_edition":"Для выдачи"
-            //    },
-            // "2":
-            //    {
-            //        "exemplar_location":"Абонемент",
-            //        "exemplar_collection":"ОФ",
-            //        "exemplar_placing_cipher":"08.B 4651",
-            //        "exemplar_carrier":"Бумага",
-            //        "exemplar_inventory_number":"2494126",
-            //        "exemplar_class_edition":"Для выдачи"
-            //    }
-            //}
-
-
             writer.WriteStartObject();
 
             DataTable exemplar;
@@ -347,20 +324,19 @@ namespace LibflClassLibrary.ExportToVufind.BJ
 
 
 
-            //смотрим есть ли гиперссылка
-            table = BJLoader.GetHyperLink(IDMAIN);
+            //смотрим есть ли гиперссылка и запись в таблице электронных копий
+            table = BJLoader.GetHyperLink(IDMAIN);//здесь надо сделать так, чтобы просто строка возвращалась
+            DataTable hyperLinkTable = BJLoader.GetBookScanInfo(IDMAIN);//здесь надо сделать так, чтобы возвращалась структура сканИнфо
 
-            if (table.Rows.Count != 0)//если есть - вставляем отдельным экземпляром. после электронной инвентаризации этот кусок можно будет убрать
+            if (table.Rows.Count == 1 && hyperLinkTable.Rows.Count == 1)//если есть - вставляем отдельным экземпляром. после электронной инвентаризации этот кусок можно будет убрать
             {
                 //ExemplarInfo bjExemplar = new ExemplarInfo(-1);
                 writer.WritePropertyName(cnt++.ToString());
                 writer.WriteStartObject();
 
 
-                //Exemplar += "Электронная копия: есть#";
                 writer.WritePropertyName("exemplar_electronic_copy");
                 writer.WriteValue("да");
-                //Exemplar += "Гиперссылка: " + ds.Tables["t"].Rows[0]["PLAIN"].ToString() + " #";
                 writer.WritePropertyName("exemplar_hyperlink");
                 writer.WriteValue(table.Rows[0]["PLAIN"].ToString());
 
@@ -368,48 +344,42 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 writer.WriteValue("/Bookreader/Viewer?bookID="+result.id+"&view_mode=HQ");
                 result.HyperLinkNewViewer.Add("/Bookreader/Viewer?bookID=" + result.id + "&view_mode=HQ");
 
-                DataTable hyperLinkTable = BJLoader.GetBookScanInfo(IDMAIN);
 
-                if (hyperLinkTable.Rows.Count != 0)
-                {
-                    //ForAllReader = (bool)hyperLinkTable.Rows[0]["ForAllReader"];
-                    BJElectronicExemplarAvailabilityCodes ElectronincAccessLevel = BJLoader.GetElectronicExemplarAccessLevel(IDMAIN, 1);//IDProject = 1 это значит для библиотеки. 2 - для НЭБ
+                BJElectronicExemplarAvailabilityCodes ElectronincAccessLevel = BJLoader.GetElectronicExemplarAccessLevel(IDMAIN, 1);//IDProject = 1 это значит для библиотеки. 2 - для НЭБ
 
-                    writer.WritePropertyName("exemplar_copyright");
-                    writer.WriteValue( (ElectronincAccessLevel == BJElectronicExemplarAvailabilityCodes.vloginview) ? "есть" : "нет");
-                    writer.WritePropertyName("exemplar_old_original");
-                    writer.WriteValue(((hyperLinkTable.Rows[0]["OldBook"].ToString() == "1") ? "да" : "нет"));
-                    writer.WritePropertyName("exemplar_PDF_exists");
-                    writer.WriteValue(((hyperLinkTable.Rows[0]["PDF"].ToString() == "1") ? "да" : "нет"));
-                    writer.WritePropertyName("exemplar_access");
-                    writer.WriteValue(
-                        (ElectronincAccessLevel == BJElectronicExemplarAvailabilityCodes.vloginview) ?
-                          "1002" : "1001");
-                    //"Для прочтения онлайн необходимо положить в корзину и заказать через личный кабинет");
-                    //"Для прочтения онлайн необходимо перейти по ссылке" 
-                    writer.WritePropertyName("exemplar_access_group");
-                    writer.WriteValue((ElectronincAccessLevel == BJElectronicExemplarAvailabilityCodes.vloginview) ? KeyValueMapping.AccessCodeToGroup[1002] : KeyValueMapping.AccessCodeToGroup[1001]);
+                writer.WritePropertyName("exemplar_copyright");
+                writer.WriteValue( (ElectronincAccessLevel == BJElectronicExemplarAvailabilityCodes.vloginview) ? "есть" : "нет");
+                writer.WritePropertyName("exemplar_old_original");
+                writer.WriteValue(((hyperLinkTable.Rows[0]["OldBook"].ToString() == "1") ? "да" : "нет"));
+                writer.WritePropertyName("exemplar_PDF_exists");
+                writer.WriteValue(((hyperLinkTable.Rows[0]["PDF"].ToString() == "1") ? "да" : "нет"));
+                writer.WritePropertyName("exemplar_access");
+                writer.WriteValue(
+                    (ElectronincAccessLevel == BJElectronicExemplarAvailabilityCodes.vloginview) ?
+                        "1002" : "1001");
+                //"Для прочтения онлайн необходимо положить в корзину и заказать через личный кабинет");
+                //"Для прочтения онлайн необходимо перейти по ссылке" 
+                writer.WritePropertyName("exemplar_access_group");
+                writer.WriteValue((ElectronincAccessLevel == BJElectronicExemplarAvailabilityCodes.vloginview) ? KeyValueMapping.AccessCodeToGroup[1002] : KeyValueMapping.AccessCodeToGroup[1001]);
 
-                    writer.WritePropertyName("exemplar_carrier");
-                    //writer.WriteValue("Электронная книга");
-                    writer.WriteValue("3011");
+                writer.WritePropertyName("exemplar_carrier");
+                writer.WriteValue("3011");
 
-                    writer.WritePropertyName("exemplar_id");
-                    writer.WriteValue("ebook");//для всех у кого есть электронная копия. АПИ когда это значение встретит, сразу вернёт "доступно"
-                    writer.WritePropertyName("exemplar_location");
-                    writer.WriteValue("2030");
+                writer.WritePropertyName("exemplar_id");
+                writer.WriteValue("ebook");//для всех у кого есть электронная копия. АПИ когда это значение встретит, сразу вернёт "доступно"
+                writer.WritePropertyName("exemplar_location");
+                writer.WriteValue("2030");
 
-                }
                 writer.WriteEndObject();
                 result.MethodOfAccess.Add("4002");
+                BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(-1, string.Empty);//фейковый электронный экземпляр. если его не добавить и если бумажных экземпляров нет, то будет 0 экземпляров и документ не попадёт в индекс, хотя етсь электронный экземпляр
+                result.Exemplars.Add(ElExemplar);
 
                 //определить структуру, в которую полностью запись ложится и здесь её проверять, чтобы правильно вычисляемые поля проставить.
             }
             writer.WriteEndObject();
             writer.Flush();
             writer.Close();
-            BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(-1, string.Empty);//фейковый электронный экземпляр. если его не добавить и если бумажных экземпляров нет, то будет 0 экземпляров и документ не попадёт в индекс, хотя етсь электронный экземпляр
-            result.Exemplars.Add(ElExemplar);
             result.ExemplarsJSON = sb.ToString();
             if (ExemplarsCreatedDateList.Count != 0)
             {
@@ -578,7 +548,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             int ID_BJ = (int)Record;
             BJBookLoader loader = new Books.BJBooks.Loaders.BJBookLoader(this.Fund);
             DataTable record = loader.GetBJRecord(ID_BJ);
-
+            if (record.Rows.Count == 0) return null;
             int currentIDMAIN = (int)record.Rows[0]["IDMAIN"];
             if (!SpecialFilter(currentIDMAIN)) return null;
             string level = record.Rows[0]["Level"].ToString();
@@ -897,7 +867,6 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                         result.IllustrationMaterial.Add(r["PLAIN"].ToString());
                         break;
                 }
-
             }
             #endregion
             result.id = this.Fund + "_" + currentIDMAIN;

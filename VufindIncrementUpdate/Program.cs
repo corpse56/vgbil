@@ -50,7 +50,7 @@ namespace VufindIncrementUpdate
                 {
                     logger.Error("Загрузка инкремента завершилось неудачей. " + ex.Message);
                     Console.WriteLine("Error...");
-                    Console.ReadKey();
+                    //Console.ReadKey();
                     return;
                 }
                 logger.Info("Загрузка инкремента " + Fund + " успешно завершена...");
@@ -83,7 +83,7 @@ namespace VufindIncrementUpdate
                 {
                     logger.Error("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.WriteLine("Удаление завершилось неудачей. \n" + ex.Message);
-                    Console.ReadKey();
+                    //Console.ReadKey();
                     return;
                 }
                 foreach (string elt in BooksToDeleteIds)
@@ -132,7 +132,7 @@ namespace VufindIncrementUpdate
                 {
                     logger.Error("Добавление в индекс завершилось неудачей.  \n" + ex.Message);
                     Console.WriteLine("Error...");
-                    Console.ReadKey();
+                    //Console.ReadKey();
                     return;
                 }
                 foreach (VufindDoc vfdoc in UpdatedBooksList)
@@ -185,7 +185,7 @@ namespace VufindIncrementUpdate
                 {
                     logger.Error("Загрузка инкремента завершилось неудачей. " + ex.Message);
                     Console.WriteLine("Error...");
-                    Console.ReadKey();
+                    //Console.ReadKey();
                     return;
                 }
                 logger.Info("Загрузка инкремента Litres успешно завершена...");
@@ -236,7 +236,7 @@ namespace VufindIncrementUpdate
                 {
                     logger.Error("Удаление завершилось неудачей. \n" + ex.Message);
                     Console.WriteLine("Удаление завершилось неудачей. \n" + ex.Message);
-                    Console.ReadKey();
+                    //Console.ReadKey();
                     return;
                 }
                 foreach (string elt in removedBookIDs)
@@ -289,7 +289,7 @@ namespace VufindIncrementUpdate
                 {
                     logger.Info("Добавление в индекс завершилось неудачей.  \n" + ex.Message);
                     Console.WriteLine("Error...");
-                    Console.ReadKey();
+                    //Console.ReadKey();
                     return;
                 }
                 foreach (VufindDoc vfdoc in UpdatedBooksList)

@@ -5,7 +5,9 @@ using LibflClassLibrary.ExportToVufind.BJ;
 using LibflClassLibrary.ExportToVufind.Vufind;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
@@ -35,6 +37,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             BookSimpleView result = new BookSimpleView();
             BJVuFindConverter converter = new BJVuFindConverter(fund);
             VufindDoc vfDoc = converter.CreateVufindDocument(IDMAIN);
+            if (vfDoc == null) return null;
             result.ID = vfDoc.id;
             result.Annotation = vfDoc.Annotation.ToString();
             result.Author = vfDoc.author.ToString();
@@ -46,7 +49,20 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             result.Publisher = vfDoc.publisher.ToString();
             result.Title = vfDoc.title.ToString();
             result.CoverURL = VuFindConverter.GetCoverExportPath(result.ID);            /////http://cdn.libfl.ru/covers/BJVVV/000/025/169/JPEG_AB/cover.jpg
-            result.CoverURL = $"http://cdn.libfl.ru/covers/{fund.ToUpper()}/{result.CoverURL.Replace("\\","/")}cover.jpg";
+
+            string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf";
+            using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
+            {
+                LoginPath += @"\" + fund.ToUpper() + @"\" + result.CoverURL + @"\cover.jpg";
+                if (File.Exists(LoginPath))
+                {
+                    result.CoverURL = $"http://cdn.libfl.ru/{fund.ToUpper()}/{result.CoverURL.Replace("\\", "/")}cover.jpg";
+                }
+                else
+                {
+                    result.CoverURL = null;
+                }
+            }
             BJBookInfo bjBook = BJBookInfo.GetBookInfoByPIN(IDMAIN, fund);
 
             result.Exemplars = GetBJExemplars(bjBook);
