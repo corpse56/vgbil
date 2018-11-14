@@ -47,7 +47,7 @@ namespace LibflClassLibrary.ExportToVufind.Litres
             VufindDoc vfDoc = new VufindDoc();
             foreach (XElement elt in books)
             {
-                vfDoc = CreateVufindDoc(elt);
+                vfDoc = CreateVufindDocument(elt);
                 vfWriter.AppendVufindDoc(vfDoc);
                 //OnRecordExported
                 cnt++;
@@ -58,9 +58,12 @@ namespace LibflClassLibrary.ExportToVufind.Litres
 
             vfWriter.FinishWriting();
         }
+       
 
-        public VufindDoc CreateVufindDoc(XElement elt)
+        public override VufindDoc CreateVufindDocument(object Record)
         {
+            XElement elt = (XElement)Record;
+
             StringBuilder AllFields = new StringBuilder();
             StringBuilder work = new StringBuilder();
             string current = elt.Attribute("id").Value;
@@ -409,6 +412,7 @@ namespace LibflClassLibrary.ExportToVufind.Litres
             writ.Flush();
             writ.Close();
         }
+
         private string GetLitresLanguageRus(string lng)
         {
             switch (lng)
@@ -649,11 +653,6 @@ namespace LibflClassLibrary.ExportToVufind.Litres
                     return "Русский";
             }
 
-        }
-
-        public override VufindDoc CreateVufindDocument(object Record)
-        {
-            throw new NotImplementedException();
         }
     }
 }

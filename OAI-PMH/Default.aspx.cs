@@ -21,8 +21,10 @@ public partial class _Default : System.Web.UI.Page
     
     protected void Page_Load(object sender, EventArgs e)
     {
-        //?verb=ListRecords&from=2015-03-05&metadataPrefix=marc21&until=2015-03-05
-        string verb="";
+        //?verb=ListRecords&from=2018-11-14&metadataPrefix=marc21&until=2018-10-16
+        //?verb=ListRecords&from=2018-01-01&metadataPrefix=marc21&until=2018-11-16
+        //Default.aspx?verb=getRecord&metadataPrefix=marc21&identifier=BJVVV1463555
+        string verb ="";
         if (Request["verb"] != null)
         {
             verb = Request["verb"].ToLower();
@@ -1122,7 +1124,7 @@ public partial class _Default : System.Web.UI.Page
             DA.SelectCommand = new SqlCommand();
             DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/base03"));
             DA.SelectCommand.CommandText = "select * from [BookAddInf].[dbo].[ScanInfo] where IDBook = " + IDMAIN +
-                                           " and IDBASE = 1 and PDF = 1"; ;
+                                           " and IDBASE = 1 and PDF_A = 1"; ;
             PdfExists = DA.Fill(DS, "pdf");
         }
         else
@@ -1131,7 +1133,7 @@ public partial class _Default : System.Web.UI.Page
             DA.SelectCommand = new SqlCommand();
             DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/base03"));
             DA.SelectCommand.CommandText = "select * from [BookAddInf].[dbo].[ScanInfo] where IDBook = " + IDMAIN +
-                                           " and IDBASE = 2 and PDF = 1";
+                                           " and IDBASE = 2 and PDF_A = 1";
             PdfExists = DA.Fill(DS, "pdf");
         }
         
@@ -1179,11 +1181,11 @@ public partial class _Default : System.Web.UI.Page
         }
         if (rm.BAZA == "BJVVV")
         {
-            path = "/mnt/fs-share/BJVVV/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF";
+            path = "/mnt/fs-share/BJVVV/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
         }
         else
         {
-            path = "/mnt/fs-share/REDKOSTJ/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF";
+            path = "/mnt/fs-share/REDKOSTJ/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
         }
 
 
@@ -1366,6 +1368,7 @@ public partial class _Default : System.Web.UI.Page
            "     AND IDMAIN NOT IN  " +
            "    (SELECT IDMAIN FROM  BJVVV..DATAEXT " +
            "     WHERE SORT = 'Учетнаязапись' AND MNFIELD=899 AND MSFIELD='$x')       " +
+           " and CAST(CAST(B.DateChange AS date) AS datetime) between '" + from.ToString("yyyyMMdd") + "' and '" + until.ToString("yyyyMMdd") + "'"+
            "  union all " +
            "  SELECT DISTINCT IDMAIN ,'REDKOSTJ' baza,C.DateChange datestamp FROM REDKOSTJ..DATAEXT A" +
            "     LEFT join REDKOSTJ..MAIN C on A.IDMAIN = C.ID " +
@@ -1373,6 +1376,15 @@ public partial class _Default : System.Web.UI.Page
            "     AND IDMAIN NOT IN  " +
            "    (SELECT IDMAIN FROM  REDKOSTJ..DATAEXT " +
            "     WHERE SORT = 'Учетнаязапись' AND MNFIELD=899 AND MSFIELD='$x') " +
+           " and CAST(CAST(C.DateChange AS date) AS datetime) between '" + from.ToString("yyyyMMdd") + "' and '" + until.ToString("yyyyMMdd") + "'" +
+           "  union all " +
+           " select DISTINCT IDBook IDMAIN,'BJVVV' baza,DateChang datestamp from BookAddInf..ScanInfo " +
+           " where DateChang between '" + from.ToString("yyyyMMdd") + "' and '" + until.ToString("yyyyMMdd") + "'" +
+           " and IDBase = 1" +
+           "  union all " +
+           " select DISTINCT IDBook IDMAIN,'REDKOSTJ' baza,DateChang datestamp from BookAddInf..ScanInfo " +
+           " where DateChang between '" + from.ToString("yyyyMMdd") + "' and '" + until.ToString("yyyyMMdd") + "'" +
+           " and IDBase = 2" +
            "  ), " +
            "  B as ( " +
            "  select row_number() over (order by A.IDMAIN) num ,A.IDMAIN,baza, " +
@@ -1382,7 +1394,7 @@ public partial class _Default : System.Web.UI.Page
            "  insert into EXPORTNEB..PINSFORREQUEST ([CURSOR],IDREQUEST, IDMAIN,BAZA,DATESTAMP,TOKEN,NEXTTOKEN) " +
            "  select num," + IDRequest + ",IDMAIN,baza,datestamp, '" + IDRequest + "'+'token' + cast(((row_number() over(order by num) - 1) / 30) + 1 as nvarchar(100)) as TOKEN, " +
            " '"+IDRequest+"'+'token' + cast(((row_number() over(order by num) - 1) / 30) + 2 as nvarchar(100)) as NEXTTOKEN " +
-           "  from B where CAST(CAST(datestamp AS date) AS datetime) between '" + from.ToString("yyyyMMdd") + "' and '" + until.ToString("yyyyMMdd") + "' order by datestamp";
+           "  from B order by datestamp";
         //DA.Fill(DS, "pins");
         DA.InsertCommand.CommandTimeout = 1200;
         DA.InsertCommand.Connection.Open();

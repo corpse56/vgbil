@@ -406,9 +406,9 @@ namespace LibflClassLibrary.ExportToVufind.BJ
         }
         public override void ExportSingleCover(object idRecord)
         {
-            //string ID = idRecord.ToString();
-            //int IDMAIN = int.Parse(ID.Substring(ID.IndexOf("_")+1));
-            int IDMAIN = (int)idRecord;
+            string ID = idRecord.ToString();
+            int IDMAIN = int.Parse(ID.Substring(ID.IndexOf("_")+1));
+            //int IDMAIN = (int)idRecord;
 
             string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf";
 
