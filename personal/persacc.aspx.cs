@@ -195,47 +195,83 @@ public partial class persacc : System.Web.UI.Page
 
                 //Центр Американской Культуры
                 DA.SelectCommand.CommandText =
-                                        "select ZAG.PLAIN zag,AVT.PLAIN avt, A.DATE_ISSUE iss,ACT.DATEACTION vzv " +
+                                        "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,ACT.DATEACTION vzv " +
                                        " from Reservation_R.dbo.ISSUED_ACC A " +
                                        " left join BJACC..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
                                        " left join BJACC..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
                                        " left join BJACC..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
                                        " left join BJACC..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
-                                       " left join Reservation_R..ISSUED_ACC_ACTIONS ACT on A.ID = ACT.IDISSUED_ACC and ACT.IDACTION in (2,5) "+
-                                                                                            " and ACT.ID = (select max(B.ID) from Reservation_R..ISSUED_ACC_ACTIONS B "+
+                                       " left join Reservation_R..ISSUED_ACC_ACTIONS ACT on A.ID = ACT.IDISSUED_ACC and ACT.IDACTION in (2,5) " +
+                                                                                            " and ACT.ID = (select max(B.ID) from Reservation_R..ISSUED_ACC_ACTIONS B " +
                                                                                             " where B.IDISSUED_ACC = ACT.IDISSUED_ACC) " +
-                                       " where A.IDREADER = " + reader.ID + " and ((A.IDSTATUS in (2,5)))";
+                                       " where A.IDREADER = " + reader.ID + " and ((A.IDSTATUS in (2,5))) and A.BaseId = 1 " +
+                                       " union all " +
+                                        "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,ACT.DATEACTION vzv " +
+                                       " from Reservation_R.dbo.ISSUED_ACC A " +
+                                       " left join BJVVV..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
+                                       " left join BJVVV..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
+                                       " left join BJVVV..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
+                                       " left join BJVVV..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
+                                       " left join Reservation_R..ISSUED_ACC_ACTIONS ACT on A.ID = ACT.IDISSUED_ACC and ACT.IDACTION in (2,5) " +
+                                                                                            " and ACT.ID = (select max(B.ID) from Reservation_R..ISSUED_ACC_ACTIONS B " +
+                                                                                            " where B.IDISSUED_ACC = ACT.IDISSUED_ACC) " +
+                                       " where A.IDREADER = " + reader.ID + " and ((A.IDSTATUS in (2,5))) and A.BaseId = 2 ";
+
                 DS = new DataSet();
                 DA.Fill(DS, "frm");
                 FillISSUED_ACC_HST(DS.Tables["frm"]);
 
                 //Французский КЦ
                 DA.SelectCommand.CommandText =
-                                        "select ZAG.PLAIN zag,AVT.PLAIN avt, A.DATE_ISSUE iss,ACT.DATEACTION vzv " +
+                                        "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,ACT.DATEACTION vzv " +
                                        " from Reservation_R.dbo.ISSUED_FCC A " +
                                        " left join BJFCC..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
                                        " left join BJFCC..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
                                        " left join BJFCC..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
                                        " left join BJFCC..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
-                                       " left join Reservation_R..ISSUED_ACC_ACTIONS ACT on A.ID = ACT.IDISSUED_ACC and ACT.IDACTION in (2,5) " +
-                                                                                            " and ACT.ID = (select max(B.ID) from Reservation_R..ISSUED_ACC_ACTIONS B " +
-                                                                                            " where B.IDISSUED_ACC = ACT.IDISSUED_ACC) " +
-                                       " where A.IDREADER = " + reader.ID + " and ((A.IDSTATUS in (2,5)))";
+                                       " left join Reservation_R..ISSUED_FCC_ACTIONS ACT on A.ID = ACT.IDISSUED_FCC and ACT.IDACTION in (2,5) " +
+                                                                                            " and ACT.ID = (select max(B.ID) from Reservation_R..ISSUED_FCC_ACTIONS B " +
+                                                                                            " where B.IDISSUED_FCC = ACT.IDISSUED_FCC) " +
+                                       " where A.IDREADER = " + reader.ID + " and ((A.IDSTATUS in (2,5)))  and BaseId = 1" +
+                                                                              " union all " +
+                                        "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,ACT.DATEACTION vzv " +
+                                       " from Reservation_R.dbo.ISSUED_FCC A " +
+                                       " left join BJVVV..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
+                                       " left join BJVVV..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
+                                       " left join BJVVV..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
+                                       " left join BJVVV..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
+                                       " left join Reservation_R..ISSUED_FCC_ACTIONS ACT on A.ID = ACT.IDISSUED_FCC and ACT.IDACTION in (2,5) " +
+                                                                                            " and ACT.ID = (select max(B.ID) from Reservation_R..ISSUED_FCC_ACTIONS B " +
+                                                                                            " where B.IDISSUED_FCC = ACT.IDISSUED_FCC) " +
+                                       " where A.IDREADER = " + reader.ID + " and ((A.IDSTATUS in (2,5))) and A.BaseId = 2 ";
+
                 DS = new DataSet();
                 DA.Fill(DS, "frm");
                 FillISSUED_FCC_HST(DS.Tables["frm"]);
                 //Центр Славянской Культуры
                 DA.SelectCommand.CommandText =
-                                        "select ZAG.PLAIN zag,AVT.PLAIN avt, A.DATE_ISSUE iss,ACT.DATEACTION vzv " +
+                                        "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,ACT.DATEACTION vzv " +
                                        " from Reservation_R.dbo.ISSUED_SCC A " +
                                        " left join BJSCC..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
                                        " left join BJSCC..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
                                        " left join BJSCC..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
                                        " left join BJSCC..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
-                                       " left join Reservation_R..ISSUED_ACC_ACTIONS ACT on A.ID = ACT.IDISSUED_ACC and ACT.IDACTION in (2,5) " +
-                                                                                            " and ACT.ID = (select max(B.ID) from Reservation_R..ISSUED_ACC_ACTIONS B " +
-                                                                                            " where B.IDISSUED_ACC = ACT.IDISSUED_ACC) " +
-                                       " where A.IDREADER = " + reader.ID + " and A.IDSTATUS in (2,5) and BaseId = 1";
+                                       " left join Reservation_R..ISSUED_SCC_ACTIONS ACT on A.ID = ACT.IDISSUED_SCC and ACT.IDACTION in (2,5) " +
+                                                                                            " and ACT.ID = (select max(B.ID) from Reservation_R..ISSUED_SCC_ACTIONS B " +
+                                                                                            " where B.IDISSUED_SCC = ACT.IDISSUED_SCC) " +
+                                       " where A.IDREADER = " + reader.ID + " and A.IDSTATUS in (2,5) and BaseId = 1" +
+                                                                              " union all " +
+                                        "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,ACT.DATEACTION vzv " +
+                                       " from Reservation_R.dbo.ISSUED_SCC A " +
+                                       " left join BJVVV..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
+                                       " left join BJVVV..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
+                                       " left join BJVVV..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
+                                       " left join BJVVV..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
+                                       " left join Reservation_R..ISSUED_SCC_ACTIONS ACT on A.ID = ACT.IDISSUED_SCC and ACT.IDACTION in (2,5) " +
+                                                                                            " and ACT.ID = (select max(B.ID) from Reservation_R..ISSUED_SCC_ACTIONS B " +
+                                                                                            " where B.IDISSUED_SCC = ACT.IDISSUED_SCC) " +
+                                       " where A.IDREADER = " + reader.ID + " and ((A.IDSTATUS in (2,5))) and A.BaseId = 2 ";
+
                 DS = new DataSet();
                 DA.Fill(DS, "frm");
                 FillISSUED_SCC_HST(DS.Tables["frm"]);
@@ -286,37 +322,62 @@ public partial class persacc : System.Web.UI.Page
                 FillISSUED_BS(DS.Tables["frm"]);
                 //Центр Американской Культуры
                 DA.SelectCommand.CommandText =
-                                        "select ZAG.PLAIN zag,AVT.PLAIN avt, A.DATE_ISSUE iss,A.DATE_RETURN vzv " +
+                                        "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,A.DATE_RETURN vzv " +
                                        " from Reservation_R.dbo.ISSUED_ACC A " +
                                        " left join BJACC..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
                                        " left join BJACC..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
                                        " left join BJACC..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
                                        " left join BJACC..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
-                                       " where A.IDREADER = " + reader.ID + " and ((A.IDSTATUS = 1))";
+                                       " where A.IDREADER = " + reader.ID + " and A.IDSTATUS in (1,6) and A.BaseId = 1"+
+                                       " union all " +
+                                        "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,A.DATE_RETURN vzv " +
+                                       " from Reservation_R.dbo.ISSUED_ACC A " +
+                                       " left join BJVVV..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
+                                       " left join BJVVV..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
+                                       " left join BJVVV..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
+                                       " left join BJVVV..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
+                                       " where A.IDREADER = " + reader.ID + " and A.IDSTATUS in (1,6) and A.BaseId = 2";
                 DS = new DataSet();
                 DA.Fill(DS, "frm");
                 FillISSUED_ACC(DS.Tables["frm"]);
                 //Французский КЦ
                 DA.SelectCommand.CommandText =
-                                        "select ZAG.PLAIN zag,AVT.PLAIN avt, A.DATE_ISSUE iss,A.DATE_RETURN vzv " +
+                                        "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,A.DATE_RETURN vzv " +
                                        " from Reservation_R.dbo.ISSUED_FCC A " +
                                        " left join BJFCC..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
                                        " left join BJFCC..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
                                        " left join BJFCC..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
                                        " left join BJFCC..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
-                                       " where A.IDREADER = " + reader.ID + " and ((A.IDSTATUS = 1))";
+                                       " where A.IDREADER = " + reader.ID + " and A.IDSTATUS in (1,6) and A.BaseId = 1" +
+                                        " union all " +
+                                         "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,A.DATE_RETURN vzv " +
+                                        " from Reservation_R.dbo.ISSUED_FCC A " +
+                                        " left join BJVVV..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
+                                        " left join BJVVV..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
+                                        " left join BJVVV..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
+                                        " left join BJVVV..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
+                                        " where A.IDREADER = " + reader.ID + " and A.IDSTATUS in (1,6) and A.BaseId = 2";
                 DS = new DataSet();
                 DA.Fill(DS, "frm");
                 FillISSUED_FCC(DS.Tables["frm"]);
                 //Центр Славянской Культуры
                 DA.SelectCommand.CommandText =
-                                        "select ZAG.PLAIN zag,AVT.PLAIN avt, A.DATE_ISSUE iss,A.DATE_RETURN vzv " +
+                                        "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,A.DATE_RETURN vzv " +
                                        " from Reservation_R.dbo.ISSUED_SCC A " +
                                        " left join BJSCC..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
                                        " left join BJSCC..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
                                        " left join BJSCC..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
                                        " left join BJSCC..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
-                                       " where A.IDREADER = " + reader.ID + " and ((A.IDSTATUS = 1))";
+                                       " where A.IDREADER = " + reader.ID + " and A.IDSTATUS in (1,6) and A.BaseId = 1" +
+                                        " union all " +
+                                         "select ZAG.PLAIN collate cyrillic_general_ci_ai zag,AVT.PLAIN collate cyrillic_general_ci_ai avt, A.DATE_ISSUE iss,A.DATE_RETURN vzv " +
+                                        " from Reservation_R.dbo.ISSUED_SCC A " +
+                                        " left join BJVVV..DATAEXT B on A.IDMAIN = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a' " +
+                                        " left join BJVVV..DATAEXTPLAIN ZAG on ZAG.IDDATAEXT = B.ID " +
+                                        " left join BJVVV..DATAEXT C on A.IDMAIN = C.IDMAIN and C.MNFIELD = 700 and C.MSFIELD = '$a' " +
+                                        " left join BJVVV..DATAEXTPLAIN AVT on AVT.IDDATAEXT = C.ID " +
+                                        " where A.IDREADER = " + reader.ID + " and A.IDSTATUS in (1,6) and A.BaseId = 2";
+
                 DS = new DataSet();
                 DA.Fill(DS, "frm");
                 FillISSUED_SCC(DS.Tables["frm"]);
@@ -332,7 +393,7 @@ public partial class persacc : System.Web.UI.Page
                 FillEBOOK_HST(GetEBOOK_HSTTable());
 
                 break;
-            case 0:
+            case 0://начальная вкладка
                 if (BuildBasketTable(BasketTable))
                 {
                     Button1.Enabled = true;
@@ -344,7 +405,7 @@ public partial class persacc : System.Web.UI.Page
 
                 BuildOrdersTable(OrdersTable);
                 break;
-            case 5:
+            case 5://история заказов. Вообще бесполезная вкладка
                 BuildOrdHisTable(tORDHIS);
                 break;
             case 6:

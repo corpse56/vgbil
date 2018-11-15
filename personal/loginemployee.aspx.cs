@@ -171,11 +171,11 @@ public static class CurrentCultureInfo
 
 
         //для входа под любым читателем. не забывать закомментироват
-        CurReader.ID = "167870";
-        ReaderInfo rrr = ReaderInfo.GetReader(167870);
-        CurReader.ReaderType = 0;
-        FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
-        RedirectWithCookie("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + CurReader.ReaderType + "&litres=" + litres, CurReader);
+        //CurReader.ID = "167870";
+        //ReaderInfo rrr = ReaderInfo.GetReader(167870);
+        //CurReader.ReaderType = 0;
+        //FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
+        //RedirectWithCookie("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + CurReader.ReaderType + "&litres=" + litres, CurReader);
         //для входа под любым читателем. не забывать закомментироват
 
 
