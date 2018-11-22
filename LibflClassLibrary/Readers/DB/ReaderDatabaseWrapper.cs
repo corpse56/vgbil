@@ -137,13 +137,13 @@ namespace LibflClassLibrary.Readers.DB
             }
         }
 
-        internal void ChangePassword(int NumberReader, string NewPassword)
+        internal void ChangePasswordLocalReader(int NumberReader, string NewPassword)
         {
             string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(ReaderQueries.CHANGE_PASSWORD, connection);
+                SqlCommand command = new SqlCommand(ReaderQueries.CHANGE_PASSWORD_LOCAL_READER, connection);
                 command.Parameters.Add("NumberReader", SqlDbType.Int).Value = NumberReader;
                 command.Parameters.Add("Password", SqlDbType.NVarChar).Value = NewPassword;
                 connection.Open();

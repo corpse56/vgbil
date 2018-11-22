@@ -1124,7 +1124,7 @@ public partial class _Default : System.Web.UI.Page
             DA.SelectCommand = new SqlCommand();
             DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/base03"));
             DA.SelectCommand.CommandText = "select * from [BookAddInf].[dbo].[ScanInfo] where IDBook = " + IDMAIN +
-                                           " and IDBASE = 1 and PDF_A = 1"; ;
+                                           " and IDBASE = 1 and (PDF_A = 1 or PDF = 1) "; ;
             PdfExists = DA.Fill(DS, "pdf");
         }
         else
@@ -1133,7 +1133,7 @@ public partial class _Default : System.Web.UI.Page
             DA.SelectCommand = new SqlCommand();
             DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/base03"));
             DA.SelectCommand.CommandText = "select * from [BookAddInf].[dbo].[ScanInfo] where IDBook = " + IDMAIN +
-                                           " and IDBASE = 2 and PDF_A = 1";
+                                           " and IDBASE = 2 and (PDF_A = 1 or PDF = 1) ";
             PdfExists = DA.Fill(DS, "pdf");
         }
         
@@ -1179,15 +1179,28 @@ public partial class _Default : System.Web.UI.Page
                 path = "0" + path;
                 break;
         }
-        if (rm.BAZA == "BJVVV")
+        if ((bool)DS.Tables["PDF"].Rows[0]["PDF_A"])
         {
-            path = "/mnt/fs-share/BJVVV/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
+            if (rm.BAZA == "BJVVV")
+            {
+                path = "/mnt/fs-share/BJVVV/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
+            }
+            else
+            {
+                path = "/mnt/fs-share/REDKOSTJ/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
+            }
         }
         else
         {
-            path = "/mnt/fs-share/REDKOSTJ/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF_A";
+            if (rm.BAZA == "BJVVV")
+            {
+                path = "/mnt/fs-share/BJVVV/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF";
+            }
+            else
+            {
+                path = "/mnt/fs-share/REDKOSTJ/" + path[0] + path[1] + path[2] + @"/" + path[3] + path[4] + path[5] + @"/" + path[6] + path[7] + path[8] + @"/PDF";
+            }
         }
-
 
 
 
@@ -1356,7 +1369,7 @@ public partial class _Default : System.Web.UI.Page
 
         //следующие ниже комментарии не реализованы. их нужно реализовать!!!!!!!!!
         //запрос забирает не все изменения. надо переделать.
-        //ещё PDF запрашивается, а высылается ссылка на PDFA, которого может не быть. надо проверять его наличие вручную
+        //добавил в запрос изменения в электронных копиях. в принципе этого достаточно для нэб.
 
         DA.InsertCommand.Parameters.Clear();
         DA.InsertCommand.CommandText =

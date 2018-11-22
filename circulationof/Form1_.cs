@@ -2222,48 +2222,49 @@ namespace Circulation
         private void button13_Click(object sender, EventArgs e)
         {
 
-            if (label25.Text == "")
-            {
-                MessageBox.Show("Читатель не выбран! Сначала выберите читателя!");
-                return;
-            }
-            dbReader reader = new dbReader(int.Parse(label25.Text));
+            //if (label25.Text == "")
+            //{
+            //    MessageBox.Show("Читатель не выбран! Сначала выберите читателя!");
+            //    return;
+            //}
+            //dbReader reader = new dbReader(int.Parse(label25.Text));
 
-            Conn.ReaderDA.SelectCommand.CommandText = "select * from Main where";
+            //Conn.ReaderDA.SelectCommand.CommandText = "select * from Main where";
 
-            //Conn.SQLDA.SelectCommand.Parameters["@IDR"].Value = reader.id;
-            //Conn.SQLDA.SelectCommand.CommandText = "with A as (select zagp.PLAIN zag,avtp.PLAIN avt, B.INV inv, B.DATE_ISSUE iss,B.DATE_RET vzv  " +
-            //                                       "  from BJVVV..DATAEXT A  " +
-            //                                       " inner join " + BASENAME + "..ISSUED_OF B on B.IDDATA = A.IDDATA " +
-            //                                       " left join BJVVV..DATAEXT zag on zag.MNFIELD = 200 and zag.MSFIELD = '$a' and zag.IDMAIN = A.IDMAIN " +
-            //                                       " left join BJVVV..DATAEXT avt on avt.MNFIELD = 700 and avt.MSFIELD = '$a' and avt.IDMAIN = A.IDMAIN " +
-            //                                       " left join BJVVV..DATAEXTPLAIN zagp on zagp.IDDATAEXT = zag.ID " +
-            //                                       " left join BJVVV..DATAEXTPLAIN avtp on avtp.IDDATAEXT = avt.ID " +
-            //                                       " where B.IDREADER = "+reader.id+" and B.IDMAIN != 0 and A.MNFIELD = 899 and A.MSFIELD = '$w') "+
-            //                                       " select A1.zag, (select A2.avt +'; ' from A A2 where A1.zag = A2.zag for xml path('')) avtfull, A1.inv, A1.iss, A1.vzv from A A1 group by A1.zag,A1.inv, A1.iss, A1.vzv ";
+            ////Conn.SQLDA.SelectCommand.Parameters["@IDR"].Value = reader.id;
+            ////Conn.SQLDA.SelectCommand.CommandText = "with A as (select zagp.PLAIN zag,avtp.PLAIN avt, B.INV inv, B.DATE_ISSUE iss,B.DATE_RET vzv  " +
+            ////                                       "  from BJVVV..DATAEXT A  " +
+            ////                                       " inner join " + BASENAME + "..ISSUED_OF B on B.IDDATA = A.IDDATA " +
+            ////                                       " left join BJVVV..DATAEXT zag on zag.MNFIELD = 200 and zag.MSFIELD = '$a' and zag.IDMAIN = A.IDMAIN " +
+            ////                                       " left join BJVVV..DATAEXT avt on avt.MNFIELD = 700 and avt.MSFIELD = '$a' and avt.IDMAIN = A.IDMAIN " +
+            ////                                       " left join BJVVV..DATAEXTPLAIN zagp on zagp.IDDATAEXT = zag.ID " +
+            ////                                       " left join BJVVV..DATAEXTPLAIN avtp on avtp.IDDATAEXT = avt.ID " +
+            ////                                       " where B.IDREADER = "+reader.id+" and B.IDMAIN != 0 and A.MNFIELD = 899 and A.MSFIELD = '$w') "+
+            ////                                       " select A1.zag, (select A2.avt +'; ' from A A2 where A1.zag = A2.zag for xml path('')) avtfull, A1.inv, A1.iss, A1.vzv from A A1 group by A1.zag,A1.inv, A1.iss, A1.vzv ";
 
 
-            Conn.SQLDA.SelectCommand.CommandText = "  with A as (select zagp.PLAIN zag,avtp.PLAIN avt, B.INV inv, B.DATE_ISSUE iss,B.DATE_RET vzv , B.ID idm " +
-            "  from BJVVV..DATAEXT A  " +
-            "   inner join Reservation_R..ISSUED_OF B on B.IDDATA = A.IDDATA " +
-            "   left join BJVVV..DATAEXT zag on zag.MNFIELD = 200 and zag.MSFIELD = '$a' and zag.IDMAIN = A.IDMAIN " +
-            "   left join BJVVV..DATAEXT avt on avt.MNFIELD = 700 and avt.MSFIELD = '$a' and avt.IDMAIN = A.IDMAIN " +
-            "   left join BJVVV..DATAEXTPLAIN zagp on zagp.IDDATAEXT = zag.ID " +
-            "   left join BJVVV..DATAEXTPLAIN avtp on avtp.IDDATAEXT = avt.ID " +
-            "   where  B.IDREADER = " + reader.id + " and B.IDMAIN != 0 and A.MNFIELD = 899 and A.MSFIELD = '$w') " +
+            //Conn.SQLDA.SelectCommand.CommandText = "  with A as (select zagp.PLAIN zag,avtp.PLAIN avt, B.INV inv, B.DATE_ISSUE iss,B.DATE_RET vzv , B.ID idm " +
+            //"  from BJVVV..DATAEXT A  " +
+            //"   inner join Reservation_R..ISSUED_OF B on B.IDDATA = A.IDDATA " +
+            //"   left join BJVVV..DATAEXT zag on zag.MNFIELD = 200 and zag.MSFIELD = '$a' and zag.IDMAIN = A.IDMAIN " +
+            //"   left join BJVVV..DATAEXT avt on avt.MNFIELD = 700 and avt.MSFIELD = '$a' and avt.IDMAIN = A.IDMAIN " +
+            //"   left join BJVVV..DATAEXTPLAIN zagp on zagp.IDDATAEXT = zag.ID " +
+            //"   left join BJVVV..DATAEXTPLAIN avtp on avtp.IDDATAEXT = avt.ID " +
+            //"   where  B.IDREADER = " + reader.id + " and B.IDMAIN != 0 and A.MNFIELD = 899 and A.MSFIELD = '$w') " +
 
-            "   select A1.zag, " +
-            "                  (select A2.avt +'; ' " +
-            "                   from A A2 " +
-            "                   where A1.idm = A2.idm for xml path('')) avtfull, A1.inv, A1.iss, A1.vzv  " +
-            "   from A A1 " +
-            "   group by A1.zag,A1.inv, A1.iss, A1.vzv , A1.idm ";
+            //"   select A1.zag, " +
+            //"                  (select A2.avt +'; ' " +
+            //"                   from A A2 " +
+            //"                   where A1.idm = A2.idm for xml path('')) avtfull, A1.inv, A1.iss, A1.vzv  " +
+            //"   from A A1 " +
+            //"   group by A1.zag,A1.inv, A1.iss, A1.vzv , A1.idm ";
 
-            Conn.SQLDA.SelectCommand.Connection = Conn.ZakazCon;
-            DataSet R = new DataSet();
-            //R.Tables.Add("form");
+            //Conn.SQLDA.SelectCommand.Connection = Conn.ZakazCon;
+            //DataSet R = new DataSet();
+            ////R.Tables.Add("form");
 
-            int i = Conn.SQLDA.Fill(R,"form");
+            //int i = Conn.SQLDA.Fill(R,"form");
+
             //CrystalReport1 cr1 = new CrystalReport1();
             //cr1.SetDataSource(R.Tables["form"]);
             //crystalReportViewer1.ReportSource = cr1;
@@ -2277,6 +2278,51 @@ namespace Circulation
             //txtReaderNum.Text = reader.id;
             ////crystalReportViewer1.PrintReport();
             //cr1.PrintToPrinter(1, false, 1, 99999);
+
+            if (Formular.Rows.Count == 0)
+            {
+                MessageBox.Show("Нечего экспортировать!");
+                return;
+            }
+            DataTable dt = (DataTable)Formular.DataSource;
+
+            StringBuilder fileContent = new StringBuilder();
+
+            foreach (DataGridViewColumn dc in Formular.Columns)
+            {
+                if (!dc.Visible) continue;
+                fileContent.Append(dc.HeaderText + ";");
+            }
+
+            fileContent.Replace(";", System.Environment.NewLine, fileContent.Length - 1, 1);
+
+
+
+            foreach (DataGridViewRow dr in Formular.Rows)
+            {
+
+                foreach (DataGridViewCell cell in dr.Cells)
+                {
+                    if (!cell.OwningColumn.Visible) continue;
+                    fileContent.Append("\"" + cell.Value.ToString() + "\";");
+                }
+
+                fileContent.Replace(";", System.Environment.NewLine, fileContent.Length - 1, 1);
+            }
+
+            string tmp = "Формуляр_" + DateTime.Now.ToString("hh:mm:ss.nnn") + ".csv";
+            tmp = "Формуляр_" + DateTime.Now.Ticks.ToString() + ".csv";
+            SaveFileDialog sd = new SaveFileDialog();
+            sd.Title = "Сохранить в файл";
+            sd.Filter = "csv files (*.csv)|*.csv";
+            sd.FilterIndex = 1;
+            //TextWriter tw;
+            sd.FileName = tmp;
+            if (sd.ShowDialog() == DialogResult.OK)
+            {
+                System.IO.File.WriteAllText(sd.FileName, fileContent.ToString(), Encoding.UTF8);
+            }
+
         }
 
 

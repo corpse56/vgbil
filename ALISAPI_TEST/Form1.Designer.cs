@@ -35,6 +35,7 @@
             this.bChangePwd = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.bInsertIntoBasket = new System.Windows.Forms.Button();
+            this.bPreRegister = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -108,11 +109,22 @@
             this.bInsertIntoBasket.UseVisualStyleBackColor = true;
             this.bInsertIntoBasket.Click += new System.EventHandler(this.bInsertIntoBasket_Click);
             // 
+            // bPreRegister
+            // 
+            this.bPreRegister.Location = new System.Drawing.Point(14, 289);
+            this.bPreRegister.Name = "bPreRegister";
+            this.bPreRegister.Size = new System.Drawing.Size(219, 40);
+            this.bPreRegister.TabIndex = 9;
+            this.bPreRegister.Text = "Readers/PreRegister";
+            this.bPreRegister.UseVisualStyleBackColor = true;
+            this.bPreRegister.Click += new System.EventHandler(this.bPreRegister_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.bPreRegister);
             this.Controls.Add(this.bInsertIntoBasket);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.bChangePwd);
@@ -138,6 +150,7 @@
         private System.Windows.Forms.Button bChangePwd;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button bInsertIntoBasket;
+        private System.Windows.Forms.Button bPreRegister;
     }
 }
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LibflClassLibrary.ALISAPI.RequestObjects.Readers
 {
-    public class ChangePassword
+    public class ChangePasswordLocalReader
     {
         public int NumberReader { get; set; }
         public DateTime DateBirth { get; set; }

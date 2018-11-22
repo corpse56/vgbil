@@ -87,6 +87,7 @@ namespace Circulation
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.bFormularEmail = new System.Windows.Forms.Button();
             this.bReaderRegistrationAndRights = new System.Windows.Forms.Button();
             this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.button30 = new System.Windows.Forms.Button();
@@ -212,7 +213,6 @@ namespace Circulation
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.zAKAZBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.bFormularEmail = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -842,6 +842,16 @@ namespace Circulation
             this.tabPage4.Text = "Формуляр читателя";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // bFormularEmail
+            // 
+            this.bFormularEmail.Location = new System.Drawing.Point(575, 125);
+            this.bFormularEmail.Name = "bFormularEmail";
+            this.bFormularEmail.Size = new System.Drawing.Size(244, 26);
+            this.bFormularEmail.TabIndex = 28;
+            this.bFormularEmail.Text = "Выслать Email c задолжностями";
+            this.bFormularEmail.UseVisualStyleBackColor = true;
+            this.bFormularEmail.Click += new System.EventHandler(this.bFormularEmail_Click);
+            // 
             // bReaderRegistrationAndRights
             // 
             this.bReaderRegistrationAndRights.Location = new System.Drawing.Point(825, 123);
@@ -978,7 +988,7 @@ namespace Circulation
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(227, 25);
             this.button13.TabIndex = 12;
-            this.button13.Text = "Распечатать формуляр";
+            this.button13.Text = "Сохранить формуляр в файл";
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
@@ -1979,16 +1989,6 @@ namespace Circulation
             this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
-            // 
-            // bFormularEmail
-            // 
-            this.bFormularEmail.Location = new System.Drawing.Point(575, 125);
-            this.bFormularEmail.Name = "bFormularEmail";
-            this.bFormularEmail.Size = new System.Drawing.Size(244, 26);
-            this.bFormularEmail.TabIndex = 28;
-            this.bFormularEmail.Text = "Выслать Email c задолжностями";
-            this.bFormularEmail.UseVisualStyleBackColor = true;
-            this.bFormularEmail.Click += new System.EventHandler(this.bFormularEmail_Click);
             // 
             // Form1
             // 

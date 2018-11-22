@@ -18,7 +18,7 @@ namespace ALISAPI.Controllers
     {
         
         /// <summary>
-        /// Получает Содержимое корзины читателя по номеру читательского билета
+        /// Получает содержимое корзины читателя по номеру читательского билета
         /// </summary>
         /// <param name="idReader">Номер читательского билета</param>
         /// <returns>Содержимое корзины</returns>
@@ -46,6 +46,37 @@ namespace ALISAPI.Controllers
 
             return ALISResponseFactory.CreateResponse(result, Request);
         }
+
+        /// <summary>
+        /// Получает заказы читателя и их статусы
+        /// </summary>
+        /// <param name="idReader">Номер читательского билета</param>
+        /// <returns>Заказы читателя</returns>
+        [HttpGet]
+        [Route("Circulation/Orders/{idReader}")]
+        [ResponseType(typeof(List<BookSimpleView>))]
+        public HttpResponseMessage Orders([Description("Номер чит билета")]int idReader)
+        {
+
+            CirculationInfo Circulation = new CirculationInfo();
+            List<BookSimpleView> result = new List<BookSimpleView>();
+            List<BasketInfo> basket;
+            try
+            {
+                basket = null;// Circulation.GetOrders(idReader);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
+            }
+            foreach (BasketInfo bi in basket)
+            {
+                result.Add(bi.Book);
+            }
+
+            return ALISResponseFactory.CreateResponse(result, Request);
+        }
+
 
         /// <summary>
         /// Вставить в персональную корзину читателя список id книг. Метод нужно вызывать после авторизации.

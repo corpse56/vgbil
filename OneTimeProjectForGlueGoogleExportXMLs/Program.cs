@@ -51,14 +51,14 @@ namespace OneTimeProjectForGlueGoogleExportXMLs
                  //"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180919-04.03_S.xml",
                  //@"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\1.xml",
                  //@"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\2.xml",
-                @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180916-04.24_B.xml",
-                @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180913-04.43_B.xml",
-                @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180914-11.28_B.xml",
-                @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180914-12.29_B.xml",
-                @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180915-02.51_B.xml",
+                @"e:\google export\GoogleExport20181102-11.22_B.xml",
+                @"e:\google export\GoogleExport20181112-11.58_B.xml",
+               // @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180914-11.28_B.xml",
+               // @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180914-12.29_B.xml",
+               // @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180915-02.51_B.xml",
             };
 
-            using (XmlWriter xw = XmlWriter.Create(@"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180913_B_ALL.xml"))
+            using (XmlWriter xw = XmlWriter.Create(@"e:\google export\GoogleExport20181116_B_ALL.xml"))
             {
                 
                 xw.WriteStartDocument();
@@ -76,10 +76,15 @@ namespace OneTimeProjectForGlueGoogleExportXMLs
                         xr.Read();
                         while (!xr.EOF)
                         {
+                            
                             if (xr.NodeType == XmlNodeType.Element && xr.Name == "record")
                             {
                                 record = XNode.ReadFrom(xr) as XElement;
                                 record.WriteTo(xw);
+                                XElement id = record
+                                         .Elements("controlfield")
+                                         .First(item => item.Attribute("tag").Value == "001");
+                                Console.WriteLine(id.Value);
                             }
                             else
                             {

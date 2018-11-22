@@ -19,7 +19,9 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             string fund = ID.Substring(0, ID.IndexOf("_"));
             int IDRecord = int.Parse(ID.Substring(ID.LastIndexOf("_")+1));
             BookSimpleView result = new BookSimpleView();
-
+            string str1 = "", str2 = "", str3 = "";
+            fund = string.Format("Здравствуйте, {0}! Доброго {1}","Александр","Утра");
+            fund = string.Format(str1, str2, str3);
             switch (fund)
             {
                 case "BJVVV":
@@ -28,7 +30,17 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 case "REDKOSTJ":
                     result = ViewFactory.GetBJ(IDRecord, fund);
                     break;
+                case "BJACC":
+                    result = ViewFactory.GetBJ(IDRecord, fund);
+                    break;
+                case "BJFCC":
+                    result = ViewFactory.GetBJ(IDRecord, fund);
+                    break;
+                case "BJSCC":
+                    result = ViewFactory.GetBJ(IDRecord, fund);
+                    break;
             }
+
             return result;
         }
 

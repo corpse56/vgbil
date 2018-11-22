@@ -137,10 +137,10 @@ namespace LibflClassLibrary.Readers.Loaders
             dbw.GiveFreeAbonementRight(numberReader);
         }
 
-        internal void ChangePassword(ReaderInfo reader, ChangePassword request)
+        internal void ChangePasswordLocalReader(ReaderInfo reader, ChangePasswordLocalReader request)
         {
             request.NewPassword = ReaderInfo.HashPass(request.NewPassword, reader.Salt);
-            dbw.ChangePassword(request.NumberReader, request.NewPassword);
+            dbw.ChangePasswordLocalReader(request.NumberReader, request.NewPassword);
         }
 
         internal int GetReaderIdByOAuthToken(string token)

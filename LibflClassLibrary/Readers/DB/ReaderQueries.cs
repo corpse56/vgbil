@@ -124,7 +124,7 @@ namespace LibflClassLibrary.Readers.DB
             }
         }
 
-        public string CHANGE_PASSWORD
+        public string CHANGE_PASSWORD_LOCAL_READER
         {
             get
             {

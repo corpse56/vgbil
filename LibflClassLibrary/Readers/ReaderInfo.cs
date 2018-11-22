@@ -153,7 +153,7 @@ namespace LibflClassLibrary.Readers
             return "NotDefined";
         }
 
-        public void ChangePassword(ChangePassword request)
+        public void ChangePasswordLocalReader(ChangePasswordLocalReader request)
         {
             if (this.DateBirth.Date != request.DateBirth.Date)
             {
@@ -163,7 +163,7 @@ namespace LibflClassLibrary.Readers
             {
                 throw new Exception("R006");
             }
-            loader.ChangePassword(this, request);
+            loader.ChangePasswordLocalReader(this, request);
         }
 
         internal void UpdateRegistrationFields()

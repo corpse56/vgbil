@@ -25,5 +25,10 @@ namespace LibflClassLibrary.Circulation
             loader.InsertIntoUserBasket(request);
 
         }
+
+        public List<OrderInfo> GetOrders(int idReader)
+        {
+            return null;// loader.GetBasket(ReaderId);
+        }
     }
 }

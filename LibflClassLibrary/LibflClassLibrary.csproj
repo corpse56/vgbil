@@ -96,7 +96,12 @@
     <Compile Include="ALISAPI\RequestObjects\Circulation\ImpersonalBasket.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\AccessToken.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\AuthorizeInfo.cs" />
-    <Compile Include="ALISAPI\RequestObjects\Readers\ChangePassword.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Readers\ChangePasswordLocalReader.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Readers\ChangePasswordByEmail.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Readers\CheckPasswordUrl.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Readers\ConfirmRegistrationRemoteReader.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Readers\PreRegisterRemoteReader.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Readers\SetPasswordRemoteReader.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\BookSimpleView.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\DigitalCopySimpleView.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\ExemplarSimpleView.cs" />
@@ -140,6 +145,7 @@
     <Compile Include="Circulation\DB\CirculationDBWrapper.cs" />
     <Compile Include="Circulation\DB\CirculationQueries.cs" />
     <Compile Include="Circulation\Loaders\CirculationLoader.cs" />
+    <Compile Include="Circulation\OrderInfo.cs" />
     <Compile Include="Controls\Readers\fReaderRegistrationAndRights.cs">
       <SubType>Form</SubType>
     </Compile>

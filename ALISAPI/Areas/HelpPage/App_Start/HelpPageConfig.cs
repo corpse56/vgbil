@@ -102,8 +102,8 @@ namespace ALISAPI.Areas.HelpPage
             json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetByOauthToken");
 
-            //Readers.ChangePassword
-            ChangePassword password = new ChangePassword();
+            //Readers.ChangePasswordLocalReader
+            ChangePasswordLocalReader password = new ChangePasswordLocalReader();
             password.DateBirth = new DateTime(1984, 2, 14);
             password.NewPassword = "123";
             password.NumberReader = 189245;
