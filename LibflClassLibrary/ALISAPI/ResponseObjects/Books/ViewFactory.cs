@@ -39,6 +39,9 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 case "BJSCC":
                     result = ViewFactory.GetBJ(IDRecord, fund);
                     break;
+                default:
+                    result = null;
+                    break;
             }
 
             return result;

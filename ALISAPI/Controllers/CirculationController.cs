@@ -1,5 +1,4 @@
-﻿using ALISAPI.ALISErrors;
-using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
+﻿using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Circulation;
 using Newtonsoft.Json;
 using System;
@@ -11,6 +10,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
+using ALISAPI.Errors;
 
 namespace ALISAPI.Controllers
 {

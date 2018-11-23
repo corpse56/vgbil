@@ -1,4 +1,4 @@
-﻿using ALISAPI.ALISErrors;
+﻿using ALISAPI.Errors;
 using ALISReaderRemote;
 using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
@@ -23,13 +23,6 @@ namespace ALISAPI.Controllers
     public class ReadersController : ApiController
     {
 
-        //// GET api/values
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "Reader1", "Reader1444" };
-        //}
-
-        // GET api/Readers/5
         /// <summary>
         /// Получает читателя по номеру читательского билета
         /// </summary>
@@ -47,7 +40,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
             }
             return ALISResponseFactory.CreateResponse(reader, Request);
         }
@@ -69,7 +62,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
             }
             return ALISResponseFactory.CreateResponse(reader, Request);
         }
@@ -191,7 +184,7 @@ namespace ALISAPI.Controllers
         /// Получить тип логина для заданного логина. 
         /// </summary>
         /// <param name="Login">Логин. Может быть номером читательского билета либо Email</param>
-        /// <returns></returns>
+        /// <returns>string</returns>
         [HttpGet]
         [Route("Readers/GetLoginType/{login}")]
         [ResponseType(typeof(string))]
@@ -200,7 +193,7 @@ namespace ALISAPI.Controllers
             string result = ReaderInfo.GetLoginType(Login);
             if (result.ToLower() == "notdefined")
             {
-                return ALISErrors.ALISErrorFactory.CreateError("R003", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError("R003", Request, HttpStatusCode.NotFound);
             }
             LoginType type = new LoginType();
             type.LoginTypeValue = result;
@@ -223,10 +216,9 @@ namespace ALISAPI.Controllers
         /// Высылается письмо на указанный ящик со ссылкой для подтверждения регистрации.
         /// Ссылка действительна 24 часа, после чего регистрацию нужно проходить заново.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>HTTP200</returns>
         [HttpPost]
         [Route("Readers/PreRegisterRemoteReader")]
-        [ResponseType(typeof(ReaderInfo))]
         public HttpResponseMessage PreRegisterRemoteReader()
         {
             ALISReaderRemote.ReaderRemote re = new ALISReaderRemote.ReaderRemote(RegisterConnectionString);
@@ -255,10 +247,9 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Подверждение регистрации. Метод должен вызываться, когда читатель нажимает на ссылку, полученную на email указанный в пререгистрации.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>HTTP200</returns>
         [HttpPost]
         [Route("Readers/ConfirmRegistrationRemoteReader")]
-        [ResponseType(typeof(ReaderInfo))]
         public HttpResponseMessage ConfirmRegistrationRemoteReader()
         {
             ReaderRemote re = new ALISReaderRemote.ReaderRemote(RegisterConnectionString);
@@ -288,10 +279,9 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Изменить пароль читателя с помощью Email. Отправляет письмо на указанный адрес, в котором содержится ссылка для восстановления пароля.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>HTTP200</returns>
         [HttpPost]
         [Route("Readers/ChangePasswordByEmail")]
-        [ResponseType(typeof(ReaderInfo))]
         public HttpResponseMessage ChangePasswordByEmail()
         {
 
@@ -325,10 +315,9 @@ namespace ALISAPI.Controllers
         /// Метод относится к сценарию восстановления пароля по email. Это последний метод сценария. После того, как ссылки проверились на существование.
         /// Нельзя путать этот метод с методом для восстановления пароля по дате рождения!!! 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>HTTP200</returns>
         [HttpPost]
         [Route("Readers/SetPasswordRemoteReader")]
-        [ResponseType(typeof(ReaderInfo))]
         public HttpResponseMessage SetPasswordRemoteReader()
         {
 
@@ -359,10 +348,10 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Проверить ссылку для восстановления пароля на действительность.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>HTTP200</returns>
+        /// 
         [HttpPost]
         [Route("Readers/CheckPasswordUrl")]
-        [ResponseType(typeof(ReaderInfo))]
         public HttpResponseMessage CheckPasswordUrl()
         {
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;

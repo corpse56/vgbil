@@ -135,6 +135,44 @@ namespace ALISAPI.Areas.HelpPage
             json = JsonConvert.SerializeObject(basket, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "InsertIntoUserBasket");
 
+            //Readers.PreRegisterRemoteReader
+            PreRegisterRemoteReader re = new PreRegisterRemoteReader();
+            re.BirthDate = new DateTime(1975, 05, 05);
+            re.CountryId = 137;
+            re.Email = "mail@example.com";
+            re.FamilyName = "Иванов";
+            re.FatherName = "Иванович";
+            re.MobilePhone = "89551234567";
+            re.Name = "Иван";
+            re.Password = "!@#";
+            json = JsonConvert.SerializeObject(re, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "PreRegisterRemoteReader");
+
+            //Readers.ConfirmRegistrationRemoteReader
+            ConfirmRegistrationRemoteReader c = new ConfirmRegistrationRemoteReader();
+            c.Url = "https://oauth.libfl.ru/activate/<activation code>";
+            json = JsonConvert.SerializeObject(c, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ConfirmRegistrationRemoteReader");
+
+            //Readers.ChangePasswordByEmail
+            ChangePasswordByEmail em = new ChangePasswordByEmail();
+            em.Email = "sample@example.com";
+            json = JsonConvert.SerializeObject(em, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ChangePasswordByEmail");
+
+            //Readers.SetPasswordRemoteReader
+            SetPasswordRemoteReader set = new SetPasswordRemoteReader();
+            set.Url = "https://oauth.libfl.ru/recovery/<recovery code>";
+            set.Password = "!@#";
+            json = JsonConvert.SerializeObject(set, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "SetPasswordRemoteReader");
+
+            //Readers.CheckPasswordUrl
+            CheckPasswordUrl check = new CheckPasswordUrl();
+            check.Url = "https://oauth.libfl.ru/recovery/<recovery code>";
+            json = JsonConvert.SerializeObject(check, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "CheckPasswordUrl");
+
 
 
         }

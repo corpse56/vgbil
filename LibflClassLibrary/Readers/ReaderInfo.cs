@@ -28,6 +28,7 @@ namespace LibflClassLibrary.Readers
         private ReaderLoader loader = new ReaderLoader();
 
         public string FamilyName { get; set; }
+
         public string Name { get; set; }
         public string FatherName { get; set; }
         public DateTime DateBirth { get; set; }
@@ -68,7 +69,12 @@ namespace LibflClassLibrary.Readers
 
         [JsonConverter(typeof(StringEnumConverter))]
         public TypeReader TypeReader { get; set; }
-        
+
+        public static Dictionary<int, string> GetCountriesList()
+        {
+            ReaderLoader loader = new ReaderLoader();
+            return loader.GetReaderCountries();
+        }
 
         public static ReaderInfo GetReader(int Id)
         {
@@ -207,10 +213,6 @@ namespace LibflClassLibrary.Readers
             return result;
         }
 
-        public static DataTable GetReaderCountries()
-        {
-            return ReaderLoader.GetReaderCountries();
-        }
 
     }
 }

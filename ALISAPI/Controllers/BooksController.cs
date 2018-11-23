@@ -1,4 +1,4 @@
-﻿using ALISAPI.ALISErrors;
+﻿using ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
@@ -32,7 +32,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("G002", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
             }
             if (book == null) return ALISErrorFactory.CreateError("B001", Request, HttpStatusCode.NotFound);
             return ALISResponseFactory.CreateResponse(book, Request);

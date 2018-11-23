@@ -34,7 +34,7 @@ namespace LibflClassLibrary.Readers.Loaders
             ReaderInfo reader = new ReaderInfo();
             if (table.Rows.Count == 0)
             {
-                throw new Exception("Читатель не найден");
+                throw new Exception("R004");
             }
             DataRow row = table.Rows[0];
             foreach (DataColumn col in table.Columns)
@@ -130,6 +130,18 @@ namespace LibflClassLibrary.Readers.Loaders
             }
             reader.Rights = ReaderRightsInfo.GetReaderRights(reader.NumberReader);
             return reader;
+        }
+
+        public Dictionary<int,string> GetReaderCountries()
+        {
+            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
+            DataTable table = dbw.GetReaderCountries();
+            Dictionary<int, string> result = new Dictionary<int, string>();
+            foreach (DataRow row in table.Rows)
+            {
+                result.Add((int)row["IDCountry"], row["NameCountry"].ToString());
+            }
+            return result;
         }
 
         internal void GiveFreeAbonementRight(int numberReader)
@@ -240,12 +252,6 @@ namespace LibflClassLibrary.Readers.Loaders
             return result;
         }
 
-        public static DataTable GetReaderCountries()
-        {
-            ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();
-            DataTable table = dbw.GetReaderCountries();
-            return table;
-        }
 
     }
 }
