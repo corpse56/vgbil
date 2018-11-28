@@ -59,20 +59,20 @@ namespace ALISAPI.Controllers
         {
 
             CirculationInfo Circulation = new CirculationInfo();
-            List<BookSimpleView> result = new List<BookSimpleView>();
+            List<OrderInfo> result = new List<OrderInfo>();
             List<BasketInfo> basket;
             try
             {
-                basket = null;// Circulation.GetOrders(idReader);
+                result = Circulation.GetOrders(idReader);
             }
             catch (Exception ex)
             {
                 return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
             }
-            foreach (BasketInfo bi in basket)
-            {
-                result.Add(bi.Book);
-            }
+            //foreach (BasketInfo bi in basket)
+            //{
+            //    result.Add(bi.Book);
+            //}
 
             return ALISResponseFactory.CreateResponse(result, Request);
         }

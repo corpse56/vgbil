@@ -216,6 +216,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Writeoff\DB\WriteoffDatabaseWrapper.cs" />
+    <Compile Include="Writeoff\DB\WriteoffQueries.cs" />
+    <Compile Include="Writeoff\Loaders\WriteoffLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

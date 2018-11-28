@@ -26,7 +26,8 @@ namespace LibflClassLibrary.Controls.Readers
             label1.Text = "Адрес фактического проживания или временной регистрации в России №" + reader.NumberReader + ".\n " + reader.FamilyName + " " + reader.Name + " " + reader.FatherName;
 
             Dictionary<int, string> CountryTable = ReaderInfo.GetCountriesList();
-            cbCountry.DataSource = CountryTable;
+            BindingSource bs = new BindingSource(CountryTable, null);
+            cbCountry.DataSource = bs;
             cbCountry.ValueMember = "Key";
             cbCountry.DisplayMember = "Value";
             cbCountry.SelectedValue = reader.RegistrationCountry;
