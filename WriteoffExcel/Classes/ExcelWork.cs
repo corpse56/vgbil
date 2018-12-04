@@ -1,0 +1,248 @@
+﻿using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Excel;
+using System.Windows.Forms;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Globalization;
+using System.Drawing;
+using Utilities;
+
+namespace WriteoffExcel.Classes
+{
+    public class ExcelWork : IDisposable
+    {
+        private string ActNumber;
+        private Excel.Worksheet _ws3, _ws2, _ws1, _currentWS;
+        Excel.Application _excelApp;
+        Workbooks _workbooks;
+        Excel.Workbook _wb;
+        string _fileName;
+        decimal _cost = 0;
+        int _countPerPage;
+        double _pageHeight = 0;
+        int _pageNumber = 1;
+        int _rowIncrement = 9;
+        public ExcelWork(string ActNumber)
+        {
+            this.ActNumber = ActNumber;
+        }
+        public void Init()
+        {
+            _excelApp = new Excel.Application();
+            _excelApp.DisplayAlerts = false;
+            _excelApp.Visible = false;
+            _workbooks = _excelApp.Workbooks;
+            _wb = _workbooks.Open($@"{AppDomain.CurrentDomain.BaseDirectory}\blank2.xls");
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.FileName = $"Акт списания. Сформировано {DateTime.Now.ToShortDateString()}.xls";
+            dialog.Filter = "Файлы Excel(*.xls; *.xlsx) | *.xls; *.xlsx";
+            dialog.InitialDirectory = @"e:\";//Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (dialog.ShowDialog() != DialogResult.OK)
+            {
+                throw new Exception("Файл не сохранён!");
+            }
+            _wb.SaveAs(dialog.FileName);
+            this._fileName = dialog.FileName;
+            _wb.Close();
+            _wb = _excelApp.Workbooks.Open($@"{dialog.FileName}");
+            _excelApp.Visible = true;
+
+            _ws1 = _wb.Worksheets["стр.1"];
+            _ws2 = _wb.Worksheets["стр.2"];
+            _ws3 = _wb.Worksheets["стр.3"];
+            _ws2.Select();
+            _currentWS = _ws2;
+        }
+        public void InsertExemplar(BJExemplarInfo exemplar, BJBookInfo book, int RowIndex)
+        {
+            _countPerPage++;
+            if (_pageNumber == 1)
+            {
+                _rowIncrement = 9;
+            } 
+            else
+            {
+                _rowIncrement = 3;
+            }
+            string author = book.Fields["700$a"].ToString();
+            string title = book.Fields["200$a"].ToString();
+            if (author == string.Empty)
+            {
+                title = book.Fields["200$a"].ToString();
+            }
+            else
+            {
+                title = $"{author} / {title}";
+            }
+
+            double RowHeight = MeasureTextHeight(title, _ws2.Range[$"T10"].Font, 148);
+
+            _pageHeight += RowHeight + 5;
+            if (_pageHeight > 600)
+            {
+                Excel.Borders border = _currentWS.Range[$"A{_rowIncrement}:CL{_countPerPage + _rowIncrement -1}"].Borders;
+                border.LineStyle = Excel.XlLineStyle.xlContinuous;
+                border.Weight = 2d;
+
+                _pageNumber++;
+                _countPerPage = 0;
+                _pageHeight = 0;
+                _ws3.Copy(Type.Missing, _ws3);
+                Worksheet copySheet = _wb.Sheets.get_Item(_ws3.Index + 1);
+                copySheet.Name = $"стр.{_pageNumber+2}";
+                _currentWS = _ws3;
+                _ws3 = copySheet;
+                _currentWS.Select();
+                InsertExemplar(exemplar, book, RowIndex);
+                return;
+            }
+
+            AddEmptyRow(_currentWS);
+
+            _currentWS.Range[$"A{_countPerPage + _rowIncrement}"].Value = RowIndex;
+            _currentWS.Range[$"F{_countPerPage + _rowIncrement}"].Value = exemplar.Fields["899$p"].ToString();
+            _currentWS.Range[$"T{_countPerPage + _rowIncrement}"].Value = title;
+            _currentWS.Range[$"T{_countPerPage + _rowIncrement}"].WrapText = true;
+            _currentWS.Range[$"BA{_countPerPage + _rowIncrement}"].Value = "шт";
+            _currentWS.Range[$"BK{_countPerPage + _rowIncrement}"].Value = 1;
+            decimal Price = 0;
+            string Currency = "";
+            if (exemplar.Fields["922$c"].ToString() == string.Empty)
+            {
+                if (book.Fields["101$a"].ToString() == "Рус.")
+                {
+                    Price = 261;
+                    Currency = "RUB";
+                }
+                else
+                {
+                    Price = 1475;
+                    Currency = "RUB";
+                }
+            }
+            else
+            {
+                string str = exemplar.Fields["922$c"].ToString();
+                Currency = exemplar.Fields["922$d"].ToString();
+                Price = Decimal.Parse(str.Replace(".",","));
+            }
+            _currentWS.Range[$"BS{_countPerPage + _rowIncrement}"].Value = Price.ToString("0.00");
+            _cost += Price;
+            _currentWS.Range[$"CL{_countPerPage + _rowIncrement}"].Value = Price.ToString("0.00");
+            _currentWS.Range[$"T{_countPerPage + _rowIncrement}"].RowHeight = RowHeight+5;
+            
+
+        }
+
+        private void InsertRow(Worksheet Ws, int RowIncrement, int RowIndex)
+        {
+
+        }
+
+        private void AddEmptyRow(Worksheet Ws)
+        {
+            Range line = (Range)_currentWS.Rows[_countPerPage + _rowIncrement];
+            line.Insert();
+            Ws.Range[$"A{_countPerPage + _rowIncrement}:E{_countPerPage + _rowIncrement}"].Merge();
+            Ws.Range[$"F{_countPerPage + _rowIncrement}:S{_countPerPage + _rowIncrement}"].Merge();
+            Ws.Range[$"T{_countPerPage + _rowIncrement}:AZ{_countPerPage + _rowIncrement}"].Merge();
+            Ws.Range[$"BA{_countPerPage + _rowIncrement}:BJ{_countPerPage + _rowIncrement}"].Merge();
+            Ws.Range[$"BK{_countPerPage + _rowIncrement}:BR{_countPerPage + _rowIncrement}"].Merge();
+            Ws.Range[$"BS{_countPerPage + _rowIncrement}:CC{_countPerPage + _rowIncrement}"].Merge();
+            Ws.Range[$"CD{_countPerPage + _rowIncrement}:CK{_countPerPage + _rowIncrement}"].Merge();
+            Ws.Range[$"CL{_countPerPage + _rowIncrement}:DD{_countPerPage + _rowIncrement}"].Merge();
+        }
+
+
+        public void InsertDocumentHeader(int Count, string Department, int Cost)
+        {
+            _ws1.Range["AU6"].Value = ActNumber;
+            _ws1.Range["AE9"].Value = DateTime.Now.Day;
+            //_ws1.Range["AL9"].Value = DateTime.Now.ToString("MMMM", CultureInfo.CreateSpecificCulture("ru"));
+            _ws1.Range["AL9"].Value = Utilities.Extensions.IntMonthToRusString(DateTime.Now.Month);
+            _ws1.Range["BG9"].Value = DateTime.Now.Year - 2000;
+            _ws1.Range["BB12"].Value = 7709102090;
+            _ws1.Range["CG25"].Value = _countPerPage;
+            _ws1.Range["CG28"].Value = _cost.ToString("0.00");
+            int IntCost = Convert.ToInt32(_cost);
+            _ws1.Range["S26"].Value = RusNumber.Str(IntCost);
+            _ws1.Range["W32"].Value = "Главный хранитель фондов";
+            _ws1.Range["BZ32"].Value = "Баулина А. В.";
+            _ws1.Range["W34"].Value = "Зав. сектором";
+            _ws1.Range["BZ34"].Value = "Позднышев А. Е.";
+            _ws1.Range["W36"].Value = "Зав. сектором";
+            _ws1.Range["BZ36"].Value = "Русакова Л. В.";
+            _ws1.Range["W38"].Value = "Ведущий бухгалтер";
+            _ws1.Range["BZ38"].Value = "Беркетова Е. А.";
+            _ws1.Range["W40"].Value = "Главный библиотекарь";
+            _ws1.Range["BZ40"].Value = "Почкина М. В.";
+            _ws1.Range["W42"].Value = "Ведущий библиограф";
+            _ws1.Range["BZ42"].Value = "Базилевская И. Н.";
+
+            _ws1.Range["W58"].Value = "Главный хранитель фондов";
+            _ws1.Range["BZ58"].Value = "Баулина А. В.";
+            _ws1.Range["W60"].Value = "Зав. сектором";
+            _ws1.Range["BZ60"].Value = "Позднышев А. Е.";
+            _ws1.Range["W62"].Value = "Зав. сектором";
+            _ws1.Range["BZ62"].Value = "Русакова Л. В.";
+            _ws1.Range["W64"].Value = "Ведущий бухгалтер";
+            _ws1.Range["BZ64"].Value = "Беркетова Е. А.";
+            _ws1.Range["W66"].Value = "Главный библиотекарь";
+            _ws1.Range["BZ66"].Value = "Почкина М. В.";
+            _ws1.Range["W68"].Value = "Ведущий библиограф";
+            _ws1.Range["BZ68"].Value = "Базилевская И. Н.";
+
+
+
+            _ws2.Range["AI2"].Value = DateTime.Now.Day;
+            _ws2.Range["T2"].Value = ActNumber;
+            _ws2.Range["AO2"].Value = Utilities.Extensions.IntMonthToRusString(DateTime.Now.Month);
+            _ws2.Range["BH2"].Value = DateTime.Now.Year - 2000;
+            _currentWS.Range[$"CL{_countPerPage + _rowIncrement + 2}"].Value = _cost.ToString("0.00");
+
+            AddSignature(_currentWS, _countPerPage, _rowIncrement);
+        }
+        private void AddSignature(Worksheet Ws, int RowIndex, int RowIncrement)
+        {
+            //добавить членов комиссии в конце
+        }
+
+        public double MeasureTextHeight(string text, Microsoft.Office.Interop.Excel.Font font, int width)
+        {
+            if (string.IsNullOrEmpty(text)) return 0.0;
+            var bitmap = new Bitmap(1, 1);
+            var graphics = Graphics.FromImage(bitmap);
+
+            var pixelWidth = Convert.ToInt32(width / 1);  //7.5 pixels per excel column width
+            var drawingFont = new System.Drawing.Font(font.Name, (float)font.Size);
+            var size = graphics.MeasureString(text, drawingFont, pixelWidth);
+            
+            //72 DPI and 96 points per inch.  Excel height in points with max of 409 per Excel requirements.
+            return Math.Min(Convert.ToDouble(size.Height) * 72 / 96, 409);
+        }
+        public void Dispose()
+        {
+            _wb.Save();
+            //_wb.Close(0);
+            //_excelApp.Quit();
+            //Marshal.ReleaseComObject(_wb);
+            //Marshal.ReleaseComObject(_workbooks);
+            //Marshal.ReleaseComObject(_excelApp);
+        }
+
+        internal void OpenFolderWithGeneratedFile()
+        {
+            string argument = "/select, \"" + _fileName + "\"";
+            System.Diagnostics.Process.Start("explorer.exe", argument);
+        }
+
+        
+    }
+}

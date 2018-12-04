@@ -1,6 +1,6 @@
 ﻿namespace WriteOff
 {
-    partial class Form2
+    partial class fSelectFund
     {
         /// <summary>
         /// Required designer variable.

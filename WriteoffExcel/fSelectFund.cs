@@ -8,10 +8,10 @@ using System.Windows.Forms;
 
 namespace WriteOff
 {
-    public partial class Form2 : Form
+    public partial class fSelectFund : Form
     {
-        Form1 F1;
-        public Form2(Form1 f1)
+        FSelectAct F1;
+        public fSelectFund(FSelectAct f1)
         {
             F1 = f1;
             InitializeComponent();

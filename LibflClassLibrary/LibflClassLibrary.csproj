@@ -219,6 +219,7 @@
     <Compile Include="Writeoff\DB\WriteoffDatabaseWrapper.cs" />
     <Compile Include="Writeoff\DB\WriteoffQueries.cs" />
     <Compile Include="Writeoff\Loaders\WriteoffLoader.cs" />
+    <Compile Include="Writeoff\WriteoffInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
