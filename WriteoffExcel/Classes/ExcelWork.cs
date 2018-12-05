@@ -24,7 +24,7 @@ namespace WriteoffExcel.Classes
         Workbooks _workbooks;
         Excel.Workbook _wb;
         string _fileName;
-        decimal _cost = 0;
+        decimal _cost = 0, _costPerPage = 0;
         int _countPerPage;
         double _pageHeight = 0;
         int _pageNumber = 1;
@@ -41,7 +41,7 @@ namespace WriteoffExcel.Classes
             _workbooks = _excelApp.Workbooks;
             _wb = _workbooks.Open($@"{AppDomain.CurrentDomain.BaseDirectory}\blank2.xls");
             SaveFileDialog dialog = new SaveFileDialog();
-            dialog.FileName = $"Акт списания. Сформировано {DateTime.Now.ToShortDateString()}.xls";
+            dialog.FileName = $"Акт списания {Extensions.RemoveIllegalCharsFromFilename(ActNumber)}. Сформировано {DateTime.Now.ToShortDateString()}.xls";
             dialog.Filter = "Файлы Excel(*.xls; *.xlsx) | *.xls; *.xlsx";
             dialog.InitialDirectory = @"e:\";//Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (dialog.ShowDialog() != DialogResult.OK)
@@ -63,14 +63,42 @@ namespace WriteoffExcel.Classes
         public void InsertExemplar(BJExemplarInfo exemplar, BJBookInfo book, int RowIndex)
         {
             _countPerPage++;
-            if (_pageNumber == 1)
+            SetRowIncrement(_pageNumber);
+            string Title = GetTitle(book);
+            double RowHeight = GetMeasuredRowHeight(Title);
+            _pageHeight += RowHeight + 5;
+            if (_pageHeight > 620)
             {
-                _rowIncrement = 9;
-            } 
+                InsertPageSumm();
+                MakeNewPage();
+                SetRowIncrement(_pageNumber);
+                AddEmptyRow(_currentWS);
+                InsertRowData(RowIndex, Title, exemplar, book, RowHeight);
+            }
             else
             {
-                _rowIncrement = 3;
+                AddEmptyRow(_currentWS);
+                InsertRowData(RowIndex, Title, exemplar, book, RowHeight);
             }
+        }
+
+
+        private void MakeNewPage()
+        {
+            _pageNumber++;
+            _countPerPage = 1;
+            _costPerPage = 0;
+            _pageHeight = 0;
+            _ws3.Copy(Type.Missing, _ws3);
+            Worksheet copySheet = _wb.Sheets.get_Item(_ws3.Index + 1);
+            copySheet.Name = $"стр.{_pageNumber + 2}";
+            _currentWS = _ws3;
+            _currentWS.Range["DD1"].Value = $"Форма 0504144 с. {_pageNumber+1}";
+            _ws3 = copySheet;
+            _currentWS.Select();
+        }
+        private string GetTitle(BJBookInfo book)
+        {
             string author = book.Fields["700$a"].ToString();
             string title = book.Fields["200$a"].ToString();
             if (author == string.Empty)
@@ -81,34 +109,30 @@ namespace WriteoffExcel.Classes
             {
                 title = $"{author} / {title}";
             }
+            return title;
+        }
 
-            double RowHeight = MeasureTextHeight(title, _ws2.Range[$"T10"].Font, 148);
-
-            _pageHeight += RowHeight + 5;
-            if (_pageHeight > 600)
+        private void SetRowIncrement(int pageNumber)
+        {
+            if (_pageNumber == 1)
             {
-                Excel.Borders border = _currentWS.Range[$"A{_rowIncrement}:CL{_countPerPage + _rowIncrement -1}"].Borders;
-                border.LineStyle = Excel.XlLineStyle.xlContinuous;
-                border.Weight = 2d;
-
-                _pageNumber++;
-                _countPerPage = 0;
-                _pageHeight = 0;
-                _ws3.Copy(Type.Missing, _ws3);
-                Worksheet copySheet = _wb.Sheets.get_Item(_ws3.Index + 1);
-                copySheet.Name = $"стр.{_pageNumber+2}";
-                _currentWS = _ws3;
-                _ws3 = copySheet;
-                _currentWS.Select();
-                InsertExemplar(exemplar, book, RowIndex);
-                return;
+                _rowIncrement = 9;
             }
+            else
+            {
+                _rowIncrement = 3;
+            }
+        }
 
-            AddEmptyRow(_currentWS);
-
+        private double GetMeasuredRowHeight(string Title)
+        {
+            return MeasureTextHeight(Title, _ws2.Range[$"T10"].Font, 148);
+        }
+        private void InsertRowData(int RowIndex, string Title, BJExemplarInfo exemplar, BJBookInfo book, double RowHeight)
+        {
             _currentWS.Range[$"A{_countPerPage + _rowIncrement}"].Value = RowIndex;
             _currentWS.Range[$"F{_countPerPage + _rowIncrement}"].Value = exemplar.Fields["899$p"].ToString();
-            _currentWS.Range[$"T{_countPerPage + _rowIncrement}"].Value = title;
+            _currentWS.Range[$"T{_countPerPage + _rowIncrement}"].Value = Title;
             _currentWS.Range[$"T{_countPerPage + _rowIncrement}"].WrapText = true;
             _currentWS.Range[$"BA{_countPerPage + _rowIncrement}"].Value = "шт";
             _currentWS.Range[$"BK{_countPerPage + _rowIncrement}"].Value = 1;
@@ -131,18 +155,13 @@ namespace WriteoffExcel.Classes
             {
                 string str = exemplar.Fields["922$c"].ToString();
                 Currency = exemplar.Fields["922$d"].ToString();
-                Price = Decimal.Parse(str.Replace(".",","));
+                Price = Decimal.Parse(str.Replace(".", ","));
             }
             _currentWS.Range[$"BS{_countPerPage + _rowIncrement}"].Value = Price.ToString("0.00");
             _cost += Price;
+            _costPerPage += Price;
             _currentWS.Range[$"CL{_countPerPage + _rowIncrement}"].Value = Price.ToString("0.00");
-            _currentWS.Range[$"T{_countPerPage + _rowIncrement}"].RowHeight = RowHeight+5;
-            
-
-        }
-
-        private void InsertRow(Worksheet Ws, int RowIncrement, int RowIndex)
-        {
+            _currentWS.Range[$"T{_countPerPage + _rowIncrement}"].RowHeight = RowHeight + 5;
 
         }
 
@@ -153,13 +172,16 @@ namespace WriteoffExcel.Classes
             Ws.Range[$"A{_countPerPage + _rowIncrement}:E{_countPerPage + _rowIncrement}"].Merge();
             Ws.Range[$"F{_countPerPage + _rowIncrement}:S{_countPerPage + _rowIncrement}"].Merge();
             Ws.Range[$"T{_countPerPage + _rowIncrement}:AZ{_countPerPage + _rowIncrement}"].Merge();
+            Ws.Range[$"T{_countPerPage + _rowIncrement}:AZ{_countPerPage + _rowIncrement}"].Cells.HorizontalAlignment = XlHAlign.xlHAlignLeft;
             Ws.Range[$"BA{_countPerPage + _rowIncrement}:BJ{_countPerPage + _rowIncrement}"].Merge();
             Ws.Range[$"BK{_countPerPage + _rowIncrement}:BR{_countPerPage + _rowIncrement}"].Merge();
             Ws.Range[$"BS{_countPerPage + _rowIncrement}:CC{_countPerPage + _rowIncrement}"].Merge();
             Ws.Range[$"CD{_countPerPage + _rowIncrement}:CK{_countPerPage + _rowIncrement}"].Merge();
             Ws.Range[$"CL{_countPerPage + _rowIncrement}:DD{_countPerPage + _rowIncrement}"].Merge();
+            Excel.Borders border = _currentWS.Range[$"A{_countPerPage + _rowIncrement}:CL{_countPerPage + _rowIncrement - 1}"].Borders;
+            border.LineStyle = Excel.XlLineStyle.xlContinuous;
+            border.Weight = 2d;
         }
-
 
         public void InsertDocumentHeader(int Count, string Department, int Cost)
         {
@@ -169,10 +191,12 @@ namespace WriteoffExcel.Classes
             _ws1.Range["AL9"].Value = Utilities.Extensions.IntMonthToRusString(DateTime.Now.Month);
             _ws1.Range["BG9"].Value = DateTime.Now.Year - 2000;
             _ws1.Range["BB12"].Value = 7709102090;
-            _ws1.Range["CG25"].Value = _countPerPage;
+            _ws1.Range["CG25"].Value = Count;
             _ws1.Range["CG28"].Value = _cost.ToString("0.00");
             int IntCost = Convert.ToInt32(_cost);
-            _ws1.Range["S26"].Value = RusNumber.Str(IntCost);
+            decimal decPenny = _cost % 1.0m;
+            int IntPenny = Convert.ToInt32(decPenny * 100);
+            _ws1.Range["S26"].Value = RusNumber.Str(IntCost) + " руб. " + RusNumber.Str(IntPenny) + " к." ;
             _ws1.Range["W32"].Value = "Главный хранитель фондов";
             _ws1.Range["BZ32"].Value = "Баулина А. В.";
             _ws1.Range["W34"].Value = "Зав. сектором";
@@ -199,21 +223,48 @@ namespace WriteoffExcel.Classes
             _ws1.Range["W68"].Value = "Ведущий библиограф";
             _ws1.Range["BZ68"].Value = "Базилевская И. Н.";
 
-
+            _ws1.Range["R18"].Value = "Главный хранитель фондов Баулина А. В.; Зав. сектором Позднышев А. Е.";
+            _ws1.Range["A20"].Value = "Зав. сектором Русакова Л. В.; Ведущий бухгалтер Беркетова Е. А.;";
+            _ws1.Range["A21"].Value = "Главный библиотекарь Почкина М. В.; Ведущий библиограф Базилевская И. Н.";
 
             _ws2.Range["AI2"].Value = DateTime.Now.Day;
             _ws2.Range["T2"].Value = ActNumber;
             _ws2.Range["AO2"].Value = Utilities.Extensions.IntMonthToRusString(DateTime.Now.Month);
             _ws2.Range["BH2"].Value = DateTime.Now.Year - 2000;
-            _currentWS.Range[$"CL{_countPerPage + _rowIncrement + 2}"].Value = _cost.ToString("0.00");
 
-            AddSignature(_currentWS, _countPerPage, _rowIncrement);
+            AddSignature();
+            _currentWS.Range[$"BK{_countPerPage + _rowIncrement + 1}"].Value = _countPerPage;
+            _currentWS.Range[$"CL{_countPerPage + _rowIncrement + 1}"].Value = _costPerPage.ToString("0.00");
+            _currentWS.Range[$"CL{_countPerPage + _rowIncrement + 2}"].Value = _cost.ToString("0.00");
+            _currentWS.Range[$"BK{_countPerPage + _rowIncrement + 2}"].Value = Count;
         }
-        private void AddSignature(Worksheet Ws, int RowIndex, int RowIncrement)
+        private void InsertPageSumm()
+        {
+            _currentWS.Range[$"BK{_countPerPage + _rowIncrement}"].Value = _countPerPage - 1;
+            _currentWS.Range[$"CL{_countPerPage + _rowIncrement}"].Value = _costPerPage.ToString("0.00");
+        }
+
+        private void AddSignature()
         {
             //добавить членов комиссии в конце
-        }
 
+            for(int i = 0;i<13;i++)
+            {
+                Range line = (Range)_currentWS.Rows[_countPerPage + _rowIncrement+3];
+                line.Insert();
+                _currentWS.Range[$"A{_countPerPage + _rowIncrement + 3}:B{_countPerPage + _rowIncrement+3}"].Merge();
+            }
+
+            Excel.Range from = _ws1.Range["A58:CY69"];
+            Excel.Range to = _currentWS.Range[$"A{ _countPerPage + _rowIncrement + 4}:CY{_countPerPage + _rowIncrement + 16}"];
+            from.Copy(to);
+
+            from = _currentWS.Range[$"AM{ _countPerPage + _rowIncrement + 1}:DD{ _countPerPage +_rowIncrement + 1}"];
+            to = _currentWS.Range[$"AM{ _countPerPage + _rowIncrement + 2}:DD{_countPerPage + _rowIncrement + 2}"];
+            from.Copy(to);
+            _currentWS.Range[$"AM{ _countPerPage + _rowIncrement + 2}"].Value = "Всего";
+
+        }
         public double MeasureTextHeight(string text, Microsoft.Office.Interop.Excel.Font font, int width)
         {
             if (string.IsNullOrEmpty(text)) return 0.0;
@@ -229,6 +280,7 @@ namespace WriteoffExcel.Classes
         }
         public void Dispose()
         {
+            _ws3.Delete();
             _wb.Save();
             //_wb.Close(0);
             //_excelApp.Quit();
@@ -236,7 +288,6 @@ namespace WriteoffExcel.Classes
             //Marshal.ReleaseComObject(_workbooks);
             //Marshal.ReleaseComObject(_excelApp);
         }
-
         internal void OpenFolderWithGeneratedFile()
         {
             string argument = "/select, \"" + _fileName + "\"";

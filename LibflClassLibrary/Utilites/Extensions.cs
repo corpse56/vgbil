@@ -211,6 +211,16 @@ namespace Utilities
             }
             throw new Exception($"Неизвестный номер месяца: {m}");
         }
+        public static string RemoveIllegalCharsFromFilename(string IllegalFilename)
+        {
+            string invalid = new string(Path.GetInvalidFileNameChars());
+
+            foreach (char c in invalid)
+            {
+                IllegalFilename = IllegalFilename.Replace(c.ToString(), "-");
+            }
+            return IllegalFilename;
+        }
 
     }
 
@@ -299,6 +309,7 @@ namespace Utilities
         /// <returns>Возвращает строковую запись числа</returns>
         public static string Str(int val)
         {
+            if (val == 0) return "ноль";
             bool minus = false;
             if (val < 0) { val = -val; minus = true; }
 
