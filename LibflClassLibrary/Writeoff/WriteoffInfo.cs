@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Writeoff.Loaders;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,16 @@ namespace LibflClassLibrary.Writeoff
         public List<BJBookInfo> GetBooksByAct(string ActNumber)
         {
             return loader.GetBooksByAct(ActNumber);
+        }
+
+        public List<BJExemplarInfo> GetBooksPerYear(int Year, string Prefix)
+        {
+            return loader.GetBooksPerYear(Year, Prefix);
+        }
+
+        public List<BJExemplarInfo> GetBooksPerYearAnotherFundholder(int Year)
+        {
+            return loader.GetBooksPerYearAnotherFundholder(Year);
         }
     }
 }

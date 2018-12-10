@@ -37,8 +37,8 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                     " left join " + this.Fund + "..MAIN C on A.IDMAIN = C.ID " +
                     " left join " + this.Fund + "..FIELDS F on A.MNFIELD = F.MNFIELD and A.MSFIELD = F.MSFIELD " +
                     " where A.IDMAIN = @idmain " +
-                    " and not exists (select 1 from " + this.Fund + "..DATAEXT EXTR where EXTR.IDMAIN = @idmain and EXTR.MNFIELD = 899 and EXTR.MSFIELD = '$x' and lower(EXTR.SORT) = 'э') " +
-                    " and not exists (select 1 from " + this.Fund + "..DATAEXT FIN where FIN.IDMAIN = @idmain and FIN.MNFIELD = 338 and FIN.MSFIELD = '$b') " +
+                    //" and not exists (select 1 from " + this.Fund + "..DATAEXT EXTR where EXTR.IDMAIN = @idmain and EXTR.MNFIELD = 899 and EXTR.MSFIELD = '$x' and lower(EXTR.SORT) = 'э') " +
+                    //" and not exists (select 1 from " + this.Fund + "..DATAEXT FIN where FIN.IDMAIN = @idmain and FIN.MNFIELD = 338 and FIN.MSFIELD = '$b') " +
                     " order by A.IDMAIN, A.IDDATA";
             }
         }

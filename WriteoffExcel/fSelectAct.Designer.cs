@@ -36,6 +36,9 @@ namespace WriteOff
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.bMakeActForYear = new System.Windows.Forms.Button();
+            this.bMakeActPerYearOF = new System.Windows.Forms.Button();
+            this.bAnotherFundholder = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bCreateAct
@@ -131,11 +134,44 @@ namespace WriteOff
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // bMakeActForYear
+            // 
+            this.bMakeActForYear.Location = new System.Drawing.Point(258, 203);
+            this.bMakeActForYear.Name = "bMakeActForYear";
+            this.bMakeActForYear.Size = new System.Drawing.Size(214, 36);
+            this.bMakeActForYear.TabIndex = 4;
+            this.bMakeActForYear.Text = "Сделать акт за целый год АБ";
+            this.bMakeActForYear.UseVisualStyleBackColor = true;
+            this.bMakeActForYear.Click += new System.EventHandler(this.bMakeActForYear_Click);
+            // 
+            // bMakeActPerYearOF
+            // 
+            this.bMakeActPerYearOF.Location = new System.Drawing.Point(12, 203);
+            this.bMakeActPerYearOF.Name = "bMakeActPerYearOF";
+            this.bMakeActPerYearOF.Size = new System.Drawing.Size(240, 36);
+            this.bMakeActPerYearOF.TabIndex = 5;
+            this.bMakeActPerYearOF.Text = "Распечатать акт за целый год ОФ";
+            this.bMakeActPerYearOF.UseVisualStyleBackColor = true;
+            this.bMakeActPerYearOF.Click += new System.EventHandler(this.bMakeActPerYearOF_Click);
+            // 
+            // bAnotherFundholder
+            // 
+            this.bAnotherFundholder.Location = new System.Drawing.Point(12, 245);
+            this.bAnotherFundholder.Name = "bAnotherFundholder";
+            this.bAnotherFundholder.Size = new System.Drawing.Size(326, 36);
+            this.bAnotherFundholder.TabIndex = 5;
+            this.bAnotherFundholder.Text = "Распечатать акт за целый год не ОФ и не АБ";
+            this.bAnotherFundholder.UseVisualStyleBackColor = true;
+            this.bAnotherFundholder.Click += new System.EventHandler(this.bAnotherFundholder_Click);
+            // 
             // FSelectAct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(804, 244);
+            this.ClientSize = new System.Drawing.Size(804, 296);
+            this.Controls.Add(this.bAnotherFundholder);
+            this.Controls.Add(this.bMakeActPerYearOF);
+            this.Controls.Add(this.bMakeActForYear);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -164,6 +200,9 @@ namespace WriteOff
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button bMakeActForYear;
+        private System.Windows.Forms.Button bMakeActPerYearOF;
+        private System.Windows.Forms.Button bAnotherFundholder;
     }
 }
 

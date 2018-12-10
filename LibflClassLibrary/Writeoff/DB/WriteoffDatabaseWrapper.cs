@@ -46,6 +46,35 @@ namespace LibflClassLibrary.Writeoff.DB
             }
         }
 
+        internal DataTable GetBooksPerYear(int year, string prefix)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(WQueries.GET_EXEMPLARS_BY_DEL_ACTS_PER_YEAR, connection);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("start", SqlDbType.DateTime).Value = new DateTime(year, 1, 1);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("finish", SqlDbType.DateTime).Value = new DateTime(year, 12, 31);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("prefix", SqlDbType.NVarChar).Value = prefix;
+                int i = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
+        internal DataTable GetBooksPerYearAnotherFundholder(int year)
+        {
+            string connectionString = AppSettings.ConnectionString;
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(WQueries.GET_EXEMPLARS_BY_DEL_ACTS_PER_YEAR_ANOTHER_FUNDHOLDER, connection);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("start", SqlDbType.DateTime).Value = new DateTime(year, 1, 1);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("finish", SqlDbType.DateTime).Value = new DateTime(year, 12, 31);
+                int i = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal DataTable GetDepartments()
         {
             string connectionString = AppSettings.ConnectionString;

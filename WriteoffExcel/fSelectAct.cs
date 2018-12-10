@@ -76,7 +76,7 @@ namespace WriteOff
                 {
                     foreach (BJExemplarInfo exemplar in b.Exemplars)
                     {
-                        if (exemplar.Fields["929$b"] != null)
+                        if (exemplar.Fields["929$b"].ToString() != string.Empty)
                         {
                             if (exemplar.Fields["929$b"].ToString() == ActNumber)
                             {
@@ -91,6 +91,163 @@ namespace WriteOff
             }
             
         }
+        private void bMakeActForYear_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.Text == string.Empty)
+            {
+                MessageBox.Show("Выберите отдел фондодержателя!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            if (comboBox2.Text == string.Empty)
+            {
+                MessageBox.Show("Выберите год!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            KeyValuePair<string, string> item = (KeyValuePair<string, string>)comboBox3.SelectedItem;
+            string ActNumberSort = item.Key.ToString();
+            string ActNumber = item.Value.ToString();
+            ActNumber = "Абонемент";
+            using (ExcelWork excel = new ExcelWork(ActNumber))
+            {
+                try
+                {
+                    excel.Init();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+                List<BJExemplarInfo> exemplars = wi.GetBooksPerYear(Convert.ToInt32(comboBox2.SelectedItem), "АБ");
+                int RowIndex = 0;
+                int Cost = 0;
+                //foreach (BJBookInfo b in books)
+                {
+                    foreach (BJExemplarInfo exemplar in exemplars)
+                    {
+                        string check = exemplar.Fields["929$b"].ToString();
+                        if (exemplar.Fields["929$b"].ToString() != string.Empty)
+                        {
+                            //if (exemplar.Fields["929$b"].ToString() == ActNumber)
+                            {
+                                BJBookInfo b = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
+                                RowIndex++;
+                                excel.InsertExemplar(exemplar, b, RowIndex);
+                            }
+                        }
+                    }
+                }
+                excel.InsertDocumentHeader(RowIndex, comboBox1.Text, Cost);
+                MessageBox.Show("Формирование акта успешно завершено!");
+            }
+
+        }
+        private void bMakeActPerYearOF_Click(object sender, EventArgs e)
+        {
+            //2395322
+            BJExemplarInfo exemp = BJExemplarInfo.GetExemplarByIdData(14241077,"BJVVV");
+            BJBookInfo bk = BJBookInfo.GetBookInfoByPIN(exemp.IDMAIN, exemp.Fund);
+            if (comboBox1.Text == string.Empty)
+            {
+                MessageBox.Show("Выберите отдел фондодержателя!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            if (comboBox2.Text == string.Empty)
+            {
+                MessageBox.Show("Выберите год!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            KeyValuePair<string, string> item = (KeyValuePair<string, string>)comboBox3.SelectedItem;
+            string ActNumberSort = item.Key.ToString();
+            string ActNumber = item.Value.ToString();
+            ActNumber = "Основной фонд";
+            using (ExcelWork excel = new ExcelWork(ActNumber))
+            {
+                try
+                {
+                    excel.Init();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+                List<BJExemplarInfo> exemplars = wi.GetBooksPerYear(Convert.ToInt32(comboBox2.SelectedItem), "ОФ");
+                int RowIndex = 0;
+                int Cost = 0;
+                //foreach (BJBookInfo b in books)
+                {
+                    foreach (BJExemplarInfo exemplar in exemplars)
+                    {
+                        string check = exemplar.Fields["929$b"].ToString();
+                        if (exemplar.Fields["929$b"].ToString() != string.Empty)
+                        {
+                            //if (exemplar.Fields["929$b"].ToString() == ActNumber)
+                            {
+                                BJBookInfo b = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
+                                RowIndex++;
+                                excel.InsertExemplar(exemplar, b, RowIndex);
+                            }
+                        }
+                    }
+                }
+                excel.InsertDocumentHeader(RowIndex, comboBox1.Text, Cost);
+                MessageBox.Show("Формирование акта успешно завершено!");
+            }
+
+        }
+        private void bAnotherFundholder_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.Text == string.Empty)
+            {
+                MessageBox.Show("Выберите отдел фондодержателя!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            if (comboBox2.Text == string.Empty)
+            {
+                MessageBox.Show("Выберите год!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            KeyValuePair<string, string> item = (KeyValuePair<string, string>)comboBox3.SelectedItem;
+            string ActNumberSort = item.Key.ToString();
+            string ActNumber = item.Value.ToString();
+            ActNumber = "Другие фондодержатели";
+            using (ExcelWork excel = new ExcelWork(ActNumber))
+            {
+                try
+                {
+                    excel.Init();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+                List<BJExemplarInfo> Exemplars = wi.GetBooksPerYearAnotherFundholder(Convert.ToInt32(comboBox2.SelectedItem));
+                int RowIndex = 0;
+                int Cost = 0;
+                //foreach (BJBookInfo b in books)
+                {
+                    foreach (BJExemplarInfo exemplar in Exemplars)
+                    {
+                        if (exemplar.Fields["929$b"] != null)
+                        {
+                            //if (exemplar.Fields["929$b"].ToString() == ActNumber)
+                            {
+                                BJBookInfo b = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
+                                RowIndex++;
+                                excel.InsertExemplar(exemplar, b, RowIndex);
+                            }
+                        }
+                    }
+                }
+                excel.InsertDocumentHeader(RowIndex, comboBox1.Text, Cost);
+                MessageBox.Show("Формирование акта успешно завершено!");
+
+            }
+
+        }
+
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -133,26 +290,4 @@ namespace WriteOff
         }
 
     }
-    /*public class Book
-    {
-        System.Collections.Generic.KeyValuePair f;
-        Dictionary<int, string> f;
-        void foo()
-        {
-         //   f.
-        }
-
-        int i;
-        public int IK
-        {
-            get
-            {
-                return i;
-            }
-            private set
-            {
-                i = value;
-            }
-        }
-    }*/
 }

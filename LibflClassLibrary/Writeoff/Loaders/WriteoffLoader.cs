@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Writeoff.DB;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,30 @@ namespace LibflClassLibrary.Writeoff.Loaders
             foreach (DataRow row in table.Rows)
             {
                 BJBookInfo b = BJBookInfo.GetBookInfoByPIN((int)row["IDMAIN"], Fund);
+                result.Add(b);
+            }
+            return result;
+        }
+
+
+        internal List<BJExemplarInfo> GetBooksPerYear(int year, string prefix)
+        {
+            DataTable table = db.GetBooksPerYear(year, prefix);
+            List<BJExemplarInfo> result = new List<BJExemplarInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                BJExemplarInfo b = BJExemplarInfo.GetExemplarByIdData((int)row["IDDATA"], Fund);
+                result.Add(b);
+            }
+            return result;
+        }
+        internal List<BJExemplarInfo> GetBooksPerYearAnotherFundholder(int year)
+        {
+            DataTable table = db.GetBooksPerYearAnotherFundholder(year);
+            List<BJExemplarInfo> result = new List<BJExemplarInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                BJExemplarInfo b = BJExemplarInfo.GetExemplarByIdData((int)row["IDDATA"], Fund);
                 result.Add(b);
             }
             return result;

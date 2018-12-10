@@ -31,6 +31,15 @@ namespace WriteoffExcel.Classes
         int _rowIncrement = 9;
         public ExcelWork(string ActNumber)
         {
+            if (ActNumber.Contains("Акт"))
+            {
+                ActNumber = ActNumber.Replace("Акт", "");
+            }
+            if (ActNumber.Contains("акт"))
+            {
+                ActNumber = ActNumber.Replace("акт", "");
+            }
+            ActNumber.Trim();
             this.ActNumber = ActNumber;
         }
         public void Init()
@@ -43,7 +52,7 @@ namespace WriteoffExcel.Classes
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.FileName = $"Акт списания {Extensions.RemoveIllegalCharsFromFilename(ActNumber)}. Сформировано {DateTime.Now.ToShortDateString()}.xls";
             dialog.Filter = "Файлы Excel(*.xls; *.xlsx) | *.xls; *.xlsx";
-            dialog.InitialDirectory = @"e:\";//Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);//@"e:\";//
             if (dialog.ShowDialog() != DialogResult.OK)
             {
                 throw new Exception("Файл не сохранён!");
@@ -186,17 +195,20 @@ namespace WriteoffExcel.Classes
         public void InsertDocumentHeader(int Count, string Department, int Cost)
         {
             _ws1.Range["AU6"].Value = ActNumber;
-            _ws1.Range["AE9"].Value = DateTime.Now.Day;
+            //_ws1.Range["AE9"].Value = DateTime.Now.Day;
             //_ws1.Range["AL9"].Value = DateTime.Now.ToString("MMMM", CultureInfo.CreateSpecificCulture("ru"));
-            _ws1.Range["AL9"].Value = Utilities.Extensions.IntMonthToRusString(DateTime.Now.Month);
-            _ws1.Range["BG9"].Value = DateTime.Now.Year - 2000;
+            //_ws1.Range["AL9"].Value = Utilities.Extensions.IntMonthToRusString(DateTime.Now.Month);
+            //_ws1.Range["BG9"].Value = DateTime.Now.Year - 2000;
+            _ws1.Range["Y13"].Value = Department;
             _ws1.Range["BB12"].Value = 7709102090;
             _ws1.Range["CG25"].Value = Count;
             _ws1.Range["CG28"].Value = _cost.ToString("0.00");
             int IntCost = Convert.ToInt32(_cost);
             decimal decPenny = _cost % 1.0m;
             int IntPenny = Convert.ToInt32(decPenny * 100);
-            _ws1.Range["S26"].Value = RusNumber.Str(IntCost) + " руб. " + RusNumber.Str(IntPenny) + " к." ;
+            string Penny = IntPenny.ToString();
+            Penny = (Penny.Length == 1) ? $"0{Penny}" : Penny;
+            _ws1.Range["S26"].Value = RusNumber.Str(IntCost) + " руб. " + Penny + " коп." ;
             _ws1.Range["W32"].Value = "Главный хранитель фондов";
             _ws1.Range["BZ32"].Value = "Баулина А. В.";
             _ws1.Range["W34"].Value = "Зав. сектором";

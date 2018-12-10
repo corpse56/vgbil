@@ -39,5 +39,34 @@ namespace LibflClassLibrary.Writeoff.DB
                 return "select distinct IDMAIN from " + this.Fund + "..DATAEXT where MNFIELD = 929 and MSFIELD = '$b' and SORT = @ActNumber";
             }
         }
+
+
+        //основной фонд или абонемент книгохранения
+        public string GET_EXEMPLARS_BY_DEL_ACTS_PER_YEAR
+        {
+            get
+            {
+                return "select distinct IDDATA from " + this.Fund + "..DATAEXT" +
+                    " where MNFIELD = 929 and MSFIELD = '$b' and Created between @start and @finish " +
+                    " and charindex(lower(@prefix),lower(SORT)) >0" +
+                    " and charindex(lower('АКТ'),lower(SORT)) >0";
+            }
+        }
+
+        //списанные не книгохранением, а отделами
+        public string GET_EXEMPLARS_BY_DEL_ACTS_PER_YEAR_ANOTHER_FUNDHOLDER
+        {
+            get
+            {
+                return "select distinct IDDATA from " + this.Fund + "..DATAEXT" +
+                    " where MNFIELD = 929 and MSFIELD = '$b' and Created between @start and @finish " +
+                    " and charindex(lower('АКТ'),lower(SORT)) >0" +
+                    " and charindex(lower('аб'),lower(SORT)) = 0" +
+                    " and charindex(lower('оф'),lower(SORT)) = 0";
+            }
+        }
+        
+
+
     }
 }
