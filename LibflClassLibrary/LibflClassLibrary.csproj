@@ -57,12 +57,15 @@
     <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.8.11.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.8.11\lib\Net20\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="MySql.Data">
-      <HintPath>..\packages\MySQL\Connector.NET 6.9\Assemblies\v2.0\MySql.Data.dll</HintPath>
+      <HintPath>..\packages\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -174,6 +177,7 @@
     <Compile Include="Books\BJBooks\BJExemplars\BJExemplarAccess.cs" />
     <Compile Include="Books\BJBooks\BJExemplars\BJExemplarInfo.cs" />
     <Compile Include="ExportToVufind\BJ\BJVufindIndexUpdater.cs" />
+    <Compile Include="ExportToVufind\CERFVufindConverter.cs" />
     <Compile Include="ExportToVufind\KeyValueMapping.cs" />
     <Compile Include="Books\BJBooks\DB\DatabaseWrapper.cs" />
     <Compile Include="Readers\DB\ReaderQueries.cs" />

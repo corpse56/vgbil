@@ -63,6 +63,7 @@
             this.btnJBH = new System.Windows.Forms.Button();
             this.btnGetJBHSource = new System.Windows.Forms.Button();
             this.bExportSingleCover = new System.Windows.Forms.Button();
+            this.bCERFExportAll = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // all
@@ -386,11 +387,22 @@
             this.bExportSingleCover.UseVisualStyleBackColor = true;
             this.bExportSingleCover.Click += new System.EventHandler(this.bExportSingleCover_Click);
             // 
+            // bCERFExportAll
+            // 
+            this.bCERFExportAll.Location = new System.Drawing.Point(12, 323);
+            this.bCERFExportAll.Name = "bCERFExportAll";
+            this.bCERFExportAll.Size = new System.Drawing.Size(75, 23);
+            this.bCERFExportAll.TabIndex = 19;
+            this.bCERFExportAll.Text = "CERF";
+            this.bCERFExportAll.UseVisualStyleBackColor = true;
+            this.bCERFExportAll.Click += new System.EventHandler(this.bCERFExportAll_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(693, 524);
+            this.Controls.Add(this.bCERFExportAll);
             this.Controls.Add(this.bExportSingleCover);
             this.Controls.Add(this.btnGetJBHSource);
             this.Controls.Add(this.btnJBH);
@@ -468,6 +480,7 @@
         private System.Windows.Forms.Button btnJBH;
         private System.Windows.Forms.Button btnGetJBHSource;
         private System.Windows.Forms.Button bExportSingleCover;
+        private System.Windows.Forms.Button bCERFExportAll;
     }
 }
 

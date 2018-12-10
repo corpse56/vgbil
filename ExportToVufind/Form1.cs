@@ -12,8 +12,8 @@ using System.IO;
 using System.Security;
 using System.Xml.Linq;
 using System.Diagnostics;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+//using Newtonsoft.Json;
+//using Newtonsoft.Json.Linq;
 using LibflClassLibrary.ExportToVufind.BJ;
 using LibflClassLibrary.ExportToVufind.Litres;
 using LibflClassLibrary.ExportToVufind;
@@ -33,7 +33,7 @@ namespace ExportBJ_XML
         PeriodVuFindConverter period = new PeriodVuFindConverter("period");
         PearsonVuFindConverter pearson = new PearsonVuFindConverter("pearson");
         JBHVuFindConverter jbh = new JBHVuFindConverter();
-
+        CERFVufindConverter cerf = new CERFVufindConverter("CERF");
         Stopwatch sw;
 
         public Form1()
@@ -239,6 +239,13 @@ namespace ExportBJ_XML
             jbh.Export();
             StopTimer();
         }
+        private void bCERFExportAll_Click(object sender, EventArgs e)
+        {
+            StartTimer();
+            cerf.Export();
+            StopTimer();
+
+        }
 
         private void bjvvvCovers_Click(object sender, EventArgs e)
         {
@@ -355,5 +362,6 @@ namespace ExportBJ_XML
             BJVuFindConverter converter = new BJVuFindConverter(fnd);
             converter.ExportSingleCover(id);
         }
+
     }
 }
