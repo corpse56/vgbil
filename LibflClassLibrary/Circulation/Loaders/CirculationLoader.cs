@@ -32,6 +32,14 @@ namespace LibflClassLibrary.Circulation.Loaders
             return basket;
         }
 
+        internal List<OrderInfo> GetOrders(int idReader)
+        {
+            DataTable table = dbWrapper.GetOrders(idReader);
+            List<OrderInfo> Orders = new List<OrderInfo>();
+
+            return Orders;
+        }
+
         internal void InsertIntoUserBasket(ImpersonalBasket request)
         {
             foreach(string BookId in request.BookIdArray)

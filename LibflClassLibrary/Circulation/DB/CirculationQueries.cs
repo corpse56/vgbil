@@ -8,6 +8,8 @@ namespace LibflClassLibrary.Circulation.DB
 {
     class CirculationQueries
     {
+        internal SqlCommand GET_ORDERS;
+
         public string INSERT_INTO_USER_BASKET
         {
             get

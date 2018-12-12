@@ -28,7 +28,7 @@ namespace LibflClassLibrary.Circulation
 
         public List<OrderInfo> GetOrders(int idReader)
         {
-            return null;// loader.GetBasket(ReaderId);
+            return loader.GetOrders(idReader);
         }
     }
 }

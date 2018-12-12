@@ -11,30 +11,42 @@ namespace LibflClassLibrary.Circulation.DB
     class CirculationDBWrapper
     {
         private CirculationQueries Queries;
-        private string ConnectionString;
+        private string connectionString;
         public CirculationDBWrapper()
         {
-            ConnectionString = "Data Source=80.250.173.142;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+            connectionString = "Data Source=80.250.173.142;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
             Queries = new CirculationQueries();
         }
 
         internal DataTable GetBasket(int readerId)
         {
-            string connectionString = this.ConnectionString;
-            DataSet ds = new DataSet();
+            DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_BASKET, connection);
                 dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = readerId;
-                DataTable table = new DataTable();
+                
                 int cnt = dataAdapter.Fill(table);
-                return table;
             }
+            return table;
+        }
+
+        internal DataTable GetOrders(int idReader)
+        {
+            //////////////////////////////////////////
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_BASKET, connection);
+                dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = idReader;
+
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
         }
 
         internal void InsertIntoUserBasket(int iDReader, string bookId)
         {
-            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -47,7 +59,6 @@ namespace LibflClassLibrary.Circulation.DB
         }
         internal DataTable IsExistsInBasket(int iDReader, string bookId)
         {
-            string connectionString = this.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
