@@ -12,8 +12,7 @@ namespace LibflClassLibrary.ExportToVufind
 {
     public class CERFVufindConverter : VuFindConverter
     {
-        String Imagette, Titre, Auteur, Editeur, Collection, Annee;
-        int idbook;
+        private int idbook;
         public CERFVufindConverter(string Fund)
         {
             this.Fund = Fund;
@@ -22,9 +21,21 @@ namespace LibflClassLibrary.ExportToVufind
         public override VufindDoc CreateVufindDocument(object Record)
         {
             HtmlNode row = (HtmlNode)Record;
+            string Imagette, Titre, Auteur, Editeur, Collection, Annee;
+
+            var td_elements = row.SelectNodes("td");
+            //var record = new Record();
+            Imagette = td_elements[0].InnerText;
+            Titre = td_elements[1].InnerText;
+            Auteur = td_elements[2].InnerText;
+            Editeur = td_elements[3].InnerText;
+            Collection = td_elements[4].InnerText;
+            Annee = td_elements[5].InnerText;
+
+
 
             VufindDoc result = new VufindDoc();
-            result.id = idbook.ToString();
+            result.id = "CERF_"+idbook.ToString();
             result.fund = this.Fund;
             result.allfields = "";
             result.title.Add(Titre);
@@ -98,26 +109,17 @@ namespace LibflClassLibrary.ExportToVufind
             idbook = 0;
             foreach (HtmlNode book in books)
             {
-                var td_elements = book.SelectNodes("td");
-                //var record = new Record();
-                Imagette = td_elements[0].InnerText;
-                Titre = td_elements[1].InnerText;
-                Auteur = td_elements[2].InnerText;
-                Editeur = td_elements[3].InnerText;
-                Collection = td_elements[4].InnerText;
-                Annee = td_elements[5].InnerText;
 
                if (idbook > 0)
                 {
-                VufindDoc doc = this.CreateVufindDocument(book);
-                vfWriter.AppendVufindDoc(doc);
+                    VufindDoc doc = this.CreateVufindDocument(book);
+                    vfWriter.AppendVufindDoc(doc);
 
-                
                     //OnRecordExported
                     VuFindConverterEventArgs args = new VuFindConverterEventArgs();
-                args.RecordId = doc.id;
-                OnRecordExported(args);
-            }
+                    args.RecordId = doc.id;
+                    OnRecordExported(args);
+                }
                 idbook++;
             }
             vfWriter.FinishWriting();
