@@ -5034,6 +5034,32 @@
 /personal/Bin/HtmlAgilityPack.xml
 /WriteoffExcel/obj/Debug/DesignTimeResolveAssemblyReferences.cache
 /WriteoffExcel/obj/Debug/WriteoffExcel.csproj.GenerateResource.cache
+/WriteoffExcel/bin/Debug/LibflClassLibrary.dll.config
+/WriteoffExcel/bin/Debug/WriteoffExcel.exe.config
+/WriteoffExcel/obj/Debug/WriteoffExcel.csproj.CopyComplete
+/ALISAPI_TEST/bin/Debug/ALISReaderRemote.dll
+/ALISAPI_TEST/bin/Debug/ALISReaderRemote/ALISReaderRemote.dll
+/ALISAPI_TEST/bin/Debug/ALISReaderRemote/ForWork.dll
+/ALISAPI_TEST/bin/Debug/ForWork.dll
+/WriteoffExcel/bin/Debug/LibflClassLibrary.dll
+/WriteoffExcel/bin/Debug/MySql.Data.dll
+/WriteoffExcel/bin/Debug/Newtonsoft.Json.dll
+/WriteoffExcel/bin/Debug/WriteoffExcel.exe
+/WriteoffExcel/obj/Debug/WriteoffExcel.exe
+/BookkeepingForOrder/obj/Debug/build.force
+/circulationof/obj/Debug/build.force
+/WriteoffExcel/obj/Debug/build.force
+/WriteoffExcel/bin/Debug/LibflClassLibrary.pdb
+/WriteoffExcel/bin/Debug/WriteoffExcel.pdb
+/WriteoffExcel/obj/Debug/WriteoffExcel.pdb
+/WriteoffExcel/obj/Debug/WriteOff.FSelectAct.resources
+/WriteoffExcel/obj/Debug/WriteOff.fSelectFund.resources
+/WriteoffExcel/obj/Debug/WriteoffExcel.Properties.Resources.resources
+/ALISAPI_TEST/bin/Debug/ALISReaderRemote/ForSendEmail.txt
+/WriteoffExcel/obj/Debug/WriteoffExcel.csproj.FileListAbsolute.txt
+/WriteoffExcel/bin/Debug/Newtonsoft.Json.xml
+/WriteoffExcel/obj/Debug/DesignTimeResolveAssemblyReferences.cache
+/WriteoffExcel/obj/Debug/WriteoffExcel.csproj.GenerateResource.cache
 /VufindIncrementUpdate/bin/Debug/NLog.config
 /WriteoffExcel/bin/Debug/LibflClassLibrary.dll.config
 /WriteoffExcel/bin/Debug/WriteoffExcel.exe.config
@@ -5089,3 +5115,5 @@
 /VufindIncrementUpdate/bin/Debug/HtmlAgilityPack.xml
 /WriteoffExcel/bin/Debug/HtmlAgilityPack.xml
 /WriteoffExcel/bin/Debug/Newtonsoft.Json.xml
+/ExampleProjects/dynamic example/dynamic example.sln
+/ExampleProjects/visitor example/visitor example.sln
