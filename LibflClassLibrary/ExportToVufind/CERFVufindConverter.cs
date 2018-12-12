@@ -12,6 +12,8 @@ namespace LibflClassLibrary.ExportToVufind
 {
     public class CERFVufindConverter : VuFindConverter
     {
+        String Imagette, Titre, Auteur, Editeur, Collection, Annee;
+        int idbook;
         public CERFVufindConverter(string Fund)
         {
             this.Fund = Fund;
@@ -22,12 +24,13 @@ namespace LibflClassLibrary.ExportToVufind
             HtmlNode row = (HtmlNode)Record;
 
             VufindDoc result = new VufindDoc();
-            result.id = "1";
+            result.id = idbook.ToString();
             result.fund = this.Fund;
             result.allfields = "";
-            result.title.Add("");
-            result.author.Add("1");
-            result.author.Add("2");
+            result.title.Add(Titre);
+            result.author.Add(Auteur);
+            result.publishDate.Add(Annee);
+            result.publisher.Add(Editeur);
 
 
 
@@ -80,31 +83,45 @@ namespace LibflClassLibrary.ExportToVufind
         {
             VufindXMLWriter vfWriter = new VufindXMLWriter("CERF");//Jewish Book House
 
-            vfWriter.StartVufindXML(@"D:\HOME\ВГБИЛ\" + Fund.ToLower() + ".xml");
+            vfWriter.StartVufindXML(@"D:\VGBIL\" + Fund.ToLower() + ".xml");
 
+           
             //string[] JHB = File.ReadAllLines(@"D:\HOME\ВГБИЛ\jbh_source_pasted.txt");
 
-
             HtmlDocument BooksDocument = new HtmlDocument();
-            BooksDocument.Load(@"d:\HOME\ВГБИЛ\WATERBEAR\waterbear.htm");
+            BooksDocument.Load(@"d:\VGBIL\WATERBEAR\waterbear.htm");
             HtmlDocument ExemplarsDocument = new HtmlDocument();
-            ExemplarsDocument.Load(@"d:\HOME\ВГБИЛ\WATERBEAR\waterbear (exemplaires).htm");
+            ExemplarsDocument.Load(@"d:\VGBIL\WATERBEAR\waterbear (exemplaires).htm");
             //Linq
 
             var books = BooksDocument.DocumentNode.Descendants("tr");
-            
+            idbook = 0;
             foreach (HtmlNode book in books)
             {
+                var td_elements = book.SelectNodes("td");
+                //var record = new Record();
+                Imagette = td_elements[0].InnerText;
+                Titre = td_elements[1].InnerText;
+                Auteur = td_elements[2].InnerText;
+                Editeur = td_elements[3].InnerText;
+                Collection = td_elements[4].InnerText;
+                Annee = td_elements[5].InnerText;
+
+               if (idbook > 0)
+                {
                 VufindDoc doc = this.CreateVufindDocument(book);
                 vfWriter.AppendVufindDoc(doc);
 
-
-                //OnRecordExported
-                VuFindConverterEventArgs args = new VuFindConverterEventArgs();
+                
+                    //OnRecordExported
+                    VuFindConverterEventArgs args = new VuFindConverterEventArgs();
                 args.RecordId = doc.id;
                 OnRecordExported(args);
             }
+                idbook++;
+            }
             vfWriter.FinishWriting();
+
         }
 
         public override void ExportCovers()
