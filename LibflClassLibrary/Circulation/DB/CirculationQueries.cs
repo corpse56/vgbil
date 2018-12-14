@@ -8,7 +8,6 @@ namespace LibflClassLibrary.Circulation.DB
 {
     class CirculationQueries
     {
-        internal SqlCommand GET_ORDERS;
 
         public string INSERT_INTO_USER_BASKET
         {
@@ -33,5 +32,13 @@ namespace LibflClassLibrary.Circulation.DB
                 return "select 1 from Circulation..Basket where ReaderId = @IDReader and BookId = @BookID";
             }
         }
+        public string GET_ORDERS
+        {
+            get
+            {
+                return "select ID OrderId ,from Circulation..Orders ";
+            }
+        }
+
     }
 }

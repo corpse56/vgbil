@@ -37,7 +37,7 @@ namespace LibflClassLibrary.Circulation.DB
             DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_BASKET, connection);
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS, connection);
                 dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = idReader;
 
                 int cnt = dataAdapter.Fill(table);

@@ -42,5 +42,19 @@ namespace LibflClassLibrary.Writeoff
         {
             return loader.GetBooksPerYearAnotherFundholder(Year);
         }
+
+        public List<BJExemplarInfo> GetBooksPerYearInActNameAB(int Year)
+        {
+            return loader.GetBooksPerYearInActNameAB(Year);
+        }
+        public List<BJExemplarInfo> GetBooksPerYearInActNameOF(int Year)
+        {
+            return loader.GetBooksPerYearInActNameOF(Year);
+        }
+        public List<BJExemplarInfo> GetBooksPerYearInActNameAnotherFundholder(int Year)
+        {
+            return loader.GetBooksPerYearInActNameAnotherFundholder(Year);
+        }
+
     }
 }

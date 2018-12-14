@@ -12,6 +12,8 @@ namespace LibflClassLibrary.Writeoff.DB
     {
         private string Fund;
         private WriteoffQueries WQueries;
+        private string connectionString = AppSettings.ConnectionString;
+
         public WriteoffDatabaseWrapper(string Fund)
         {
             this.Fund = Fund;
@@ -21,7 +23,6 @@ namespace LibflClassLibrary.Writeoff.DB
 
         internal DataTable GetWriteoffActs(int year)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -35,7 +36,6 @@ namespace LibflClassLibrary.Writeoff.DB
 
         internal DataTable GetBooksByAct(string actNumber)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -48,7 +48,6 @@ namespace LibflClassLibrary.Writeoff.DB
 
         internal DataTable GetBooksPerYear(int year, string prefix)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -63,7 +62,6 @@ namespace LibflClassLibrary.Writeoff.DB
 
         internal DataTable GetBooksPerYearAnotherFundholder(int year)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -74,10 +72,43 @@ namespace LibflClassLibrary.Writeoff.DB
                 return table;
             }
         }
+        internal DataTable GetBooksPerYearInActNameOF(int year)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(WQueries.GET_EXEMPLARS_BY_DEL_ACTS_PER_YEAR_IN_ACTNAME_OF, connection);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("year", SqlDbType.NVarChar).Value = year.ToString();
+                int i = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+        internal DataTable GetBooksPerYearInActNameAB(int year)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(WQueries.GET_EXEMPLARS_BY_DEL_ACTS_PER_YEAR_IN_ACTNAME_AB, connection);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("year", SqlDbType.NVarChar).Value = year.ToString();
+                int i = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+        internal DataTable GetBooksPerYearInActNameAnotherFundholder(int year)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(WQueries.GET_EXEMPLARS_BY_DEL_ACTS_PER_YEAR_IN_ACTNAME_ANOTHER_FUNDHOLDER, connection);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("year", SqlDbType.NVarChar).Value = year.ToString();
+                int i = dataAdapter.Fill(table);
+                return table;
+            }
+        }
 
+        
         internal DataTable GetDepartments()
         {
-            string connectionString = AppSettings.ConnectionString;
             DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

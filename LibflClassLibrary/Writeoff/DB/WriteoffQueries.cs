@@ -65,7 +65,50 @@ namespace LibflClassLibrary.Writeoff.DB
                     " and charindex(lower('оф'),lower(SORT)) = 0";
             }
         }
-        
+
+        public string GET_EXEMPLARS_BY_DEL_ACTS_PER_YEAR_IN_ACTNAME_AB
+        {
+            get
+            {
+                return "select distinct DATAEXT.IDDATA " +
+                       " from " + this.Fund + "..DATAEXT " +
+                       " left join " + this.Fund + "..DATAEXTPLAIN on DATAEXT.ID = DATAEXTPLAIN.IDDATAEXT " +
+                       " where MNFIELD = 929 and MSFIELD = '$b' " +
+                       "  and charindex(lower('АКТ'),lower(SORT)) > 0 " +
+                       "  and charindex(lower('аб'),lower(SORT)) > 0 " +
+                       "  and charindex(lower('оф'),lower(SORT)) = 0 " +
+                       "  and SUBSTRING(PLAIN, charindex('/',PLAIN)+1, 2) = @year ";
+            }
+        }
+        public string GET_EXEMPLARS_BY_DEL_ACTS_PER_YEAR_IN_ACTNAME_OF
+        {
+            get
+            {
+                return "select distinct DATAEXT.IDDATA " +
+                       " from " + this.Fund + "..DATAEXT " +
+                       " left join " + this.Fund + "..DATAEXTPLAIN on DATAEXT.ID = DATAEXTPLAIN.IDDATAEXT " +
+                       " where MNFIELD = 929 and MSFIELD = '$b' " +
+                       "  and charindex(lower('АКТ'),lower(SORT)) > 0 " +
+                       "  and charindex(lower('аб'),lower(SORT)) = 0 " +
+                       "  and charindex(lower('оф'),lower(SORT)) > 0 " +
+                       "  and SUBSTRING(PLAIN, charindex('/',PLAIN)+1, 2) = @year ";
+            }
+        }
+        public string GET_EXEMPLARS_BY_DEL_ACTS_PER_YEAR_IN_ACTNAME_ANOTHER_FUNDHOLDER
+        {
+            get
+            {
+                return "select distinct DATAEXT.IDDATA " +
+                       " from " + this.Fund + "..DATAEXT " +
+                       " left join " + this.Fund + "..DATAEXTPLAIN on DATAEXT.ID = DATAEXTPLAIN.IDDATAEXT " +
+                       " where MNFIELD = 929 and MSFIELD = '$b' " +
+                       "  and charindex(lower('АКТ'),lower(SORT)) > 0 " +
+                       "  and charindex(lower('аб'),lower(SORT)) = 0 " +
+                       "  and charindex(lower('оф'),lower(SORT)) = 0 " +
+                       "  and SUBSTRING(PLAIN, charindex('/',PLAIN)+1, 2) = @year ";
+            }
+        }
+
 
 
     }

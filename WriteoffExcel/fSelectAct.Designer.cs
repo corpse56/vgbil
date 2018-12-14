@@ -39,6 +39,9 @@ namespace WriteOff
             this.bMakeActForYear = new System.Windows.Forms.Button();
             this.bMakeActPerYearOF = new System.Windows.Forms.Button();
             this.bAnotherFundholder = new System.Windows.Forms.Button();
+            this.bByYearInActNameOF = new System.Windows.Forms.Button();
+            this.bByYearInActNameAB = new System.Windows.Forms.Button();
+            this.bByYearInActNameAnotherFundholder = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bCreateAct
@@ -164,11 +167,44 @@ namespace WriteOff
             this.bAnotherFundholder.UseVisualStyleBackColor = true;
             this.bAnotherFundholder.Click += new System.EventHandler(this.bAnotherFundholder_Click);
             // 
+            // bByYearInActNameOF
+            // 
+            this.bByYearInActNameOF.Location = new System.Drawing.Point(12, 287);
+            this.bByYearInActNameOF.Name = "bByYearInActNameOF";
+            this.bByYearInActNameOF.Size = new System.Drawing.Size(460, 23);
+            this.bByYearInActNameOF.TabIndex = 6;
+            this.bByYearInActNameOF.Text = "Сделать акт за целый год ОФ год взять из названия акта";
+            this.bByYearInActNameOF.UseVisualStyleBackColor = true;
+            this.bByYearInActNameOF.Click += new System.EventHandler(this.bByYearInActNameOF_Click);
+            // 
+            // bByYearInActNameAB
+            // 
+            this.bByYearInActNameAB.Location = new System.Drawing.Point(12, 315);
+            this.bByYearInActNameAB.Name = "bByYearInActNameAB";
+            this.bByYearInActNameAB.Size = new System.Drawing.Size(460, 23);
+            this.bByYearInActNameAB.TabIndex = 7;
+            this.bByYearInActNameAB.Text = "Сделать акт за целый год АБ год взять из названия акта";
+            this.bByYearInActNameAB.UseVisualStyleBackColor = true;
+            this.bByYearInActNameAB.Click += new System.EventHandler(this.bByYearInActNameAB_Click);
+            // 
+            // bByYearInActNameAnotherFundholder
+            // 
+            this.bByYearInActNameAnotherFundholder.Location = new System.Drawing.Point(12, 344);
+            this.bByYearInActNameAnotherFundholder.Name = "bByYearInActNameAnotherFundholder";
+            this.bByYearInActNameAnotherFundholder.Size = new System.Drawing.Size(609, 23);
+            this.bByYearInActNameAnotherFundholder.TabIndex = 8;
+            this.bByYearInActNameAnotherFundholder.Text = "Сделать акт за целый год ДРУГИЕ ФОНДОДЕРЖАТЕЛИ год взять из названия акта";
+            this.bByYearInActNameAnotherFundholder.UseVisualStyleBackColor = true;
+            this.bByYearInActNameAnotherFundholder.Click += new System.EventHandler(this.bByYearInActNameAnotherFundholder_Click);
+            // 
             // FSelectAct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(804, 296);
+            this.ClientSize = new System.Drawing.Size(804, 412);
+            this.Controls.Add(this.bByYearInActNameAnotherFundholder);
+            this.Controls.Add(this.bByYearInActNameAB);
+            this.Controls.Add(this.bByYearInActNameOF);
             this.Controls.Add(this.bAnotherFundholder);
             this.Controls.Add(this.bMakeActPerYearOF);
             this.Controls.Add(this.bMakeActForYear);
@@ -203,6 +239,9 @@ namespace WriteOff
         private System.Windows.Forms.Button bMakeActForYear;
         private System.Windows.Forms.Button bMakeActPerYearOF;
         private System.Windows.Forms.Button bAnotherFundholder;
+        private System.Windows.Forms.Button bByYearInActNameOF;
+        private System.Windows.Forms.Button bByYearInActNameAB;
+        private System.Windows.Forms.Button bByYearInActNameAnotherFundholder;
     }
 }
 

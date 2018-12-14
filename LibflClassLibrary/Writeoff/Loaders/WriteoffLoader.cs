@@ -65,6 +65,39 @@ namespace LibflClassLibrary.Writeoff.Loaders
             }
             return result;
         }
+        internal List<BJExemplarInfo> GetBooksPerYearInActNameAB(int year)
+        {
+            DataTable table = db.GetBooksPerYearInActNameAB(year);
+            List<BJExemplarInfo> result = new List<BJExemplarInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                BJExemplarInfo b = BJExemplarInfo.GetExemplarByIdData((int)row["IDDATA"], Fund);
+                result.Add(b);
+            }
+            return result;
+        }
+        internal List<BJExemplarInfo> GetBooksPerYearInActNameOF(int year)
+        {
+            DataTable table = db.GetBooksPerYearInActNameOF(year);
+            List<BJExemplarInfo> result = new List<BJExemplarInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                BJExemplarInfo b = BJExemplarInfo.GetExemplarByIdData((int)row["IDDATA"], Fund);
+                result.Add(b);
+            }
+            return result;
+        }
+        internal List<BJExemplarInfo> GetBooksPerYearInActNameAnotherFundholder(int year)
+        {
+            DataTable table = db.GetBooksPerYearInActNameAnotherFundholder(year);
+            List<BJExemplarInfo> result = new List<BJExemplarInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                BJExemplarInfo b = BJExemplarInfo.GetExemplarByIdData((int)row["IDDATA"], Fund);
+                result.Add(b);
+            }
+            return result;
+        }
 
         public Dictionary<string, string> GetWriteoffActs(int year)
         {

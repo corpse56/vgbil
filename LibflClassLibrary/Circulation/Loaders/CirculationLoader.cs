@@ -36,7 +36,10 @@ namespace LibflClassLibrary.Circulation.Loaders
         {
             DataTable table = dbWrapper.GetOrders(idReader);
             List<OrderInfo> Orders = new List<OrderInfo>();
+            foreach(DataRow row in table.Rows)
+            {
 
+            }
             return Orders;
         }
 

@@ -112,7 +112,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             var list = record.AsEnumerable();
             DataRow row = list.FirstOrDefault(x => (int)x["MNFIELD"] == 338 && x["MSFIELD"].ToString() == "$b");
             if (row != null) return false;
-            row = list.First(x => (int)x["MNFIELD"] == 899 && x["MSFIELD"].ToString() == "$x" && x["SORT"].ToString().ToLower() == "э");
+            row = list.FirstOrDefault(x => (int)x["MNFIELD"] == 899 && x["MSFIELD"].ToString() == "$x" && x["SORT"].ToString().ToLower() == "э");
             if (row != null) return false;
 
 
