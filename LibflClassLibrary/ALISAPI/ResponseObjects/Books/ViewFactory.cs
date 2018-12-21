@@ -111,9 +111,10 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             foreach(BJExemplarInfo exemplar in bjBook.Exemplars)
             {
                 ExemplarSimpleView ExemplarView = new ExemplarSimpleView();
+                if (exemplar.Fields["929$b"].MNFIELD != 0) continue;
                 ExemplarView.Barcode = exemplar.Fields["899$w"].ToString();
                 ExemplarView.Carrier = exemplar.Fields["921$a"].ToString();
-                ExemplarView.CarrierCode = KeyValueMapping.CarrierNameToCode[ExemplarView.Carrier];
+                //ExemplarView.CarrierCode = KeyValueMapping.CarrierNameToCode[ExemplarView.Carrier];
                 ExemplarView.ID = exemplar.IdData;
                 ExemplarView.InventoryNote = exemplar.Fields["899$x"].ToString();
                 ExemplarView.InventoryNumber = exemplar.Fields["899$p"].ToString();
@@ -124,7 +125,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 ExemplarView.AccessCode = exemplar.ExemplarAccess.Access;
                 ExemplarView.Access = KeyValueMapping.AccessCodeToName[ExemplarView.AccessCode];
                 ExemplarView.RackLocation = exemplar.Fields["899$c"].ToString();
-                ExemplarView.Status = "Свободно";
+                ExemplarView.Status = exemplar.IsIssuedToReader() ? "Занято" : "Свободно";
                 result.Add(ExemplarView);
             }
             return result;

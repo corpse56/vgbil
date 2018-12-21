@@ -61,7 +61,8 @@ namespace LibflClassLibrary.Readers.DB
 
         internal DataTable GetReaderIdByOAuthToken(string token)
         {
-            string connectionString = AppSettings.OauthMySqlConnectionString;
+            //string connectionString = AppSettings.OauthMySqlConnectionString;
+            string connectionString = AppSettings.DevOauthMySqlConnectionString;
             DataTable table = new DataTable();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {

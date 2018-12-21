@@ -14,7 +14,8 @@ namespace LibflClassLibrary.Circulation.DB
         private string connectionString;
         public CirculationDBWrapper()
         {
-            connectionString = "Data Source=80.250.173.142;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+            //connectionString = "Data Source=80.250.173.142;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+            connectionString = "Data Source=127.0.0.1;Initial Catalog=Circulation;Integrated Security=True;Connect Timeout=1200";
             Queries = new CirculationQueries();
         }
 

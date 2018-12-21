@@ -144,6 +144,18 @@ namespace LibflClassLibrary.ExportToVufind
                 //return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=alisapi;Pwd=api_alis_pwd;Database=libfl_oauth;SslMode=None";
             }
         }
+        public static string DevOauthMySqlConnectionString
+        {
+            get
+            {
+                //старый пароль до аварии
+                //return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=oauth;Pwd=oauthpwd;Database=oauth";
+                //новый пароль и пользователь. Доступ только с 80.250.173.142 и с моих локальных айпишников
+                return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=alis;Pwd=dibagura23s;Database=libfl_oauth;SslMode=None";
+                //return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=alisapi;Pwd=api_alis_pwd;Database=libfl_oauth;SslMode=None";
+                //return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=alisapi;Pwd=api_alis_pwd;Database=libfl_oauth;SslMode=None";
+            }
+        }
 
 
 
@@ -161,5 +173,5 @@ namespace LibflClassLibrary.ExportToVufind
         //<add name="PasswordFileServer" providerName="System.Data.SqlClient" connectionString="Image_123Viewer"/>
 
     }
-    
+
 }

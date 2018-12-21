@@ -48,7 +48,7 @@ namespace ALISAPI.Controllers
         }
 
         /// <summary>
-        /// Получает заказы читателя и их статусы
+        /// Получает заказы читателя и их статусы. Описание книги и её экземпляры включено в объект заказа.
         /// </summary>
         /// <param name="idReader">Номер читательского билета</param>
         /// <returns>Заказы читателя</returns>
@@ -60,20 +60,14 @@ namespace ALISAPI.Controllers
 
             CirculationInfo Circulation = new CirculationInfo();
             List<OrderInfo> result = new List<OrderInfo>();
-            List<BasketInfo> basket;
             try
             {
                 result = Circulation.GetOrders(idReader);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
             }
-            //foreach (BasketInfo bi in basket)
-            //{
-            //    result.Add(bi.Book);
-            //}
-
             return ALISResponseFactory.CreateResponse(result, Request);
         }
 

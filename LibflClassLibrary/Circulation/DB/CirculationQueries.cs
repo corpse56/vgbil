@@ -36,7 +36,7 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "select ID OrderId ,from Circulation..Orders ";
+                return "select * from Reservation_R..ALISOrders where ReaderId = @ReaderId";
             }
         }
 

@@ -82,8 +82,8 @@ namespace ALISAPI_TEST
         private void ReadersGetByOauthToken_Click(object sender, EventArgs e)
         {
             AccessToken request = new AccessToken();
-            request.TokenValue = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDI3MDk5NTQsImlzcyI6Im9hdXRoLmxpYmZsLnJ1IiwiZXhwIjoxNTQyNzExNzU0LCJ1aWQiOjIwMTEyNSwiY2lkIjoicHVibGljcnUifQ.r39ktS9enEd1dRCV9auiEmCfFxOOj7SfdcNDcEmb6z8";
-            request.TokenValue = null;
+            request.TokenValue = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDUyMTgyNjgsImlzcyI6ImRldi1vYXV0aC5saWJmbC5ydSIsImV4cCI6MTU0NTIyMDA2OCwidWlkIjo4ODgsImNpZCI6ImxpYmZsIn0.yA400r1Trn7ngoEaBSwBGvdX1-rkkDD8UDkTZdXutQg";
+            //request.TokenValue = null;
             string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
             
             using (HttpClient client = new HttpClient())

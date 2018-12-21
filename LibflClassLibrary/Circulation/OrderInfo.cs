@@ -30,7 +30,7 @@ namespace LibflClassLibrary.Circulation
         public int ReaderId { get; set; }
         public string StatusName { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime ReturnDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
         public DateTime? FactReturnDate { get; set; }
         public int AnotherReaderId { get; set; }
         public string IssueDep { get; set; }

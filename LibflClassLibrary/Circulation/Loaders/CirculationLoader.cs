@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
+using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Circulation.DB;
 using System;
 using System.Collections.Generic;
@@ -36,9 +37,24 @@ namespace LibflClassLibrary.Circulation.Loaders
         {
             DataTable table = dbWrapper.GetOrders(idReader);
             List<OrderInfo> Orders = new List<OrderInfo>();
+            int i = 0;
             foreach(DataRow row in table.Rows)
             {
-
+                i++;
+                OrderInfo order = new OrderInfo();
+                order.AnotherReaderId = (row["AnotherReaderId"] == DBNull.Value) ? 0 : Convert.ToInt32(row["AnotherReaderId"]);
+                order.BookId = row["BookId"].ToString();
+                order.ExemplarId = (int)row["ExemplarId"];
+                order.FactReturnDate = (row["FactReturnDate"] == DBNull.Value) ? null : (DateTime?)row["FactReturnDate"];
+                order.IssueDep = row["IssueDepId"].ToString();
+                order.OrderId = i;
+                order.ReaderId = (int)row["ReaderId"];
+                order.ReturnDate = (row["ReturnDate"] == DBNull.Value) ? null : (DateTime?)row["ReturnDate"]; 
+                order.ReturnDep = row["ReturnDepId"].ToString();
+                order.StartDate = (DateTime)row["StartDate"];
+                order.StatusName = row["StatusName"].ToString();
+                order.Book = ViewFactory.GetBookSimpleView(order.BookId);
+                Orders.Add(order);
             }
             return Orders;
         }
