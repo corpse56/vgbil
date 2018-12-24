@@ -29,7 +29,7 @@ namespace ALISAPI.Controllers
         {
 
             CirculationInfo Circulation = new CirculationInfo();
-            List<BookSimpleView> result = new List<BookSimpleView>();
+            //List<BookSimpleView> result = new List<BookSimpleView>();
             List<BasketInfo> basket;
             try
             {
@@ -39,12 +39,12 @@ namespace ALISAPI.Controllers
             {
                 return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
             }
-            foreach (BasketInfo bi in basket)
-            {
-                result.Add(bi.Book);
-            }
+            //foreach (BasketInfo bi in basket)
+            //{
+            //    result.Add(bi.Book);
+            //}
 
-            return ALISResponseFactory.CreateResponse(result, Request);
+            return ALISResponseFactory.CreateResponse(basket, Request);
         }
 
         /// <summary>
@@ -71,6 +71,31 @@ namespace ALISAPI.Controllers
             return ALISResponseFactory.CreateResponse(result, Request);
         }
 
+
+
+        // возможные действия вошли в корзину не надо отдельного метода.
+        ///// <summary>
+        ///// Выдаёт варианты действия с книгой. Их всего 4: Выдать на дом, выдать в зал, Выдать электронную копию и действия невозможны.
+        ///// </summary>
+        ///// <param name="idReader">Номер читательского билета</param>
+        ///// <returns>Варианты действий читателя с книгой</returns>
+        //[HttpPost]
+        //[Route("Circulation/AcceptableActions")]
+        //[ResponseType(typeof(List<BookSimpleView>))]
+        //public HttpResponseMessage AcceptableActions()
+        //{
+        //    //получить массив ID книг и номер читателя
+        //    List<string> result = new List<string>();
+        //    try
+        //    {
+        //        //возвратить возможные действия с книгой для этого читателя
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+        //    }
+        //    return ALISResponseFactory.CreateResponse(result, Request);
+        //}
 
         /// <summary>
         /// Вставить в персональную корзину читателя список id книг. Метод нужно вызывать после авторизации.

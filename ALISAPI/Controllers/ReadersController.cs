@@ -67,39 +67,39 @@ namespace ALISAPI.Controllers
             return ALISResponseFactory.CreateResponse(reader, Request);
         }
 
+        //этот метод решили просто убрать. он не нужен, так как токены будет проверять сервер авторизации
+        ///// <summary>
+        ///// Получить читателя по oauth-токену
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpPost]
+        //[Route("Readers/GetByOauthToken")]
+        //[ResponseType(typeof(ReaderInfo))]
+        //public HttpResponseMessage GetByOauthToken()
+        //{
+        //    string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+        //    AccessToken request;
+        //    try
+        //    {
+        //        request = JsonConvert.DeserializeObject<AccessToken>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+        //    }
+        //    catch
+        //    {
+        //        return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+        //    }
 
-        /// <summary>
-        /// Получить читателя по oauth-токену
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("Readers/GetByOauthToken")]
-        [ResponseType(typeof(ReaderInfo))]
-        public HttpResponseMessage GetByOauthToken()
-        {
-            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
-            AccessToken request;
-            try
-            {
-                request = JsonConvert.DeserializeObject<AccessToken>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
-            }
-            catch
-            {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
-            }
+        //    ReaderInfo reader;
+        //    try
+        //    {
+        //        reader = ReaderInfo.GetReaderByOAuthToken(request);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+        //    }
 
-            ReaderInfo reader;
-            try
-            {
-                reader = ReaderInfo.GetReaderByOAuthToken(request);
-            }
-            catch (Exception ex)
-            {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
-            }
-
-            return ALISResponseFactory.CreateResponse(reader, Request);
-        }
+        //    return ALISResponseFactory.CreateResponse(reader, Request);
+        //}
 
         /// <summary>
         /// Изменить пароль читателя по номеру читателя и дате его рождения

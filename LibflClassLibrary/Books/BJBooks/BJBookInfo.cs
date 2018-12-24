@@ -97,7 +97,12 @@ namespace LibflClassLibrary.Books.BJBooks
             }
             return result;
         }
-
+        public static BJBookInfo GetBookInfoByPIN(string FullPin)
+        {
+            string fund = FullPin.Substring(0, FullPin.IndexOf("_"));
+            int IDRecord = int.Parse(FullPin.Substring(FullPin.LastIndexOf("_") + 1));
+            return BJBookInfo.GetBookInfoByPIN(IDRecord, fund);
+        }
         public static BJBookInfo GetBookInfoByInventoryNumber(string inv, string fund)
         {
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
