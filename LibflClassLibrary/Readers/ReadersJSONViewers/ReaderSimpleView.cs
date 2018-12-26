@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LibflClassLibrary.ALISAPI.RequestObjects.Readers
+namespace LibflClassLibrary.Readers.ReadersJSONViewers
 {
-    public class PreRegisterRemoteReader
+    public class ReaderSimpleView
     {
         public string FamilyName { get; set; }
         public string Name { get; set; }
         public string FatherName { get; set; }
-        public string BirthDate { get; set; }
+        public int NumberReader { get; set; }
         public string Email { get; set; }
-        public int CountryId { get; set; }
         public string MobilePhone { get; set; }
-        public string Password { get; set; }
+
     }
 }

@@ -19,8 +19,11 @@ namespace ALISAPI
             var jsonFormatter = new JsonMediaTypeFormatter();
             jsonFormatter.SupportedMediaTypes.Clear();
             jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
+            //var JsonDateFormatter = new JsonMediaTypeFormatter();//config.Formatters.JsonFormatter;
+            //JsonDateFormatter.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
 
-            GlobalConfiguration.Configuration.Formatters.Add(jsonFormatter);
+            //GlobalConfiguration.Configuration.Formatters.Add(jsonFormatter);
+            //GlobalConfiguration.Configuration.Formatters.Add(JsonDateFormatter);
 
 
 

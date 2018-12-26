@@ -120,12 +120,14 @@ namespace LibflClassLibrary.Circulation.Loaders
                 order.BookId = row["BookId"].ToString();
                 order.ExemplarId = (int)row["ExemplarId"];
                 order.FactReturnDate = (row["FactReturnDate"] == DBNull.Value) ? null : (DateTime?)row["FactReturnDate"];
+                //order.FactReturnDate = (!order.FactReturnDate.HasValue) ? null : new DateTime?(new DateTime(order.FactReturnDate.Value.Ticks, DateTimeKind.Utc));
                 order.IssueDep = row["IssueDepId"].ToString();
                 order.OrderId = i;
                 order.ReaderId = (int)row["ReaderId"];
                 order.ReturnDate = (row["ReturnDate"] == DBNull.Value) ? null : (DateTime?)row["ReturnDate"]; 
                 order.ReturnDep = row["ReturnDepId"].ToString();
                 order.StartDate = (DateTime)row["StartDate"];
+               // order.StartDate = order.StartDate.ToUniversalTime();//new DateTime(order.StartDate.Ticks, DateTimeKind.Utc);
                 order.StatusName = row["StatusName"].ToString();
                 order.Book = ViewFactory.GetBookSimpleView(order.BookId);
                 Orders.Add(order);

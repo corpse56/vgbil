@@ -116,6 +116,7 @@
     <Compile Include="ALISAPI\ResponseObjects\Books\ViewFactory.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Readers\LoginType.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Circulation\ReaderBasket.cs" />
+    <Compile Include="ALISAPI\ResponseObjects\Readers\ReaderViewFactory.cs" />
     <Compile Include="Books\BJBooks\BJBookJsonConverter.cs" />
     <Compile Include="Books\BJBooks\BJExemplars\BJElectronicExemplarAvailabilityStatus.cs" />
     <Compile Include="Books\BJBooks\Loaders\BJBookLoader.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Readers\DB\ReaderQueries.cs" />
     <Compile Include="Readers\DB\ReaderDatabaseWrapper.cs" />
     <Compile Include="Readers\Loaders\ReaderLoader.cs" />
+    <Compile Include="Readers\ReadersJSONViewers\ReaderSimpleView.cs" />
     <Compile Include="Readers\ReadersRight\ReaderRight.cs" />
     <Compile Include="Readers\ReadersRight\ReaderRightsEnum.cs" />
     <Compile Include="Readers\ReadersRight\ReaderRightsInfo.cs" />

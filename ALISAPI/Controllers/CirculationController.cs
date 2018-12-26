@@ -24,12 +24,11 @@ namespace ALISAPI.Controllers
         /// <returns>Содержимое корзины</returns>
         [HttpGet]
         [Route("Circulation/Basket/{idReader}")]
-        [ResponseType(typeof(List<BookSimpleView>))]
-        public HttpResponseMessage Get([Description("Номер чит билета")]int idReader)
+        [ResponseType(typeof(List<BasketInfo>))]
+        public HttpResponseMessage Basket([Description("Номер чит билета")]int idReader)
         {
 
             CirculationInfo Circulation = new CirculationInfo();
-            //List<BookSimpleView> result = new List<BookSimpleView>();
             List<BasketInfo> basket;
             try
             {
@@ -39,11 +38,6 @@ namespace ALISAPI.Controllers
             {
                 return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
             }
-            //foreach (BasketInfo bi in basket)
-            //{
-            //    result.Add(bi.Book);
-            //}
-
             return ALISResponseFactory.CreateResponse(basket, Request);
         }
 
@@ -54,10 +48,9 @@ namespace ALISAPI.Controllers
         /// <returns>Заказы читателя</returns>
         [HttpGet]
         [Route("Circulation/Orders/{idReader}")]
-        [ResponseType(typeof(List<BookSimpleView>))]
+        [ResponseType(typeof(List<OrderInfo>))]
         public HttpResponseMessage Orders([Description("Номер чит билета")]int idReader)
         {
-
             CirculationInfo Circulation = new CirculationInfo();
             List<OrderInfo> result = new List<OrderInfo>();
             try

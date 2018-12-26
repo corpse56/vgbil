@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -34,7 +35,7 @@ namespace LibflClassLibrary.Readers
         public DateTime DateBirth { get; set; }
         public bool IsRemoteReader { get; set; }
         public string BarCode { get; set; }
-        public DateTime DateRegistration { get; set; }
+        public DateTime DateRegistration { get { return new DateTime(DateRegistration.Ticks, DateTimeKind.Utc); } set { } }
         public DateTime DateReRegistration { get; set; }
         public string MobileTelephone { get; set; }
         public string Email { get; set; }
@@ -161,7 +162,13 @@ namespace LibflClassLibrary.Readers
 
         public void ChangePasswordLocalReader(ChangePasswordLocalReader request)
         {
-            if (this.DateBirth.Date != request.DateBirth.Date)
+            DateTime DateBirth;
+            if (!DateTime.TryParseExact(request.DateBirth, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateBirth))
+            {
+                throw new Exception("G001");
+            }
+
+            if (this.DateBirth.Date != DateBirth.Date)
             {
                 throw new Exception("R005");
             }

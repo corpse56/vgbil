@@ -7,7 +7,10 @@ using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
+using LibflClassLibrary.ALISAPI.ResponseObjects.Readers;
+using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Readers;
+using LibflClassLibrary.Readers.ReadersJSONViewers;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -89,7 +92,8 @@ namespace ALISAPI.Areas.HelpPage
 
             ReaderInfo reader = ReaderInfo.GetReader(189245);
             //Readers.Get
-            string json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            ReaderSimpleView rsv = ReaderViewFactory.GetReaderSimpleView(reader);
+            string json = JsonConvert.SerializeObject(rsv, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "Get");
 
 
@@ -99,16 +103,23 @@ namespace ALISAPI.Areas.HelpPage
             json = JsonConvert.SerializeObject(token, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetByOauthToken");
 
-            json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            json = JsonConvert.SerializeObject(rsv, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetByOauthToken");
 
             //Readers.ChangePasswordLocalReader
             ChangePasswordLocalReader password = new ChangePasswordLocalReader();
-            password.DateBirth = new DateTime(1984, 2, 14);
+            password.DateBirth = "1984-02-14";// new DateTime(1984, 2, 14);
             password.NewPassword = "123";
             password.NumberReader = 189245;
             json = JsonConvert.SerializeObject(password, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ChangePassword");
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ChangePasswordLocalReader");
+
+            //Readers.GetLoginType
+            LoginType ltype = new LoginType();
+            ltype.LoginTypeValue = "Email";
+            json = JsonConvert.SerializeObject(ltype, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetLoginType");
+
 
             //Readers.Authorize
             AuthorizeInfo aut = new AuthorizeInfo();
@@ -118,7 +129,7 @@ namespace ALISAPI.Areas.HelpPage
             config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
             config.SetSampleForType(aut, new MediaTypeHeaderValue("application/json"), typeof(AuthorizeInfo));
             config.SetActualRequestType(typeof(AuthorizeInfo), "Readers", "Authorize");
-            json = JsonConvert.SerializeObject(reader, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            json = JsonConvert.SerializeObject(rsv, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
 
             //Books.Get
@@ -135,9 +146,21 @@ namespace ALISAPI.Areas.HelpPage
             json = JsonConvert.SerializeObject(basket, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "InsertIntoUserBasket");
 
+            //Circulation.Basket
+            CirculationInfo circ = new CirculationInfo();
+            List<BasketInfo> UserBasket = circ.GetBasket(888);
+            json = JsonConvert.SerializeObject(UserBasket, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Basket");
+
+            //Circulation.Orders
+            List<OrderInfo> UserOrders = circ.GetOrders(888);
+            json = JsonConvert.SerializeObject(UserOrders, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Orders");
+
+
             //Readers.PreRegisterRemoteReader
             PreRegisterRemoteReader re = new PreRegisterRemoteReader();
-            re.BirthDate = new DateTime(1975, 05, 05);
+            re.BirthDate = "1975-05-05";//new DateTime(1975, 05, 05);
             re.CountryId = 137;
             re.Email = "mail@example.com";
             re.FamilyName = "Иванов";

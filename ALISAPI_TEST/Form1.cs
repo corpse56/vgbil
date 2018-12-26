@@ -28,7 +28,8 @@ namespace ALISAPI_TEST
         public static JsonSerializerSettings ALISDateFormatJSONSettings = new JsonSerializerSettings
         {
             DateFormatHandling = DateFormatHandling.IsoDateFormat,
-            DateFormatString = "yyyy-MM-ddTHH:mm:sszz",
+            DateFormatString = "yyyy-MM-ddTHH:mm:ss",
+            DateTimeZoneHandling = DateTimeZoneHandling.Utc,
         };
 
 
@@ -105,90 +106,90 @@ namespace ALISAPI_TEST
         {
             ChangePasswordLocalReader request = new ChangePasswordLocalReader();
             request.NumberReader = 222222;
-            request.DateBirth = new DateTime(1996, 01, 03, 0, 0, 0);
+            request.DateBirth = "1996-01-03";//new DateTime(1996, 01, 03, 0, 0, 0);
             request.NewPassword = "222222";
             string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
 
             using (HttpClient client = new HttpClient())
             {
-                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePassword", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
             request.NumberReader = 333;
-            request.DateBirth = new DateTime(1965, 11, 08, 7, 7, 7);
+            request.DateBirth = "1965-11-08";// new DateTime(1965, 11, 08, 7, 7, 7);
             request.NewPassword = "333";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
 
             using (HttpClient client = new HttpClient())
             {
-                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePassword", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
             request.NumberReader = 555;
-            request.DateBirth = new DateTime(1981, 03, 17, 7, 7, 7);
+            request.DateBirth = "1981-03-17";// new DateTime(1981, 03, 17, 7, 7, 7);
             request.NewPassword = "555";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
 
             using (HttpClient client = new HttpClient())
             {
-                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePassword", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
             request.NumberReader = 777;
-            request.DateBirth = new DateTime(1979, 03, 24, 7, 7, 7);
+            request.DateBirth = "1979-03-24";// new DateTime(1979, 03, 24, 7, 7, 7);
             request.NewPassword = "777";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
 
             using (HttpClient client = new HttpClient())
             {
-                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePassword", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
             request.NumberReader = 888;
-            request.DateBirth = new DateTime(1978, 05, 07, 7, 7, 7);
+            request.DateBirth = "1978-05-07";// new DateTime(1978, 05, 07, 7, 7, 7);
             request.NewPassword = "888";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
 
             using (HttpClient client = new HttpClient())
             {
-                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePassword", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
             request.NumberReader = 999;
-            request.DateBirth = new DateTime(1983, 09, 30, 7, 7, 7);
+            request.DateBirth = "1983-09-30";//new DateTime(1983, 09, 30, 7, 7, 7);
             request.NewPassword = "999";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
 
             using (HttpClient client = new HttpClient())
             {
-                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePassword", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
             request.NumberReader = 200500;
-            request.DateBirth = new DateTime(1972, 02, 19, 7, 7, 7);
+            request.DateBirth = "1972-02-19";// new DateTime(1972, 02, 19, 7, 7, 7);
             request.NewPassword = "200500";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
 
             using (HttpClient client = new HttpClient())
             {
-                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePassword", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
             request.NumberReader = 214444;
-            request.DateBirth = new DateTime(1965, 04, 30, 7, 7, 7);
+            request.DateBirth = "1965-04-30";// new DateTime(1965, 04, 30, 7, 7, 7);
             request.NewPassword = "214444";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
 
             using (HttpClient client = new HttpClient())
             {
-                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePassword", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
@@ -196,7 +197,20 @@ namespace ALISAPI_TEST
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            BookSimpleView book = ViewFactory.GetBookSimpleView("BJVVV_34");
+            //BookSimpleView book = ViewFactory.GetBookSimpleView("BJVVV_34");
+            ChangePasswordLocalReader request = new ChangePasswordLocalReader();
+            request.NumberReader = 222222;
+            request.DateBirth = "1996-01-03";
+            request.NewPassword = "222222";
+            string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
+
+            using (HttpClient client = new HttpClient())
+            {
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
+            }
+
+
         }
 
         private void bInsertIntoBasket_Click(object sender, EventArgs e)
@@ -212,7 +226,7 @@ namespace ALISAPI_TEST
         private void bPreRegister_Click(object sender, EventArgs e)
         {
             PreRegisterRemoteReader request = new PreRegisterRemoteReader();
-            request.BirthDate = new DateTime(1994,5,5);
+            request.BirthDate = "1994-05-05";//new DateTime(1994,5,5);
             request.CountryId = 1;
             request.Email = "nomailbox@mail.ru";
             request.FamilyName = "Kolobok";

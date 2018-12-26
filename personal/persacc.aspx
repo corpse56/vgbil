@@ -39,7 +39,11 @@
     style="z-index:-90; display:none" Text="Button" Visible="true" />
 
     <center>
+        <asp:Label ID="Label14" runat="server" Text="Label" ForeColor ="Red" Font-Size ="XX-Large"></asp:Label>
+        <br />
+        <br />
         <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label></center>
+        <br />
     <br />
         <asp:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="1" 
             Height="530px" Width="100%" 
@@ -48,78 +52,219 @@
             AutoPostBack = "true" >
             
             <asp:TabPanel ID="TabPanel1" runat="server" HeaderText="Заказ книг из основного фонда" Enabled = "true">
+                
+
                 <HeaderTemplate>
+                    
+
                     Заказ книг из основного фонда
+
                 </HeaderTemplate>
+                
+
             <ContentTemplate>
+                         
+
                          <asp:Panel ID="Panel1" runat="server" Height="500px" ScrollBars="Auto" BorderWidth = "1px">
+                                     
+
                                      <table id="table3" style="z-index: 107; left: 9px; top: 66px;" width="99%">
                                       
+                                         
+ 
+
+                                      
                                       <tr>
+                                          
+
                                           <td valign="top" style="height: 26px; width: 43%;" >
+                                              
+
                                               <asp:Table ID="BasketTable" runat="server" BorderStyle="Solid" GridLines="Both" 
                                                   style="color:Black;table-layout:inherit;border-color:Black;border-width:3px;border-style:Solid;z-index: 100; width: 100%;">
+                                                  
+
                                                   <asp:TableRow ID="TableRow1" runat="server">
+                                                      
+
                                                       <asp:TableCell ID="TableCell1" runat="server" RowSpan="3"></asp:TableCell>
+                                                      
+
                                                       <asp:TableCell ID="TableCell2" runat="server" ColumnSpan="5"></asp:TableCell>
+                                                      
+
                                                       <asp:TableCell ID="TableCell3" runat="server" RowSpan="3"></asp:TableCell>
+                                                      
+
                                                   </asp:TableRow>
+                                                  
+
                                                   <asp:TableRow ID="TableRow2" runat="server">
+                                                      
+
                                                       <asp:TableCell ID="TableCell4" runat="server"></asp:TableCell>
+                                                      
+
                                                       <asp:TableCell ID="TableCell5" runat="server"></asp:TableCell>
+                                                      
+
                                                       <asp:TableCell ID="TableCell6" runat="server"></asp:TableCell>
+                                                      
+
                                                       <asp:TableCell ID="TableCell7" runat="server"></asp:TableCell>
+                                                      
+
                                                   </asp:TableRow>
+                                                  
+
                                                   <asp:TableRow ID="TableRow3" runat="server">
+                                                      
+
                                                       <asp:TableCell ID="TableCell8" runat="server"></asp:TableCell>
+                                                      
+
                                                       <asp:TableCell ID="TableCell9" runat="server"></asp:TableCell>
+                                                      
+
                                                       <asp:TableCell ID="TableCell10" runat="server"></asp:TableCell>
+                                                      
+
                                                       <asp:TableCell ID="TableCell11" runat="server"></asp:TableCell>
+                                                      
+
                                                   </asp:TableRow>
+                                                  
+
                                                   <asp:TableRow ID="TableRow4" runat="server">
+                                                      
+
                                                       <asp:TableCell ID="TableCell12" runat="server" ColumnSpan="7"></asp:TableCell>
+                                                      
+
                                                   </asp:TableRow>
+                                                  
+
                                               </asp:Table>
                                               
+                                              
+ 
+
+                                              
                                           </td>
+                                          
+
                                           <td valign="top" class="style1">
+                                              
+
                                           </td>
+                                          
+
                                           <td valign="top" style="height: 26px; width: 43%;">
+                                              
+                                              
+ 
+
                                               
                                               <asp:Table ID="OrdersTable" runat="server" BorderStyle="Solid" GridLines="Both" 
                                                   style=" table-layout:inherit; border-color:Black;border-width:3px;border-style:Solid;z-index:100;width:100%; color: Black;">
+                                                  
+
                                               </asp:Table>
                                               
+                                              
+ 
+
+                                              
                                           </td>
+                                          
+
                                       </tr>
+                                      
+
+                                         
+ 
+
+
                                       
 
                                       <tr>
+                                          
+
                                           <td valign="top">
 
+                                              
+
+
+
                                               <asp:Button ID="Button3" runat="server" style="display:none;" Text="Button" />
+                                                        
+
                                                         <asp:Label ID="ErrorLabelOF" runat="server"></asp:Label>
 
+                                              
+
+
+
                                               </td>
+                                          
+
                                           <td valign="top" class="style1">
                                               
+                                              
+ 
+
+                                              
                                           </td>
+                                          
+
                                           <td valign="top" style="height: 26px; width: 43%;">
+                                              
+
                                               <asp:Table ID="Table6" runat="server" BorderStyle="Solid" GridLines="Both" 
                                                   style="table-layout:inherit;border-color:Black;border-width:3px;border-style:Solid;z-index: 100; width: 100%;">
+                                                  
+
                                               </asp:Table>
+                                              
+
                                           </td>
+                                          
+
                                       </tr>
                                       
 
+                                         
+ 
+
+
+                                      
+
                                   </table>
+                                     
+
                                   </asp:Panel>
+                                          
+
                                           <table>
                                   
+                                              
+ 
+
+                                  
                                   <tr style="margin:7px; height:40px; padding:7px">
+                                      
+
                                   <div style="float: right; width: 160px; margin-top:7px"><asp:Button ID="Button2" runat="server" Text="Обновить статусы" style="height: 25px;"  /></div>
                                              
+                                      
+ 
+
+                                             
                                   <div style="float: left; margin-right: 160px; margin-top:7px"><asp:Button ID="Button1" onclick="Button1_Click1" runat="server" Text="Заказать выделенный" style="height: 25px"  /></div>
+
+                                      
+
+
 
                                       <!--<td style="height: 26px; width: 3%;" valign="top">
                                       </td>
@@ -127,249 +272,704 @@
                                       <td style="height: 26px; width: 100%; margin: 1px; border-width:medium; border-color:Black" valign="top" align ="right" >
                                       </td>-->
                                       
+                                      
+ 
+
+                                      
                                   </tr>
+                                              
+
                               </table>
                               
 
                               
+                         
+ 
+
+ 
+
+                              
+
+                              
                         </ContentTemplate>
+                
+
             </asp:TabPanel>
             <asp:TabPanel ID="TabPanel2" runat="server" HeaderText="Электронные книги">
+                
+
                 <ContentTemplate>
+                    
+
                    <asp:Label ID="Label2" runat="server" Text="Нет заказанных электронных книг"></asp:Label>
+                    
+
                     <asp:Table ID="tEBook" runat="server">
+                        
+
                     </asp:Table>
+                    
+
                 </ContentTemplate>
+                
+
             </asp:TabPanel>
             <asp:TabPanel ID="TabPanel7" runat="server" HeaderText="История выдачи электронные книги">
+                
+
                 <ContentTemplate>
+                    
+
                     <asp:Table ID="tEBook_HST" runat="server">
+                        
+
                     </asp:Table>
+                    
+
                 </ContentTemplate>
+                
+
             </asp:TabPanel>
             
             <asp:TabPanel ID="TabPanel3" runat="server" HeaderText="Выданные книги">
+                
+
             <ContentTemplate>
+                                 
+
                                  <asp:Panel ID="Panel2" runat="server" Height="500px" ScrollBars="Auto" BorderWidth = "1px">
 
+                                     
+
+
+
                 <asp:Label ID="Label4" runat="server" Text="Книги выданные из основного фонда"></asp:Label>
+                                     
+
                 <br /><br />
+                                     
+
                     <asp:Table ID="tISSUED" runat="server" Font-Size = "20px">
+                        
+
                     </asp:Table>
                     
+                                     
+ 
+
+                    
                 <br /><br />
+                                     
+
                 <asp:Label ID="Label5" runat="server" Text="Книги выданные из фонда Британского совета"></asp:Label>
+                                     
+
                 <br /><br />
+                                     
+
                     <asp:GridView   ID="gv_BS" runat="server" AutoGenerateColumns = "False"  BorderWidth="3px"
                                     BorderStyle="Solid" BorderColor = "Black"  Font-Size = "20px" CellPadding="5" >
+                        
+
                         <RowStyle Wrap="True"></RowStyle>
+                        
+
                         <Columns>
+                            
+
                             <asp:BoundField HeaderText="Заглавие">
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Автор" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата выдачи" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Срок возврата" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                         </Columns>
+                        
+
                     </asp:GridView>  
         
+                 
+ 
+  
+        
                 <br /><br />
+                                     
+
                 <asp:Label ID="Label6" runat="server" Text="Книги выданные из фонда Центра Американской Культуры"></asp:Label>
+                                     
+
                 <br /><br />
+                                        
+
                                         <asp:GridView   ID="gv_ACC" runat="server" AutoGenerateColumns = "False"  BorderWidth="3px"
                                     BorderStyle="Solid" BorderColor = "Black"  Font-Size = "20px" CellPadding="5" >
+                                            
+
                         <RowStyle Wrap="True"></RowStyle>
+                                            
+
                         <Columns>
+                            
+
                             <asp:BoundField HeaderText="Заглавие">
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Автор" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата выдачи" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Срок возврата" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                         </Columns>
+                                            
+
                     </asp:GridView>  
+                 
+  
                 <br /><br />
+                                     
+
                 <asp:Label ID="Label7" runat="server" Text="Книги выданные из фонда Французского культурного центра"></asp:Label>
+                                     
+
                 <br /><br />
+                                        
+
                                         <asp:GridView   ID="gv_FCC" runat="server" AutoGenerateColumns = "False"  BorderWidth="3px"
                                     BorderStyle="Solid" BorderColor = "Black"  Font-Size = "20px" CellPadding="5" >
+                                            
+
                         <RowStyle Wrap="True"></RowStyle>
+                                            
+
                         <Columns>
+                            
+
                             <asp:BoundField HeaderText="Заглавие">
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Автор" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата выдачи" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Срок возврата" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                         </Columns>
+                                            
+
                     </asp:GridView>  
+                 
+  
                 <br /><br />
+                                     
+
                 <asp:Label ID="Label8" runat="server" Text="Книги выданные из фонда Славянского Культурного Центра"></asp:Label>
+                                     
+
                 <br /><br />
+                                        
+
                                         <asp:GridView   ID="gv_SCC" runat="server" AutoGenerateColumns = "False"  BorderWidth="3px"
                                     BorderStyle="Solid" BorderColor = "Black"  Font-Size = "20px" CellPadding="5" >
+                                            
+
                         <RowStyle Wrap="True"></RowStyle>
+                                            
+
                         <Columns>
+                            
+
                             <asp:BoundField HeaderText="Заглавие">
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Автор" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата выдачи" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Срок возврата" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                         </Columns>
+                                            
+
                     </asp:GridView>  
+                 
+  
                 <br /><br />
                 
+                                     
+ 
+                
 </asp:Panel>
+                                 
+
             </ContentTemplate>
+                
+
             </asp:TabPanel>
             <asp:TabPanel ID="TabPanel4" runat="server" HeaderText="История выданных книг" Enabled = "true">
+                
+
             <ContentTemplate>
+                
+
                 <asp:Panel ID="Panel3" runat="server" Height="500px" ScrollBars="Auto" BorderWidth = "1px">
+                                
+
                                 <asp:Label ID="Label9" runat="server" Text="Книги выданные из основного фонда"></asp:Label>
+                                
+
                 <br /><br />
 
+                                
+
+
+
                     <asp:Table ID="tISSUED_HST" runat="server" Font-Size = "20px">
+                        
+
                     </asp:Table>
+                                
+
                      <br /><br />
+                                
+
                 <asp:Label ID="Label10" runat="server" Text="История книг выданных из фонда Британского совета"></asp:Label>
+                                
+
                 <br /><br />
+                                
+
                     <asp:GridView   ID="gv_BS_HST" runat="server" AutoGenerateColumns = "False"  BorderWidth="3px"
                                     BorderStyle="Solid" BorderColor = "Black"  Font-Size = "20px" CellPadding="5" >
+                        
+
                         <RowStyle Wrap="True"></RowStyle>
+                        
+
                         <Columns>
+                            
+
                             <asp:BoundField HeaderText="Заглавие">
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Автор" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата выдачи" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата возврата" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                         </Columns>
+                        
+
                     </asp:GridView>  
         
+                 
+ 
+  
+        
                 <br /><br />
+                                
+
                 <asp:Label ID="Label11" runat="server" Text="История книги выданных из фонда Центра Американской Культуры"></asp:Label>
+                                
+
                 <br /><br />
+                                        
+
                                         <asp:GridView   ID="gv_ACC_HST" runat="server" AutoGenerateColumns = "False"  BorderWidth="3px"
                                     BorderStyle="Solid" BorderColor = "Black"  Font-Size = "20px" CellPadding="5" >
+                                            
+
                         <RowStyle Wrap="True"></RowStyle>
+                                            
+
                         <Columns>
+                            
+
                             <asp:BoundField HeaderText="Заглавие">
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Автор" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата выдачи" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата возврата" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                         </Columns>
+                                            
+
                     </asp:GridView>  
+                 
+  
                 <br /><br />
+                                
+
                 <asp:Label ID="Label12" runat="server" Text="История книги выданных из фонда Французского культурного центра"></asp:Label>
+                                
+
                 <br /><br />
+                                        
+
                                         <asp:GridView   ID="gv_FCC_HST" runat="server" AutoGenerateColumns = "False"  BorderWidth="3px"
                                     BorderStyle="Solid" BorderColor = "Black"  Font-Size = "20px" CellPadding="5" >
+                                            
+
                         <RowStyle Wrap="True"></RowStyle>
+                                            
+
                         <Columns>
+                            
+
                             <asp:BoundField HeaderText="Заглавие">
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Автор" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата выдачи" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата возврата" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                         </Columns>
+                                            
+
                     </asp:GridView>  
+                 
+  
                 <br /><br />
+                                
+
                 <asp:Label ID="Label13" runat="server" Text="История книг выданных из фонда Славянского Культурного Центра"></asp:Label>
+                                
+
                 <br /><br />
+                                        
+
                                         <asp:GridView   ID="gv_SCC_HST" runat="server" AutoGenerateColumns = "False"  BorderWidth="3px"
                                     BorderStyle="Solid" BorderColor = "Black"  Font-Size = "20px" CellPadding="5" >
+                                            
+
                         <RowStyle Wrap="True"></RowStyle>
+                                            
+
                         <Columns>
+                            
+
                             <asp:BoundField HeaderText="Заглавие">
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Автор" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата выдачи" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                             <asp:BoundField HeaderText="Дата возврата" >
+                            
+
                             <HeaderStyle BackColor="Silver" />
+                            
+
                             </asp:BoundField>
+                            
+
                         </Columns>
+                                            
+
                     </asp:GridView>  
+                 
+  
                 <br /><br />
                     
                     
+                                
+ 
+ 
+
+                    
+                    
                 </asp:Panel>
+                
+
             </ContentTemplate>
+                
+
             </asp:TabPanel>
             <asp:TabPanel ID="TabPanel6" runat="server" HeaderText="История заказов" Enabled = "true">
+                
+
             <ContentTemplate>
+                
+
                 <asp:Panel ID="Panel4" runat="server" Height="500px" ScrollBars="Auto" BorderWidth = "1px">
+                    
+
                     <asp:Table ID="tORDHIS" runat="server">
+                        
+
                     </asp:Table>
+                    
+
                 </asp:Panel>
+                
+
             </ContentTemplate>
+                
+
             </asp:TabPanel>
             <asp:TabPanel ID="TabPanel8" runat="server" HeaderText="Литрес" Enabled = "true">
+                
+
             <ContentTemplate>
+                
+
                 <asp:Panel ID="Panel5" runat="server" Height="500px" ScrollBars="Auto" BorderWidth = "1px" >
+                    
+
                 <table><tr><td style="padding:20px 20px 20px 20px; width:400px">
+                    
+
                     <asp:Button ID="bLitres" runat="server" Text="Получить пароль Литрес" 
                         onclick="bLitres_Click" /><br /><br />
+                    
+
                     <asp:Label ID="lblLitresLogin" runat="server" Text="номер читательского билета Литрес:"></asp:Label><br />
+                    
+
                     <asp:Label ID="lblLitresPwd" runat="server" Text="Пароль для Литрес:"></asp:Label><br /><br /><br /><br />
+                    
+
                     <asp:Label ID="Label3" runat="server" Text="В настоящее время закончились номера читательских билетов Литрес. Попробуйте позже." Visible = "false"></asp:Label><br /><br /><br />
+                    
+
                     <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl = "http://al.litres.ru/" Target="_blank">Литрес</asp:HyperLink><br /><br />
+                    
+
                     <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl = "http://al.litres.ru/biblioapps/" Target="_blank" >Мобильное приложение Литрес</asp:HyperLink><br /><br />
+                    
+
                 </td></tr></table>
+                    
+
                 </asp:Panel>
+                
+
             </ContentTemplate>
+                
+
             </asp:TabPanel>
             <asp:TabPanel ID="TabPanel5" runat="server" HeaderText="Выход">
+                
+
             </asp:TabPanel>
         </asp:TabContainer>
            <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1">

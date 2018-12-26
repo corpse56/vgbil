@@ -5,11 +5,13 @@ using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Readers;
 using LibflClassLibrary.Readers;
+using LibflClassLibrary.Readers.ReadersJSONViewers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -30,7 +32,7 @@ namespace ALISAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Readers/{id}")]
-        [ResponseType(typeof(ReaderInfo))]
+        [ResponseType(typeof(ReaderSimpleView))]
         public HttpResponseMessage Get(int id)
         {
             ReaderInfo reader;
@@ -42,7 +44,8 @@ namespace ALISAPI.Controllers
             {
                 return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
             }
-            return ALISResponseFactory.CreateResponse(reader, Request);
+            ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
+            return ALISResponseFactory.CreateResponse(result, Request);
         }
 
         /// <summary>
@@ -52,7 +55,7 @@ namespace ALISAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Readers/ByEmail/{email}")]
-        [ResponseType(typeof(ReaderInfo))]
+        [ResponseType(typeof(ReaderSimpleView))]
         public HttpResponseMessage Get(string email)
         {
             ReaderInfo reader;
@@ -64,7 +67,9 @@ namespace ALISAPI.Controllers
             {
                 return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
             }
-            return ALISResponseFactory.CreateResponse(reader, Request);
+            ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
+
+            return ALISResponseFactory.CreateResponse(result, Request);
         }
 
         //этот метод решили просто убрать. он не нужен, так как токены будет проверять сервер авторизации
@@ -107,8 +112,7 @@ namespace ALISAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Readers/ChangePasswordLocalReader")]
-        [ResponseType(typeof(ReaderInfo))]
-        //[RequestType(typeof(ChangePassword))]
+        //[ResponseType(typeof(ReaderInfo))]
         public HttpResponseMessage ChangePasswordLocalReader()
         {
             
@@ -152,7 +156,7 @@ namespace ALISAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Readers/Authorize")]
-        [ResponseType(typeof(ReaderInfo))]
+        [ResponseType(typeof(ReaderSimpleView))]
         public HttpResponseMessage Authorize()
         {
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
@@ -175,7 +179,9 @@ namespace ALISAPI.Controllers
             {
                 return ALISErrorFactory.CreateError("R001", Request, HttpStatusCode.NotFound);
             }
-            return ALISResponseFactory.CreateResponse(reader, Request);
+            ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
+
+            return ALISResponseFactory.CreateResponse(result, Request);
         }
 
 
@@ -187,7 +193,7 @@ namespace ALISAPI.Controllers
         /// <returns>string</returns>
         [HttpGet]
         [Route("Readers/GetLoginType/{login}")]
-        [ResponseType(typeof(string))]
+        [ResponseType(typeof(LoginType))]
         public HttpResponseMessage GetLoginType(string Login)
         {
             string result = ReaderInfo.GetLoginType(Login);
@@ -232,10 +238,14 @@ namespace ALISAPI.Controllers
             {
                 return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
             }
-
+            DateTime BirthDate;
+            if (!DateTime.TryParseExact(request.BirthDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out BirthDate))
+            {
+                throw new Exception("G001");
+            }
             try
             {
-                re.RegSendEmailAndSaveTemp(request.FamilyName,request.Name, request.FatherName, request.BirthDate, request.Email, request.CountryId, request.MobilePhone, request.Password);
+                re.RegSendEmailAndSaveTemp(request.FamilyName,request.Name, request.FatherName, BirthDate, request.Email, request.CountryId, request.MobilePhone, request.Password);
             }
             catch (Exception ex)
             {

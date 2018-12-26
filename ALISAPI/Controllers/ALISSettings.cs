@@ -11,7 +11,8 @@ namespace ALISAPI.Controllers
         public static JsonSerializerSettings ALISDateFormatJSONSettings = new JsonSerializerSettings
         {
             DateFormatHandling = DateFormatHandling.IsoDateFormat,
-            DateFormatString = "yyyy-MM-ddTHH:mm:sszz",
+            DateFormatString = "yyyy-MM-ddTHH:mm:ssZ",
+            DateTimeZoneHandling = DateTimeZoneHandling.Utc,
         };
     }
 }
