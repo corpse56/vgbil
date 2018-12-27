@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 using System.Text;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace LibflClassLibrary.ExportToVufind
 {
@@ -21,29 +22,38 @@ namespace LibflClassLibrary.ExportToVufind
         public override VufindDoc CreateVufindDocument(object Record)
         {
             HtmlNode row = (HtmlNode)Record;
-            string Imagette, Titre, Auteur, Editeur, Collection, Annee;
+            string Imagette, Imag, Titre, Titre_s, Auteur, Editeur, Collection, Annee;
 
             var td_elements = row.SelectNodes("td");
-            //var record = new Record();
-            Imagette = td_elements[0].InnerText;
-            Titre = td_elements[1].InnerText;
+
+            Imag = td_elements[0].InnerHtml.ToString();
+            //Imagette = td_elements[0].InnerText;
+        
+
+            Titre = td_elements[1].InnerText.Trim(' '); ;
             Auteur = td_elements[2].InnerText;
             Editeur = td_elements[3].InnerText;
             Collection = td_elements[4].InnerText;
             Annee = td_elements[5].InnerText;
 
-
+            //' ', '*', '.', ';' , ':', '-', '"'
+            char[] arr = Titre.ToCharArray();
+            arr = Array.FindAll<char>(arr, c => char.IsLetterOrDigit(c));
+            Titre_s = new string(arr);
 
             VufindDoc result = new VufindDoc();
             result.id = "CERF_"+idbook.ToString();
             result.fund = this.Fund;
             result.allfields = "";
             result.title.Add(Titre);
+            result.title_short.Add(Titre);
+            result.title_sort.Add(Titre_s); // артикли и ???
             result.author.Add(Auteur);
+            result.author_sort.Add(Auteur.Replace("L' ", "").Replace("D' ", "").Replace(" d'", "").Replace(" l'", "").Replace(" ", ""));
             result.publishDate.Add(Annee);
             result.publisher.Add(Editeur);
-
-
+            result.language.Add("Французский");
+            
 
             //описание экземпляра Litres
             StringBuilder sb = new StringBuilder();
