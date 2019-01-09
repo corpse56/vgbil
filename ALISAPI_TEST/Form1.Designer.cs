@@ -36,6 +36,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.bInsertIntoBasket = new System.Windows.Forms.Button();
             this.bPreRegister = new System.Windows.Forms.Button();
+            this.IsBirthDateMatchReaderId = new System.Windows.Forms.Button();
+            this.SetPasswordLocalReader = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -119,11 +121,33 @@
             this.bPreRegister.UseVisualStyleBackColor = true;
             this.bPreRegister.Click += new System.EventHandler(this.bPreRegister_Click);
             // 
+            // IsBirthDateMatchReaderId
+            // 
+            this.IsBirthDateMatchReaderId.Location = new System.Drawing.Point(14, 335);
+            this.IsBirthDateMatchReaderId.Name = "IsBirthDateMatchReaderId";
+            this.IsBirthDateMatchReaderId.Size = new System.Drawing.Size(278, 51);
+            this.IsBirthDateMatchReaderId.TabIndex = 10;
+            this.IsBirthDateMatchReaderId.Text = "Readers/IsBirthDateMatchReaderId";
+            this.IsBirthDateMatchReaderId.UseVisualStyleBackColor = true;
+            this.IsBirthDateMatchReaderId.Click += new System.EventHandler(this.IsBirthDateMatchReaderId_Click);
+            // 
+            // SetPasswordLocalReader
+            // 
+            this.SetPasswordLocalReader.Location = new System.Drawing.Point(14, 392);
+            this.SetPasswordLocalReader.Name = "SetPasswordLocalReader";
+            this.SetPasswordLocalReader.Size = new System.Drawing.Size(278, 56);
+            this.SetPasswordLocalReader.TabIndex = 11;
+            this.SetPasswordLocalReader.Text = "Readers/SetPasswordLocalReader";
+            this.SetPasswordLocalReader.UseVisualStyleBackColor = true;
+            this.SetPasswordLocalReader.Click += new System.EventHandler(this.SetPasswordLocalReader_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.SetPasswordLocalReader);
+            this.Controls.Add(this.IsBirthDateMatchReaderId);
             this.Controls.Add(this.bPreRegister);
             this.Controls.Add(this.bInsertIntoBasket);
             this.Controls.Add(this.button1);
@@ -151,6 +175,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button bInsertIntoBasket;
         private System.Windows.Forms.Button bPreRegister;
+        private System.Windows.Forms.Button IsBirthDateMatchReaderId;
+        private System.Windows.Forms.Button SetPasswordLocalReader;
     }
 }
 

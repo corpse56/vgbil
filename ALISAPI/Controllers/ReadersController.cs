@@ -3,6 +3,7 @@ using ALISReaderRemote;
 using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects;
+using LibflClassLibrary.ALISAPI.ResponseObjects.General;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Readers;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.ReadersJSONViewers;
@@ -106,21 +107,64 @@ namespace ALISAPI.Controllers
         //    return ALISResponseFactory.CreateResponse(reader, Request);
         //}
 
+
+        //Этот метод распался на два метода - проверка совпадения дня рождения и установление пароля
+        ///// <summary>
+        ///// Изменить пароль читателя по номеру читателя и дате его рождения
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpPost]
+        //[Route("Readers/ChangePasswordLocalReader")]
+        ////[ResponseType(typeof(ReaderInfo))]
+        //public HttpResponseMessage ChangePasswordLocalReader()
+        //{
+            
+        //    string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+        //    ChangePasswordLocalReader request;
+        //    try
+        //    {
+        //        request = JsonConvert.DeserializeObject<ChangePasswordLocalReader>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+        //    }
+        //    catch
+        //    {
+        //        return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+        //    }
+
+        //    ReaderInfo reader;
+        //    try
+        //    {
+        //        reader = ReaderInfo.GetReader(request.NumberReader);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
+        //    }
+        //    try
+        //    {
+        //        reader.ChangePasswordLocalReader(request);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+        //    }
+
+        //    return ALISResponseFactory.CreateResponse(Request);
+        //}
+
         /// <summary>
-        /// Изменить пароль читателя по номеру читателя и дате его рождения
+        /// Узнать, соответствует ли дата рождения номеру читательского билета
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("Readers/ChangePasswordLocalReader")]
-        //[ResponseType(typeof(ReaderInfo))]
-        public HttpResponseMessage ChangePasswordLocalReader()
+        [Route("Readers/IsBirthDateMatchReaderId")]
+        public HttpResponseMessage IsBirthDateMatchReaderId()
         {
-            
+
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
-            ChangePasswordLocalReader request;
+            BirthDateMatchReaderId request;
             try
             {
-                request = JsonConvert.DeserializeObject<ChangePasswordLocalReader>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+                request = JsonConvert.DeserializeObject<BirthDateMatchReaderId>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
             }
             catch
             {
@@ -136,9 +180,51 @@ namespace ALISAPI.Controllers
             {
                 return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
             }
+            BooleanResponse result = new BooleanResponse();
             try
             {
-                reader.ChangePasswordLocalReader(request);
+                result.Result = reader.IsBirthDateMatchReaderId(request);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+            }
+
+            return ALISResponseFactory.CreateResponse(result, Request);
+        }
+
+        /// <summary>
+        /// Установить пароль читателю. Принимает номер читателя и пароль.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Readers/SetPasswordLocalReader")]
+        public HttpResponseMessage SetPasswordLocalReader()
+        {
+
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            SetPasswordLocalReader request;
+            try
+            {
+                request = JsonConvert.DeserializeObject<SetPasswordLocalReader>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+            }
+
+            ReaderInfo reader;
+            try
+            {
+                reader = ReaderInfo.GetReader(request.ReaderId);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
+            }
+            try
+            {
+                reader.SetPasswordLocalReader(request, reader);
             }
             catch (Exception ex)
             {

@@ -124,6 +124,39 @@ namespace ALISAPI.Controllers
             return ALISResponseFactory.CreateResponse(Request);
         }
 
+        /// <summary>
+        /// Сделать заказ на выдачу книги.
+        /// </summary>
+        /// <returns>HTTP200</returns>
+        [HttpPost]
+        [Route("Circulation/Order")]
+        //[ResponseType(typeof(ReaderInfo))]
+        public HttpResponseMessage Order()
+        {
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            MakeOrder request;
+            try
+            {
+                request = JsonConvert.DeserializeObject<MakeOrder>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+            }
+
+            CirculationInfo Circulation = new CirculationInfo();
+
+
+            try
+            {
+                Circulation.MakeOrder(request);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+            }
+            return ALISResponseFactory.CreateResponse(Request);
+        }
 
 
 

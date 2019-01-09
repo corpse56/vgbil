@@ -24,7 +24,7 @@
             <tr>
             <td>
             <asp:Login ID="Login1" runat="server" ForeColor="Black" LoginButtonText="Войти" 
-                PasswordLabelText="Пароль:" TitleText="Авторизация" UserNameLabelText="Номер читательского билета, Email или номер социальной карты:" 
+                PasswordLabelText="Пароль:" TitleText="Авторизация" UserNameLabelText="Номер читательского билета либо Email:" 
                 DestinationPageUrl="~/Default.aspx" DisplayRememberMe="False" 
                 OnAuthenticate="Login1_Authenticate" RememberMeText="" Height="110px"  
                     Font-Size="Larger" Width="896px" >

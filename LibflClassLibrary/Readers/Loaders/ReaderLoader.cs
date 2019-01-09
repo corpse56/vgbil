@@ -252,6 +252,10 @@ namespace LibflClassLibrary.Readers.Loaders
             return result;
         }
 
-
+        internal void SetPasswordLocalReader(SetPasswordLocalReader request, ReaderInfo reader)
+        {
+            request.NewPassword = ReaderInfo.HashPass(request.NewPassword, reader.Salt);
+            dbw.ChangePasswordLocalReader(reader.NumberReader, request.NewPassword);
+        }
     }
 }

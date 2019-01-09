@@ -633,7 +633,7 @@ public static class CurrentCultureInfo
         {
             if (RadioButton1.Checked)
             {
-                Login1.UserNameLabelText = "Номер читательского билета, email или номер социальной карты*: ";
+                Login1.UserNameLabelText = "Номер читательского билета или email*: ";
             }
             if (RadioButton3.Checked)
             {
@@ -649,7 +649,7 @@ public static class CurrentCultureInfo
         {
             if (RadioButton1.Checked)
             {
-                Login1.UserNameLabelText = "Номер читательского билета, email или номер социальной карты*: ";
+                Login1.UserNameLabelText = "Номер читательского билета или email*: ";
             }
             if (RadioButton3.Checked)
             {

@@ -7,6 +7,7 @@ using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
+using LibflClassLibrary.ALISAPI.ResponseObjects.General;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Readers;
 using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Readers;
@@ -106,13 +107,13 @@ namespace ALISAPI.Areas.HelpPage
             json = JsonConvert.SerializeObject(rsv, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetByOauthToken");
 
-            //Readers.ChangePasswordLocalReader
-            ChangePasswordLocalReader password = new ChangePasswordLocalReader();
-            password.DateBirth = "1984-02-14";// new DateTime(1984, 2, 14);
-            password.NewPassword = "123";
-            password.NumberReader = 189245;
-            json = JsonConvert.SerializeObject(password, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ChangePasswordLocalReader");
+            ////Readers.ChangePasswordLocalReader
+            //ChangePasswordLocalReader password = new ChangePasswordLocalReader();
+            //password.DateBirth = "1984-02-14";// new DateTime(1984, 2, 14);
+            //password.NewPassword = "123";
+            //password.NumberReader = 189245;
+            //json = JsonConvert.SerializeObject(password, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            //config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ChangePasswordLocalReader");
 
             //Readers.GetLoginType
             LoginType ltype = new LoginType();
@@ -131,6 +132,25 @@ namespace ALISAPI.Areas.HelpPage
             config.SetActualRequestType(typeof(AuthorizeInfo), "Readers", "Authorize");
             json = JsonConvert.SerializeObject(rsv, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
+
+            //Readers / IsBirthDateMatchReaderId
+            BirthDateMatchReaderId match = new BirthDateMatchReaderId();
+            match.DateBirth = "1984-02-14";
+            match.NumberReader = 189245;
+            BooleanResponse br = new BooleanResponse();
+            br.Result = true;
+            json = JsonConvert.SerializeObject(match, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "IsBirthDateMatchReaderId");
+            json = JsonConvert.SerializeObject(br, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "IsBirthDateMatchReaderId");
+
+            //Readers/SetPasswordLocalReader
+            SetPasswordLocalReader spwd = new SetPasswordLocalReader();
+            spwd.NewPassword = "@$(*&$^(@*#&!)#@$";
+            spwd.ReaderId = 189245;
+            json = JsonConvert.SerializeObject(spwd, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "SetPasswordLocalReader");
+
 
             //Books.Get
             BookSimpleView book;

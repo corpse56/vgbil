@@ -1,5 +1,8 @@
 ﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
+using LibflClassLibrary.Books;
+using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Circulation.Loaders;
+using LibflClassLibrary.Readers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +32,34 @@ namespace LibflClassLibrary.Circulation
         public List<OrderInfo> GetOrders(int idReader)
         {
             return loader.GetOrders(idReader);
+        }
+
+        public void MakeOrder(MakeOrder request)
+        {
+            //BookBase book = new BookBase()
+            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(request.BookId);
+            ReaderInfo reader = ReaderInfo.GetReader(request.ReaderId);
+            if (request.OrderType == "Электронная выдача")
+            {
+
+            }
+            else
+            {
+
+            }
+            
+        }
+        private void CreateCommonBookOrder()
+        {
+
+        }
+        private void CreateElectronicBookOrder(BJBookInfo book, ReaderInfo reader)
+        {
+            if (reader.IsFiveElBooksIssued())
+            {
+                throw new Exception("C001");
+            }
+            //reader.
         }
     }
 }

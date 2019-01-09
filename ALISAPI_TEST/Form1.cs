@@ -243,6 +243,36 @@ namespace ALISAPI_TEST
 
 
         }
+
+        private void IsBirthDateMatchReaderId_Click(object sender, EventArgs e)
+        {
+            BirthDateMatchReaderId request = new BirthDateMatchReaderId();
+            request.NumberReader = 222222;
+            request.DateBirth = "1996-01-03";//new DateTime(1996, 01, 03, 0, 0, 0);
+            string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
+
+            using (HttpClient client = new HttpClient())
+            {
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/IsBirthDateMatchReaderId", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
+            }
+
+        }
+
+        private void SetPasswordLocalReader_Click(object sender, EventArgs e)
+        {
+            SetPasswordLocalReader request = new SetPasswordLocalReader();
+            request.ReaderId = 222222;
+            request.NewPassword = "222222";//new DateTime(1996, 01, 03, 0, 0, 0);
+            string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
+
+            using (HttpClient client = new HttpClient())
+            {
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/SetPasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
+            }
+
+        }
     }
 
          

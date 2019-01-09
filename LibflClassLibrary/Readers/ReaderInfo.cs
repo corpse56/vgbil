@@ -179,6 +179,21 @@ namespace LibflClassLibrary.Readers
             loader.ChangePasswordLocalReader(this, request);
         }
 
+        public bool IsBirthDateMatchReaderId(BirthDateMatchReaderId request)
+        {
+            DateTime DateBirth;
+            if (!DateTime.TryParseExact(request.DateBirth, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateBirth))
+            {
+                throw new Exception("G001");
+            }
+
+            if (this.DateBirth.Date != DateBirth.Date)
+            {
+                return false;//throw new Exception("R005");
+            }
+            return true;
+        }
+
         internal void UpdateRegistrationFields()
         {
             loader.UpdateRegistrationFields(this);
@@ -220,6 +235,9 @@ namespace LibflClassLibrary.Readers
             return result;
         }
 
-
+        public void SetPasswordLocalReader(SetPasswordLocalReader request, ReaderInfo reader)
+        {
+            loader.SetPasswordLocalReader(request, reader);
+        }
     }
 }

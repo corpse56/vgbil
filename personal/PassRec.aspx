@@ -30,7 +30,7 @@
               <table>
               <tr>
               <td style=" text-align:right">
-              <asp:Label ID="Label2" runat="server" Text="Номер читательского билета или номер социальной карты: "></asp:Label>
+              <asp:Label ID="Label2" runat="server" Text="Номер читательского билета: "></asp:Label>
               </td>
               <td>
               <asp:TextBox ID="TextBox1" runat="server" Width = "250"></asp:TextBox>             
