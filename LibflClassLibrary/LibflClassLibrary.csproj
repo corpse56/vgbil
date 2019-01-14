@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LibflClassLibrary</RootNamespace>
     <AssemblyName>LibflClassLibrary</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -101,6 +101,7 @@
   <ItemGroup>
     <Compile Include="ALISAPI\Errors\ALISError.cs" />
     <Compile Include="ALISAPI\Errors\ALISErrorList.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Circulation\DeleteFromBasket.cs" />
     <Compile Include="ALISAPI\RequestObjects\Circulation\ImpersonalBasket.cs" />
     <Compile Include="ALISAPI\RequestObjects\Circulation\MakeOrder.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\AccessToken.cs" />

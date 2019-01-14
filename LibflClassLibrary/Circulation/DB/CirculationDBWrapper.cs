@@ -14,8 +14,8 @@ namespace LibflClassLibrary.Circulation.DB
         private string connectionString;
         public CirculationDBWrapper()
         {
-            //connectionString = "Data Source=80.250.173.142;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
-            connectionString = "Data Source=127.0.0.1;Initial Catalog=Circulation;Integrated Security=True;Connect Timeout=1200";
+            connectionString = "Data Source=80.250.173.142;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+            //connectionString = "Data Source=127.0.0.1;Initial Catalog=Circulation;Integrated Security=True;Connect Timeout=1200";
             Queries = new CirculationQueries();
         }
 
@@ -72,5 +72,25 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        internal void DeleteFromBasket(int readerId, List<string> booksToDelete)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                foreach (string bookId in booksToDelete)
+                {
+                    command.CommandText = Queries.DELETE_FROM_BASKET;
+                    command.Parameters.Add("IDReader", SqlDbType.Int).Value = readerId;
+                    command.Parameters.Add("BookID", SqlDbType.NVarChar).Value = bookId;
+                    int idmain = int.Parse(bookId.Substring(bookId.IndexOf("_") + 1));
+                    command.Parameters.Add("idmain", SqlDbType.Int).Value = idmain;
+                    int cnt = command.ExecuteNonQuery();
+                    command.CommandText = Queries.DELETE_FROM_BASKET_RESERVATION_O;
+                    cnt = command.ExecuteNonQuery();
+                }
+            }
+
+        }
     }
 }

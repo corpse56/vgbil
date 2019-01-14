@@ -1,6 +1,7 @@
 ﻿using ALISAPI.Errors;
 using ALISReaderRemote;
 using DataProviderAPI.ValueObjects;
+using LibflClassLibrary.ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects;
 using LibflClassLibrary.ALISAPI.ResponseObjects.General;
@@ -17,6 +18,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -263,7 +265,8 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("R001", Request, HttpStatusCode.NotFound);
+                HttpResponseMessage rm = ALISErrorFactory.CreateError("R001", Request, HttpStatusCode.NotFound);
+                return rm;
             }
             ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
 

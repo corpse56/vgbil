@@ -103,9 +103,10 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
-            
-
-        
+        internal void DeleteFromBasket(DeleteFromBasket request)
+        {
+            dbWrapper.DeleteFromBasket(request.ReaderId, request.BooksToDelete);
+        }
 
         internal List<OrderInfo> GetOrders(int idReader)
         {

@@ -40,5 +40,21 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        public string DELETE_FROM_BASKET
+        {
+            get
+            {
+                return "delete from Circulation..Basket where ReaderId = @IDReader and BookId = @BookId;";
+                       
+            }
+        }
+        public string DELETE_FROM_BASKET_RESERVATION_O
+        {
+            get
+            {
+                return "delete from Reservation_O..Basket where IDREADER = @IDReader and IDMAIN = @idmain ";
+            }
+        }
+
     }
 }

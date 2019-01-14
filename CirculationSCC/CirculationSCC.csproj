@@ -51,21 +51,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Itenso.Rtf.Converter.Html, Version=1.4.0.0, Culture=neutral, PublicKeyToken=d7f23b760ed5c748, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Intenso\Itenso.Rtf.Converter.Html.dll</HintPath>
+    <Reference Include="Itenso.Rtf.Converter.Html">
+      <HintPath>bin\Debug\Itenso.Rtf.Converter.Html.dll</HintPath>
     </Reference>
-    <Reference Include="Itenso.Rtf.Interpreter, Version=1.4.0.0, Culture=neutral, PublicKeyToken=d7f23b760ed5c748, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Intenso\Itenso.Rtf.Interpreter.dll</HintPath>
+    <Reference Include="Itenso.Rtf.Interpreter">
+      <HintPath>bin\Debug\Itenso.Rtf.Interpreter.dll</HintPath>
     </Reference>
-    <Reference Include="Itenso.Rtf.Parser, Version=1.4.0.0, Culture=neutral, PublicKeyToken=d7f23b760ed5c748, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Intenso\Itenso.Rtf.Parser.dll</HintPath>
-    </Reference>
-    <Reference Include="Itenso.Sys, Version=2.3.0.0, Culture=neutral, PublicKeyToken=d7f23b760ed5c748, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Intenso\Itenso.Sys.dll</HintPath>
+    <Reference Include="Itenso.Rtf.Parser">
+      <HintPath>bin\Debug\Itenso.Rtf.Parser.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

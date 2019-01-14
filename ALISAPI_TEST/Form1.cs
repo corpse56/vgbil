@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -72,7 +73,8 @@ namespace ALISAPI_TEST
             using (HttpClient client = new HttpClient())
             {
                 var response = client.PostAsync(ALIS_ADDRESS+"Readers/Authorize/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
-                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
+                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result + " " + response.Result.StatusCode;
+                //tbResponse.Text = response.Result.Content.ToString();
             }
 
         }
@@ -197,19 +199,6 @@ namespace ALISAPI_TEST
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            //BookSimpleView book = ViewFactory.GetBookSimpleView("BJVVV_34");
-            ChangePasswordLocalReader request = new ChangePasswordLocalReader();
-            request.NumberReader = 222222;
-            request.DateBirth = "1996-01-03";
-            request.NewPassword = "222222";
-            string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
-
-            using (HttpClient client = new HttpClient())
-            {
-                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
-                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
-            }
-
 
         }
 
@@ -270,6 +259,90 @@ namespace ALISAPI_TEST
             {
                 var response = client.PostAsync(ALIS_ADDRESS + "Readers/SetPasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
+            }
+
+        }
+
+        private void bReadersPreregister_Click(object sender, EventArgs e)
+        {
+            //"FamilyName" => "Kuleba"
+            //"Name" => "Maksim"
+            //"FatherName" => "Aleksandrovich"
+            //"BirthDate" => "1985-11-29"
+            //"Email" => "maksim.kuleba@gmail.com"
+            //"CountryId" => "2"
+            //"MobilePhone" => "+7 (986) 985–21–71"
+            //"Password" => "passwd123"
+
+            PreRegisterRemoteReader request = new PreRegisterRemoteReader();
+            request.BirthDate = "1985-11-29";
+            request.CountryId = 2;
+            request.Email = "maksim.kuleba@gmail.com";
+            request.FamilyName = "Kuleba1";
+            request.FatherName = "Aleksandrovich";
+            request.MobilePhone = "+7(986)9852171";
+            request.Name = "Maksim";
+            request.Password = "passwd123";
+            string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
+
+            using (HttpClient client = new HttpClient())
+            {
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/PreRegisterRemoteReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result + " " + response.Result.StatusCode; ;
+            }
+
+
+
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            string RegisterConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+            ALISReaderRemote.ReaderRemote re = new ALISReaderRemote.ReaderRemote(RegisterConnectionString);
+            PreRegisterRemoteReader request = new PreRegisterRemoteReader();
+            request.BirthDate = "1985-05-05";
+            request.CountryId = 2;
+            request.Email = "maksim.kuleba@gmail.com";
+            request.FamilyName = "Кулеба";
+            request.FatherName = "Александрович";
+            request.MobilePhone = "79869852171";
+            request.Name = "Максим";
+            request.Password = "passwd123";
+            DateTime BirthDate;
+            if (!DateTime.TryParseExact(request.BirthDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out BirthDate))
+            {
+                tbResponse.Text = "Дата в неверном формате";
+            }
+            try
+            {
+                re.RegSendEmailAndSaveTemp(request.FamilyName, request.Name, request.FatherName, BirthDate, request.Email, request.CountryId, request.MobilePhone, request.Password);
+            }
+            catch (Exception ex)
+            {
+                tbResponse.Text = ex.Message;
+            }
+
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            string RegisterConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+            ALISReaderRemote.ReaderRemote re = new ALISReaderRemote.ReaderRemote(RegisterConnectionString);
+            DateTime BirthDate = new DateTime(1985,5,5);
+            int CountryId = 137;
+            string Email = "debarkader@gmail.com";
+            string FamilyName = "Кулеба";
+            string FatherName = "Александрович";
+            string MobilePhone = "+7(986)9852171";
+            string Name = "Максим";
+            string Password = "123";
+            try
+            {
+                re.RegSendEmailAndSaveTemp(FamilyName, Name, FatherName, BirthDate, Email, CountryId, MobilePhone, Password);
+            }
+            catch (Exception ex)
+            {
+                tbResponse.Text = ex.Message;//входная строка имела неверный формат.
             }
 
         }

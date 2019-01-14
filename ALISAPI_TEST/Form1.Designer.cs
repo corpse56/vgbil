@@ -33,11 +33,13 @@
             this.ReadersAuthorize = new System.Windows.Forms.Button();
             this.ReadersGetByOauthToken = new System.Windows.Forms.Button();
             this.bChangePwd = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.bReadersPreregister = new System.Windows.Forms.Button();
             this.bInsertIntoBasket = new System.Windows.Forms.Button();
             this.bPreRegister = new System.Windows.Forms.Button();
             this.IsBirthDateMatchReaderId = new System.Windows.Forms.Button();
             this.SetPasswordLocalReader = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -91,15 +93,15 @@
             this.bChangePwd.UseVisualStyleBackColor = true;
             this.bChangePwd.Click += new System.EventHandler(this.bChangePwd_Click);
             // 
-            // button1
+            // bReadersPreregister
             // 
-            this.button1.Location = new System.Drawing.Point(365, 260);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.bReadersPreregister.Location = new System.Drawing.Point(14, 454);
+            this.bReadersPreregister.Name = "bReadersPreregister";
+            this.bReadersPreregister.Size = new System.Drawing.Size(278, 34);
+            this.bReadersPreregister.TabIndex = 7;
+            this.bReadersPreregister.Text = "Readers/Preregister";
+            this.bReadersPreregister.UseVisualStyleBackColor = true;
+            this.bReadersPreregister.Click += new System.EventHandler(this.bReadersPreregister_Click);
             // 
             // bInsertIntoBasket
             // 
@@ -141,16 +143,38 @@
             this.SetPasswordLocalReader.UseVisualStyleBackColor = true;
             this.SetPasswordLocalReader.Click += new System.EventHandler(this.SetPasswordLocalReader_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(428, 179);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_2);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(14, 494);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(278, 41);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.SetPasswordLocalReader);
             this.Controls.Add(this.IsBirthDateMatchReaderId);
             this.Controls.Add(this.bPreRegister);
             this.Controls.Add(this.bInsertIntoBasket);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.bReadersPreregister);
             this.Controls.Add(this.bChangePwd);
             this.Controls.Add(this.ReadersGetByOauthToken);
             this.Controls.Add(this.ReadersAuthorize);
@@ -172,11 +196,13 @@
         private System.Windows.Forms.Button ReadersAuthorize;
         private System.Windows.Forms.Button ReadersGetByOauthToken;
         private System.Windows.Forms.Button bChangePwd;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bReadersPreregister;
         private System.Windows.Forms.Button bInsertIntoBasket;
         private System.Windows.Forms.Button bPreRegister;
         private System.Windows.Forms.Button IsBirthDateMatchReaderId;
         private System.Windows.Forms.Button SetPasswordLocalReader;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

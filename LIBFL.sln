@@ -84,8 +84,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "elcirp", "elcirp\", "{30A76
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportFullDatabaseToExcel", "ExportFullDatabaseToExcel\ExportFullDatabaseToExcel.csproj", "{B9124E5A-C576-4578-9B8F-BDB087138157}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenStat", "GenStat\GenStat.csproj", "{E890864F-D72A-4818-92FA-1EE7BF3F93C1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportToVufind", "ExportToVufind\ExportToVufind.csproj", "{2B6E5A78-107E-4958-94B3-12EE837434DA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CA4020F7-B048-4DFA-9E13-3E04DB83B093} = {CA4020F7-B048-4DFA-9E13-3E04DB83B093}
@@ -296,10 +294,6 @@ Global
 		{B9124E5A-C576-4578-9B8F-BDB087138157}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9124E5A-C576-4578-9B8F-BDB087138157}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9124E5A-C576-4578-9B8F-BDB087138157}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E890864F-D72A-4818-92FA-1EE7BF3F93C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E890864F-D72A-4818-92FA-1EE7BF3F93C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E890864F-D72A-4818-92FA-1EE7BF3F93C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E890864F-D72A-4818-92FA-1EE7BF3F93C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B6E5A78-107E-4958-94B3-12EE837434DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B6E5A78-107E-4958-94B3-12EE837434DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B6E5A78-107E-4958-94B3-12EE837434DA}.Release|Any CPU.ActiveCfg = Release|Any CPU

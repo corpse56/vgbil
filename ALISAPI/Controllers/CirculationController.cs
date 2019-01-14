@@ -42,6 +42,39 @@ namespace ALISAPI.Controllers
         }
 
         /// <summary>
+        /// Удаляет книги из корзины читателя. Метод принимает в теле номер читателя и ID книг, которые нужно удалить.
+        /// </summary>
+        /// <returns>HTTP200</returns>
+        [HttpDelete]
+        [Route("Circulation/Basket")]
+        public HttpResponseMessage Basket()
+        {
+
+            CirculationInfo Circulation = new CirculationInfo();
+            DeleteFromBasket request;
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            try
+            {
+                request = JsonConvert.DeserializeObject<DeleteFromBasket>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+            }
+
+            try
+            {
+                Circulation.DeleteFromBasket(request);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
+            }
+            return ALISResponseFactory.CreateResponse(Request);
+        }
+
+
+        /// <summary>
         /// Получает заказы читателя и их статусы. Описание книги и её экземпляры включено в объект заказа.
         /// </summary>
         /// <param name="idReader">Номер читательского билета</param>
