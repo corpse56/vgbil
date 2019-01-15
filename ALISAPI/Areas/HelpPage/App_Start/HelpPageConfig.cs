@@ -176,6 +176,13 @@ namespace ALISAPI.Areas.HelpPage
             List<OrderInfo> UserOrders = circ.GetOrders(888);
             json = JsonConvert.SerializeObject(UserOrders, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Orders");
+            //Circulation.Basket    Delete
+            BasketDelete bd = new BasketDelete();
+            bd.BooksToDelete.Add("BJVVV_1299121");
+            bd.BooksToDelete.Add("BJVVV_1491232");
+            bd.ReaderId = 200500;
+            json = JsonConvert.SerializeObject(bd, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "DeleteFromBasket");
 
 
             //Readers.PreRegisterRemoteReader

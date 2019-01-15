@@ -101,7 +101,7 @@
   <ItemGroup>
     <Compile Include="ALISAPI\Errors\ALISError.cs" />
     <Compile Include="ALISAPI\Errors\ALISErrorList.cs" />
-    <Compile Include="ALISAPI\RequestObjects\Circulation\DeleteFromBasket.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Circulation\BasketDelete.cs" />
     <Compile Include="ALISAPI\RequestObjects\Circulation\ImpersonalBasket.cs" />
     <Compile Include="ALISAPI\RequestObjects\Circulation\MakeOrder.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\AccessToken.cs" />

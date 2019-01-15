@@ -45,17 +45,17 @@ namespace ALISAPI.Controllers
         /// Удаляет книги из корзины читателя. Метод принимает в теле номер читателя и ID книг, которые нужно удалить.
         /// </summary>
         /// <returns>HTTP200</returns>
-        [HttpDelete]
-        [Route("Circulation/Basket")]
-        public HttpResponseMessage Basket()
+        [HttpPost]
+        [Route("Circulation/DeleteFromBasket")]
+        public HttpResponseMessage DeleteFromBasket()
         {
 
             CirculationInfo Circulation = new CirculationInfo();
-            DeleteFromBasket request;
+            BasketDelete request;
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
             try
             {
-                request = JsonConvert.DeserializeObject<DeleteFromBasket>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+                request = JsonConvert.DeserializeObject<BasketDelete>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
             }
             catch
             {

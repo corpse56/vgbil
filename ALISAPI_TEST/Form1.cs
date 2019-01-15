@@ -346,6 +346,26 @@ namespace ALISAPI_TEST
             }
 
         }
+
+        private void bDeleteFromBasket_Click(object sender, EventArgs e)
+        {
+            BasketDelete bd = new BasketDelete();
+            bd.BooksToDelete.Add("BJVVV_1257907");
+            bd.ReaderId = 172736; 
+   
+            //CirculationInfo ci = new CirculationInfo();
+            //ci.DeleteFromBasket(bd);
+
+            string jsonData = JsonConvert.SerializeObject(bd, ALISDateFormatJSONSettings);
+
+            using (HttpClient client = new HttpClient())
+            {
+                var response = client.PostAsync(ALIS_ADDRESS + "Circulation/DeleteFromBasket", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result + " " + response.Result.StatusCode; ;
+            }
+
+
+        }
     }
 
          

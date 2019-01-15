@@ -78,9 +78,11 @@ namespace LibflClassLibrary.Circulation.DB
             {
                 SqlCommand command = new SqlCommand();
                 command.Connection = connection;
+                command.Connection.Open();
                 foreach (string bookId in booksToDelete)
                 {
                     command.CommandText = Queries.DELETE_FROM_BASKET;
+                    command.Parameters.Clear();
                     command.Parameters.Add("IDReader", SqlDbType.Int).Value = readerId;
                     command.Parameters.Add("BookID", SqlDbType.NVarChar).Value = bookId;
                     int idmain = int.Parse(bookId.Substring(bookId.IndexOf("_") + 1));

@@ -62,7 +62,7 @@ namespace LibflClassLibrary.Circulation
             //reader.
         }
 
-        public void DeleteFromBasket(DeleteFromBasket request)
+        public void DeleteFromBasket(BasketDelete request)
         {
             loader.DeleteFromBasket(request);
         }
