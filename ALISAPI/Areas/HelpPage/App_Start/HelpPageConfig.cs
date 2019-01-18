@@ -120,6 +120,20 @@ namespace ALISAPI.Areas.HelpPage
             ltype.LoginTypeValue = "Email";
             json = JsonConvert.SerializeObject(ltype, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetLoginType");
+            UserLogin ul = new UserLogin();
+            ul.Login = "email@email.com";
+            json = JsonConvert.SerializeObject(ul, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetLoginType");
+
+
+            //Readers.ByEmail
+            UserEmail ue = new UserEmail();
+            ue.Email = "email@email.com";
+            json = JsonConvert.SerializeObject(ue, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ByEmail");
+            json = JsonConvert.SerializeObject(rsv, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "ByEmail");
+
 
 
             //Readers.Authorize

@@ -34,8 +34,8 @@ namespace ALISAPI_TEST
         };
 
 
-        readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
-        //readonly string ALIS_ADDRESS = "http://localhost:27873/";
+        //readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
+        readonly string ALIS_ADDRESS = "http://localhost:27873/";
         public Form1()
         {
             InitializeComponent();
@@ -43,12 +43,21 @@ namespace ALISAPI_TEST
 
         private void ReadersGet_Click(object sender, EventArgs e)
         {
+            //using (WebClient client = new WebClient())
+            //{
+            //    client.Encoding = Encoding.UTF8;
+            //    HttpRequestHeader AcceptHeader = HttpRequestHeader.Accept;
+            //    client.Headers[AcceptHeader] = "application/json";
+            //    string result = client.DownloadString(ALIS_ADDRESS+"Readers/189245");
+            //    ReaderInfo reader = JsonConvert.DeserializeObject<ReaderInfo>(result, ALISDateFormatJSONSettings);
+            //    tbResponse.Text = result;
+            //}
             using (WebClient client = new WebClient())
             {
                 client.Encoding = Encoding.UTF8;
                 HttpRequestHeader AcceptHeader = HttpRequestHeader.Accept;
                 client.Headers[AcceptHeader] = "application/json";
-                string result = client.DownloadString(ALIS_ADDRESS+"Readers/189245");
+                string result = client.DownloadString(ALIS_ADDRESS + "Readers/ByEmail/user201125@demotest.zz");
                 ReaderInfo reader = JsonConvert.DeserializeObject<ReaderInfo>(result, ALISDateFormatJSONSettings);
                 tbResponse.Text = result;
             }

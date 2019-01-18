@@ -54,21 +54,35 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Получает читателя по Email
         /// </summary>
-        /// <param name="email">Email читателя</param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("Readers/ByEmail/{email}")]
+        [HttpPost]
+        [Route("Readers/ByEmail")]
         [ResponseType(typeof(ReaderSimpleView))]
-        public HttpResponseMessage Get(string email)
+        public HttpResponseMessage ByEmail()
         {
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            UserEmail request = new UserEmail();
+            try
+            {
+                request = JsonConvert.DeserializeObject<UserEmail>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+            }
+
+
             ReaderInfo reader;
             try
             {
-                reader = ReaderInfo.GetReader(email);
+                reader = ReaderInfo.GetReader(request.Email);
             }
             catch (Exception ex)
             {
                 return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+            }
+            if (reader == null)
+            {
+                return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
             }
             ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
 
@@ -279,13 +293,24 @@ namespace ALISAPI.Controllers
         /// Получить тип логина для заданного логина. 
         /// </summary>
         /// <param name="Login">Логин. Может быть номером читательского билета либо Email</param>
-        /// <returns>string</returns>
-        [HttpGet]
-        [Route("Readers/GetLoginType/{login}")]
+        [HttpPost]
+        [Route("Readers/GetLoginType")]
         [ResponseType(typeof(LoginType))]
-        public HttpResponseMessage GetLoginType(string Login)
+        public HttpResponseMessage GetLoginType()
         {
-            string result = ReaderInfo.GetLoginType(Login);
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            UserLogin request = new UserLogin();
+            try
+            {
+                request = JsonConvert.DeserializeObject<UserLogin>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+            }
+
+
+            string result = ReaderInfo.GetLoginType(request.Login);
             if (result.ToLower() == "notdefined")
             {
                 return ALISErrorFactory.CreateError("R003", Request, HttpStatusCode.NotFound);

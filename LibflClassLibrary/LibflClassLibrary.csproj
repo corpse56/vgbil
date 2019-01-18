@@ -114,6 +114,8 @@
     <Compile Include="ALISAPI\RequestObjects\Readers\PreRegisterRemoteReader.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\SetPasswordLocalReader.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\SetPasswordRemoteReader.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Readers\UserEmail.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Readers\UserLogin.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\BookSimpleView.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\DigitalCopySimpleView.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\ExemplarSimpleView.cs" />

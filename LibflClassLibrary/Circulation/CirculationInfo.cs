@@ -41,7 +41,24 @@ namespace LibflClassLibrary.Circulation
             ReaderInfo reader = ReaderInfo.GetReader(request.ReaderId);
             if (request.OrderType == "Электронная выдача")
             {
+                //if (this.IsFiveElBooksIssued(idr, rtype))
+                //{
+                //    return "Нельзя заказать больше 5 электронных книг! Сдайте какие-либо выданные Вам электронные копии на вкладке \"Электронные книги\" и повторите заказ! ";
+                //}
+                //if (this.IsELOrderedByCurrentReader(idr, rtype))
+                //{
+                //    return "Электронная копия этого документа уже выдана Вам!";
+                //}
+                //if (b.GetExemplarCount() - b.GetBusyExemplarCount() <= 0)
+                //{
+                //    return "Все экземпляры выданы. Нельзя выдать электронных экземпляров больше чем бумажных, так как это нарушит авторское право." +
+                //        " Ближайшая свободная дата " + b.GetNearestFreeDate().ToString("dd.MM.yyyy") + ". Попробуйте заказать в указанную дату.";
 
+                //}
+                //if (!this.IsDayPastAfterReturn(idr, rtype))
+                //{
+                //    return "Вы не можете заказать эту электронную копию, поскольку запрещено заказывать ту же копию, если не прошли сутки с момента её возврата. Попробуйте на следующий день.";
+                //}
             }
             else
             {
