@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Readers;
 
 namespace LibflClassLibrary.Circulation.DB
 {
@@ -60,7 +62,6 @@ namespace LibflClassLibrary.Circulation.DB
         }
         internal DataTable IsExistsInBasket(int iDReader, string bookId)
         {
-            DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.IS_EXISTS_IN_BASKET, connection);
@@ -93,6 +94,101 @@ namespace LibflClassLibrary.Circulation.DB
                 }
             }
 
+        }
+
+        internal DataTable ElectronicIssueCount(ReaderInfo reader)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.ELECTRONIC_ISSUE_COUNT, connection);
+                dataAdapter.SelectCommand.Parameters.Add("IDReader", SqlDbType.Int).Value = reader.NumberReader;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
+        internal DataTable IsElectronicIssueAlreadyIssued(ReaderInfo reader, BJBookInfo book)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.IS_ELECTRONIC_ISSUE_ALREADY_ISSUED, connection);
+                dataAdapter.SelectCommand.Parameters.Add("IDReader", SqlDbType.Int).Value = reader.NumberReader;
+                dataAdapter.SelectCommand.Parameters.Add("BookId", SqlDbType.NVarChar).Value = book.Id;
+                dataAdapter.SelectCommand.Parameters.Add("BookIdInt", SqlDbType.Int).Value = book.ID;
+                dataAdapter.SelectCommand.Parameters.Add("BASE", SqlDbType.Int).Value = (book.Fund == "BJVVV")? 1 : 2;
+
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
+        internal void NewOrder(BJBookInfo book, ReaderInfo reader, string orderType)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                string StatusName = "";
+                switch (orderType)
+                {
+                    case "Электронная выдача":
+                        command.CommandText = Queries.NEW_ELECTRONIC_ORDER;
+                        StatusName = "Электронная выдача";
+                        break;
+                    case "На дом":
+                        command.CommandText = Queries.NEW_ORDER;
+                        StatusName = "Заказ сформирован";
+                        break;
+                    case "В зал":
+                        command.CommandText = Queries.NEW_ORDER;
+                        StatusName = "Заказ сформирован";
+                        break;
+
+                }
+                command.Parameters.Clear();
+                command.Parameters.Add("ReaderId", SqlDbType.Int).Value = reader.NumberReader;
+                command.Parameters.Add("BookId", SqlDbType.NVarChar).Value = book.Id;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = StatusName;
+                command.Parameters.Add("Fund", SqlDbType.NVarChar).Value = book.Fund;
+
+
+
+                int cnt = command.ExecuteNonQuery();
+                command.CommandText = Queries.DELETE_FROM_BASKET_RESERVATION_O;
+                cnt = command.ExecuteNonQuery();
+            }
+
+        }
+
+        internal DataTable IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.IS_TWENTYFOUR_HOURS_PAST_SINCE_RETURN, connection);
+                dataAdapter.SelectCommand.Parameters.Add("BookId", SqlDbType.NVarChar).Value = book.Id;
+                dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = reader.NumberReader;
+
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+
+        }
+
+        internal DataTable GetBusyExemplars(BJBookInfo book)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_BUSY_EXEMPLARS, connection);
+                dataAdapter.SelectCommand.Parameters.Add("BookId", SqlDbType.NVarChar).Value = book.Id;
+
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
         }
     }
 }

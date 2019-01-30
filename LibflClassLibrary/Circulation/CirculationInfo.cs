@@ -41,6 +41,26 @@ namespace LibflClassLibrary.Circulation
             ReaderInfo reader = ReaderInfo.GetReader(request.ReaderId);
             if (request.OrderType == "Электронная выдача")
             {
+                if (this.ElectronicIssueCount(reader) >= 5)
+                {
+                    throw new Exception("C001");
+                }
+                if (this.IsElectronicIssueAlreadyIssued(reader,book))
+                {
+                    throw new Exception("C002");
+                }
+                if (book.Exemplars.Count - this.GetBusyExemplars(book) <= 0)
+                {
+                    throw new Exception("C003");
+                }
+                if (this.IsTwentyFourHoursPastSinceReturn(reader, book))
+                {
+                    throw new Exception("C004");
+                }
+
+                this.NewOrder(book, reader, request.OrderType);
+
+
                 //if (this.IsFiveElBooksIssued(idr, rtype))
                 //{
                 //    return "Нельзя заказать больше 5 электронных книг! Сдайте какие-либо выданные Вам электронные копии на вкладке \"Электронные книги\" и повторите заказ! ";
@@ -66,6 +86,32 @@ namespace LibflClassLibrary.Circulation
             }
             
         }
+
+        private void NewOrder(BJBookInfo book, ReaderInfo reader, string orderType)
+        {
+            loader.NewOrder(book, reader, orderType);
+        }
+
+        private bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
+        {
+            return loader.IsTwentyFourHoursPastSinceReturn(reader, book);
+        }
+
+        private int GetBusyExemplars(BJBookInfo book)
+        {
+            return loader.GetBusyExemplars(book);
+        }
+
+        private bool IsElectronicIssueAlreadyIssued(ReaderInfo reader, BJBookInfo book)
+        {
+            return loader.IsElectronicIssueAlreadyIssued(reader, book);
+        }
+
+        private int ElectronicIssueCount(ReaderInfo reader)
+        {
+            return loader.ElectronicIssueCount(reader);
+        }
+
         private void CreateCommonBookOrder()
         {
 

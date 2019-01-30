@@ -62,9 +62,9 @@ namespace LibflClassLibrary.Circulation.Loaders
                         }
                         break;
                     case 1002:
-                        if (!result.Contains("Электронный доступ"))
+                        if (!result.Contains("Электронная выдача"))
                         {
-                            result.Add("Электронный доступ");
+                            result.Add("Электронная выдача");
                         }
                         break;
                 }
@@ -101,6 +101,46 @@ namespace LibflClassLibrary.Circulation.Loaders
             //{ 1020,   "Экстремистская литература.Не попадает в индекс.Обрабатывать не нужно."},
             //{ 1999,   "Проследовать в Зал выдачи документов 2 этаж. Возможность доступа уточните у сотрудника."},
 
+        }
+
+        internal void NewOrder(BJBookInfo book, ReaderInfo reader, string orderType)
+        {
+            dbWrapper.NewOrder(book, reader, orderType);
+        }
+
+        internal bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
+        {
+            DataTable table = dbWrapper.IsTwentyFourHoursPastSinceReturn(reader, book);
+            if (table.Rows.Count == 0)
+            {
+                return true;
+            }
+            if ((DateTime.Now - (DateTime)table.Rows[0]["Changed"]).Days < 1)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        internal int GetBusyExemplars(BJBookInfo book)
+        {
+            DataTable table = dbWrapper.GetBusyExemplars(book);
+            return table.Rows.Count;
+        }
+
+        internal bool IsElectronicIssueAlreadyIssued(ReaderInfo reader, BJBookInfo book)
+        {
+            DataTable table = dbWrapper.IsElectronicIssueAlreadyIssued(reader, book);
+            return (table.Rows.Count > 0) ? true : false;
+        }
+
+        internal int ElectronicIssueCount(ReaderInfo reader)
+        {
+            DataTable table = dbWrapper.ElectronicIssueCount(reader);
+            return table.Rows.Count;
         }
 
         internal void DeleteFromBasket(BasketDelete request)

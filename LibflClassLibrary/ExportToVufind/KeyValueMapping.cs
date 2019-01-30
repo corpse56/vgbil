@@ -324,7 +324,7 @@ namespace LibflClassLibrary.ExportToVufind
         };
         public static readonly Dictionary<int, string> MethodOfAccessCodeToName = new Dictionary<int, string>()
         {
-            { 4000,           "В помещении бибилотеки" },
+            { 4000,           "В помещении библиотеки" },
             { 4001,          "Взять на дом" },
             { 4002,           "Удалённый доступ" },
             { 4003,           "Печать по требованию" },
