@@ -259,6 +259,8 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                        " where IDDATA = @iddata and Status not in (8,10,11)" +
                        " union all" +
                        " select 1 from Reservation_R..ISSUED_OF where IDDATA = @iddata";
+                       //" union all " +
+                       //" select 1 from Circulation..Orders";
             }
         }
 

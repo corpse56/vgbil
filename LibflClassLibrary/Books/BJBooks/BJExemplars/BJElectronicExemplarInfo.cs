@@ -22,6 +22,9 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         {
             this.IDMAIN = IDMAIN;
             this.Fund = Fund;
+            base.IDMAIN = IDMAIN;
+            base.Fund = Fund;
+            //this.BookId = $"{Fund}_{IDMAIN}";
             loader = new BJExemplarLoader(Fund);
             Statuses = loader.LoadAvailabilityStatuses(IDMAIN, Fund);
         }

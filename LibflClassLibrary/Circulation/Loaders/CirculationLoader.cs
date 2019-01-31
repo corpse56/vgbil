@@ -31,81 +31,50 @@ namespace LibflClassLibrary.Circulation.Loaders
                 bi.ID = (int)row["ID"];
                 bi.ReaderId = (int)row["ReaderId"];
                 bi.PutDate = (DateTime)row["PutDate"];
-                bi.AcceptableActions = GetAcceptableActionsForReader(bi.BookId, readerId);
+                //bi.AcceptableOrderType = GetAcceptableOrderTypesForReader(bi.BookId, readerId);
 
                 basket.Add(bi);
             }
             return basket;
         }
 
-        private List<string> GetAcceptableActionsForReader(string bookId, int readerId)
+
+        internal bool IsExemplarIssued(BookExemplarBase exemplar)
         {
-            List<string> result = new List<string>();
-            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(bookId);
-            ReaderInfo reader = ReaderInfo.GetReader(readerId);
-            foreach(BJExemplarInfo exemplar in book.Exemplars)
+            if (!(exemplar is BJExemplarInfo)) return false;
+            DataTable table = dbWrapper.IsExemplarIssued(exemplar as BJExemplarInfo);
+            if (table.Rows.Count > 0)
             {
-                switch (exemplar.ExemplarAccess.Access)
-                {
-                    case 1000:
-                        // case 1006:
-                        if (!result.Contains("На дом"))
-                        {
-                            result.Add("На дом");
-                        }
-                        break;
-                    //case 1007:
-                    case 1005:
-                        if (!result.Contains("В зал"))
-                        {
-                            result.Add("В зал");
-                        }
-                        break;
-                    case 1002:
-                        if (!result.Contains("Электронная выдача"))
-                        {
-                            result.Add("Электронная выдача");
-                        }
-                        break;
-                }
+                return true;
             }
-            if (null != reader.Rights.RightsList.FirstOrDefault(x => x.ReaderRightValue == Readers.ReadersRights.ReaderRightsEnum.Employee))
+            else
             {
-                //кароче здесь надо написать логику, если это суотрудник или оплаченный абонемент, то в зал заменить на на дом
-                //но так как при выдаче всё равно всё встанет на свои места, то для экономи времени пропустим это.
+                return false;
             }
-            if (reader.IsRemoteReader)
-            {
-                result.Remove("В зал");
-                result.Remove("На дом");
-            }
-
-            return result;
-            //{ 1000,   "Заказать через личный кабинет, для получения на дом пройти в Зал абонементного обслуживания 2 этаж"},
-            //{ 1001,   "Свободый электронный доступ"},
-            //{ 1002,   "Доступ через авторизацию читателя(удаленного читателя)"},
-            //{ 1003,   "Электронный доступ в электронном зале НЭБ, читальные зал(3 этаж)"},
-            //{ 1004,   "ЛитРес:Иностранка"},
-            //{ 1005,   "Заказать через личный кабинет, для получения заказа пройти в Зал выдачи документов 2 этаж"},
-            //{ 1006,   "Проследовать в зал местонахождения экземпляра для получения книги на дом"},
-            //{ 1007,   "Проследовать в зал местонахождения экземпляра, взять самостоятельно для чтения книги в помещении"},
-            //{ 1008,   "Pearson:Иностранка"},
-            //{ 1009,   "Печать по требованию"},
-            //{ 1010,   "Проследовать в зал местонахождения экземпляра. Возможность выдачи уточните у сотрудника"},
-            //{ 1011,   "Книга находится на выставке в зале местонахождения экземпляра"},
-            //{ 1012,   "Спец.вид. Заказать через личный кабинет, проследовать в Зал выдачи документов 2 этаж. Сотрудник поможет Вам с дополнительным оборудованием для просмотра."},
-            //{ 1013,   "Книга находится в обработке"},
-            //{ 1014,   "Проследовать в Зал редкой книги 4 этаж"},
-            //{ 1016,   "Проследовать в Зал редкой книги 4 этаж. Возможность доступа уточните у сотрудника."},
-            //{ 1017,   "Проследовать в Зал выдачи документов 2 этаж. Возможность доступа уточните у сотрудника."},
-            //{ 1020,   "Экстремистская литература.Не попадает в индекс.Обрабатывать не нужно."},
-            //{ 1999,   "Проследовать в Зал выдачи документов 2 этаж. Возможность доступа уточните у сотрудника."},
-
         }
-
-        internal void NewOrder(BJBookInfo book, ReaderInfo reader, string orderType)
+        internal bool IsBookAlreadyIssuedToReader(BJBookInfo book, ReaderInfo reader)
         {
-            dbWrapper.NewOrder(book, reader, orderType);
+            DataTable table = dbWrapper.IsBookAlreadyIssuedToReader(book, reader);
+            return (table.Rows.Count != 0);
+        }
+        internal void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, string orderType)
+        {
+            switch (orderType)
+            {
+                case "Электронная выдача":
+                    dbWrapper.NewElectronicOrder(exemplar as BJElectronicExemplarInfo, reader, "Электронная выдача");
+                    break;
+                case "На дом":
+
+                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, "На дом");
+                    break;
+                case "В зал":
+                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, "В зал");
+                    break;
+
+            }
+
+            
         }
 
         internal bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
@@ -125,9 +94,9 @@ namespace LibflClassLibrary.Circulation.Loaders
             }
         }
 
-        internal int GetBusyExemplars(BJBookInfo book)
+        internal int GetBusyExemplarsCount(BJBookInfo book)
         {
-            DataTable table = dbWrapper.GetBusyExemplars(book);
+            DataTable table = dbWrapper.GetBusyExemplarsCount(book);
             return table.Rows.Count;
         }
 

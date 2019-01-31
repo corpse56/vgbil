@@ -1,6 +1,7 @@
 ﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
 using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation.Loaders;
 using LibflClassLibrary.Readers;
 using System;
@@ -19,7 +20,80 @@ namespace LibflClassLibrary.Circulation
         }
         public List<BasketInfo> GetBasket(int ReaderId)
         {
-            return loader.GetBasket(ReaderId);
+            List<BasketInfo>  result = loader.GetBasket(ReaderId);
+            foreach (BasketInfo basketInfo in result)
+            {
+                basketInfo.AcceptableOrderType = this.GetAcceptableOrderTypesForReader(basketInfo.BookId, ReaderId);
+            }
+            return result;
+        }
+
+        private List<string> GetAcceptableOrderTypesForReader(string bookId, int readerId)
+        {
+            List<string> result = new List<string>();
+            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(bookId);
+            ReaderInfo reader = ReaderInfo.GetReader(readerId);
+            foreach (BJExemplarInfo exemplar in book.Exemplars)
+            {
+                string AcceptableOrderType = this.GetExemplarAcceptableOrderType(exemplar);
+                if (AcceptableOrderType == null)
+                {
+                    continue;
+                }
+                if (!result.Contains(AcceptableOrderType))
+                {
+                    result.Add(AcceptableOrderType);
+                }
+            }
+            if (null != reader.Rights.RightsList.FirstOrDefault(x => x.ReaderRightValue == Readers.ReadersRights.ReaderRightsEnum.Employee))
+            {
+                //кароче здесь надо написать логику, если это суотрудник или оплаченный абонемент, то в зал заменить на на дом
+                //но так как при выдаче всё равно всё встанет на свои места, то для экономи времени пропустим это.
+            }
+            if (reader.IsRemoteReader)
+            {
+                result.Remove("В зал");
+                result.Remove("На дом");
+            }
+
+            return result;
+            //{ 1000,   "Заказать через личный кабинет, для получения на дом пройти в Зал абонементного обслуживания 2 этаж"},
+            //{ 1001,   "Свободый электронный доступ"},
+            //{ 1002,   "Доступ через авторизацию читателя(удаленного читателя)"},
+            //{ 1003,   "Электронный доступ в электронном зале НЭБ, читальные зал(3 этаж)"},
+            //{ 1004,   "ЛитРес:Иностранка"},
+            //{ 1005,   "Заказать через личный кабинет, для получения заказа пройти в Зал выдачи документов 2 этаж"},
+            //{ 1006,   "Проследовать в зал местонахождения экземпляра для получения книги на дом"},
+            //{ 1007,   "Проследовать в зал местонахождения экземпляра, взять самостоятельно для чтения книги в помещении"},
+            //{ 1008,   "Pearson:Иностранка"},
+            //{ 1009,   "Печать по требованию"},
+            //{ 1010,   "Проследовать в зал местонахождения экземпляра. Возможность выдачи уточните у сотрудника"},
+            //{ 1011,   "Книга находится на выставке в зале местонахождения экземпляра"},
+            //{ 1012,   "Спец.вид. Заказать через личный кабинет, проследовать в Зал выдачи документов 2 этаж. Сотрудник поможет Вам с дополнительным оборудованием для просмотра."},
+            //{ 1013,   "Книга находится в обработке"},
+            //{ 1014,   "Проследовать в Зал редкой книги 4 этаж"},
+            //{ 1016,   "Проследовать в Зал редкой книги 4 этаж. Возможность доступа уточните у сотрудника."},
+            //{ 1017,   "Проследовать в Зал выдачи документов 2 этаж. Возможность доступа уточните у сотрудника."},
+            //{ 1020,   "Экстремистская литература.Не попадает в индекс.Обрабатывать не нужно."},
+            //{ 1999,   "Невозможно определить доступ"},
+        }
+        private string GetExemplarAcceptableOrderType(BJExemplarInfo exemplar)
+        {
+            switch (exemplar.ExemplarAccess.Access)
+            {
+                case 1000:
+                    return "На дом";
+                case 1005:
+                case 1012:
+                    return "В зал";
+                case 1002:
+                    return "Электронная выдача";
+                case 1006:
+                case 1007:
+                case 1014:
+                    return "Самостоятельный заказ";
+            }
+            return "Действий для заказа не предусмотрено";
         }
 
         public void InsertIntoUserBasket(ImpersonalBasket request)
@@ -49,47 +123,60 @@ namespace LibflClassLibrary.Circulation
                 {
                     throw new Exception("C002");
                 }
-                if (book.Exemplars.Count - this.GetBusyExemplars(book) <= 0)
+                if (book.Exemplars.Count - this.GetBusyExemplarsCount(book) <= 0)
                 {
                     throw new Exception("C003");
                 }
-                if (this.IsTwentyFourHoursPastSinceReturn(reader, book))
+                if (!this.IsTwentyFourHoursPastSinceReturn(reader, book))
                 {
                     throw new Exception("C004");
                 }
-
-                this.NewOrder(book, reader, request.OrderType);
-
-
-                //if (this.IsFiveElBooksIssued(idr, rtype))
-                //{
-                //    return "Нельзя заказать больше 5 электронных книг! Сдайте какие-либо выданные Вам электронные копии на вкладке \"Электронные книги\" и повторите заказ! ";
-                //}
-                //if (this.IsELOrderedByCurrentReader(idr, rtype))
-                //{
-                //    return "Электронная копия этого документа уже выдана Вам!";
-                //}
-                //if (b.GetExemplarCount() - b.GetBusyExemplarCount() <= 0)
-                //{
-                //    return "Все экземпляры выданы. Нельзя выдать электронных экземпляров больше чем бумажных, так как это нарушит авторское право." +
-                //        " Ближайшая свободная дата " + b.GetNearestFreeDate().ToString("dd.MM.yyyy") + ". Попробуйте заказать в указанную дату.";
-
-                //}
-                //if (!this.IsDayPastAfterReturn(idr, rtype))
-                //{
-                //    return "Вы не можете заказать эту электронную копию, поскольку запрещено заказывать ту же копию, если не прошли сутки с момента её возврата. Попробуйте на следующий день.";
-                //}
+                BJElectronicExemplarInfo exemplar = new BJElectronicExemplarInfo(book.ID, book.Fund);
+                //BJExemplarInfo exemplar = BJExemplarInfo(book.ID, book.Fund);
+                this.NewOrder(exemplar, reader, request.OrderType);
             }
             else
             {
-
+                BJExemplarInfo exemplar = this.GetFirstFreeExemplar(book);
+                if (exemplar == null)
+                {
+                    throw new Exception("C005");
+                }
+                if (this.IsBookAlreadyIssuedToReader(book, reader))
+                {
+                    throw new Exception("C006");
+                }
+                
+                this.NewOrder(exemplar, reader, request.OrderType);
+                
             }
-            
+
         }
 
-        private void NewOrder(BJBookInfo book, ReaderInfo reader, string orderType)
+        private bool IsBookAlreadyIssuedToReader(BJBookInfo book, ReaderInfo reader)
         {
-            loader.NewOrder(book, reader, orderType);
+            return loader.IsBookAlreadyIssuedToReader(book, reader);
+        }
+
+        private BJExemplarInfo GetFirstFreeExemplar(BJBookInfo book)
+        {
+            foreach (BJExemplarInfo exemplar in book.Exemplars)
+            {
+                if (loader.IsExemplarIssued(exemplar))
+                {
+                    continue;
+                }
+                else
+                {
+                    return exemplar;
+                }
+            }
+            return null;
+        }
+
+        private void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, string orderType)
+        {
+            loader.NewOrder(exemplar, reader, orderType);
         }
 
         private bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
@@ -97,9 +184,13 @@ namespace LibflClassLibrary.Circulation
             return loader.IsTwentyFourHoursPastSinceReturn(reader, book);
         }
 
-        private int GetBusyExemplars(BJBookInfo book)
+        private int GetBusyExemplarsCount(BJBookInfo book)
         {
-            return loader.GetBusyExemplars(book);
+            return loader.GetBusyExemplarsCount(book);
+        }
+        private bool IsExemplarIssued(BookExemplarBase exemplar)
+        {
+            return loader.IsExemplarIssued(exemplar);
         }
 
         private bool IsElectronicIssueAlreadyIssued(ReaderInfo reader, BJBookInfo book)

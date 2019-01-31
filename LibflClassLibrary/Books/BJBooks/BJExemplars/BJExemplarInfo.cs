@@ -28,7 +28,13 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 
         public string Fund { get; set; }
         public int IDMAIN { get; set; }
-
+        public string BookId
+        {
+            get
+            {
+                return $"{Fund}_{IDMAIN.ToString()}";
+            }
+        }
         public bool IsAlligat { get; set; }
         public int ConvolutePin { get; set; }
         public int ConvoluteIdData { get; set; }

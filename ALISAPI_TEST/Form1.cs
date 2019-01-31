@@ -375,6 +375,29 @@ namespace ALISAPI_TEST
 
 
         }
+
+        private void bCirculationMakeOrder_Click(object sender, EventArgs e)
+        {
+            CirculationInfo ci = new CirculationInfo();
+            MakeOrder mo = new MakeOrder();
+            //mo.BookId = "BJVVV_1007658";
+            //mo.ReaderId = 100000;
+            //mo.OrderType = "Электронная выдача";
+            //ci.MakeOrder(mo);
+
+            mo.BookId = "BJVVV_1310093";
+            mo.ReaderId = 100000;
+            mo.OrderType = "На дом";
+            ci.MakeOrder(mo);
+
+            mo.BookId = "BJVVV_1039873";
+            mo.ReaderId = 100000;
+            mo.OrderType = "В зал";
+            ci.MakeOrder(mo);
+
+            
+
+        }
     }
 
          

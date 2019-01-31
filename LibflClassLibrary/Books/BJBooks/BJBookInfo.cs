@@ -54,6 +54,7 @@ namespace LibflClassLibrary.Books.BJBooks
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetBJRecord(pin);
             BJBookInfo result = new BJBookInfo();
+            result.Id = $"{fund}_{pin}";
             result.ID = pin;
             result.Fund = fund;
             BJExemplarInfo exemplar = new BJExemplarInfo(0);

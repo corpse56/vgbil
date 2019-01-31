@@ -41,6 +41,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.bDeleteFromBasket = new System.Windows.Forms.Button();
+            this.bCirculationMakeOrder = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -174,11 +175,22 @@
             this.bDeleteFromBasket.UseVisualStyleBackColor = true;
             this.bDeleteFromBasket.Click += new System.EventHandler(this.bDeleteFromBasket_Click);
             // 
+            // bCirculationMakeOrder
+            // 
+            this.bCirculationMakeOrder.Location = new System.Drawing.Point(207, 55);
+            this.bCirculationMakeOrder.Name = "bCirculationMakeOrder";
+            this.bCirculationMakeOrder.Size = new System.Drawing.Size(237, 39);
+            this.bCirculationMakeOrder.TabIndex = 15;
+            this.bCirculationMakeOrder.Text = "Circulation/MakeOrder";
+            this.bCirculationMakeOrder.UseVisualStyleBackColor = true;
+            this.bCirculationMakeOrder.Click += new System.EventHandler(this.bCirculationMakeOrder_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.bCirculationMakeOrder);
             this.Controls.Add(this.bDeleteFromBasket);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -216,6 +228,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button bDeleteFromBasket;
+        private System.Windows.Forms.Button bCirculationMakeOrder;
     }
 }
 

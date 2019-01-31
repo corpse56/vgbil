@@ -60,9 +60,9 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "select 1 from Reservation_R..ELISSUED where IDREADER = @IDReader" +
-                       " union all" +
-                       " select 1 from Ciculation..Orders where ReaderId = @IDReader and StatusName = 'Электронная выдача'";
+                return //"select 1 from Reservation_R..ELISSUED where IDREADER = @IDReader" +
+                       //" union all" +
+                       " select 1 from Circulation..Orders where ReaderId = @IDReader and StatusName = 'Электронная выдача'";
             }
         }
 
@@ -70,18 +70,18 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "select 1 from Reservation_R..ELISSUED where IDREADER = @IDReader and IDMAIN = @BookIdInt and BASE = @BASE" +
-                       " union all" +
-                       " select 1 from Ciculation..Orders where ReaderId = @IDReader and StatusName = 'Электронная выдача'" +
+                return //" select 1 from Reservation_R..ELISSUED where IDREADER = @IDReader and IDMAIN = @BookIdInt and BASE = @BASE" +
+                       //" union all" +
+                       " select 1 from Circulation..Orders where ReaderId = @IDReader and StatusName = 'Электронная выдача'" +
                        "     and BookId = @BookId";
             }
         }
 
-        public string GET_BUSY_EXEMPLARS
+        public string GET_BUSY_EXEMPLARS_COUNT
         {
             get
             {
-                return " select * from Ciculation..Orders " +
+                return " select * from Circulation..Orders " +
                        " where StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу','На бронеполке','Выдано в зал','Выдано на дом','Электронная выдача') " +
                        " and BookId = @BookId";
             }
@@ -102,15 +102,40 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,  StartDate,  ReturnDate,                   Barcode,   Fund)" +
-                       " values                         (@BookId,  0,           @ReaderId, @StatusName, getdate(), DATEADD(day , 30 , getdate()), 'E00000000', @Fund  ) ";
+                return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,           StartDate,  ReturnDate,                   Barcode,   Fund)" +
+                       " values                         (@BookId,  0,          @ReaderId, 'Электронная выдача',  getdate(), DATEADD(day , 30 , getdate()), 'E00000000', @Fund  ); " +
+                       " select SCOPE_IDENTITY() ";
             }
         }
         public string NEW_ORDER
         {
             get
             {
-                return "";
+                return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,           StartDate,  ReturnDate,                               Barcode,   Fund)" +
+                       " values                         (@BookId,  @ExemplarId, @ReaderId, 'Заказ сформирован',   getdate(), DATEADD(day , @ReturnInDays , getdate()), @Barcode, @Fund  ); " +
+                       " select SCOPE_IDENTITY() ";
+            }
+        }
+
+        //здесь не вставляем статус 'Для возврата в хранение', потому что книга может быть на самом деле на месте, просто её не приняли.
+        //но тогда надо не забывать для книг с таким статусом закрывать заказ и открывать новый.
+        //и в программе хранения надо дать возможность проверить такие заказы.
+        public string IS_ALREADY_ISSUED
+        {
+            get
+            {
+                return " select 1 from Circulation..Orders where ExemplarId = @ExemplarId " +
+                       " and StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу','На бронеполке','Выдано в зал','Выдано на дом')";
+            }
+
+        }
+
+        public string IS_BOOK_ALREADY_ISSUED_TO_READER
+        {
+            get
+            {
+                return " select 1 from Circulation..Orders where ReaderId = @IDReader " +
+                       " and BookId = @BookId";
             }
         }
     }
