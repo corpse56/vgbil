@@ -150,6 +150,74 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Книга не найдена",
                 httpStatusCode = System.Net.HttpStatusCode.NotFound,
             },
+            new ALISError()
+            {
+                Code = "B002",
+                Message = "Ошибка заполнения экземпляра в базе.",
+                httpStatusCode = System.Net.HttpStatusCode.NotFound,
+            },
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            new ALISError()
+            {
+                Code = "C001",
+                Message = "Нельзя выдать более 5 электронных книг.",
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            },
+            new ALISError()
+            {
+                Code = "C002",
+                Message = "Эта электронная копия уже выдана вам",
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            },
+            new ALISError()
+            {
+                Code = "C003",
+                Message = "Нельзя выдать электронных экземпляров больше чем бумажных, так как это нарушит авторское право",
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            },
+            new ALISError()
+            {
+                Code = "C004",
+                Message = "Вы не можете заказать эту электронную копию, поскольку запрещено заказывать ту же копию, если не прошли сутки с момента её возврата.",
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            },
+            new ALISError()
+            {
+                Code = "C005",
+                Message = "Невозможно заказать книгу, так как все экземпляры выданы.",
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            },
+            new ALISError()
+            {
+                Code = "C006",
+                Message = "Эта книга уже выдана вам. Нельзя заказать книгу второй раз.",
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            },
+            new ALISError()
+            {
+                Code = "C007",
+                Message = "Действий для заказа не предусмотрено",
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            },
+            new ALISError()
+            {
+                Code = "C008",
+                Message = "Недопустимый тип заказа",
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            },
+            new ALISError()
+            {
+                Code = "C009",
+                Message = "Свободных экземпляров для выдачи на дом нет. Попробуйте другой тип заказа.",
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            },
+            new ALISError()
+            {
+                Code = "C010",
+                Message = "Свободных экземпляров для выдачи в помещении библиотеки нет. Попробуйте другой тип заказа.",
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            },
+
 
         };
     }

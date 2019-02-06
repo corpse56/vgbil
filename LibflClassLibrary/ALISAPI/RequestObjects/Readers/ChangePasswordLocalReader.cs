@@ -7,7 +7,7 @@ namespace LibflClassLibrary.ALISAPI.RequestObjects.Readers
 {
     public class ChangePasswordLocalReader
     {
-        public int NumberReader { get; set; }
+        public int ReaderId { get; set; }
         public string NewPassword { get; set; }
         public string DateBirth { get; set; }
     }

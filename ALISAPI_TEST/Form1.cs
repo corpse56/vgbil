@@ -34,8 +34,8 @@ namespace ALISAPI_TEST
         };
 
 
-        //readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
-        readonly string ALIS_ADDRESS = "http://localhost:27873/";
+        readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
+        //readonly string ALIS_ADDRESS = "http://localhost:27873/";
         public Form1()
         {
             InitializeComponent();
@@ -116,7 +116,7 @@ namespace ALISAPI_TEST
         private void bChangePwd_Click(object sender, EventArgs e)
         {
             ChangePasswordLocalReader request = new ChangePasswordLocalReader();
-            request.NumberReader = 222222;
+            request.ReaderId = 222222;
             request.DateBirth = "1996-01-03";//new DateTime(1996, 01, 03, 0, 0, 0);
             request.NewPassword = "222222";
             string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
@@ -127,7 +127,7 @@ namespace ALISAPI_TEST
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
-            request.NumberReader = 333;
+            request.ReaderId = 333;
             request.DateBirth = "1965-11-08";// new DateTime(1965, 11, 08, 7, 7, 7);
             request.NewPassword = "333";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
@@ -138,7 +138,7 @@ namespace ALISAPI_TEST
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
-            request.NumberReader = 555;
+            request.ReaderId = 555;
             request.DateBirth = "1981-03-17";// new DateTime(1981, 03, 17, 7, 7, 7);
             request.NewPassword = "555";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
@@ -149,7 +149,7 @@ namespace ALISAPI_TEST
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
-            request.NumberReader = 777;
+            request.ReaderId = 777;
             request.DateBirth = "1979-03-24";// new DateTime(1979, 03, 24, 7, 7, 7);
             request.NewPassword = "777";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
@@ -160,7 +160,7 @@ namespace ALISAPI_TEST
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
-            request.NumberReader = 888;
+            request.ReaderId = 888;
             request.DateBirth = "1978-05-07";// new DateTime(1978, 05, 07, 7, 7, 7);
             request.NewPassword = "888";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
@@ -171,7 +171,7 @@ namespace ALISAPI_TEST
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
-            request.NumberReader = 999;
+            request.ReaderId = 999;
             request.DateBirth = "1983-09-30";//new DateTime(1983, 09, 30, 7, 7, 7);
             request.NewPassword = "999";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
@@ -182,7 +182,7 @@ namespace ALISAPI_TEST
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
-            request.NumberReader = 200500;
+            request.ReaderId = 200500;
             request.DateBirth = "1972-02-19";// new DateTime(1972, 02, 19, 7, 7, 7);
             request.NewPassword = "200500";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
@@ -193,7 +193,7 @@ namespace ALISAPI_TEST
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
-            request.NumberReader = 214444;
+            request.ReaderId = 214444;
             request.DateBirth = "1965-04-30";// new DateTime(1965, 04, 30, 7, 7, 7);
             request.NewPassword = "214444";
             jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
@@ -217,7 +217,7 @@ namespace ALISAPI_TEST
             ImpersonalBasket basket = new ImpersonalBasket();
             basket.BookIdArray = new List<string>();
             basket.BookIdArray.AddRange(new string[] { "BJVVV_1299121", "BJVVV_1304618", "REDKOSTJ_31866", "REDKOSTJ_43090" });
-            basket.IDReader = 189245;
+            basket.ReaderId = 189245;
             circulation.InsertIntoUserBasket(basket);
         }
 
@@ -245,7 +245,7 @@ namespace ALISAPI_TEST
         private void IsBirthDateMatchReaderId_Click(object sender, EventArgs e)
         {
             BirthDateMatchReaderId request = new BirthDateMatchReaderId();
-            request.NumberReader = 222222;
+            request.ReaderId = 222222;
             request.DateBirth = "1996-01-03";//new DateTime(1996, 01, 03, 0, 0, 0);
             string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
 
@@ -385,17 +385,24 @@ namespace ALISAPI_TEST
             //mo.OrderType = "Электронная выдача";
             //ci.MakeOrder(mo);
 
-            mo.BookId = "BJVVV_1310093";
-            mo.ReaderId = 100000;
-            mo.OrderType = "На дом";
-            ci.MakeOrder(mo);
+            //mo.BookId = "BJVVV_1310093";
+            //mo.ReaderId = 100000;
+            //mo.OrderType = "На дом";
+            //ci.MakeOrder(mo);
 
-            mo.BookId = "BJVVV_1039873";
+            mo.BookId = "BJVVV_1078762";
             mo.ReaderId = 100000;
             mo.OrderType = "В зал";
-            ci.MakeOrder(mo);
+            //ci.MakeOrder(mo);
 
-            
+            string jsonData = JsonConvert.SerializeObject(mo, ALISDateFormatJSONSettings);
+
+            using (HttpClient client = new HttpClient())
+            {
+                var response = client.PostAsync(ALIS_ADDRESS + "Circulation/Order", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result + " " + response.Result.StatusCode; ;
+            }
+
 
         }
     }

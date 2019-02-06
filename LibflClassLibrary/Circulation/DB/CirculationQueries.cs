@@ -36,7 +36,14 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "select * from Reservation_R..ALISOrders where ReaderId = @ReaderId";
+                return "select * from Circulation..Orders where ReaderId = @ReaderId and StatusName not in ('Завершено')";
+            }
+        }
+        public string GET_ORDERS_HISTORY
+        {
+            get
+            {
+                return "select * from Circulation..Orders where ReaderId = @ReaderId and StatusName in ('Завершено')";
             }
         }
 
@@ -103,7 +110,7 @@ namespace LibflClassLibrary.Circulation.DB
             get
             {
                 return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,           StartDate,  ReturnDate,                   Barcode,   Fund)" +
-                       " values                         (@BookId,  0,          @ReaderId, 'Электронная выдача',  getdate(), DATEADD(day , 30 , getdate()), 'E00000000', @Fund  ); " +
+                       " values                         (@BookId,  0,          @ReaderId, @StatusName,  getdate(), DATEADD(day , 30 , getdate()), 'E00000000', @Fund  ); " +
                        " select SCOPE_IDENTITY() ";
             }
         }
@@ -112,7 +119,7 @@ namespace LibflClassLibrary.Circulation.DB
             get
             {
                 return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,           StartDate,  ReturnDate,                               Barcode,   Fund)" +
-                       " values                         (@BookId,  @ExemplarId, @ReaderId, 'Заказ сформирован',   getdate(), DATEADD(day , @ReturnInDays , getdate()), @Barcode, @Fund  ); " +
+                       " values                         (@BookId,  @ExemplarId, @ReaderId, @StatusName,   getdate(), DATEADD(day , @ReturnInDays , getdate()), @Barcode, @Fund  ); " +
                        " select SCOPE_IDENTITY() ";
             }
         }
@@ -120,12 +127,13 @@ namespace LibflClassLibrary.Circulation.DB
         //здесь не вставляем статус 'Для возврата в хранение', потому что книга может быть на самом деле на месте, просто её не приняли.
         //но тогда надо не забывать для книг с таким статусом закрывать заказ и открывать новый.
         //и в программе хранения надо дать возможность проверить такие заказы.
+        //НУ НАХЕР. Просто не будем давать заказывать.
         public string IS_ALREADY_ISSUED
         {
             get
             {
                 return " select 1 from Circulation..Orders where ExemplarId = @ExemplarId " +
-                       " and StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу','На бронеполке','Выдано в зал','Выдано на дом')";
+                       " and StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу','На бронеполке','Выдано в зал','Выдано на дом', 'Ожидает выдачи', 'Для возврата в хранение')";
             }
 
         }

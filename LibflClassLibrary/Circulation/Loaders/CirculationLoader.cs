@@ -31,8 +31,6 @@ namespace LibflClassLibrary.Circulation.Loaders
                 bi.ID = (int)row["ID"];
                 bi.ReaderId = (int)row["ReaderId"];
                 bi.PutDate = (DateTime)row["PutDate"];
-                //bi.AcceptableOrderType = GetAcceptableOrderTypesForReader(bi.BookId, readerId);
-
                 basket.Add(bi);
             }
             return basket;
@@ -57,24 +55,26 @@ namespace LibflClassLibrary.Circulation.Loaders
             DataTable table = dbWrapper.IsBookAlreadyIssuedToReader(book, reader);
             return (table.Rows.Count != 0);
         }
-        internal void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, string orderType)
+        internal void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, string orderType, int ReturnInDays)
         {
             switch (orderType)
             {
-                case "Электронная выдача":
-                    dbWrapper.NewElectronicOrder(exemplar as BJElectronicExemplarInfo, reader, "Электронная выдача");
+                case OrderTypes.ElectronicVersion:
+                    dbWrapper.NewElectronicOrder(exemplar as BJElectronicExemplarInfo, reader);
                     break;
-                case "На дом":
-
-                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, "На дом");
+                case OrderTypes.PaperVersion:
+                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, ReturnInDays, CirculationStatuses.OrderIsFormed);
                     break;
-                case "В зал":
-                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, "В зал");
+                case OrderTypes.InLibrary:
+                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, ReturnInDays, CirculationStatuses.OrderIsFormed);
+                    break;
+                case OrderTypes.SelfOrder:
+                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, ReturnInDays, OrderTypes.SelfOrder);
                     break;
 
             }
 
-            
+
         }
 
         internal bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
@@ -134,7 +134,7 @@ namespace LibflClassLibrary.Circulation.Loaders
                 order.IssueDep = row["IssueDepId"].ToString();
                 order.OrderId = i;
                 order.ReaderId = (int)row["ReaderId"];
-                order.ReturnDate = (row["ReturnDate"] == DBNull.Value) ? null : (DateTime?)row["ReturnDate"]; 
+                order.ReturnDate = (DateTime)row["ReturnDate"]; 
                 order.ReturnDep = row["ReturnDepId"].ToString();
                 order.StartDate = (DateTime)row["StartDate"];
                // order.StartDate = order.StartDate.ToUniversalTime();//new DateTime(order.StartDate.Ticks, DateTimeKind.Utc);
@@ -149,9 +149,9 @@ namespace LibflClassLibrary.Circulation.Loaders
         {
             foreach(string BookId in request.BookIdArray)
             {
-                if (!this.IsExistsInBasket(request.IDReader, BookId))
+                if (!this.IsExistsInBasket(request.ReaderId, BookId))
                 {
-                    dbWrapper.InsertIntoUserBasket(request.IDReader, BookId);
+                    dbWrapper.InsertIntoUserBasket(request.ReaderId, BookId);
                 }
             }
         }

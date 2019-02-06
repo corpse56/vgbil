@@ -1,8 +1,10 @@
 ﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
+using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation.Loaders;
+using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.Readers;
 using System;
 using System.Collections.Generic;
@@ -52,8 +54,8 @@ namespace LibflClassLibrary.Circulation
             }
             if (reader.IsRemoteReader)
             {
-                result.Remove("В зал");
-                result.Remove("На дом");
+                result.Remove(OrderTypes.InLibrary);
+                result.Remove(OrderTypes.PaperVersion);
             }
 
             return result;
@@ -79,21 +81,7 @@ namespace LibflClassLibrary.Circulation
         }
         private string GetExemplarAcceptableOrderType(BJExemplarInfo exemplar)
         {
-            switch (exemplar.ExemplarAccess.Access)
-            {
-                case 1000:
-                    return "На дом";
-                case 1005:
-                case 1012:
-                    return "В зал";
-                case 1002:
-                    return "Электронная выдача";
-                case 1006:
-                case 1007:
-                case 1014:
-                    return "Самостоятельный заказ";
-            }
-            return "Действий для заказа не предусмотрено";
+            return KeyValueMapping.AccessCodeToOrderType[exemplar.ExemplarAccess.Access];
         }
 
         public void InsertIntoUserBasket(ImpersonalBasket request)
@@ -112,8 +100,10 @@ namespace LibflClassLibrary.Circulation
         {
             //BookBase book = new BookBase()
             BJBookInfo book = BJBookInfo.GetBookInfoByPIN(request.BookId);
+            BookSimpleView bookSimpleView = ViewFactory.GetBookSimpleView(request.BookId);
+
             ReaderInfo reader = ReaderInfo.GetReader(request.ReaderId);
-            if (request.OrderType == "Электронная выдача")
+            if (request.OrderType == OrderTypes.ElectronicVersion)
             {
                 if (this.ElectronicIssueCount(reader) >= 5)
                 {
@@ -133,21 +123,111 @@ namespace LibflClassLibrary.Circulation
                 }
                 BJElectronicExemplarInfo exemplar = new BJElectronicExemplarInfo(book.ID, book.Fund);
                 //BJExemplarInfo exemplar = BJExemplarInfo(book.ID, book.Fund);
-                this.NewOrder(exemplar, reader, request.OrderType);
+                this.NewOrder(exemplar, reader, request.OrderType, 30);
             }
             else
             {
-                BJExemplarInfo exemplar = this.GetFirstFreeExemplar(book);
-                if (exemplar == null)
-                {
-                    throw new Exception("C005");
-                }
                 if (this.IsBookAlreadyIssuedToReader(book, reader))
                 {
                     throw new Exception("C006");
                 }
-                
-                this.NewOrder(exemplar, reader, request.OrderType);
+
+                //ExemplarSimpleView exemplarSimpleView;
+                bool IsOrderedSuccessfully = false;
+                switch (request.OrderType)
+                {
+                    case OrderTypes.PaperVersion:
+                        //приоритет для книг, которые в хранении, чтобы их принесли на кафедру для читателя
+                        foreach (BJExemplarInfo e in book.Exemplars)
+                        {
+                            if (e.ExemplarAccess.Access == 1000)
+                            {
+                                if (!this.IsExemplarIssued(e))
+                                {
+                                    this.NewOrder(e, reader, OrderTypes.PaperVersion, 30);
+                                    IsOrderedSuccessfully = true;
+                                }
+                            }
+                        }
+                        if (IsOrderedSuccessfully)
+                        {
+                            break;
+                        }
+                        //если свободных книг в хранении не осталось, то ищем те, которые в отрытом доступе. это будет самостоятельный заказ
+                        foreach (BJExemplarInfo e in book.Exemplars)
+                        {
+                            if ((e.ExemplarAccess.Access == 1006))
+                            {
+                                if (!this.IsExemplarIssued(e))
+                                {
+                                    this.NewOrder(e, reader, OrderTypes.SelfOrder, 30);
+                                    IsOrderedSuccessfully = true;
+                                }
+                            }
+                        }
+                        if (IsOrderedSuccessfully)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            throw new Exception("C009");
+                        }
+
+                    case "В библиотеке":
+                        //тут опять приоритет у тех, которые надо заказать из книгохранения перед самостоятельным заказом
+                        foreach (BJExemplarInfo e in book.Exemplars)
+                        {
+                            if ((e.ExemplarAccess.Access == 1005) || (e.ExemplarAccess.Access == 1012))
+                            {
+                                if (!this.IsExemplarIssued(e))
+                                {
+                                    this.NewOrder(e, reader, OrderTypes.InLibrary, 4);
+                                    IsOrderedSuccessfully = true;
+                                }
+                            }
+                        }
+                        if (IsOrderedSuccessfully)
+                        {
+                            break;
+                        }
+                        //если свободных книг в хранении не осталось, то ищем те, которые в отрытом доступе. это будет самостоятельный заказ
+                        foreach (BJExemplarInfo e in book.Exemplars)
+                        {
+                            if ((e.ExemplarAccess.Access == 1007) || (e.ExemplarAccess.Access == 1014))
+                            {
+                                if (!this.IsExemplarIssued(e))
+                                {
+                                    this.NewOrder(e, reader, OrderTypes.SelfOrder, 4);
+                                    IsOrderedSuccessfully = true;
+                                }
+                            }
+                        }
+                        if (IsOrderedSuccessfully)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            throw new Exception("C009");
+                        }
+                    //это никогда не придёт
+                    case OrderTypes.NoActionProvided:
+                        throw new Exception("C008");
+                    case OrderTypes.ClarifyAccess:
+                        throw new Exception("C008");
+                    default:
+                        throw new Exception("C008");
+
+                }
+
+                //BJExemplarInfo exemplar = this.GetFirstFreeExemplar(book, request.OrderType);
+                //if (exemplar == null)
+                //{
+                //    throw new Exception("C005");
+                //}
+
+                //this.NewOrder(exemplar, reader, request.OrderType);
                 
             }
 
@@ -158,25 +238,37 @@ namespace LibflClassLibrary.Circulation
             return loader.IsBookAlreadyIssuedToReader(book, reader);
         }
 
-        private BJExemplarInfo GetFirstFreeExemplar(BJBookInfo book)
-        {
-            foreach (BJExemplarInfo exemplar in book.Exemplars)
-            {
-                if (loader.IsExemplarIssued(exemplar))
-                {
-                    continue;
-                }
-                else
-                {
-                    return exemplar;
-                }
-            }
-            return null;
-        }
+        //private BJExemplarInfo GetFirstFreeExemplar(BJBookInfo book, string orderType)
+        //{
+        //    foreach (BJExemplarInfo exemplar in book.Exemplars)
+        //    {
+        //        if (loader.IsExemplarIssued(exemplar))
+        //        {
+        //            continue;
+        //        }
+        //        else
+        //        {
 
-        private void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, string orderType)
+        //            if (KeyValueMapping.AccessCodeToOrderType[exemplar.ExemplarAccess.Access] == orderType)
+        //            {
+        //                return exemplar;
+        //            }
+        //            else if ((orderType == "На дом") || (orderType == "В зал"))
+        //            {
+        //                return exemplar;
+        //            }
+        //            else
+        //            {
+        //                continue;
+        //            }
+        //        }
+        //    }
+        //    return null;
+        //}
+
+        private void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, string orderType, int ReturnInDays)
         {
-            loader.NewOrder(exemplar, reader, orderType);
+            loader.NewOrder(exemplar, reader, orderType, ReturnInDays);
         }
 
         private bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)

@@ -150,7 +150,7 @@ namespace ALISAPI.Areas.HelpPage
             //Readers / IsBirthDateMatchReaderId
             BirthDateMatchReaderId match = new BirthDateMatchReaderId();
             match.DateBirth = "1984-02-14";
-            match.NumberReader = 189245;
+            match.ReaderId = 189245;
             BooleanResponse br = new BooleanResponse();
             br.Result = true;
             json = JsonConvert.SerializeObject(match, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
@@ -176,7 +176,7 @@ namespace ALISAPI.Areas.HelpPage
             ImpersonalBasket basket = new ImpersonalBasket();
             basket.BookIdArray = new List<string>();
             basket.BookIdArray.AddRange(new string[] { "BJVVV_1299121", "BJVVV_1304618", "REDKOSTJ_31866", "REDKOSTJ_43090" });
-            basket.IDReader = 189245;
+            basket.ReaderId = 189245;
             json = JsonConvert.SerializeObject(basket, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "InsertIntoUserBasket");
 
@@ -185,6 +185,16 @@ namespace ALISAPI.Areas.HelpPage
             List<BasketInfo> UserBasket = circ.GetBasket(888);
             json = JsonConvert.SerializeObject(UserBasket, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Basket");
+
+            //Circulation.Order
+            circ = new CirculationInfo();
+            MakeOrder mo = new MakeOrder();
+            mo.BookId = "BJVVV_1078762";
+            mo.ReaderId = 100000;
+            mo.OrderType = "В зал";
+            json = JsonConvert.SerializeObject(mo, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Order");
+
 
             //Circulation.Orders
             List<OrderInfo> UserOrders = circ.GetOrders(888);

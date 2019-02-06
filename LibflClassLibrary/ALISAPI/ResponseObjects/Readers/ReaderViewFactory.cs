@@ -15,7 +15,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Readers
             result.FamilyName = reader.FamilyName;
             result.Name = reader.Name;
             result.FatherName = reader.FatherName;
-            result.NumberReader = reader.NumberReader;
+            result.ReaderId = reader.NumberReader;
             result.MobilePhone = reader.MobileTelephone;
             result.Email = reader.Email;
             return result;

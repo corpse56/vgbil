@@ -152,7 +152,7 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
-        internal void NewElectronicOrder(BJElectronicExemplarInfo exemplar, ReaderInfo reader, string orderType)
+        internal int NewElectronicOrder(BJElectronicExemplarInfo exemplar, ReaderInfo reader)
         {
             int OrderId;
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -165,12 +165,14 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Parameters.Add("ReaderId", SqlDbType.Int).Value = reader.NumberReader;
                 command.Parameters.Add("BookId", SqlDbType.NVarChar).Value = exemplar.BookId;
                 command.Parameters.Add("Fund", SqlDbType.NVarChar).Value = exemplar.Fund;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.ElectronicIssue;
                 OrderId = Convert.ToInt32(command.ExecuteScalar());
             }
             //this.ChangeOrderStatus(OrderId, "Электронная выдача");
+            return OrderId;
         }
 
-        internal void NewOrder(BJExemplarInfo exemplar, ReaderInfo reader, string orderType)
+        internal int NewOrder(BJExemplarInfo exemplar, ReaderInfo reader, int ReturnInDays, string StatusName)
         {
 
             int OrderId;
@@ -179,19 +181,19 @@ namespace LibflClassLibrary.Circulation.DB
                 SqlCommand command = new SqlCommand();
                 command.Connection = connection;
                 command.Connection.Open();
-                string StatusName = "";
                 command.CommandText = Queries.NEW_ORDER;
                 command.Parameters.Clear();
                 command.Parameters.Add("ReaderId", SqlDbType.Int).Value = reader.NumberReader;
                 command.Parameters.Add("BookId", SqlDbType.NVarChar).Value = exemplar.BookId;
                 command.Parameters.Add("ExemplarId", SqlDbType.Int).Value = exemplar.IdData;
-                command.Parameters.Add("ReturnInDays", SqlDbType.Int).Value = (orderType == "На дом") ? 30 : 4;
+                command.Parameters.Add("ReturnInDays", SqlDbType.Int).Value = ReturnInDays;//(orderType == "На дом") ? 30 : 4;
                 command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = StatusName;
                 command.Parameters.Add("Fund", SqlDbType.NVarChar).Value = exemplar.Fund;
                 command.Parameters.Add("Barcode", SqlDbType.NVarChar).Value = exemplar.Fields["899$w"].ToString();
                 OrderId = Convert.ToInt32(command.ExecuteScalar());
             }
             //this.ChangeOrderStatus(OrderId, "Заказ сформирован");
+            return OrderId;
         }
         private void ChangeOrderStatus(int orderId, string StatusName)
         {

@@ -152,7 +152,7 @@ namespace LibflClassLibrary.Readers.Loaders
         internal void ChangePasswordLocalReader(ReaderInfo reader, ChangePasswordLocalReader request)
         {
             request.NewPassword = ReaderInfo.HashPass(request.NewPassword, reader.Salt);
-            dbw.ChangePasswordLocalReader(request.NumberReader, request.NewPassword);
+            dbw.ChangePasswordLocalReader(request.ReaderId, request.NewPassword);
         }
 
         internal int GetReaderIdByOAuthToken(string token)

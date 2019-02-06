@@ -26,6 +26,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
 
         public string Fund { get; set; }//русское название фонда (источник)
 
+        public string RTF { get; set; }
 
         
 

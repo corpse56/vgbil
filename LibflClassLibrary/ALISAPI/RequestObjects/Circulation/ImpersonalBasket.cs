@@ -7,7 +7,7 @@ namespace LibflClassLibrary.ALISAPI.RequestObjects.Circulation
 {
     public class ImpersonalBasket
     {
-        public int IDReader { get; set; }
+        public int ReaderId { get; set; }
         public List<string> BookIdArray { get; set; }
     }
 }

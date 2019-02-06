@@ -158,10 +158,12 @@
     <Compile Include="CirculationFCC\Classes\XmlConnections.cs" />
     <Compile Include="Circulation\BasketInfo.cs" />
     <Compile Include="Circulation\CirculationInfo.cs" />
+    <Compile Include="Circulation\CirculationStatuses.cs" />
     <Compile Include="Circulation\DB\CirculationDBWrapper.cs" />
     <Compile Include="Circulation\DB\CirculationQueries.cs" />
     <Compile Include="Circulation\Loaders\CirculationLoader.cs" />
     <Compile Include="Circulation\OrderInfo.cs" />
+    <Compile Include="Circulation\OrderTypes.cs" />
     <Compile Include="Controls\Readers\fReaderRegistrationAndRights.cs">
       <SubType>Form</SubType>
     </Compile>

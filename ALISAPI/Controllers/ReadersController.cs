@@ -190,7 +190,7 @@ namespace ALISAPI.Controllers
             ReaderInfo reader;
             try
             {
-                reader = ReaderInfo.GetReader(request.NumberReader);
+                reader = ReaderInfo.GetReader(request.ReaderId);
             }
             catch (Exception ex)
             {
