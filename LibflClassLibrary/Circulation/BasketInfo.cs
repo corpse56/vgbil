@@ -12,7 +12,7 @@ namespace LibflClassLibrary.Circulation
         public string BookId { get; set; }
         public int ReaderId { get; set; }
         public DateTime PutDate { get; set; }
-        public List<string> AcceptableOrderType { get; set; } = new List<string>();
+        public List<int> AcceptableOrderType { get; set; } = new List<int>();
         public BookSimpleView Book
         {
             get

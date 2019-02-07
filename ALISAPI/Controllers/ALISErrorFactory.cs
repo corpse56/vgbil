@@ -20,7 +20,7 @@ namespace ALISAPI.Errors
     
     public class ALISErrorFactory
     {
-        public static HttpResponseMessage CreateError(string Error, HttpRequestMessage Request, HttpStatusCode httpStatusCode)
+        public static HttpResponseMessage CreateError(string Error, HttpRequestMessage Request)
         {
             JObject jo = new JObject();
             ALISError error = ALISErrorList._list.Find(x => x.Code == Error);
@@ -28,7 +28,7 @@ namespace ALISAPI.Errors
             {
                 jo.Add(error.Code, error.Message);
                 string json = JsonConvert.SerializeObject(jo, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-                HttpResponseMessage result = Request.CreateResponse(httpStatusCode);
+                HttpResponseMessage result = Request.CreateResponse(error.httpStatusCode);
                 result.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 return result;
             }
@@ -36,7 +36,7 @@ namespace ALISAPI.Errors
             {
                 jo.Add("G002", $"Необрабатываемая ошибка: {Error}");
                 string json = JsonConvert.SerializeObject(jo, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-                HttpResponseMessage result = Request.CreateResponse(httpStatusCode);
+                HttpResponseMessage result = Request.CreateResponse(error.httpStatusCode);
                 result.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 return result;
                 //return Request.CreateResponse(HttpStatusCode.InternalServerError, jo);

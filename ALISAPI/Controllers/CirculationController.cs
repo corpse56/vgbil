@@ -16,27 +16,27 @@ namespace ALISAPI.Controllers
 {
     public class CirculationController : ApiController
     {
-        
+
         /// <summary>
         /// Получает содержимое корзины читателя по номеру читательского билета
         /// </summary>
-        /// <param name="idReader">Номер читательского билета</param>
+        /// <param name="ReaderId">Номер читательского билета</param>
         /// <returns>Содержимое корзины</returns>
         [HttpGet]
-        [Route("Circulation/Basket/{idReader}")]
+        [Route("Circulation/Basket/{ReaderId}")]
         [ResponseType(typeof(List<BasketInfo>))]
-        public HttpResponseMessage Basket([Description("Номер чит билета")]int idReader)
+        public HttpResponseMessage Basket([Description("Номер чит билета")]int ReaderId)
         {
 
             CirculationInfo Circulation = new CirculationInfo();
             List<BasketInfo> basket;
             try
             {
-                basket = Circulation.GetBasket(idReader);
+                basket = Circulation.GetBasket(ReaderId);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
             return ALISResponseFactory.CreateResponse(basket, Request);
         }
@@ -59,7 +59,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             try
@@ -68,7 +68,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
@@ -77,26 +77,67 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Получает заказы читателя и их статусы. Описание книги и её экземпляры включено в объект заказа.
         /// </summary>
-        /// <param name="idReader">Номер читательского билета</param>
+        /// <param name="ReaderId">Номер читательского билета</param>
         /// <returns>Заказы читателя</returns>
         [HttpGet]
-        [Route("Circulation/Orders/{idReader}")]
+        [Route("Circulation/Orders/{ReaderId}")]
         [ResponseType(typeof(List<OrderInfo>))]
-        public HttpResponseMessage Orders([Description("Номер чит билета")]int idReader)
+        public HttpResponseMessage Orders([Description("Номер чит билета")]int ReaderId)
         {
             CirculationInfo Circulation = new CirculationInfo();
             List<OrderInfo> result = new List<OrderInfo>();
             try
             {
-                result = Circulation.GetOrders(idReader);
+                result = Circulation.GetOrders(ReaderId);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
+            return ALISResponseFactory.CreateResponse(result, Request);
+        }
+        /// <summary>
+        /// Получает историю заказов читателя. Описание книги и её экземпляры включено в объект истории.
+        /// </summary>
+        /// <param name="ReaderId">Номер читательского билета</param>
+        /// <returns>Заказы читателя</returns>
+        [HttpGet]
+        [Route("Circulation/OrdersHistory/{ReaderId}")]
+        [ResponseType(typeof(List<OrderHistoryInfo>))]
+        public HttpResponseMessage OrdersHistory([Description("Номер чит билета")]int ReaderId)
+        {
+            CirculationInfo Circulation = new CirculationInfo();
+            List<OrderHistoryInfo> result = new List<OrderHistoryInfo>();
+            try
+            {
+                result = Circulation.GetOrdersHistory(ReaderId);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(result, Request);
         }
 
+        /// <summary>
+        /// Помещает заказ в историю.
+        /// </summary>
+        /// <param name="OrderId">Id заказа</param>
+        [HttpPost]
+        [Route("Circulation/MoveOrderToHistory/{OrderId}")]
+        public HttpResponseMessage MoveOrderToHistory(int OrderId)
+        {
+            CirculationInfo Circulation = new CirculationInfo();
+            try
+            {
+                Circulation.DeleteOrder(OrderId);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
+            return ALISResponseFactory.CreateResponse(Request);
+        }
 
 
         // возможные действия вошли в корзину не надо отдельного метода.
@@ -140,7 +181,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             CirculationInfo Circulation = new CirculationInfo();
@@ -152,7 +193,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
@@ -160,7 +201,7 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Сделать заказ на выдачу книги.
         /// </summary>
-        /// <returns>HTTP200</returns>
+        /// <returns>HTTP204</returns>
         [HttpPost]
         [Route("Circulation/Order")]
         //[ResponseType(typeof(ReaderInfo))]
@@ -174,7 +215,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             CirculationInfo Circulation = new CirculationInfo();
@@ -186,7 +227,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }

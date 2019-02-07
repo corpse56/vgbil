@@ -55,21 +55,21 @@ namespace LibflClassLibrary.Circulation.Loaders
             DataTable table = dbWrapper.IsBookAlreadyIssuedToReader(book, reader);
             return (table.Rows.Count != 0);
         }
-        internal void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, string orderType, int ReturnInDays)
+        internal void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, int orderTypeId, int ReturnInDays)
         {
-            switch (orderType)
+            switch (orderTypeId)
             {
-                case OrderTypes.ElectronicVersion:
+                case OrderTypes.ElectronicVersion.Id:
                     dbWrapper.NewElectronicOrder(exemplar as BJElectronicExemplarInfo, reader);
                     break;
-                case OrderTypes.PaperVersion:
-                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, ReturnInDays, CirculationStatuses.OrderIsFormed);
+                case OrderTypes.PaperVersion.Id:
+                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, ReturnInDays, CirculationStatuses.OrderIsFormed.Value);
                     break;
-                case OrderTypes.InLibrary:
-                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, ReturnInDays, CirculationStatuses.OrderIsFormed);
+                case OrderTypes.InLibrary.Id:
+                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, ReturnInDays, CirculationStatuses.OrderIsFormed.Value);
                     break;
-                case OrderTypes.SelfOrder:
-                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, ReturnInDays, OrderTypes.SelfOrder);
+                case OrderTypes.SelfOrder.Id:
+                    dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, ReturnInDays, OrderTypes.SelfOrder.Value);
                     break;
 
             }
@@ -116,6 +116,34 @@ namespace LibflClassLibrary.Circulation.Loaders
         {
             dbWrapper.DeleteFromBasket(request.ReaderId, request.BooksToDelete);
         }
+        internal void DeleteOrder(int orderId)
+        {
+            dbWrapper.DeleteOrder(orderId);
+        }
+        internal OrderInfo GetOrder(int orderId)
+        {
+            DataTable table = dbWrapper.GetOrder(orderId);
+            if (table.Rows.Count == 0)
+            {
+                throw new Exception("C011");
+            }
+            OrderInfo order = new OrderInfo();
+            order.AnotherReaderId = (table.Rows[0]["AnotherReaderId"] == DBNull.Value) ? 0 : Convert.ToInt32(table.Rows[0]["AnotherReaderId"]);
+            order.BookId = table.Rows[0]["BookId"].ToString();
+            order.ExemplarId = (int)table.Rows[0]["ExemplarId"];
+            order.FactReturnDate = (table.Rows[0]["FactReturnDate"] == DBNull.Value) ? null : (DateTime?)table.Rows[0]["FactReturnDate"];
+            order.IssueDep = table.Rows[0]["IssueDepId"].ToString();
+            order.OrderId = (int)table.Rows[0]["ID"];
+            order.ReaderId = (int)table.Rows[0]["ReaderId"];
+            order.ReturnDate = (DateTime)table.Rows[0]["ReturnDate"];
+            order.ReturnDep = table.Rows[0]["ReturnDepId"].ToString();
+            order.StartDate = (DateTime)table.Rows[0]["StartDate"];
+            order.StatusName = table.Rows[0]["StatusName"].ToString();
+            order.Refusual = table.Rows[0]["Refusual"].ToString();
+            order.Book = ViewFactory.GetBookSimpleView(order.BookId);
+            return order;
+
+        }
 
         internal List<OrderInfo> GetOrders(int idReader)
         {
@@ -132,7 +160,7 @@ namespace LibflClassLibrary.Circulation.Loaders
                 order.FactReturnDate = (row["FactReturnDate"] == DBNull.Value) ? null : (DateTime?)row["FactReturnDate"];
                 //order.FactReturnDate = (!order.FactReturnDate.HasValue) ? null : new DateTime?(new DateTime(order.FactReturnDate.Value.Ticks, DateTimeKind.Utc));
                 order.IssueDep = row["IssueDepId"].ToString();
-                order.OrderId = i;
+                order.OrderId = (int)row["ID"];
                 order.ReaderId = (int)row["ReaderId"];
                 order.ReturnDate = (DateTime)row["ReturnDate"]; 
                 order.ReturnDep = row["ReturnDepId"].ToString();
@@ -140,10 +168,35 @@ namespace LibflClassLibrary.Circulation.Loaders
                // order.StartDate = order.StartDate.ToUniversalTime();//new DateTime(order.StartDate.Ticks, DateTimeKind.Utc);
                 order.StatusName = row["StatusName"].ToString();
                 order.Book = ViewFactory.GetBookSimpleView(order.BookId);
+                order.Refusual = row["Refusual"].ToString();
                 Orders.Add(order);
             }
             return Orders;
         }
+
+
+        internal List<OrderHistoryInfo> GetOrdersHistory(int idReader)
+        {
+            DataTable table = dbWrapper.GetOrdersHistory(idReader);
+            List<OrderHistoryInfo> OrdersHistory = new List<OrderHistoryInfo>();
+            int i = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                i++;
+                OrderHistoryInfo order = new OrderHistoryInfo();
+                order.BookId = row["BookId"].ToString();
+                order.ExemplarId = (int)row["ExemplarId"];
+                order.FactReturnDate = (row["FactReturnDate"] == DBNull.Value) ? (DateTime)row["ReturnDate"] : (DateTime)row["FactReturnDate"];
+                order.OrderId = (int)row["ID"];
+                order.ReaderId = (int)row["ReaderId"];
+                order.ReturnDate = (DateTime)row["ReturnDate"];
+                order.StartDate = (DateTime)row["StartDate"];
+                order.Book = ViewFactory.GetBookSimpleView(order.BookId);
+                OrdersHistory.Add(order);
+            }
+            return OrdersHistory;
+        }
+
 
         internal void InsertIntoUserBasket(ImpersonalBasket request)
         {

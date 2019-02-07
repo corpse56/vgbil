@@ -191,13 +191,13 @@ namespace ALISAPI.Areas.HelpPage
             MakeOrder mo = new MakeOrder();
             mo.BookId = "BJVVV_1078762";
             mo.ReaderId = 100000;
-            mo.OrderType = "В зал";
+            mo.OrderTypeId = 2;
             json = JsonConvert.SerializeObject(mo, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Order");
 
 
             //Circulation.Orders
-            List<OrderInfo> UserOrders = circ.GetOrders(888);
+            List<OrderInfo> UserOrders = circ.GetOrders(100000);
             json = JsonConvert.SerializeObject(UserOrders, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Orders");
             //Circulation.Basket    Delete
@@ -207,6 +207,11 @@ namespace ALISAPI.Areas.HelpPage
             bd.ReaderId = 200500;
             json = JsonConvert.SerializeObject(bd, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "DeleteFromBasket");
+
+            //Circulation.OrdersHistory
+            List<OrderHistoryInfo> UserOrdersHistory = circ.GetOrdersHistory(100000);
+            json = JsonConvert.SerializeObject(UserOrdersHistory, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "OrdersHistory");
 
 
             //Readers.PreRegisterRemoteReader

@@ -390,9 +390,9 @@ namespace ALISAPI_TEST
             //mo.OrderType = "На дом";
             //ci.MakeOrder(mo);
 
-            mo.BookId = "BJVVV_1078762";
-            mo.ReaderId = 100000;
-            mo.OrderType = "В зал";
+            mo.BookId = "BJVVV_193768";
+            mo.ReaderId = 10000;
+            mo.OrderTypeId = 2;
             //ci.MakeOrder(mo);
 
             string jsonData = JsonConvert.SerializeObject(mo, ALISDateFormatJSONSettings);

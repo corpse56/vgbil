@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utilities;
 
 namespace LibflClassLibrary.Circulation
 {
@@ -30,15 +31,15 @@ namespace LibflClassLibrary.Circulation
             return result;
         }
 
-        private List<string> GetAcceptableOrderTypesForReader(string bookId, int readerId)
+        private List<int> GetAcceptableOrderTypesForReader(string bookId, int readerId)
         {
-            List<string> result = new List<string>();
+            List<int> result = new List<int>();
             BJBookInfo book = BJBookInfo.GetBookInfoByPIN(bookId);
             ReaderInfo reader = ReaderInfo.GetReader(readerId);
             foreach (BJExemplarInfo exemplar in book.Exemplars)
             {
-                string AcceptableOrderType = this.GetExemplarAcceptableOrderType(exemplar);
-                if (AcceptableOrderType == null)
+                int AcceptableOrderType = this.GetExemplarAcceptableOrderType(exemplar);
+                if (AcceptableOrderType == 0)
                 {
                     continue;
                 }
@@ -54,8 +55,8 @@ namespace LibflClassLibrary.Circulation
             }
             if (reader.IsRemoteReader)
             {
-                result.Remove(OrderTypes.InLibrary);
-                result.Remove(OrderTypes.PaperVersion);
+                result.Remove(OrderTypes.InLibrary.Id);
+                result.Remove(OrderTypes.PaperVersion.Id);
             }
 
             return result;
@@ -79,9 +80,9 @@ namespace LibflClassLibrary.Circulation
             //{ 1020,   "Экстремистская литература.Не попадает в индекс.Обрабатывать не нужно."},
             //{ 1999,   "Невозможно определить доступ"},
         }
-        private string GetExemplarAcceptableOrderType(BJExemplarInfo exemplar)
+        private int GetExemplarAcceptableOrderType(BJExemplarInfo exemplar)
         {
-            return KeyValueMapping.AccessCodeToOrderType[exemplar.ExemplarAccess.Access];
+            return KeyValueMapping.AccessCodeToOrderTypeId.GetValueOrDefault(exemplar.ExemplarAccess.Access, 0);
         }
 
         public void InsertIntoUserBasket(ImpersonalBasket request)
@@ -95,7 +96,28 @@ namespace LibflClassLibrary.Circulation
         {
             return loader.GetOrders(idReader);
         }
+        public List<OrderHistoryInfo> GetOrdersHistory(int idReader)
+        {
+            return loader.GetOrdersHistory(idReader);
+        }
 
+        public void DeleteOrder(int OrderId)
+        {
+            OrderInfo o = loader.GetOrder(OrderId);
+            if (
+                (o.StatusName == CirculationStatuses.ElectronicIssue.Value) ||
+                (o.StatusName == CirculationStatuses.OrderIsFormed.Value) ||
+                (o.StatusName == CirculationStatuses.Refusual.Value) ||
+                (o.StatusName == CirculationStatuses.SelfOrder.Value)
+               )
+            {
+                loader.DeleteOrder(OrderId);
+            }
+            else
+            {
+                throw new Exception("C012");
+            }
+        }
         public void MakeOrder(MakeOrder request)
         {
             //BookBase book = new BookBase()
@@ -103,7 +125,7 @@ namespace LibflClassLibrary.Circulation
             BookSimpleView bookSimpleView = ViewFactory.GetBookSimpleView(request.BookId);
 
             ReaderInfo reader = ReaderInfo.GetReader(request.ReaderId);
-            if (request.OrderType == OrderTypes.ElectronicVersion)
+            if (request.OrderTypeId == OrderTypes.ElectronicVersion.Id)
             {
                 if (this.ElectronicIssueCount(reader) >= 5)
                 {
@@ -123,7 +145,7 @@ namespace LibflClassLibrary.Circulation
                 }
                 BJElectronicExemplarInfo exemplar = new BJElectronicExemplarInfo(book.ID, book.Fund);
                 //BJExemplarInfo exemplar = BJExemplarInfo(book.ID, book.Fund);
-                this.NewOrder(exemplar, reader, request.OrderType, 30);
+                this.NewOrder(exemplar, reader, request.OrderTypeId, 30);
             }
             else
             {
@@ -134,9 +156,9 @@ namespace LibflClassLibrary.Circulation
 
                 //ExemplarSimpleView exemplarSimpleView;
                 bool IsOrderedSuccessfully = false;
-                switch (request.OrderType)
+                switch (request.OrderTypeId)
                 {
-                    case OrderTypes.PaperVersion:
+                    case OrderTypes.PaperVersion.Id:
                         //приоритет для книг, которые в хранении, чтобы их принесли на кафедру для читателя
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
@@ -144,7 +166,7 @@ namespace LibflClassLibrary.Circulation
                             {
                                 if (!this.IsExemplarIssued(e))
                                 {
-                                    this.NewOrder(e, reader, OrderTypes.PaperVersion, 30);
+                                    this.NewOrder(e, reader, OrderTypes.PaperVersion.Id, 30);
                                     IsOrderedSuccessfully = true;
                                 }
                             }
@@ -160,7 +182,7 @@ namespace LibflClassLibrary.Circulation
                             {
                                 if (!this.IsExemplarIssued(e))
                                 {
-                                    this.NewOrder(e, reader, OrderTypes.SelfOrder, 30);
+                                    this.NewOrder(e, reader, OrderTypes.SelfOrder.Id, 30);
                                     IsOrderedSuccessfully = true;
                                 }
                             }
@@ -174,7 +196,7 @@ namespace LibflClassLibrary.Circulation
                             throw new Exception("C009");
                         }
 
-                    case "В библиотеке":
+                    case OrderTypes.InLibrary.Id:
                         //тут опять приоритет у тех, которые надо заказать из книгохранения перед самостоятельным заказом
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
@@ -182,7 +204,7 @@ namespace LibflClassLibrary.Circulation
                             {
                                 if (!this.IsExemplarIssued(e))
                                 {
-                                    this.NewOrder(e, reader, OrderTypes.InLibrary, 4);
+                                    this.NewOrder(e, reader, OrderTypes.InLibrary.Id, 4);
                                     IsOrderedSuccessfully = true;
                                 }
                             }
@@ -198,7 +220,7 @@ namespace LibflClassLibrary.Circulation
                             {
                                 if (!this.IsExemplarIssued(e))
                                 {
-                                    this.NewOrder(e, reader, OrderTypes.SelfOrder, 4);
+                                    this.NewOrder(e, reader, OrderTypes.SelfOrder.Id, 4);
                                     IsOrderedSuccessfully = true;
                                 }
                             }
@@ -212,9 +234,9 @@ namespace LibflClassLibrary.Circulation
                             throw new Exception("C009");
                         }
                     //это никогда не придёт
-                    case OrderTypes.NoActionProvided:
+                    case OrderTypes.NoActionProvided.Id:
                         throw new Exception("C008");
-                    case OrderTypes.ClarifyAccess:
+                    case OrderTypes.ClarifyAccess.Id:
                         throw new Exception("C008");
                     default:
                         throw new Exception("C008");
@@ -266,9 +288,9 @@ namespace LibflClassLibrary.Circulation
         //    return null;
         //}
 
-        private void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, string orderType, int ReturnInDays)
+        private void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, int orderTypeId, int ReturnInDays)
         {
-            loader.NewOrder(exemplar, reader, orderType, ReturnInDays);
+            loader.NewOrder(exemplar, reader, orderTypeId, ReturnInDays);
         }
 
         private bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)

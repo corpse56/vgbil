@@ -36,6 +36,6 @@ namespace LibflClassLibrary.Circulation
         public string IssueDep { get; set; }
         public string ReturnDep { get; set; }
         public int OrderId { get; set; }
-
+        public string Refusual { get; set; }
     }
 }

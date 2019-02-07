@@ -31,21 +31,21 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Получает читателя по номеру читательского билета
         /// </summary>
-        /// <param name="id">Номер читательского билета</param>
+        /// <param name="ReaderId">Номер читательского билета</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("Readers/{id}")]
+        [Route("Readers/{ReaderId}")]
         [ResponseType(typeof(ReaderSimpleView))]
-        public HttpResponseMessage Get(int id)
+        public HttpResponseMessage Get(int ReaderId)
         {
             ReaderInfo reader;
             try
             {
-                reader = ReaderInfo.GetReader(id);
+                reader = ReaderInfo.GetReader(ReaderId);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
             return ALISResponseFactory.CreateResponse(result, Request);
@@ -67,7 +67,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
 
@@ -78,11 +78,11 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             if (reader == null)
             {
-                return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError("R004", Request);
             }
             ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
 
@@ -184,7 +184,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             ReaderInfo reader;
@@ -194,7 +194,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError("R004", Request);
             }
             BooleanResponse result = new BooleanResponse();
             try
@@ -203,7 +203,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
 
             return ALISResponseFactory.CreateResponse(result, Request);
@@ -226,7 +226,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             ReaderInfo reader;
@@ -236,7 +236,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError("R004", Request);
             }
             try
             {
@@ -244,7 +244,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
 
             return ALISResponseFactory.CreateResponse(Request);
@@ -269,7 +269,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
             ReaderInfo reader;
 
@@ -279,7 +279,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                HttpResponseMessage rm = ALISErrorFactory.CreateError("R001", Request, HttpStatusCode.NotFound);
+                HttpResponseMessage rm = ALISErrorFactory.CreateError("R001", Request);
                 return rm;
             }
             ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
@@ -306,14 +306,14 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
 
             string result = ReaderInfo.GetLoginType(request.Login);
             if (result.ToLower() == "notdefined")
             {
-                return ALISErrorFactory.CreateError("R003", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError("R003", Request);
             }
             LoginType type = new LoginType();
             type.LoginTypeValue = result;
@@ -350,7 +350,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
             DateTime BirthDate;
             if (!DateTime.TryParseExact(request.BirthDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out BirthDate))
@@ -363,7 +363,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
@@ -386,7 +386,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             try
@@ -395,7 +395,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
@@ -417,7 +417,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             ReaderRemote re = new ReaderRemote(RegisterConnectionString);
@@ -428,7 +428,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
@@ -453,7 +453,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             ReaderRemote re = new ReaderRemote(RegisterConnectionString);
@@ -464,7 +464,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
@@ -486,7 +486,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             ReaderRemote re = new ReaderRemote(RegisterConnectionString);
@@ -497,7 +497,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }

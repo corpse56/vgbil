@@ -211,48 +211,48 @@ namespace LibflClassLibrary.ExportToVufind
         };
         public static readonly Dictionary<string, int> UnifiedLocationCode = new Dictionary<string, int>()
         {
-            {  "Центр инновационных информационных технологий" , 2033},//2033
-            {  "Центр американской культуры 3 этаж" , 2039},//2039
-            {  "Электронный зал 2 этаж" , 2038},//2038
-            {  "Читальный зал 3 этаж" , 2037},//2037
-            {  "Центр славянских культур 4 этаж" , 2036},//2036
-            {  "Центр межрегионального сотрудничества" , 2044},//2044
-            {  "Центр международного сотрудничества" , 2035},//2035
-            {  "Центр культурно-просветительских программ" , 2034},//2034
-            {  "Служебные подразделения" , 2031},//2031
-            {  "Сервера библиотеки" , 2030},//2030
-            {  "Сектор обработки документов" , 2029},//2029
-            {  "Сектор книгохранения" , 2011},//2011
-            {  "Академия \"Рудомино\"", 2000}, //2000        
-            {  "Выставка книг 2 этаж",2001 },//2001
-            {  "Детский зал 2 этаж", 2003},//2003
-            {  "Дом еврейской книги 3 этаж", 2005},//2005
-            {  "Зал абонементного обслуживания 2 этаж", 2006},//2006
-            {  "Зал выдачи документов 2 этаж", 2007},//2007
-            {  "Зал искусствоведения 4 этаж", 2008},//2008
-            {  "Зал редкой книги 4 этаж", 2009},//2009
-            {  "Зал религиоведения 4 этаж", 2010},//2010
-            {  "Зал справочно-информационого обеспечения", 2045 },
-            {  "Книгохранение", 2011},//2011
-            {  "Книгохранение редкой книги", 2012},//2012
-            {  "Книгохранение - Абонемент", 2043},//2043
-            {  "Книжный клуб 1 этаж", 2013},//2013
-            {  "Культурный центр \"Франкотека\" 2 этаж", 2014},//2014
-            {  "Лингвистический ресурсный центр Pearson 3 этаж", 2015},//2015
-            {  "Научно-исследовательский отдел", 2016},//2016
-            {  "Обработка в группе инвентаризации", 2017},//2017
-            {  "Обработка в группе каталогизации", 2018},//2018
-            {  "Обработка в группе микрофильмирования", 2019},//2019
-            {  "Обработка в группе оцифровки", 2020},//2020
-            {  "Обработка в группе систематизации", 2021},//2021
-            {  "Обработка в секторе комплектования", 2022},//2022
-            {  "Обработка в секторе научной реставрации", 2023},//2023
-            {  "Овальный зал", 2024},//2024
-            {  "Отдел комплектования", 2025},//2025
-            {  "Отдел обслуживания", 2026},//,2026
-            {  "Отдел хранения и реставрации", 2027},//2027
-            {  "Редакционно-издательский отдел", 2028},//2028   
-            {  "Ибероамериканский культурный центр", 2047 },//2047
+            {  "Академия \"Рудомино\"",                                 2000},
+            {  "Выставка книг 2 этаж",                                  2001},
+            {  "Детский зал 2 этаж",                                    2003},
+            {  "Дом еврейской книги 3 этаж",                            2005},
+            {  "Зал абонементного обслуживания 2 этаж",                 2006},
+            {  "Зал выдачи документов 2 этаж",                          2007},
+            {  "Зал искусствоведения 4 этаж",                           2008},
+            {  "Зал редкой книги 4 этаж",                               2009},
+            {  "Зал религиоведения 4 этаж",                             2010},
+            {  "Книгохранение",                                         2011},
+            {  "Сектор книгохранения" ,                                 2011},
+            {  "Книгохранение редкой книги",                            2012},
+            {  "Книжный клуб 1 этаж",                                   2013},
+            {  "Культурный центр \"Франкотека\" 2 этаж",                2014},
+            {  "Лингвистический ресурсный центр Pearson 3 этаж",        2015},
+            {  "Научно-исследовательский отдел",                        2016},
+            {  "Обработка в группе инвентаризации",                     2017},
+            {  "Обработка в группе каталогизации",                      2018},
+            {  "Обработка в группе микрофильмирования",                 2019},
+            {  "Обработка в группе оцифровки",                          2020},
+            {  "Обработка в группе систематизации",                     2021},
+            {  "Обработка в секторе комплектования",                    2022},
+            {  "Обработка в секторе научной реставрации",               2023},
+            {  "Овальный зал",                                          2024},
+            {  "Отдел комплектования",                                  2025},
+            {  "Отдел обслуживания",                                    2026},
+            {  "Отдел хранения и реставрации",                          2027},
+            {  "Редакционно-издательский отдел",                        2028},
+            {  "Сектор обработки документов" ,                          2029},
+            {  "Сервера библиотеки" ,                                   2030},
+            {  "Служебные подразделения" ,                              2031},
+            {  "Центр инновационных информационных технологий" ,        2033},
+            {  "Центр культурно-просветительских программ" ,            2034},
+            {  "Центр международного сотрудничества" ,                  2035},
+            {  "Центр славянских культур 4 этаж" ,                      2036},
+            {  "Читальный зал 3 этаж" ,                                 2037},
+            {  "Электронный зал 2 этаж" ,                               2038},
+            {  "Центр американской культуры 3 этаж" ,                   2039},
+            {  "Книгохранение - Абонемент",                             2043},
+            {  "Центр межрегионального сотрудничества" ,                2044},
+            {  "Зал справочно-информационого обеспечения",              2045},
+            {  "Ибероамериканский культурный центр",                    2047 },
 
         };
 
@@ -277,8 +277,6 @@ namespace LibflClassLibrary.ExportToVufind
             {  1017 , 99},
             {  1999 , 99},
         };
-
-
         //default: 3001
         public static Dictionary<string, int> CarrierNameToCode = new Dictionary<string, int>()
         {
@@ -296,7 +294,6 @@ namespace LibflClassLibrary.ExportToVufind
             {  "Электронная копия" ,    3011},
             {  "Электронное издание" ,  3012},
         };
-
         public static readonly Dictionary<int, string> FundCodeToRUSName = new Dictionary<int, string>()
         {
             { 5000,            "Основной фонд" },
@@ -379,28 +376,28 @@ namespace LibflClassLibrary.ExportToVufind
 
 
 
-        public static readonly Dictionary<int, string> AccessCodeToOrderType = new Dictionary<int, string>()
+        public static readonly Dictionary<int, int> AccessCodeToOrderTypeId = new Dictionary<int, int>()
         {
             
-            { 1000,   OrderTypes.PaperVersion },
-            { 1001,   OrderTypes.NoActionProvided },
-            { 1002,   OrderTypes.ElectronicVersion },
-            { 1003,   OrderTypes.NoActionProvided },
-            { 1004,   OrderTypes.NoActionProvided },
-            { 1005,   OrderTypes.InLibrary },
-            { 1006,   OrderTypes.PaperVersion },
-            { 1007,   OrderTypes.InLibrary },
-            { 1008,   OrderTypes.NoActionProvided },
-            { 1009,   OrderTypes.NoActionProvided },
-            { 1010,   OrderTypes.ClarifyAccess },
-            { 1011,   OrderTypes.NoActionProvided },
-            { 1012,   OrderTypes.InLibrary },
-            { 1013,   OrderTypes.NoActionProvided },
-            { 1014,   OrderTypes.InLibrary },
-            { 1016,   OrderTypes.ClarifyAccess },
-            { 1017,   OrderTypes.ClarifyAccess },
-            { 1020,   OrderTypes.NoActionProvided },
-            { 1999,   OrderTypes.ClarifyAccess },
+            { 1000,   OrderTypes.PaperVersion.Id },
+            { 1001,   OrderTypes.NoActionProvided.Id },
+            { 1002,   OrderTypes.ElectronicVersion.Id },
+            { 1003,   OrderTypes.NoActionProvided.Id },
+            { 1004,   OrderTypes.NoActionProvided.Id },
+            { 1005,   OrderTypes.InLibrary.Id },
+            { 1006,   OrderTypes.PaperVersion.Id },
+            { 1007,   OrderTypes.InLibrary.Id },
+            { 1008,   OrderTypes.NoActionProvided.Id },
+            { 1009,   OrderTypes.NoActionProvided.Id },
+            { 1010,   OrderTypes.ClarifyAccess.Id },
+            { 1011,   OrderTypes.NoActionProvided.Id },
+            { 1012,   OrderTypes.InLibrary.Id },
+            { 1013,   OrderTypes.NoActionProvided.Id },
+            { 1014,   OrderTypes.InLibrary.Id },
+            { 1016,   OrderTypes.ClarifyAccess.Id },
+            { 1017,   OrderTypes.ClarifyAccess.Id },
+            { 1020,   OrderTypes.NoActionProvided.Id },
+            { 1999,   OrderTypes.ClarifyAccess.Id },
         };
 
         public static readonly Dictionary<int, string> LocationCodeToName = new Dictionary<int, string>()
@@ -455,7 +452,13 @@ namespace LibflClassLibrary.ExportToVufind
             { 2047,            "Ибероамериканский культурный центр" },
             { 2999,            "Неизвестное метсонахождение" },
         };
-            
+        public static readonly Dictionary<int, string> StatusNameToReadiness = new Dictionary<int, string>()
+        {
+            { CirculationStatuses.OrderIsFormed.Id, "Ожидает" },
+            { CirculationStatuses.EmployeeLookingForBook.Id, "Формируется" },
+            { CirculationStatuses.WaitingFirstIssue.Id, "Ожидает выдачи" },
+            { CirculationStatuses.Refusual.Id, "Отказ" },
+        };
     }
 }
 

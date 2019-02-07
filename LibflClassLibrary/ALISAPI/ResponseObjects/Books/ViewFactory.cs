@@ -143,7 +143,8 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 }
                 catch
                 {
-                    throw new Exception("B002");
+                    //throw new Exception("B002");
+                    continue;
                 }
                 result.Add(ExemplarView);
             }

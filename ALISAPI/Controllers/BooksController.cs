@@ -32,9 +32,9 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
-            if (book == null) return ALISErrorFactory.CreateError("B001", Request, HttpStatusCode.NotFound);
+            if (book == null) return ALISErrorFactory.CreateError("B001", Request);
             return ALISResponseFactory.CreateResponse(book, Request);
         }
 

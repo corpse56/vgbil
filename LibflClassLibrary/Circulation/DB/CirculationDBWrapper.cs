@@ -43,7 +43,18 @@ namespace LibflClassLibrary.Circulation.DB
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS, connection);
                 dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = idReader;
-
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+        internal DataTable GetOrdersHistory(int idReader)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_HISTORY, connection);
+                dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = idReader;
                 int cnt = dataAdapter.Fill(table);
             }
             return table;
@@ -88,6 +99,36 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        internal DataTable GetOrder(int OrderId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("OrderId", SqlDbType.Int).Value = OrderId;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+
+        }
+
+        internal void DeleteOrder(int orderId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.DELETE_ORDER;
+                command.Parameters.Clear();
+                command.Parameters.Add("OrderId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Finished.Value;
+                int cnt = command.ExecuteNonQuery();
+            }
+            this.ChangeOrderStatus(orderId, CirculationStatuses.Finished.Value, 1, 2033, null);
+        }
+
         internal void DeleteFromBasket(int readerId, List<string> booksToDelete)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -104,8 +145,8 @@ namespace LibflClassLibrary.Circulation.DB
                     int idmain = int.Parse(bookId.Substring(bookId.IndexOf("_") + 1));
                     command.Parameters.Add("idmain", SqlDbType.Int).Value = idmain;
                     int cnt = command.ExecuteNonQuery();
-                    command.CommandText = Queries.DELETE_FROM_BASKET_RESERVATION_O;
-                    cnt = command.ExecuteNonQuery();
+                    //command.CommandText = Queries.DELETE_FROM_BASKET_RESERVATION_O;
+                    //cnt = command.ExecuteNonQuery();
                 }
             }
 
@@ -139,6 +180,7 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+
         internal DataTable IsExemplarIssued(BJExemplarInfo bJExemplarInfo)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -165,16 +207,16 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Parameters.Add("ReaderId", SqlDbType.Int).Value = reader.NumberReader;
                 command.Parameters.Add("BookId", SqlDbType.NVarChar).Value = exemplar.BookId;
                 command.Parameters.Add("Fund", SqlDbType.NVarChar).Value = exemplar.Fund;
-                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.ElectronicIssue;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.ElectronicIssue.Value;
                 OrderId = Convert.ToInt32(command.ExecuteScalar());
             }
-            //this.ChangeOrderStatus(OrderId, "Электронная выдача");
+            this.ChangeOrderStatus(OrderId, CirculationStatuses.ElectronicIssue.Value, 1, 2033, null );
+            this.DeleteFromBasket(reader.NumberReader, new List<string>() { exemplar.BookId });
             return OrderId;
         }
 
         internal int NewOrder(BJExemplarInfo exemplar, ReaderInfo reader, int ReturnInDays, string StatusName)
         {
-
             int OrderId;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -192,12 +234,28 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Parameters.Add("Barcode", SqlDbType.NVarChar).Value = exemplar.Fields["899$w"].ToString();
                 OrderId = Convert.ToInt32(command.ExecuteScalar());
             }
-            //this.ChangeOrderStatus(OrderId, "Заказ сформирован");
+            this.ChangeOrderStatus(OrderId, StatusName, 1, 2033, null);
+            this.DeleteFromBasket(reader.NumberReader, new List<string>() { exemplar.BookId });
             return OrderId;
         }
-        private void ChangeOrderStatus(int orderId, string StatusName)
+        private void ChangeOrderStatus(int orderId, string StatusName, int ChangerId, int DepartmentId, string Refusual)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.CHANGE_ORDER_STATUS;
+                command.Parameters.Clear();
+                //(@OrderId, @StatusName, @Changer, @DepartmentId, @Refusual
+                command.Parameters.Add("OrderId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = StatusName;
+                command.Parameters.Add("Changer", SqlDbType.Int).Value = ChangerId;
+                command.Parameters.Add("DepartmentId", SqlDbType.Int).Value = DepartmentId;
+                command.Parameters.Add("Refusual", SqlDbType.NVarChar).Value = Refusual ?? (object)DBNull.Value;
+
+                Convert.ToInt32(command.ExecuteNonQuery());
+            }
         }
 
         internal DataTable IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)

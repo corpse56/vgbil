@@ -23,7 +23,7 @@ namespace ALISAPI.Controllers
         }
         public static HttpResponseMessage CreateResponse(HttpRequestMessage Request)
         {
-            HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+            HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.NoContent);
             return result;
         }
         //тут устанавливается тип даты Local, чтобы JSON приводил даты к UTC и сам вычитал время часового пояса

@@ -8,6 +8,23 @@ namespace LibflClassLibrary.Circulation.DB
 {
     class CirculationQueries
     {
+        internal string GET_ORDER
+        {
+            get
+            {
+                return " select A.*,B.Refusual from Circulation..Orders A " +
+                        " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                        " where ID = @OrderId";
+            }
+        }
+
+        public string DELETE_ORDER
+        {
+            get
+            {
+                return "update Circulation..Orders set StatusName = @StatusName where ID = @OrderId";
+            }
+        }
 
         public string INSERT_INTO_USER_BASKET
         {
@@ -36,7 +53,9 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "select * from Circulation..Orders where ReaderId = @ReaderId and StatusName not in ('Завершено')";
+                return " select A.*,B.Refusual from Circulation..Orders A " +
+                       " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                       " where ReaderId = @ReaderId and A.StatusName not in ('Завершено')";
             }
         }
         public string GET_ORDERS_HISTORY
@@ -121,6 +140,17 @@ namespace LibflClassLibrary.Circulation.DB
                 return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,           StartDate,  ReturnDate,                               Barcode,   Fund)" +
                        " values                         (@BookId,  @ExemplarId, @ReaderId, @StatusName,   getdate(), DATEADD(day , @ReturnInDays , getdate()), @Barcode, @Fund  ); " +
                        " select SCOPE_IDENTITY() ";
+            }
+        }
+        public string CHANGE_ORDER_STATUS
+        {
+            get
+            {
+                return " BEGIN TRANSACTION; " +
+                       " insert into Circulation..OrdersFlow (OrderId, StatusName, Changed,  Changer,    DepartmentId, Refusual ) " +
+                       " values                            (@OrderId, @StatusName,getdate(), @Changer, @DepartmentId, @Refusual );" +
+                       " update Circulation..Orders set StatusName = @StatusName where ID = @OrderId;" +
+                       " COMMIT; ";
             }
         }
 

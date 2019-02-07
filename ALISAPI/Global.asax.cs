@@ -19,16 +19,18 @@ namespace ALISAPI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-           // GlobalConfiguration.Configuration.Routes.MapHttpRoute(
-           //              name: "GetReaderByEmail",
-           //              routeTemplate: "ALISAPI/Readers/ByEmail/{email}",
-           //              defaults: new { email = System.Web.Http.RouteParameter.Optional }
-           //            );
-           // GlobalConfiguration.Configuration.Routes.MapHttpRoute(
-           //  name: "GetLoginType",
-           //  routeTemplate: "Readers/GetLoginType/{login}",
-           //  defaults: new { login = System.Web.Http.RouteParameter.Optional }
-           //);
+
+
+            // GlobalConfiguration.Configuration.Routes.MapHttpRoute(
+            //              name: "GetReaderByEmail",
+            //              routeTemplate: "ALISAPI/Readers/ByEmail/{email}",
+            //              defaults: new { email = System.Web.Http.RouteParameter.Optional }
+            //            );
+            // GlobalConfiguration.Configuration.Routes.MapHttpRoute(
+            //  name: "GetLoginType",
+            //  routeTemplate: "Readers/GetLoginType/{login}",
+            //  defaults: new { login = System.Web.Http.RouteParameter.Optional }
+            //);
 
             //var formatters = GlobalConfiguration.Configuration.Formatters;
             //formatters.Remove(formatters.XmlFormatter);
