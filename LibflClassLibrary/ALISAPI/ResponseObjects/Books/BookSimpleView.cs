@@ -20,7 +20,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
         public string CoverURL { get; set; }
         
         public bool IsExistsDigitalCopy { get; set; }
-        public DigitalCopySimpleView DigitalCopy { get; set; }
+        //public DigitalCopySimpleView DigitalCopy { get; set; }
 
         public List<ExemplarSimpleView> Exemplars { get; set; }
 

@@ -38,6 +38,10 @@ namespace LibflClassLibrary.Circulation
             ReaderInfo reader = ReaderInfo.GetReader(readerId);
             foreach (BJExemplarInfo exemplar in book.Exemplars)
             {
+                if (exemplar.Fields["929$b"].MNFIELD != 0)//списано
+                {
+                    continue;
+                }
                 int AcceptableOrderType = this.GetExemplarAcceptableOrderType(exemplar);
                 if (AcceptableOrderType == 0)
                 {
@@ -58,8 +62,19 @@ namespace LibflClassLibrary.Circulation
                 result.Remove(OrderTypes.InLibrary.Id);
                 result.Remove(OrderTypes.PaperVersion.Id);
             }
-
-            return result;
+            if (book.DigitalCopy != null)
+            {
+                if (book.DigitalCopy.ExemplarAccess.Access == 1002)
+                {
+                    result.Add(3);
+                }
+                if (book.DigitalCopy.ExemplarAccess.Access == 1001)
+                {
+                    result.Add(6);
+                }
+            }
+            
+            return result.Distinct().ToList();
             //{ 1000,   "Заказать через личный кабинет, для получения на дом пройти в Зал абонементного обслуживания 2 этаж"},
             //{ 1001,   "Свободый электронный доступ"},
             //{ 1002,   "Доступ через авторизацию читателя(удаленного читателя)"},
@@ -88,13 +103,56 @@ namespace LibflClassLibrary.Circulation
         public void InsertIntoUserBasket(ImpersonalBasket request)
         {
             if (request.BookIdArray.Count == 0) return;
+            List<string> PinsWithConvoluteID = new List<string>();
+            //ищем в списке аллигаты. если такие есть, то заменяем их на конволют.
+            foreach (string pin in request.BookIdArray)
+            {
+                //("BJVVV_1444973");   <---Аллигат
+                BJBookInfo book = BJBookInfo.GetBookInfoByPIN(pin);
+                List<BJExemplarInfo> exemplars = book.Exemplars.ConvertAll(x => (BJExemplarInfo)x);
+                BJExemplarInfo convolute = exemplars.FirstOrDefault(x => x.ConvolutePin != string.Empty);
+                if (convolute != null)
+                {
+                    PinsWithConvoluteID.Add(convolute.ConvolutePin);
+                }
+                else
+                {
+                    PinsWithConvoluteID.Add(pin);
+                }
+            }
+            request.BookIdArray = PinsWithConvoluteID;
             loader.InsertIntoUserBasket(request);
 
         }
 
         public List<OrderInfo> GetOrders(int idReader)
         {
-            return loader.GetOrders(idReader);
+            List < OrderInfo > result = loader.GetOrders(idReader);
+            //проставляем первичный зал выдачи
+            foreach (var order in result)
+            {
+                if (order.StatusCode == CirculationStatuses.ElectronicIssue.Id)
+                {
+                    order.IssuingDepartmentId = 2042;
+                    continue;
+                }
+                BJExemplarInfo e = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.BookId.Substring(0, order.BookId.IndexOf("_")));
+                order.IssuingDepartmentId = KeyValueMapping.AccessCodeToIssuingDeparmentId[e.ExemplarAccess.Access];
+                if (order.IssuingDepartmentId == 0)
+                {
+                    ExemplarSimpleView es = ViewFactory.GetExemplarSimpleView(e);
+                    if (es == null)
+                    {
+                        order.IssuingDepartmentId = 2007;//по умолчанию
+
+                    }
+                    else
+                    {
+                        order.IssuingDepartmentId = es.LocationCode;
+                    }
+                }
+            }
+            return result;
         }
         public List<OrderHistoryInfo> GetOrdersHistory(int idReader)
         {
@@ -125,6 +183,12 @@ namespace LibflClassLibrary.Circulation
             BookSimpleView bookSimpleView = ViewFactory.GetBookSimpleView(request.BookId);
 
             ReaderInfo reader = ReaderInfo.GetReader(request.ReaderId);
+            List<int> acceptableOrderTypes = GetAcceptableOrderTypesForReader(request.BookId, request.ReaderId);
+            if (!acceptableOrderTypes.Contains(request.OrderTypeId))
+            {
+                throw new Exception("C013");
+            }
+
             if (request.OrderTypeId == OrderTypes.ElectronicVersion.Id)
             {
                 if (this.ElectronicIssueCount(reader) >= 5)
@@ -168,6 +232,7 @@ namespace LibflClassLibrary.Circulation
                                 {
                                     this.NewOrder(e, reader, OrderTypes.PaperVersion.Id, 30);
                                     IsOrderedSuccessfully = true;
+                                    break;
                                 }
                             }
                         }
@@ -184,6 +249,7 @@ namespace LibflClassLibrary.Circulation
                                 {
                                     this.NewOrder(e, reader, OrderTypes.SelfOrder.Id, 30);
                                     IsOrderedSuccessfully = true;
+                                    break;
                                 }
                             }
                         }
@@ -206,6 +272,7 @@ namespace LibflClassLibrary.Circulation
                                 {
                                     this.NewOrder(e, reader, OrderTypes.InLibrary.Id, 4);
                                     IsOrderedSuccessfully = true;
+                                    break;
                                 }
                             }
                         }
@@ -222,6 +289,7 @@ namespace LibflClassLibrary.Circulation
                                 {
                                     this.NewOrder(e, reader, OrderTypes.SelfOrder.Id, 4);
                                     IsOrderedSuccessfully = true;
+                                    break;
                                 }
                             }
                         }
@@ -231,7 +299,7 @@ namespace LibflClassLibrary.Circulation
                         }
                         else
                         {
-                            throw new Exception("C009");
+                            throw new Exception("C010");
                         }
                     //это никогда не придёт
                     case OrderTypes.NoActionProvided.Id:

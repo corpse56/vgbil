@@ -399,6 +399,29 @@ namespace LibflClassLibrary.ExportToVufind
             { 1020,   OrderTypes.NoActionProvided.Id },
             { 1999,   OrderTypes.ClarifyAccess.Id },
         };
+        public static readonly Dictionary<int, int> AccessCodeToIssuingDeparmentId = new Dictionary<int, int>()
+        {
+
+            { 1000,   2006 },
+            { 1001,   2042 },
+            { 1002,   2042 },
+            { 1003,   2037 },
+            { 1004,   2040 },
+            { 1005,   2007 },
+            { 1006,   0 },
+            { 1007,   0 },
+            { 1008,   2041 },
+            { 1009,   2007 },
+            { 1010,   0 },
+            { 1011,   0 },
+            { 1012,   2007 },
+            { 1013,   0 },
+            { 1014,   2009 },
+            { 1016,   2009 },
+            { 1017,   2007 },
+            { 1020,   2007 },
+            { 1999,   2007 },
+        };
 
         public static readonly Dictionary<int, string> LocationCodeToName = new Dictionary<int, string>()
         {

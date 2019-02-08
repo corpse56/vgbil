@@ -65,7 +65,7 @@ namespace LibflClassLibrary.Books.BJBooks
                 {
                     if ((int)row["IDBLOCK"] == 270)//если есть гиперссылка
                     {
-                        result.DigitalCopy = new BJElectronicExemplarInfo(-1, fund);
+                        result.DigitalCopy = new BJElectronicExemplarInfo(pin, fund);
                     }
                     else
                     {

@@ -3,6 +3,7 @@ using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation.DB;
+using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.Readers;
 using System;
 using System.Collections.Generic;
@@ -139,8 +140,10 @@ namespace LibflClassLibrary.Circulation.Loaders
             order.ReturnDep = table.Rows[0]["ReturnDepId"].ToString();
             order.StartDate = (DateTime)table.Rows[0]["StartDate"];
             order.StatusName = table.Rows[0]["StatusName"].ToString();
+            order.StatusCode = CirculationStatuses.ListView.FirstOrDefault(x => x.Value == order.StatusName).Key;
             order.Refusual = table.Rows[0]["Refusual"].ToString();
             order.Book = ViewFactory.GetBookSimpleView(order.BookId);
+            order.IssuingDepartmentId = -1000;
             return order;
 
         }
@@ -167,8 +170,10 @@ namespace LibflClassLibrary.Circulation.Loaders
                 order.StartDate = (DateTime)row["StartDate"];
                // order.StartDate = order.StartDate.ToUniversalTime();//new DateTime(order.StartDate.Ticks, DateTimeKind.Utc);
                 order.StatusName = row["StatusName"].ToString();
+                order.StatusCode = CirculationStatuses.ListView.FirstOrDefault(x => x.Value == order.StatusName).Key;
                 order.Book = ViewFactory.GetBookSimpleView(order.BookId);
                 order.Refusual = row["Refusual"].ToString();
+                order.IssuingDepartmentId = -1000;
                 Orders.Add(order);
             }
             return Orders;

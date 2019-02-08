@@ -197,7 +197,7 @@ namespace ALISAPI.Areas.HelpPage
 
 
             //Circulation.Orders
-            List<OrderInfo> UserOrders = circ.GetOrders(100000);
+            List<OrderInfo> UserOrders = circ.GetOrders(155);
             json = JsonConvert.SerializeObject(UserOrders, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Orders");
             //Circulation.Basket    Delete

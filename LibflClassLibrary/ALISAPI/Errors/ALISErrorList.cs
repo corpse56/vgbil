@@ -229,6 +229,12 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Заказ с таким статусом не может быть помещён в историю",
                 httpStatusCode = System.Net.HttpStatusCode.PreconditionFailed,
             },
+            new ALISError()
+            {
+                Code = "C013",
+                Message = "Такой тип заказа не возможен для данной книги и данного читателя",
+                httpStatusCode = System.Net.HttpStatusCode.PreconditionFailed,
+            },
 
 
         };

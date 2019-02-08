@@ -42,6 +42,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.bDeleteFromBasket = new System.Windows.Forms.Button();
             this.bCirculationMakeOrder = new System.Windows.Forms.Button();
+            this.bFindAllAccessCodes = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -185,11 +186,22 @@
             this.bCirculationMakeOrder.UseVisualStyleBackColor = true;
             this.bCirculationMakeOrder.Click += new System.EventHandler(this.bCirculationMakeOrder_Click);
             // 
+            // bFindAllAccessCodes
+            // 
+            this.bFindAllAccessCodes.Location = new System.Drawing.Point(239, 102);
+            this.bFindAllAccessCodes.Name = "bFindAllAccessCodes";
+            this.bFindAllAccessCodes.Size = new System.Drawing.Size(266, 56);
+            this.bFindAllAccessCodes.TabIndex = 16;
+            this.bFindAllAccessCodes.Text = "Все варианты статусов доступа для тестирования";
+            this.bFindAllAccessCodes.UseVisualStyleBackColor = true;
+            this.bFindAllAccessCodes.Click += new System.EventHandler(this.bFindAllAccessCodes_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.bFindAllAccessCodes);
             this.Controls.Add(this.bCirculationMakeOrder);
             this.Controls.Add(this.bDeleteFromBasket);
             this.Controls.Add(this.button2);
@@ -229,6 +241,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button bDeleteFromBasket;
         private System.Windows.Forms.Button bCirculationMakeOrder;
+        private System.Windows.Forms.Button bFindAllAccessCodes;
     }
 }
 

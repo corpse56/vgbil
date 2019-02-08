@@ -79,27 +79,11 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
 
             result.Exemplars = GetBJExemplars(bjBook);
             result.IsExistsDigitalCopy = (bjBook.DigitalCopy == null) ? false : true;
-            result.DigitalCopy = new DigitalCopySimpleView();
+            
             if (result.IsExistsDigitalCopy)
             {
                 BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(IDMAIN, fund);
-                var Status = ElExemplar.Statuses.Find(x => x.Project == BJElectronicAvailabilityProjects.VGBIL);
                 ExemplarSimpleView ExemplarView = new ExemplarSimpleView();
-                if (Status.Code == BJElectronicExemplarAvailabilityCodes.vfreeview)
-                {
-                    result.DigitalCopy.DigitalAccess = "Свободный доступ";
-                    ElExemplar.ExemplarAccess.Access = 1001;
-                }
-                else if (Status.Code == BJElectronicExemplarAvailabilityCodes.vloginview)
-                {
-                    result.DigitalCopy.DigitalAccess = "Доступ через личный кабинет";
-                    ElExemplar.ExemplarAccess.Access = 1002;
-                }
-                else
-                {
-                    result.DigitalCopy.DigitalAccess = "Доступ запрещён";
-                    ElExemplar.ExemplarAccess.Access = 1999;
-                }
                 ExemplarView.MethodOfAccess = "Удалённый доступ";
                 ExemplarView.MethodOfAccessCode = 4002;
                 ExemplarView.AccessCode = ElExemplar.ExemplarAccess.Access;
@@ -122,33 +106,40 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             List<ExemplarSimpleView> result = new List<ExemplarSimpleView>();
             foreach(BJExemplarInfo exemplar in bjBook.Exemplars)
             {
-                ExemplarSimpleView ExemplarView = new ExemplarSimpleView();
-                try
-                {
-                    if (exemplar.Fields["929$b"].MNFIELD != 0) continue;
-                    ExemplarView.Barcode = exemplar.Fields["899$w"].ToString();
-                    ExemplarView.Carrier = exemplar.Fields["921$a"].ToString();
-                    //ExemplarView.CarrierCode = KeyValueMapping.CarrierNameToCode[ExemplarView.Carrier];
-                    ExemplarView.ID = exemplar.IdData;
-                    ExemplarView.InventoryNote = exemplar.Fields["899$x"].ToString();
-                    ExemplarView.InventoryNumber = exemplar.Fields["899$p"].ToString();
-                    ExemplarView.Location = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];
-                    ExemplarView.LocationCode = KeyValueMapping.UnifiedLocationCode[ExemplarView.Location];
-                    ExemplarView.MethodOfAccessCode = exemplar.ExemplarAccess.MethodOfAccess;
-                    ExemplarView.MethodOfAccess = KeyValueMapping.MethodOfAccessCodeToName[ExemplarView.MethodOfAccessCode];
-                    ExemplarView.AccessCode = exemplar.ExemplarAccess.Access;
-                    ExemplarView.Access = KeyValueMapping.AccessCodeToName[ExemplarView.AccessCode];
-                    ExemplarView.RackLocation = exemplar.Fields["899$c"].ToString();
-                    ExemplarView.Status = exemplar.IsIssuedToReader() ? "Занято" : "Свободно";
-                }
-                catch
-                {
-                    //throw new Exception("B002");
-                    continue;
-                }
+                ExemplarSimpleView ExemplarView = GetExemplarSimpleView(exemplar);
+                if (ExemplarView == null) continue;
                 result.Add(ExemplarView);
             }
             return result;
+        }
+        public static ExemplarSimpleView GetExemplarSimpleView(BJExemplarInfo exemplar)
+        {
+            ExemplarSimpleView ExemplarView = new ExemplarSimpleView();
+            try
+            {
+                if (exemplar.Fields["929$b"].MNFIELD != 0) return null;
+                ExemplarView.Barcode = exemplar.Fields["899$w"].ToString();
+                ExemplarView.Carrier = exemplar.Fields["921$a"].ToString();
+                //ExemplarView.CarrierCode = KeyValueMapping.CarrierNameToCode[ExemplarView.Carrier];
+                ExemplarView.ID = exemplar.IdData;
+                ExemplarView.InventoryNote = exemplar.Fields["899$x"].ToString();
+                ExemplarView.InventoryNumber = exemplar.Fields["899$p"].ToString();
+                ExemplarView.Location = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];
+                ExemplarView.LocationCode = KeyValueMapping.UnifiedLocationCode[ExemplarView.Location];
+                ExemplarView.MethodOfAccessCode = exemplar.ExemplarAccess.MethodOfAccess;
+                ExemplarView.MethodOfAccess = KeyValueMapping.MethodOfAccessCodeToName[ExemplarView.MethodOfAccessCode];
+                ExemplarView.AccessCode = exemplar.ExemplarAccess.Access;
+                ExemplarView.Access = KeyValueMapping.AccessCodeToName[ExemplarView.AccessCode];
+                ExemplarView.RackLocation = exemplar.Fields["899$c"].ToString();
+                //ExemplarView.Status = exemplar.IsIssuedToReader() ? "Занято" : "Свободно";
+            }
+            catch
+            {
+                //throw new Exception("B002");
+                //continue;
+                return null;
+            }
+            return ExemplarView;
         }
     }
 }

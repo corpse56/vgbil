@@ -133,7 +133,7 @@ public static class CurrentCultureInfo
         string litres = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-        Label1.Text = "Уважаемые читатели! По техническим причинам Библиотека временно приостановит обслуживание читателей с 26 декабря 2018 года и до конца января 2019 года. <a href = \"https://libfl.ru/ru/news/inostranka-ogranichit-obsluzhivanie-chitateley-do-konca-yanvarya-2019-goda\">Подробности.</a>";
+        Label1.Text = "Уважаемые читатели! По техническим причинам Библиотека временно приостановит обслуживание читателей с 26 декабря 2018 года и до 26 марта 2019 года. <a href = \"https://libfl.ru/ru/news/inostranka-ogranichit-obsluzhivanie-chitateley-do-konca-yanvarya-2019-goda\">Подробности.</a>";
 
 
 

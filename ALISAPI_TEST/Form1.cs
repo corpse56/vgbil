@@ -2,6 +2,7 @@
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.Books.BookJSONViewers;
 using LibflClassLibrary.Circulation;
@@ -404,6 +405,186 @@ namespace ALISAPI_TEST
             }
 
 
+        }
+
+        private void bFindAllAccessCodes_Click(object sender, EventArgs e)
+        {
+            List<BJBookInfo> books = new List<BJBookInfo>();
+            int A1000 = 0, A1001 = 0, A1002 = 0, A1003 = 0, A1004 = 0, A1005 = 0, A1006 = 0, A1007 = 0, A1008 = 0, A1009 = 0, A1010 = 0,
+                A1011 = 0, A1012 = 0, A1013 = 0, A1014 = 0, A1015 = 0, A1016 = 0, A1017 = 0, A1999 = 0;
+            bool flag = false;
+            for (int i = 1; i < 1482287; i++)
+            {
+                BJBookInfo book = BJBookInfo.GetBookInfoByPIN($"BJVVV_{i.ToString()}");
+                if (book.Exemplars.Count == 0)
+                {
+                    continue;
+                }
+                foreach(BookExemplarBase exemplar in book.Exemplars)
+                {
+
+                    switch (((BJExemplarInfo)exemplar).ExemplarAccess.Access)
+                    {
+                        case 1000:
+                            if (A1000 < 2)
+                            {
+                                A1000++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1001:
+                            if (A1001 < 2)
+                            {
+                                A1001++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1002:
+                            if (A1002 < 2)
+                            {
+                                A1002++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1003:
+                            if (A1003 < 2)
+                            {
+                                A1003++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1004:
+                            if (A1004 < 2)
+                            {
+                                A1004++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1005:
+                            if (A1005 < 2)
+                            {
+                                A1005++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1006:
+                            if (A1006 < 2)
+                            {
+                                A1006++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1007:
+                            if (A1007 < 2)
+                            {
+                                A1007++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1008:
+                            if (A1008 < 2)
+                            {
+                                A1008++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1009:
+                            if (A1009 < 2)
+                            {
+                                A1009++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1010:
+                            if (A1010 < 2)
+                            {
+                                A1010++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1011:
+                            if (A1011 < 2)
+                            {
+                                A1011++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1012:
+                            if (A1012 < 2)
+                            {
+                                A1012++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1013:
+                            if (A1013 < 2)
+                            {
+                                A1013++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1014:
+                            if (A1014 < 2)
+                            {
+                                A1014++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1015:
+                            if (A1015 < 2)
+                            {
+                                A1015++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1016:
+                            if (A1016 < 2)
+                            {
+                                A1016++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1017:
+                            if (A1017 < 2)
+                            {
+                                A1017++;
+                                books.Add(book);
+                            }
+                            break;
+                        case 1999:
+                            if (A1999 < 2)
+                            {
+                                A1999++;
+                                books.Add(book);
+                            }
+                            break;
+
+                    }
+                    if ((A1000 == 2) && (A1001 == 2) && (A1002 == 2) 
+                        //&& (A1003 == 2) 
+                        //&& (A1004 == 2) 
+                        && (A1005 == 2) 
+                        && (A1006 == 2) 
+                        && (A1007 == 2) 
+                        //&& (A1008 == 2) 
+                        //&& (A1009 == 2) 
+                        && (A1010 == 2) && (A1011 == 2) && (A1012 == 2) && (A1013 == 2) 
+                        //&& (A1014 == 2) 
+                        && (A1015 == 2) 
+                        //&& (A1016 == 2) 
+                        && (A1017 == 2) && (A1999 == 2))
+                    {
+                        flag = true;
+                        break;
+                    }
+
+                }
+                if (flag) break;
+            }
+            foreach (BJBookInfo b in books)
+            {
+                tbResponse.Text += $"{b.Id}; ";
+            }
         }
     }
 

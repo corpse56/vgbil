@@ -29,6 +29,7 @@ namespace LibflClassLibrary.Circulation
         public int ExemplarId { get; set; }
         public int ReaderId { get; set; }
         public string StatusName { get; set; }
+        public int StatusCode { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime ReturnDate { get; set; }
         public DateTime? FactReturnDate { get; set; }
@@ -37,5 +38,6 @@ namespace LibflClassLibrary.Circulation
         public string ReturnDep { get; set; }
         public int OrderId { get; set; }
         public string Refusual { get; set; }
+        public int IssuingDepartmentId { get; set; }
     }
 }

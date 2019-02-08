@@ -36,7 +36,7 @@ namespace ALISAPI.Errors
             {
                 jo.Add("G002", $"Необрабатываемая ошибка: {Error}");
                 string json = JsonConvert.SerializeObject(jo, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-                HttpResponseMessage result = Request.CreateResponse(error.httpStatusCode);
+                HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.BadRequest);
                 result.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 return result;
                 //return Request.CreateResponse(HttpStatusCode.InternalServerError, jo);

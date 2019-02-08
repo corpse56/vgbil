@@ -26,9 +26,14 @@ namespace ALISAPI.Controllers
             HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.NoContent);
             return result;
         }
+
+
+
         //тут устанавливается тип даты Local, чтобы JSON приводил даты к UTC и сам вычитал время часового пояса
         private static void ExplicitlyMarkDateTimesAsUtcWithCollections(object Message)
         {
+
+            //СДЕЛАТЬ РЕКУРСИВНО! ЭТО ОПАСНЫЙ КОД из-за того, что он погружается только на один уровень! НУЖНА РЕКУРСИЯ!
             if (Message is System.Collections.IEnumerable)
             {
                 foreach (var item in Message as System.Collections.IEnumerable)

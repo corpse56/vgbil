@@ -36,7 +36,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             }
         }
         public bool IsAlligat { get; set; }
-        public int ConvolutePin { get; set; }
+        public string ConvolutePin { get; set; }
         public int ConvoluteIdData { get; set; }
 
         public DateTime Created; //для новых поступлений. Дата присвоения инвентарного номера.
@@ -90,6 +90,16 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());//добавляем все поля блока 260 к объекту экземпляра
             }
             exemplar.ExemplarAccess = BJExemplarInfo.GetExemplarAccess(exemplar);
+            BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
+            if (Convolute != null)
+            {
+                exemplar.ConvolutePin = Convolute.BookId;
+                exemplar.ConvoluteIdData = Convolute.IdData;
+            }
+            else
+            {
+                exemplar.ConvolutePin = string.Empty;
+            }
 
             return exemplar;
         }

@@ -380,7 +380,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
 
                 writer.WriteEndObject();
                 result.MethodOfAccess.Add("4002");
-                BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(-1, string.Empty);//фейковый электронный экземпляр. если его не добавить и если бумажных экземпляров нет, то будет 0 экземпляров и документ не попадёт в индекс, хотя етсь электронный экземпляр
+                BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(idmain, fund);//фейковый электронный экземпляр. если его не добавить и если бумажных экземпляров нет, то будет 0 экземпляров и документ не попадёт в индекс, хотя етсь электронный экземпляр
                 result.Exemplars.Add(ElExemplar);
 
                 //определить структуру, в которую полностью запись ложится и здесь её проверять, чтобы правильно вычисляемые поля проставить.

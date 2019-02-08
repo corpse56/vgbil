@@ -14,7 +14,7 @@ namespace LibflClassLibrary.Circulation.DB
             {
                 return " select A.*,B.Refusual from Circulation..Orders A " +
                         " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
-                        " where ID = @OrderId";
+                        " where A.ID = @OrderId";
             }
         }
 

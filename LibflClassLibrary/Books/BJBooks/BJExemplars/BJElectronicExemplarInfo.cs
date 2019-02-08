@@ -24,9 +24,27 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             this.Fund = Fund;
             base.IDMAIN = IDMAIN;
             base.Fund = Fund;
-            //this.BookId = $"{Fund}_{IDMAIN}";
             loader = new BJExemplarLoader(Fund);
             Statuses = loader.LoadAvailabilityStatuses(IDMAIN, Fund);
+            var Status = Statuses.Find(x => x.Project == BJElectronicAvailabilityProjects.VGBIL);
+            this.ExemplarAccess = new BJExemplarAccessInfo();
+            if (Status.Code == BJElectronicExemplarAvailabilityCodes.vfreeview)
+            {
+                this.ExemplarAccess.Access = 1001;
+                this.ExemplarAccess.MethodOfAccess = 4002;
+            }
+            else if (Status.Code == BJElectronicExemplarAvailabilityCodes.vloginview)
+            {
+                this.ExemplarAccess.Access = 1002;
+                this.ExemplarAccess.MethodOfAccess = 4002;
+
+            }
+            else
+            {
+                this.ExemplarAccess.Access = 1999;
+                this.ExemplarAccess.MethodOfAccess = 4005;
+            }
+            
         }
 
         private BJExemplarLoader loader;
