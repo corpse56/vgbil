@@ -139,6 +139,17 @@ namespace ALISAPI_TEST
                 tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
             }
 
+            request.ReaderId = 100000;
+            request.DateBirth = "1985-11-01";// new DateTime(1965, 11, 08, 7, 7, 7);
+            request.NewPassword = "100000";
+            jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
+
+            using (HttpClient client = new HttpClient())
+            {
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ChangePasswordLocalReader", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result;
+            }
+
             request.ReaderId = 555;
             request.DateBirth = "1981-03-17";// new DateTime(1981, 03, 17, 7, 7, 7);
             request.NewPassword = "555";
@@ -585,6 +596,14 @@ namespace ALISAPI_TEST
             {
                 tbResponse.Text += $"{b.Id}; ";
             }
+        }
+
+        private void bCirculationGetOrders_Click(object sender, EventArgs e)
+        {
+            CirculationInfo ci = new CirculationInfo();
+            List<OrderInfo> list = ci.GetOrders(333);
+            string json = JsonConvert.SerializeObject(list);
+            tbResponse.Text = json;
         }
     }
 

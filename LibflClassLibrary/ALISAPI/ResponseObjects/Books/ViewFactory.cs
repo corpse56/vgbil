@@ -5,6 +5,7 @@ using LibflClassLibrary.ExportToVufind.BJ;
 using LibflClassLibrary.ExportToVufind.Vufind;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,17 +23,9 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             switch (fund)
             {
                 case "BJVVV":
-                    result = ViewFactory.GetBJ(IDRecord, fund);
-                    break;
                 case "REDKOSTJ":
-                    result = ViewFactory.GetBJ(IDRecord, fund);
-                    break;
                 case "BJACC":
-                    result = ViewFactory.GetBJ(IDRecord, fund);
-                    break;
                 case "BJFCC":
-                    result = ViewFactory.GetBJ(IDRecord, fund);
-                    break;
                 case "BJSCC":
                     result = ViewFactory.GetBJ(IDRecord, fund);
                     break;
@@ -46,35 +39,47 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
 
         private static BookSimpleView GetBJ(int IDMAIN, string fund)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             BookSimpleView result = new BookSimpleView();
-            BJVuFindConverter converter = new BJVuFindConverter(fund);
-            VufindDoc vfDoc = converter.CreateVufindDocument(IDMAIN);
-            if (vfDoc == null) return null;
-            result.ID = vfDoc.id;
-            result.Annotation = vfDoc.Annotation.ToString();
-            result.Author = vfDoc.author.ToString();
+            BJBookInfo bjBook = BJBookInfo.GetBookInfoByPIN(IDMAIN, fund);
+            sw.Stop();
+            sw.Start();
+            //BJVuFindConverter converter = new BJVuFindConverter(fund);
+            //VufindDoc vfDoc = converter.CreateVufindDocument(IDMAIN);
+            //if (vfDoc == null) return null;
+            result.ID = bjBook.Id;
+            result.Annotation = bjBook.Fields["330$a"].ToString();//vfDoc.Annotation.ToString();
+            result.Author = bjBook.Fields["330$a"].ToString(); //vfDoc.author.ToString();
             result.Fund = KeyValueMapping.FundCodeToRUSName[KeyValueMapping.FundENGToFundCode[fund]];
-            result.Genre = vfDoc.genre.ToString();
-            result.Language = vfDoc.language.ToString();
-            result.PlaceOfPublication = vfDoc.PlaceOfPublication.ToString();
-            result.PublishDate = vfDoc.publishDate.ToString();
-            result.Publisher = vfDoc.publisher.ToString();
-            result.Title = vfDoc.title.ToString();
+            result.Genre = bjBook.Fields["922$e"].ToString(); //vfDoc.genre.ToString();
+            result.Language = bjBook.Fields["101$a"].ToString();//vfDoc.language.ToString();
+            result.PlaceOfPublication = bjBook.Fields["210$a"].ToString();//vfDoc.PlaceOfPublication.ToString();
+            result.PublishDate = bjBook.Fields["2100$d"].ToString();//vfDoc.publishDate.ToString();
+            result.Publisher = bjBook.Fields["210$c"].ToString();//vfDoc.publisher.ToString();
+            result.Title = bjBook.Fields["200$a"].ToString(); //vfDoc.title.ToString();
             result.CoverURL = VuFindConverter.GetCoverExportPath(result.ID);            /////http://cdn.libfl.ru/covers/BJVVV/000/025/169/JPEG_AB/cover.jpg
             string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf";
-            using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
-            {
-                LoginPath += @"\" + fund.ToUpper() + @"\" + result.CoverURL + @"\cover.jpg";
-                if (File.Exists(LoginPath))
-                {
-                    result.CoverURL = $"http://cdn.libfl.ru/{fund.ToUpper()}/{result.CoverURL.Replace("\\", "/")}cover.jpg";
-                }
-                else
-                {
-                    result.CoverURL = null;
-                }
-            }
-            BJBookInfo bjBook = BJBookInfo.GetBookInfoByPIN(IDMAIN, fund);
+            sw.Stop();
+            sw.Start();
+
+            //это может тормозить сильно
+            //using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
+            //{
+            //    LoginPath += @"\" + fund.ToUpper() + @"\" + result.CoverURL + @"\cover.jpg";
+            //    if (File.Exists(LoginPath))
+            //    {
+            //        result.CoverURL = $"http://cdn.libfl.ru/{fund.ToUpper()}/{result.CoverURL.Replace("\\", "/")}cover.jpg";
+            //    }
+            //    else
+            //    {
+            //        result.CoverURL = null;
+            //    }
+            //}
+            //заменим на это и надо сказать, что неизвестно есть ли обложка или нет...
+            result.CoverURL = $"http://cdn.libfl.ru/{fund.ToUpper()}/{result.CoverURL.Replace("\\", "/")}cover.jpg";
+
+
             result.RTF = bjBook.RTF;
 
             result.Exemplars = GetBJExemplars(bjBook);

@@ -19,9 +19,10 @@ namespace LibflClassLibrary.Readers.DB
         public ReaderDatabaseWrapper()
         {
             ReaderQueries = new ReaderQueries();
+            //ConnectionString = AppSettings.ConnectionString;
             //для демо базы
+            ConnectionString = "Data Source = 127.0.0.1; Initial Catalog = Readers; Integrated Security = True;";
             //ConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
-            ConnectionString = AppSettings.ConnectionString;
         }
 
         internal DataTable GetReaderByEmail(string Email)

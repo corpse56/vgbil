@@ -125,6 +125,7 @@
     <Compile Include="ALISAPI\ResponseObjects\Circulation\ReaderBasket.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Readers\ReaderViewFactory.cs" />
     <Compile Include="Books\BJBooks\BJBookJsonConverter.cs" />
+    <Compile Include="Books\BJBooks\BJExemplars\BJConvoluteInfo.cs" />
     <Compile Include="Books\BJBooks\BJExemplars\BJElectronicExemplarAvailabilityStatus.cs" />
     <Compile Include="Books\BJBooks\Loaders\BJBookLoader.cs" />
     <Compile Include="Books\BJBooks\Loaders\BJExemplarLoader.cs" />

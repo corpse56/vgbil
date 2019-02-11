@@ -125,6 +125,7 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+
         internal DataTable Clarify_205a_3(int iddata)
         {
             DataSet ds = new DataSet();
@@ -184,12 +185,24 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         
         internal DataTable GetExemplar(string InventoryNumber)
         {
-            DataSet ds = new DataSet();
+            DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_EXEMPLAR_BY_INVENTORY_NUMBER, connection);
                 dataAdapter.SelectCommand.Parameters.Add("inv", SqlDbType.NVarChar).Value = InventoryNumber;
-                return this.ExecuteSelectQuery(dataAdapter);
+                dataAdapter.Fill(table);
+                return table;
+            }
+        }
+        internal DataTable GetConvolute(string inventoryNumber)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_CONVOLUTE_BY_INVENTORY_NUMBER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("inv", SqlDbType.NVarChar).Value = inventoryNumber;
+                dataAdapter.Fill(table);
+                return table;
             }
         }
 

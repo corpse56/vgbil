@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using LibflClassLibrary.Books.BJBooks;
@@ -39,6 +40,8 @@ namespace LibflClassLibrary.Circulation.DB
         {
             //////////////////////////////////////////
             DataTable table = new DataTable();
+            Stopwatch w = new Stopwatch();
+            w.Start();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS, connection);
@@ -46,6 +49,7 @@ namespace LibflClassLibrary.Circulation.DB
                 dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
                 int cnt = dataAdapter.Fill(table);
             }
+            w.Stop();
             return table;
         }
         internal DataTable GetOrdersHistory(int idReader)

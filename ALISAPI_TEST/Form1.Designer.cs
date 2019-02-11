@@ -43,6 +43,7 @@
             this.bDeleteFromBasket = new System.Windows.Forms.Button();
             this.bCirculationMakeOrder = new System.Windows.Forms.Button();
             this.bFindAllAccessCodes = new System.Windows.Forms.Button();
+            this.bCirculationGetOrders = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -196,11 +197,22 @@
             this.bFindAllAccessCodes.UseVisualStyleBackColor = true;
             this.bFindAllAccessCodes.Click += new System.EventHandler(this.bFindAllAccessCodes_Click);
             // 
+            // bCirculationGetOrders
+            // 
+            this.bCirculationGetOrders.Location = new System.Drawing.Point(239, 164);
+            this.bCirculationGetOrders.Name = "bCirculationGetOrders";
+            this.bCirculationGetOrders.Size = new System.Drawing.Size(257, 55);
+            this.bCirculationGetOrders.TabIndex = 17;
+            this.bCirculationGetOrders.Text = "Circulation/GetOrders";
+            this.bCirculationGetOrders.UseVisualStyleBackColor = true;
+            this.bCirculationGetOrders.Click += new System.EventHandler(this.bCirculationGetOrders_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.bCirculationGetOrders);
             this.Controls.Add(this.bFindAllAccessCodes);
             this.Controls.Add(this.bCirculationMakeOrder);
             this.Controls.Add(this.bDeleteFromBasket);
@@ -242,6 +254,7 @@
         private System.Windows.Forms.Button bDeleteFromBasket;
         private System.Windows.Forms.Button bCirculationMakeOrder;
         private System.Windows.Forms.Button bFindAllAccessCodes;
+        private System.Windows.Forms.Button bCirculationGetOrders;
     }
 }
 

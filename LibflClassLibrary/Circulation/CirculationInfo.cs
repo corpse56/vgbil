@@ -8,6 +8,7 @@ using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.Readers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Utilities;
@@ -110,7 +111,7 @@ namespace LibflClassLibrary.Circulation
                 //("BJVVV_1444973");   <---Аллигат
                 BJBookInfo book = BJBookInfo.GetBookInfoByPIN(pin);
                 List<BJExemplarInfo> exemplars = book.Exemplars.ConvertAll(x => (BJExemplarInfo)x);
-                BJExemplarInfo convolute = exemplars.FirstOrDefault(x => x.ConvolutePin != string.Empty);
+                BJExemplarInfo convolute = exemplars.FirstOrDefault(x => x.ConvolutePin != null);
                 if (convolute != null)
                 {
                     PinsWithConvoluteID.Add(convolute.ConvolutePin);
@@ -127,7 +128,13 @@ namespace LibflClassLibrary.Circulation
 
         public List<OrderInfo> GetOrders(int idReader)
         {
-            List < OrderInfo > result = loader.GetOrders(idReader);
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            TimeSpan ts = new TimeSpan();
+            long ElapsedSeconds = 0;
+            List<OrderInfo> result = loader.GetOrders(idReader);
+            ElapsedSeconds = sw.ElapsedMilliseconds / 1000;
+            sw.Restart();
             //проставляем первичный зал выдачи
             foreach (var order in result)
             {
@@ -151,7 +158,10 @@ namespace LibflClassLibrary.Circulation
                         order.IssuingDepartmentId = es.LocationCode;
                     }
                 }
+                ElapsedSeconds = sw.ElapsedMilliseconds / 1000;
+                sw.Restart();
             }
+            ElapsedSeconds = sw.ElapsedMilliseconds / 1000;
             return result;
         }
         public List<OrderHistoryInfo> GetOrdersHistory(int idReader)

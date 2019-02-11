@@ -138,13 +138,24 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             get
             {
                 return " select * from " + this.Fund + "..DATAEXT A" +
-                        " left join " + this.Fund + "..DATAEXT B on A.IDDATA = B.IDDATA " +
-                        " left join " + this.Fund + "..DATAEXTPLAIN C on C.IDDATAEXT = B.ID " +
-                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and C.PLAIN = @inv" +
+                        //" left join " + this.Fund + "..DATAEXT B on A.IDDATA = B.IDDATA " +
+                        //" left join " + this.Fund + "..DATAEXTPLAIN C on C.IDDATAEXT = A.ID " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv" +
                         " and not exists (select 1 from " + this.Fund + "..DATAEXT C where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')";
             }
         }
-
+        
+        public string GET_CONVOLUTE_BY_INVENTORY_NUMBER
+        {
+            get
+            {
+                return " select * from " + this.Fund + "..DATAEXT A" +
+                        //" left join " + this.Fund + "..DATAEXT B on A.IDDATA = B.IDDATA " +
+                        //" left join " + this.Fund + "..DATAEXTPLAIN C on C.IDDATAEXT = A.ID " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv" +
+                        " and not exists (select 1 from " + this.Fund + "..DATAEXT C where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')";
+            }
+        }
 
         public string GET_HYPERLINK
         {

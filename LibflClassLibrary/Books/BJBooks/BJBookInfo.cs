@@ -18,6 +18,7 @@ using LibflClassLibrary.ExportToVufind.Vufind;
 using LibflClassLibrary.ExportToVufind.BJ;
 using LibflClassLibrary.ExportToVufind;
 using Utilities;
+using System.Diagnostics;
 
 /// <summary>
 /// Сводное описание для BookInfo
@@ -51,13 +52,17 @@ namespace LibflClassLibrary.Books.BJBooks
 
         public static BJBookInfo GetBookInfoByPIN(int pin, string fund)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetBJRecord(pin);
+            sw.Stop();
+            sw.Start();
             BJBookInfo result = new BJBookInfo();
             result.Id = $"{fund}_{pin}";
             result.ID = pin;
             result.Fund = fund;
-            BJExemplarInfo exemplar = new BJExemplarInfo(0);
+            //BJExemplarInfo exemplar = new BJExemplarInfo(0);
             int CurrentIdData = 0;
             foreach (DataRow row in table.Rows)
             {
@@ -65,7 +70,7 @@ namespace LibflClassLibrary.Books.BJBooks
                 {
                     if ((int)row["IDBLOCK"] == 270)//если есть гиперссылка
                     {
-                        result.DigitalCopy = new BJElectronicExemplarInfo(pin, fund);
+                         result.DigitalCopy = new BJElectronicExemplarInfo(pin, fund);
                     }
                     else
                     {
@@ -77,17 +82,24 @@ namespace LibflClassLibrary.Books.BJBooks
                     if (CurrentIdData != (int)row["IDDATA"])
                     {
                         CurrentIdData = (int)row["IDDATA"];
+                        sw.Stop();
+                        sw.Start();
                         result.Exemplars.Add(BJExemplarInfo.GetExemplarByIdData(CurrentIdData, fund));
-                        exemplar = new BJExemplarInfo((int)row["IDDATA"]);
-                        exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+                        sw.Stop();
+                        sw.Start();
+                        //exemplar = new BJExemplarInfo((int)row["IDDATA"]);
+                        sw.Stop();
+                        sw.Start();
+                        //exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
                     }
                     else
                     {
-                        exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+                        //exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
                     }
                 }
             }
-            
+            sw.Stop();
+            sw.Start();
             table = dbw.GetRTF(pin);
             if (table.Rows.Count != 0)
             {

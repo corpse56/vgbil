@@ -8,6 +8,7 @@ using LibflClassLibrary.Readers;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -150,9 +151,13 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         internal List<OrderInfo> GetOrders(int idReader)
         {
+            Stopwatch w = new Stopwatch();
+            w.Start();
             DataTable table = dbWrapper.GetOrders(idReader);
             List<OrderInfo> Orders = new List<OrderInfo>();
             int i = 0;
+            w.Stop();
+            w.Restart();
             foreach(DataRow row in table.Rows)
             {
                 i++;
@@ -171,10 +176,16 @@ namespace LibflClassLibrary.Circulation.Loaders
                // order.StartDate = order.StartDate.ToUniversalTime();//new DateTime(order.StartDate.Ticks, DateTimeKind.Utc);
                 order.StatusName = row["StatusName"].ToString();
                 order.StatusCode = CirculationStatuses.ListView.FirstOrDefault(x => x.Value == order.StatusName).Key;
+                w.Stop();
+                w.Restart();
                 order.Book = ViewFactory.GetBookSimpleView(order.BookId);
+                w.Stop();
+                w.Restart();
                 order.Refusual = row["Refusual"].ToString();
                 order.IssuingDepartmentId = -1000;
                 Orders.Add(order);
+                w.Stop();
+                w.Restart();
             }
             return Orders;
         }
