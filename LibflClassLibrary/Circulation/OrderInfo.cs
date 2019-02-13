@@ -26,11 +26,13 @@ namespace LibflClassLibrary.Circulation
     {
         public BookSimpleView Book;
         public string BookId { get; set; }
+        public string AlligatBookId { get; set; }
         public int ExemplarId { get; set; }
         public int ReaderId { get; set; }
         public string StatusName { get; set; }
         public int StatusCode { get; set; }
         public DateTime StartDate { get; set; }
+        public DateTime? IssueDate { get; set; }
         public DateTime ReturnDate { get; set; }
         public DateTime? FactReturnDate { get; set; }
         public int AnotherReaderId { get; set; }
@@ -39,5 +41,6 @@ namespace LibflClassLibrary.Circulation
         public int OrderId { get; set; }
         public string Refusual { get; set; }
         public int IssuingDepartmentId { get; set; }
+        public string BookUrl { get; set; }
     }
 }

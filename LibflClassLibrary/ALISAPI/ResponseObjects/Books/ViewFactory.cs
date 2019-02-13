@@ -50,7 +50,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             //if (vfDoc == null) return null;
             result.ID = bjBook.Id;
             result.Annotation = bjBook.Fields["330$a"].ToString();//vfDoc.Annotation.ToString();
-            result.Author = bjBook.Fields["330$a"].ToString(); //vfDoc.author.ToString();
+            result.Author = bjBook.Fields["700$a"].ToString(); //vfDoc.author.ToString();
             result.Fund = KeyValueMapping.FundCodeToRUSName[KeyValueMapping.FundENGToFundCode[fund]];
             result.Genre = bjBook.Fields["922$e"].ToString(); //vfDoc.genre.ToString();
             result.Language = bjBook.Fields["101$a"].ToString();//vfDoc.language.ToString();
@@ -99,6 +99,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 ExemplarView.CarrierCode = 3011;
                 ExemplarView.Location = "Электронный доступ";
                 ExemplarView.LocationCode = 2030;
+                ExemplarView.BookUrl = (ExemplarView.AccessCode == 1001) ? @"http://catalog.libfl.ru/Bookreader/Viewer?bookID=" + ElExemplar.BookId + "&view_mode=HQ" : "Доступ через авторизацию";
                 result.Exemplars.Add(ExemplarView);
             }
             return result;

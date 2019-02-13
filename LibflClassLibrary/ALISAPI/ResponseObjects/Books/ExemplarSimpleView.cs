@@ -22,7 +22,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
         public string Carrier { get; set; }
         public int CarrierCode { get; set; }
         //public string EditionClass { get; set; }
-
+        public string BookUrl { get; set; }
         public string Status { get; set; }//занято, свободно, выдано.....
     }
 }

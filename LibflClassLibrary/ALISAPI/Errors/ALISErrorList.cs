@@ -235,6 +235,12 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Такой тип заказа не возможен для данной книги и данного читателя",
                 httpStatusCode = System.Net.HttpStatusCode.PreconditionFailed,
             },
+            new ALISError()
+            {
+                Code = "C014",
+                Message = "Ошибка доступа к файловому хранилищу",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
 
 
         };

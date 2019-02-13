@@ -48,6 +48,11 @@ namespace LibflClassLibrary.Circulation
             public const int Id = 6;
             public const string Value = "Действий для заказа не предусмотрено";
         }
+        public struct OrderProhibited
+        {
+            public const int Id = 7;
+            public const string Value = "Недостаточно прав для заказа бумажной версии";
+        }
 
 
 
@@ -64,6 +69,7 @@ namespace LibflClassLibrary.Circulation
                     { ClarifyAccess.Id,     ClarifyAccess.Value },
                     { SelfOrder.Id,         SelfOrder.Value },
                     { NoActionProvided.Id,  NoActionProvided.Value },
+                    { OrderProhibited.Id,  OrderProhibited.Value }
                 };
             }
         }

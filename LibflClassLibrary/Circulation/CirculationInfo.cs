@@ -62,6 +62,11 @@ namespace LibflClassLibrary.Circulation
             {
                 result.Remove(OrderTypes.InLibrary.Id);
                 result.Remove(OrderTypes.PaperVersion.Id);
+                result.Remove(OrderTypes.ClarifyAccess.Id);
+                if (result.Count == 0)
+                {
+                    result.Add(OrderTypes.OrderProhibited.Id);
+                }
             }
             if (book.DigitalCopy != null)
             {
@@ -96,6 +101,12 @@ namespace LibflClassLibrary.Circulation
             //{ 1020,   "Экстремистская литература.Не попадает в индекс.Обрабатывать не нужно."},
             //{ 1999,   "Невозможно определить доступ"},
         }
+
+        public OrderInfo GetOrder(int orderId)
+        {
+            return loader.GetOrder(orderId);
+        }
+
         private int GetExemplarAcceptableOrderType(BJExemplarInfo exemplar)
         {
             return KeyValueMapping.AccessCodeToOrderTypeId.GetValueOrDefault(exemplar.ExemplarAccess.Access, 0);
@@ -104,64 +115,34 @@ namespace LibflClassLibrary.Circulation
         public void InsertIntoUserBasket(ImpersonalBasket request)
         {
             if (request.BookIdArray.Count == 0) return;
-            List<string> PinsWithConvoluteID = new List<string>();
+            List<BasketInfo> UserBasket = new List<BasketInfo>();
             //ищем в списке аллигаты. если такие есть, то заменяем их на конволют.
             foreach (string pin in request.BookIdArray)
             {
                 //("BJVVV_1444973");   <---Аллигат
+                BasketInfo item = new BasketInfo();
+                item.ReaderId = request.ReaderId;
                 BJBookInfo book = BJBookInfo.GetBookInfoByPIN(pin);
                 List<BJExemplarInfo> exemplars = book.Exemplars.ConvertAll(x => (BJExemplarInfo)x);
                 BJExemplarInfo convolute = exemplars.FirstOrDefault(x => x.ConvolutePin != null);
                 if (convolute != null)
                 {
-                    PinsWithConvoluteID.Add(convolute.ConvolutePin);
+                    item.BookId = convolute.ConvolutePin;
+                    item.AlligatBookId = book.Id;
                 }
                 else
                 {
-                    PinsWithConvoluteID.Add(pin);
+                    item.BookId = book.Id;
                 }
+                UserBasket.Add(item);
             }
-            request.BookIdArray = PinsWithConvoluteID;
-            loader.InsertIntoUserBasket(request);
-
+            //request.BookIdArray = PinsWithConvoluteID;
+            loader.InsertIntoUserBasket(UserBasket);
         }
 
         public List<OrderInfo> GetOrders(int idReader)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            TimeSpan ts = new TimeSpan();
-            long ElapsedSeconds = 0;
             List<OrderInfo> result = loader.GetOrders(idReader);
-            ElapsedSeconds = sw.ElapsedMilliseconds / 1000;
-            sw.Restart();
-            //проставляем первичный зал выдачи
-            foreach (var order in result)
-            {
-                if (order.StatusCode == CirculationStatuses.ElectronicIssue.Id)
-                {
-                    order.IssuingDepartmentId = 2042;
-                    continue;
-                }
-                BJExemplarInfo e = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.BookId.Substring(0, order.BookId.IndexOf("_")));
-                order.IssuingDepartmentId = KeyValueMapping.AccessCodeToIssuingDeparmentId[e.ExemplarAccess.Access];
-                if (order.IssuingDepartmentId == 0)
-                {
-                    ExemplarSimpleView es = ViewFactory.GetExemplarSimpleView(e);
-                    if (es == null)
-                    {
-                        order.IssuingDepartmentId = 2007;//по умолчанию
-
-                    }
-                    else
-                    {
-                        order.IssuingDepartmentId = es.LocationCode;
-                    }
-                }
-                ElapsedSeconds = sw.ElapsedMilliseconds / 1000;
-                sw.Restart();
-            }
-            ElapsedSeconds = sw.ElapsedMilliseconds / 1000;
             return result;
         }
         public List<OrderHistoryInfo> GetOrdersHistory(int idReader)
@@ -333,44 +314,52 @@ namespace LibflClassLibrary.Circulation
 
         }
 
+        public void ProlongOrder(int ReaderId, int OrderId)
+        {
+
+        }
+
         private bool IsBookAlreadyIssuedToReader(BJBookInfo book, ReaderInfo reader)
         {
             return loader.IsBookAlreadyIssuedToReader(book, reader);
         }
 
-        //private BJExemplarInfo GetFirstFreeExemplar(BJBookInfo book, string orderType)
-        //{
-        //    foreach (BJExemplarInfo exemplar in book.Exemplars)
-        //    {
-        //        if (loader.IsExemplarIssued(exemplar))
-        //        {
-        //            continue;
-        //        }
-        //        else
-        //        {
-
-        //            if (KeyValueMapping.AccessCodeToOrderType[exemplar.ExemplarAccess.Access] == orderType)
-        //            {
-        //                return exemplar;
-        //            }
-        //            else if ((orderType == "На дом") || (orderType == "В зал"))
-        //            {
-        //                return exemplar;
-        //            }
-        //            else
-        //            {
-        //                continue;
-        //            }
-        //        }
-        //    }
-        //    return null;
-        //}
 
         private void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, int orderTypeId, int ReturnInDays)
         {
-            loader.NewOrder(exemplar, reader, orderTypeId, ReturnInDays);
-        }
+            List<BasketInfo> basket = loader.GetBasket(reader.NumberReader);
+            string bookId = ((BJExemplarInfo)exemplar).BookId;
+            BasketInfo bi = basket.FirstOrDefault(x => x.BookId == bookId && x.ReaderId == reader.NumberReader);
 
+            string alligatBookId = null;
+            if (bi != null)
+            {
+                if (!string.IsNullOrEmpty(bi.AlligatBookId))
+                {
+                    alligatBookId = bi.AlligatBookId;
+                }
+            }
+            int IssuingDepartmentId = GetFirstIssueDepartmentId(exemplar);
+            loader.NewOrder(exemplar, reader, orderTypeId, ReturnInDays, alligatBookId, IssuingDepartmentId);
+        }
+        private int GetFirstIssueDepartmentId(BookExemplarBase exemplar)
+        {
+            BJExemplarInfo e = (BJExemplarInfo)exemplar;
+            int IssuingDepartmentId = KeyValueMapping.AccessCodeToIssuingDeparmentId[e.ExemplarAccess.Access];
+            if (IssuingDepartmentId == 0)
+            {
+                ExemplarSimpleView es = ViewFactory.GetExemplarSimpleView(e);
+                if (es == null)
+                {
+                    IssuingDepartmentId = 2007;//по умолчанию
+                }
+                else
+                {
+                    IssuingDepartmentId = es.LocationCode;
+                }
+            }
+            return IssuingDepartmentId;
+        }
         private bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
         {
             return loader.IsTwentyFourHoursPastSinceReturn(reader, book);
@@ -395,18 +384,6 @@ namespace LibflClassLibrary.Circulation
             return loader.ElectronicIssueCount(reader);
         }
 
-        private void CreateCommonBookOrder()
-        {
-
-        }
-        private void CreateElectronicBookOrder(BJBookInfo book, ReaderInfo reader)
-        {
-            if (reader.IsFiveElBooksIssued())
-            {
-                throw new Exception("C001");
-            }
-            //reader.
-        }
 
         public void DeleteFromBasket(BasketDelete request)
         {

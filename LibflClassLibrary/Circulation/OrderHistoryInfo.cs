@@ -14,6 +14,7 @@ namespace LibflClassLibrary.Circulation
         public int ExemplarId { get; set; }
         public int ReaderId { get; set; }
         public DateTime StartDate { get; set; }
+        public DateTime? IssueDate { get; set; }
         public DateTime ReturnDate { get; set; }
         public DateTime FactReturnDate { get; set; }
         public int OrderId { get; set; }

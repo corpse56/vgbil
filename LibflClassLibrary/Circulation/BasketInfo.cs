@@ -10,6 +10,7 @@ namespace LibflClassLibrary.Circulation
     {
         public int ID { get; set; }
         public string BookId { get; set; }
+        public string AlligatBookId { get; set; }
         public int ReaderId { get; set; }
         public DateTime PutDate { get; set; }
         public List<int> AcceptableOrderType { get; set; } = new List<int>();

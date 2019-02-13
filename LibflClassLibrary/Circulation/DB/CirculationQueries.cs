@@ -30,7 +30,7 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "insert into Circulation..Basket (BookId,ReaderId,PutDate) values (@BookID,@IDReader, getdate())";
+                return "insert into Circulation..Basket (BookId,ReaderId,AlligatBookId,PutDate) values (@BookID,@IDReader, @AlligatBookId, getdate())";
             }
         }
 
@@ -128,8 +128,8 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,           StartDate,  ReturnDate,                   Barcode,   Fund)" +
-                       " values                         (@BookId,  0,          @ReaderId, @StatusName,  getdate(), DATEADD(day , 30 , getdate()), 'E00000000', @Fund  ); " +
+                return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,           StartDate,  ReturnDate,                   Barcode,   Fund, IssueDate)" +
+                       " values                         (@BookId,  0,          @ReaderId, @StatusName,  getdate(), DATEADD(day , 30 , getdate()), 'E00000000', @Fund  ,  getdate()); " +
                        " select SCOPE_IDENTITY() ";
             }
         }
@@ -137,8 +137,8 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,           StartDate,  ReturnDate,                               Barcode,   Fund)" +
-                       " values                         (@BookId,  @ExemplarId, @ReaderId, @StatusName,   getdate(), DATEADD(day , @ReturnInDays , getdate()), @Barcode, @Fund  ); " +
+                return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,           StartDate,  ReturnDate,                               Barcode,   Fund, AlligatBookId)" +
+                       " values                         (@BookId,  @ExemplarId, @ReaderId, @StatusName,   getdate(), DATEADD(day , @ReturnInDays , getdate()), @Barcode, @Fund,         @AlligatBookId ); " +
                        " select SCOPE_IDENTITY() ";
             }
         }

@@ -96,6 +96,30 @@ namespace ALISAPI.Controllers
             }
             return ALISResponseFactory.CreateResponse(result, Request);
         }
+
+        /// <summary>
+        /// Получает заказ по номеру. Описание книги и её экземпляры включено в объект заказа.
+        /// </summary>
+        /// <param name="OrderId">Номер заказа</param>
+        /// <returns>Заказ читателя</returns>
+        [HttpGet]
+        [Route("Circulation/Orders/ById/{OrderId}")]
+        public HttpResponseMessage OrdersById(int OrderId)
+        {
+            CirculationInfo Circulation = new CirculationInfo();
+            OrderInfo result = new OrderInfo();
+            try
+            {
+                result = Circulation.GetOrder(OrderId);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
+            return ALISResponseFactory.CreateResponse(result, Request);
+        }
+
+
         /// <summary>
         /// Получает историю заказов читателя. Описание книги и её экземпляры включено в объект истории.
         /// </summary>

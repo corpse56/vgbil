@@ -78,7 +78,7 @@ namespace LibflClassLibrary.Circulation.DB
 
         }
 
-        internal void InsertIntoUserBasket(int iDReader, string bookId)
+        internal void InsertIntoUserBasket(int iDReader, string bookId, string alligatBookId)
         {
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -86,6 +86,7 @@ namespace LibflClassLibrary.Circulation.DB
                 SqlCommand command = new SqlCommand(Queries.INSERT_INTO_USER_BASKET, connection);
                 command.Parameters.Add("IDReader", SqlDbType.Int).Value = iDReader;
                 command.Parameters.Add("BookID", SqlDbType.NVarChar).Value = bookId;
+                command.Parameters.Add("AlligatBookId", SqlDbType.NVarChar).Value = (object)alligatBookId ?? DBNull.Value;
                 connection.Open();
                 command.ExecuteNonQuery();
             }
@@ -213,13 +214,19 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Parameters.Add("Fund", SqlDbType.NVarChar).Value = exemplar.Fund;
                 command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.ElectronicIssue.Value;
                 OrderId = Convert.ToInt32(command.ExecuteScalar());
+                string url = @"http://catalog.libfl.ru/Bookreader/Viewer?OrderId=" + OrderId + "&view_mode=HQ";
+                command.Parameters.Add("OrderId", SqlDbType.Int).Value = OrderId;
+                command.Parameters.Add("BookUrl", SqlDbType.NVarChar).Value = url;
+                command.CommandText = "update Circulation..Orders set BookUrl = @BookUrl where ID = @OrderId";
+                command.ExecuteNonQuery();
             }
             this.ChangeOrderStatus(OrderId, CirculationStatuses.ElectronicIssue.Value, 1, 2033, null );
             this.DeleteFromBasket(reader.NumberReader, new List<string>() { exemplar.BookId });
+
             return OrderId;
         }
 
-        internal int NewOrder(BJExemplarInfo exemplar, ReaderInfo reader, int ReturnInDays, string StatusName)
+        internal int NewOrder(BJExemplarInfo exemplar, ReaderInfo reader, int ReturnInDays, string StatusName, string AlligatBookId, int IssuingDepId)
         {
             int OrderId;
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -231,6 +238,8 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Parameters.Clear();
                 command.Parameters.Add("ReaderId", SqlDbType.Int).Value = reader.NumberReader;
                 command.Parameters.Add("BookId", SqlDbType.NVarChar).Value = exemplar.BookId;
+                command.Parameters.Add("AlligatBookId", SqlDbType.NVarChar).Value = (object)AlligatBookId ?? DBNull.Value;
+                command.Parameters.Add("IssuingDepId", SqlDbType.Int).Value = IssuingDepId;
                 command.Parameters.Add("ExemplarId", SqlDbType.Int).Value = exemplar.IdData;
                 command.Parameters.Add("ReturnInDays", SqlDbType.Int).Value = ReturnInDays;//(orderType == "На дом") ? 30 : 4;
                 command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = StatusName;

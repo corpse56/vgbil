@@ -21,11 +21,16 @@ namespace ALISAPI
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
 
-            // GlobalConfiguration.Configuration.Routes.MapHttpRoute(
-            //              name: "GetReaderByEmail",
-            //              routeTemplate: "ALISAPI/Readers/ByEmail/{email}",
-            //              defaults: new { email = System.Web.Http.RouteParameter.Optional }
-            //            );
+            //GlobalConfiguration.Configuration.Routes.MapHttpRoute(
+            //             name: "OrdersById",
+            //             routeTemplate: "Circulation/Orders/ById/{OrderId}",
+            //             defaults: new { OrderId = System.Web.Http.RouteParameter.Optional }
+            //           );
+           // GlobalConfiguration.Configuration.Routes.MapHttpRoute(
+           //  name: "GetReaderByEmail",
+           //  routeTemplate: "ALISAPI/Readers/ByEmail/{email}",
+           //  defaults: new { email = System.Web.Http.RouteParameter.Optional }
+           //);
             // GlobalConfiguration.Configuration.Routes.MapHttpRoute(
             //  name: "GetLoginType",
             //  routeTemplate: "Readers/GetLoginType/{login}",

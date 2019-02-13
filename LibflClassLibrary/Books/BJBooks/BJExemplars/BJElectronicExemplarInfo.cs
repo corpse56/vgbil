@@ -1,7 +1,11 @@
 ﻿using LibflClassLibrary.Books.BJBooks.Loaders;
+using LibflClassLibrary.ExportToVufind;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 
@@ -63,7 +67,6 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 
 
         public string Path;
-        public List<string> JPGFiles = new List<string>();
         public int CountJPG
         {
             get
@@ -75,10 +78,49 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         public int HeightFirstFile;
         public bool IsExistsLQ;
         public bool IsExistsHQ;
+        public string Path_HQ;
+        public string Path_LQ;
+        public bool FilesFound = false;
+        public List<string> JPGFiles = new List<string>();
+
+        public void FillFileFields()
+        {
+            string ip = AppSettings.IPAddressFileServer;
+            string login = AppSettings.LoginFileServerRead;
+            string pwd = AppSettings.PasswordFileServerRead;
+            string _directoryPath = @"\\" + ip + @"\BookAddInf\";
+
+            //когда появится инвентаризация электронных копий, то сюда надо вставить получение инфы об электронной копии
+            FileInfo[] fi;
+            using (new NetworkConnection(_directoryPath, new NetworkCredential("BJStor01\\imgview", "Image_123Viewer")))
+            {
+                _directoryPath = @"\\" + ip + @"\BookAddInf\" + GetPathToElectronicCopy(this.BookId);
+
+                DirectoryInfo di = new DirectoryInfo(_directoryPath);
+                FilesFound = di.Exists;//каталога с картинками страниц не существует или существует
+                DirectoryInfo hq = new DirectoryInfo(_directoryPath + @"\JPEG_HQ\");
+                this.IsExistsHQ = (hq.Exists) ? true : false;
+                this.Path_HQ = (hq.Exists) ? hq.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/") : null;
+
+                DirectoryInfo lq = new DirectoryInfo(_directoryPath + @"\JPEG_LQ\");
+                this.IsExistsLQ = (lq.Exists) ? true : false;
+                this.Path_LQ = (lq.Exists) ? lq.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/") : null;
+
+                fi = hq.GetFiles("*.jpg").OrderBy(f => f.Name).ToArray(); //сортируем по дате изменения. именно в таком порядке они сканировались. а вообще вопрос непростой, поскольку попадаются файлы, выпадающие из этого условия
+
+                foreach (FileInfo f in fi)
+                {
+                    this.JPGFiles.Add(f.Name);
+                }
+
+            }
 
 
+            Image img = Image.FromFile(fi[1].FullName);//берём вторую страницу, потому что первая бывает с пустым разворотом
+            this.WidthFirstFile = img.Width;
+            this.HeightFirstFile = img.Height;
 
-
+        }
 
         public static string GetPathToElectronicCopy(string id)//принимает ID из вуфайнда
         {
