@@ -244,6 +244,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{43CBF2E9-8CE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WriteoffExcel", "WriteoffExcel\WriteoffExcel.csproj", "{DF2197FC-6287-4BA9-8CFF-3CAFF098F598}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportBJUserRolesAndRights", "ImportBJUserRolesAndRights\ImportBJUserRolesAndRights.csproj", "{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -390,6 +392,10 @@ Global
 		{DF2197FC-6287-4BA9-8CFF-3CAFF098F598}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF2197FC-6287-4BA9-8CFF-3CAFF098F598}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF2197FC-6287-4BA9-8CFF-3CAFF098F598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -408,6 +414,7 @@ Global
 		{64066C7E-5692-46BE-AD4F-522A89310F08} = {F06A4AB3-9392-4157-B11A-9CCEE75EC75E}
 		{2A22DBD4-961C-4116-BDE2-C1457C62F065} = {F06A4AB3-9392-4157-B11A-9CCEE75EC75E}
 		{A7B2D729-46D3-48C7-AE2E-417A19BDD42D} = {172B6033-F306-482B-B443-5D565ADCB12A}
+		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC} = {172B6033-F306-482B-B443-5D565ADCB12A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA724ECA-4FCD-4BF4-9553-7CA9DBF07D8D}

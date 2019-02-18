@@ -4,6 +4,7 @@ using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation.DB;
 using LibflClassLibrary.ExportToVufind;
+using LibflClassLibrary.Litres;
 using LibflClassLibrary.Readers;
 using System;
 using System.Collections.Generic;
@@ -176,7 +177,7 @@ namespace LibflClassLibrary.Circulation.Loaders
             order.StatusCode = CirculationStatuses.ListView.FirstOrDefault(x => x.Value == order.StatusName).Key;
             order.Book = ViewFactory.GetBookSimpleView(order.BookId);
             order.Refusual = row["Refusual"].ToString();
-            order.IssuingDepartmentId = (int)row["IssuingDepId"];//где получить первый раз
+            order.IssuingDepartmentId = (row["IssuingDepId"] == DBNull.Value) ? 0 : (int)row["IssuingDepId"];//где получить первый раз
             order.AlligatBookId = row["AlligatBookId"].ToString();
             order.IssueDate = (row["IssueDate"] == DBNull.Value) ? null : (DateTime?)row["IssueDate"];
             order.BookUrl = row["BookUrl"].ToString();
@@ -222,6 +223,37 @@ namespace LibflClassLibrary.Circulation.Loaders
         {
             DataTable table = dbWrapper.IsExistsInBasket(readerId, BookId);
             return (table.Rows.Count != 0);
+        }
+
+        internal void ProlongOrder(int orderId, int days)
+        {
+            dbWrapper.ProlongOrder(orderId, days);
+        }
+
+        internal int GetOrderTimesProlonged(int orderId)
+        {
+            DataTable table = dbWrapper.GetOrderTimesProlonged(orderId);
+            return (table.Rows.Count);
+
+        }
+
+        internal LitresInfo GetLitresAccount(int readerId)
+        {
+            DataTable table = dbWrapper.GetLitresAccount(readerId);
+            if (table.Rows.Count == 0)
+            {
+                return null;
+            }
+            LitresInfo result = new LitresInfo();
+            result.Login = table.Rows[0]["LRLOGIN"].ToString();
+            result.Password = table.Rows[0]["LRPWD"].ToString();
+            return result;
+        }
+
+        internal void AssignLitresAccount(int readerId)
+        {
+            dbWrapper.AssignLitresAccount(readerId);
+
         }
     }
 }

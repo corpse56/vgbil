@@ -5,6 +5,7 @@ using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation.Loaders;
 using LibflClassLibrary.ExportToVufind;
+using LibflClassLibrary.Litres;
 using LibflClassLibrary.Readers;
 using System;
 using System.Collections.Generic;
@@ -101,6 +102,7 @@ namespace LibflClassLibrary.Circulation
             //{ 1020,   "Экстремистская литература.Не попадает в индекс.Обрабатывать не нужно."},
             //{ 1999,   "Невозможно определить доступ"},
         }
+
 
         public OrderInfo GetOrder(int orderId)
         {
@@ -314,9 +316,55 @@ namespace LibflClassLibrary.Circulation
 
         }
 
-        public void ProlongOrder(int ReaderId, int OrderId)
+        public void ProlongOrder(int OrderId)
         {
+            OrderInfo order = this.GetOrder(OrderId);
+            if ( (order.StatusCode == CirculationStatuses.EmployeeLookingForBook.Id) ||
+                 (order.StatusCode == CirculationStatuses.Finished.Id) ||
+                 (order.StatusCode == CirculationStatuses.ForReturnToBookStorage.Id) ||
+                 (order.StatusCode == CirculationStatuses.IssuedFromAnotherReserve.Id) ||
+                 (order.StatusCode == CirculationStatuses.OrderIsFormed.Id) ||
+                 (order.StatusCode == CirculationStatuses.Refusual.Id) ||
+                 (order.StatusCode == CirculationStatuses.SelfOrder.Id) ||
+                 (order.StatusCode == CirculationStatuses.WaitingFirstIssue.Id)
+               )
+            {
+                throw new Exception("C015");
+            }
+            else if ( (order.StatusCode == CirculationStatuses.ElectronicIssue.Id) ||
+                        (order.StatusCode == CirculationStatuses.IssuedAtHome.Id)
+                      )
+            {
+                int TimesProlonged = loader.GetOrderTimesProlonged(OrderId);
+                if (TimesProlonged > 0)
+                {
+                    throw new Exception("C016");
+                }
+                else
+                {
+                    loader.ProlongOrder(OrderId, 30);
+                }
+            }
+            else if ( (order.StatusCode == CirculationStatuses.IssuedInHall.Id) ||
+                      (order.StatusCode == CirculationStatuses.InReserve.Id)
+                    )
+            {
+                int TimesProlonged = loader.GetOrderTimesProlonged(OrderId);
+                if (TimesProlonged > 10)
+                {
+                    throw new Exception("C017");
+                }
+                else
+                {
+                    loader.ProlongOrder(OrderId, 3);
+                }
+            }
+            else
+            {
+                throw new Exception("C018");
+            }
 
+            
         }
 
         private bool IsBookAlreadyIssuedToReader(BJBookInfo book, ReaderInfo reader)
@@ -389,5 +437,27 @@ namespace LibflClassLibrary.Circulation
         {
             loader.DeleteFromBasket(request);
         }
+
+        public LitresInfo GetLitresAccount(int ReaderId)
+        {
+            LitresInfo result = loader.GetLitresAccount(ReaderId);
+            if (result == null)
+            {
+                throw new Exception("L001");
+            }
+            return result;
+        }
+        public LitresInfo AssignLitresAccount(int ReaderId)
+        {
+            LitresInfo result = loader.GetLitresAccount(ReaderId);
+            if (result != null)
+            {
+                throw new Exception("L002");
+            }
+            loader.AssignLitresAccount(ReaderId);
+            result = loader.GetLitresAccount(ReaderId);
+            return result;
+        }
+
     }
 }

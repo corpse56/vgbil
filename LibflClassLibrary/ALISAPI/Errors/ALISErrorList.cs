@@ -159,6 +159,27 @@ namespace LibflClassLibrary.ALISAPI.Errors
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             new ALISError()
             {
+                Code = "L001",
+                Message = "Аккаунт Литрес не выдан данному читателю.",
+                httpStatusCode = System.Net.HttpStatusCode.NotFound,
+            },
+            new ALISError()
+            {
+                Code = "L002",
+                Message = "Аккаунт литрес уже назначен читателю. Нельзя назначить аккаунт дважды.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "L003",
+                Message = "Свободные Литрес аккаунты закончились. Попробуйте позже.",
+                httpStatusCode = System.Net.HttpStatusCode.NotFound,
+            },
+
+ 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            new ALISError()
+            {
                 Code = "C001",
                 Message = "Нельзя выдать более 5 электронных книг.",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
@@ -239,6 +260,30 @@ namespace LibflClassLibrary.ALISAPI.Errors
             {
                 Code = "C014",
                 Message = "Ошибка доступа к файловому хранилищу",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "C015",
+                Message = "Заказ с таким статусом нельзя продлить",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "C016",
+                Message = "Заказ уже был продлён. Заказы выданные на дом и электронные выдачи можно продлить только один раз.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "C017",
+                Message = "Бронеполку можно продлить только 10 раз.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "C018",
+                Message = "Неизвестная ошибка при продлении",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
 

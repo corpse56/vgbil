@@ -80,6 +80,13 @@ namespace LibflClassLibrary.Circulation
             public const int Id = 12;
             public const string Value = "Ожидает выдачи";
         }
+        //фейковый статус. никогда не присваивается, только для отметки того, что заказ продлевали. Вполне вписывается в таблицу OrdersFlow. 
+        //поэтому не будем городить лишних сущностей.
+        public static class Prolonged
+        {
+            public const int Id = 13;
+            public const string Value = "Продлено";
+        }
 
 
         public static Dictionary<int, string> ListView

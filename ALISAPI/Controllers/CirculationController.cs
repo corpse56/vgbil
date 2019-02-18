@@ -163,6 +163,25 @@ namespace ALISAPI.Controllers
             return ALISResponseFactory.CreateResponse(Request);
         }
 
+        /// <summary>
+        /// Продлевает заказ.
+        /// </summary>
+        /// <param name="OrderId">Id заказа</param>
+        [HttpPost]
+        [Route("Circulation/ProlongOrder/{OrderId}")]
+        public HttpResponseMessage ProlongOrder(int OrderId)
+        {
+            CirculationInfo Circulation = new CirculationInfo();
+            try
+            {
+                Circulation.ProlongOrder(OrderId);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
+            return ALISResponseFactory.CreateResponse(Request);
+        }
 
         // возможные действия вошли в корзину не надо отдельного метода.
         ///// <summary>

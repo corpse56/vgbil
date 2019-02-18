@@ -199,6 +199,78 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        internal DataTable GetLitresAccount(int readerId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_LITRES_ACCOUNT, connection);
+                dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = readerId;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
+        internal void AssignLitresAccount(int readerId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.ASSIGN_LITRES_ACCOUNT;
+                command.Parameters.Clear();
+                command.Parameters.Add("ReaderId", SqlDbType.Int).Value = readerId;
+                command.Parameters.Add("AccountId", SqlDbType.Int).Value = GetFirstFreeLitresAccount();
+                command.ExecuteNonQuery();
+            }
+
+        }
+        private int GetFirstFreeLitresAccount()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_FIRST_FREE_LITRES_ACCOUNT, connection);
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                if (cnt == 0)
+                {
+                    throw new Exception("L003");
+                }
+                return Convert.ToInt32(table.Rows[0]["ID"]);
+            }
+
+        }
+        internal void ProlongOrder(int orderId, int days)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.PROLONG_ORDER;
+                command.Parameters.Clear();
+                command.Parameters.Add("orderId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("days", SqlDbType.Int).Value = days;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Prolonged.Value;
+                command.ExecuteNonQuery();                
+            }
+
+        }
+
+        internal DataTable GetOrderTimesProlonged(int orderId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.ORDER_TIMES_PROLONGED, connection);
+                dataAdapter.SelectCommand.Parameters.Add("orderId", SqlDbType.Int).Value = orderId;
+                dataAdapter.SelectCommand.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Prolonged.Value;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal int NewElectronicOrder(BJElectronicExemplarInfo exemplar, ReaderInfo reader)
         {
             int OrderId;

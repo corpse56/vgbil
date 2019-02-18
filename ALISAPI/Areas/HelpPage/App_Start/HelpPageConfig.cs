@@ -10,6 +10,7 @@ using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.ALISAPI.ResponseObjects.General;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Readers;
 using LibflClassLibrary.Circulation;
+using LibflClassLibrary.Litres;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.ReadersJSONViewers;
 using Newtonsoft.Json;
@@ -252,7 +253,20 @@ namespace ALISAPI.Areas.HelpPage
             json = JsonConvert.SerializeObject(check, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "CheckPasswordUrl");
 
+            //GET Litres/Account/{ReaderId}
+            LitresInfo li = new LitresInfo();
+            li.Login = "34543655467";
+            li.Password = "123&123";
+            json = JsonConvert.SerializeObject(li, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Litres", "LitresAccount");
+            //POST Litres/AssignAccount/{ReaderId}
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Litres", "AssignLitresAccount");
 
+
+            //Circulation / Orders / ById /{ OrderId}
+            OrderInfo oi = circ.GetOrder(22);
+            json = JsonConvert.SerializeObject(oi, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "OrdersById");
 
         }
 

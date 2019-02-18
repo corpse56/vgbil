@@ -176,5 +176,50 @@ namespace LibflClassLibrary.Circulation.DB
                        " and BookId = @BookId";
             }
         }
+
+        public string ORDER_TIMES_PROLONGED
+        {
+            get
+            {
+                return " select * from Circulation..OrdersFlow where OrderId = @orderId and StatusName = @StatusName";
+            }
+        }
+
+        public string PROLONG_ORDER
+        {
+            get
+            {
+                return " begin transaction; " +
+                        " update Circulation..Orders set ReturnDate = dateadd(day, @days, ReturnDate) where ID = @orderId; " +
+                       " insert into Circulation..OrdersFlow (OrderId, StatusName,  Changed,  Changer,    DepartmentId, Refusual ) " +
+                       " values                              (@OrderId, @StatusName,getdate(),    1  ,      2033,           null ); " +
+                       " commit;";
+            }
+        }
+
+        public string GET_LITRES_ACCOUNT
+        {
+            get
+            {
+                return " select * from LITRES..ACCOUNTS where IDREADER = @ReaderId";
+            }
+        }
+
+        public string ASSIGN_LITRES_ACCOUNT
+        {
+            get
+            {
+                return " update LITRES..ACCOUNTS set IDREADER = @ReaderId, ASSIGNED=getdate() where ID = @AccountId ";
+            }
+        }
+
+        public string GET_FIRST_FREE_LITRES_ACCOUNT
+        {
+            get
+            {
+                return " select top 1 ID from LITRES..ACCOUNTS where IDREADER is null order by ID ";
+            }
+        }
+
     }
 }

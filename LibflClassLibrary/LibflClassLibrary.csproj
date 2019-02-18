@@ -192,6 +192,7 @@
     <Compile Include="ExportToVufind\CERFVufindConverter.cs" />
     <Compile Include="ExportToVufind\KeyValueMapping.cs" />
     <Compile Include="Books\BJBooks\DB\DatabaseWrapper.cs" />
+    <Compile Include="Litres\LitresInfo.cs" />
     <Compile Include="Readers\DB\ReaderQueries.cs" />
     <Compile Include="Readers\DB\ReaderDatabaseWrapper.cs" />
     <Compile Include="Readers\Loaders\ReaderLoader.cs" />

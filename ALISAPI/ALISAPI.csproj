@@ -209,6 +209,7 @@
     <Compile Include="Controllers\ALISResponseFactory.cs" />
     <Compile Include="Controllers\ALISSettings.cs" />
     <Compile Include="Controllers\BooksController.cs" />
+    <Compile Include="Controllers\LitresController.cs" />
     <Compile Include="Controllers\CirculationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReadersController.cs" />
