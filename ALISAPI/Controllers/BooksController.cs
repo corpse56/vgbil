@@ -37,6 +37,28 @@ namespace ALISAPI.Controllers
             if (book == null) return ALISErrorFactory.CreateError("B001", Request);
             return ALISResponseFactory.CreateResponse(book, Request);
         }
+        /// <summary>
+        /// Получает сведения об электронной копии по Id книги
+        /// </summary>
+        /// <param name="id">ID книги</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Books/ElectronicCopy/{id}")]
+        [ResponseType(typeof(ElectronicCopyFullView))]
+        public HttpResponseMessage GetElectronicCopyFullView(string id)
+        {
+            ElectronicCopyFullView book;
+            try
+            {
+                book = ViewFactory.GetElectronicCopyFullView(id);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
+            if (book == null) return ALISErrorFactory.CreateError("B001", Request);
+            return ALISResponseFactory.CreateResponse(book, Request);
+        }
 
     }
 }

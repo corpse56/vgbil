@@ -268,6 +268,12 @@ namespace ALISAPI.Areas.HelpPage
             json = JsonConvert.SerializeObject(oi, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
             config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "OrdersById");
 
+            //Books/ElectronicCopy/{id}
+            ElectronicCopyFullView ec = ViewFactory.GetElectronicCopyFullView("BJVVV_138023");
+            json = JsonConvert.SerializeObject(ec, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
+            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Books", "GetElectronicCopyFullView");
+
+            
         }
 
 #if Handle_PageResultOfT

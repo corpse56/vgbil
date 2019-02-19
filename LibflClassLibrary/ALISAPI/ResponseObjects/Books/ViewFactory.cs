@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.Books.BJBooks;
+﻿using LibflClassLibrary.Books;
+using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.ExportToVufind.BJ;
@@ -103,6 +104,26 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 result.Exemplars.Add(ExemplarView);
             }
             return result;
+        }
+
+        public static ElectronicCopyFullView GetElectronicCopyFullView(string BookId)
+        {
+            ElectronicCopyFullView electronicCopyFullView = new ElectronicCopyFullView();
+            BJElectronicExemplarInfo exemplar;
+            exemplar = new BJElectronicExemplarInfo(BookBase.GetIDMAIN(BookId),BookBase.GetFund(BookId));
+            exemplar.FillFileFields();
+            electronicCopyFullView.AccessCode = exemplar.ExemplarAccess.Access;
+            electronicCopyFullView.HeightFirstFile = exemplar.HeightFirstFile;
+            electronicCopyFullView.IsExistsHQ = exemplar.IsExistsHQ;
+            electronicCopyFullView.IsExistsLQ = exemplar.IsExistsLQ;
+            electronicCopyFullView.JPGFiles = exemplar.JPGFiles;
+            electronicCopyFullView.MethodOfAccessCode = exemplar.ExemplarAccess.MethodOfAccess;
+            electronicCopyFullView.Path_Cover = exemplar.Path_Cover;
+            electronicCopyFullView.Path_HQ = exemplar.Path_HQ;
+            electronicCopyFullView.Path_LQ = exemplar.Path_LQ;
+            electronicCopyFullView.WidthFirstFile = exemplar.WidthFirstFile;
+
+            return electronicCopyFullView;
         }
 
         private static List<ExemplarSimpleView> GetBJExemplars(BJBookInfo bjBook)

@@ -156,6 +156,12 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Ошибка заполнения экземпляра в базе.",
                 httpStatusCode = System.Net.HttpStatusCode.NotFound,
             },
+            new ALISError()
+            {
+                Code = "B003",
+                Message = "Электронной копии для указанного Id книги не существует",
+                httpStatusCode = System.Net.HttpStatusCode.NotFound,
+            },
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             new ALISError()
             {

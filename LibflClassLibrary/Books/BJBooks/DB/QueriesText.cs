@@ -410,7 +410,16 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                 return "select * from BookAddInf..BookProject where IDBook = @IDMAIN and IDBase = " + ((this.Fund == "BJVVV") ? "1" : "2");
             }
         }
+
+        public string IS_EXISTS_DIGITAL_COPY
+        {
+            get
+            {
+                return "select 1 from " + this.Fund + "..DATAEXT where MNFIELD = 940 and MSFIELD = '$a' and IDMAIN = @IDMAIN";
+            }
+        }
+
     }
 
-   
+
 }

@@ -92,7 +92,7 @@ namespace ImportBJUserRolesAndRights
                     var line = reader.ReadLine();
                     var values = line.Split(',');
 
-                    Users.Add(values[0],);
+                    Users.Add(values[0]);
                     Fields.Add(values[0]);
                     Komplektator.Add(values[1]);
                     Katalogizator.Add(values[2]);
@@ -111,7 +111,7 @@ namespace ImportBJUserRolesAndRights
                 }
 
 
-                InsertUsers("BJVVV",);
+                //InsertUsers("BJVVV",);
 
             }
         }

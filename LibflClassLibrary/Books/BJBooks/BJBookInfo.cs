@@ -52,12 +52,8 @@ namespace LibflClassLibrary.Books.BJBooks
 
         public static BJBookInfo GetBookInfoByPIN(int pin, string fund)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetBJRecord(pin);
-            sw.Stop();
-            sw.Start();
             BJBookInfo result = new BJBookInfo();
             result.Id = $"{fund}_{pin}";
             result.ID = pin;
@@ -82,14 +78,8 @@ namespace LibflClassLibrary.Books.BJBooks
                     if (CurrentIdData != (int)row["IDDATA"])
                     {
                         CurrentIdData = (int)row["IDDATA"];
-                        sw.Stop();
-                        sw.Start();
                         result.Exemplars.Add(BJExemplarInfo.GetExemplarByIdData(CurrentIdData, fund));
-                        sw.Stop();
-                        sw.Start();
                         //exemplar = new BJExemplarInfo((int)row["IDDATA"]);
-                        sw.Stop();
-                        sw.Start();
                         //exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
                     }
                     else
@@ -98,8 +88,6 @@ namespace LibflClassLibrary.Books.BJBooks
                     }
                 }
             }
-            sw.Stop();
-            sw.Start();
             table = dbw.GetRTF(pin);
             if (table.Rows.Count != 0)
             {

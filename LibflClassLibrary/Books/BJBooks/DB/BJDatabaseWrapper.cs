@@ -71,6 +71,19 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        internal DataTable IsExistsDigitalCopy(string bookId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_EXISTS_DIGITAL_COPY, connection);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("IDMAIN", SqlDbType.Int).Value = BookBase.GetIDMAIN(bookId);
+                dataAdapter.Fill(table);
+                return table;
+            }
+
+        }
+
         internal DataTable GetIncrementDeleted()
         {
             DataSet ds = new DataSet();

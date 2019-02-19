@@ -20,10 +20,14 @@ namespace LibflClassLibrary.Books
         {
             throw new NotImplementedException();
         }
+        public static string GetFund(string BookId)
+        {
+            return BookId.Substring(0, BookId.IndexOf("_"));
+        }
+        public static int GetIDMAIN(string BookId)
+        {
+            return int.Parse(BookId.Substring(BookId.LastIndexOf("_") + 1));
+        }
 
-        //public static BookBase GetBook(string Id)
-        //{
-
-        //}
     }
 }

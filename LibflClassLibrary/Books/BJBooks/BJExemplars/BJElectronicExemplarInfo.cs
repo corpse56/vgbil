@@ -29,6 +29,13 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             base.IDMAIN = IDMAIN;
             base.Fund = Fund;
             loader = new BJExemplarLoader(Fund);
+
+            //BJBookInfo book = BJBookInfo.GetBookInfoByPIN(IDMAIN, Fund);
+
+            if (!loader.IsExistsDigitalCopy($"{Fund}_{IDMAIN}"))
+            {
+                throw new Exception("B003");
+            }
             Statuses = loader.LoadAvailabilityStatuses(IDMAIN, Fund);
             var Status = Statuses.Find(x => x.Project == BJElectronicAvailabilityProjects.VGBIL);
             this.ExemplarAccess = new BJExemplarAccessInfo();
@@ -82,7 +89,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         public string Path_LQ;
         public bool FilesFound = false;
         public List<string> JPGFiles = new List<string>();
-
+        public string Path_Cover;
         public void FillFileFields()
         {
             string ip = AppSettings.IPAddressFileServer;
@@ -112,6 +119,9 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 {
                     this.JPGFiles.Add(f.Name);
                 }
+
+                FileInfo coverPath = new FileInfo(_directoryPath + @"\JPEG_AB\cover.jpg");
+                this.Path_Cover = (coverPath.Exists) ? coverPath.FullName.Substring(di.FullName.IndexOf("BookAddInf") + 11).Replace(@"\", @"/") : null;
 
             }
 

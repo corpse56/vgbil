@@ -55,14 +55,14 @@ namespace LibflClassLibrary.Circulation.DB
             {
                 return " select A.*,B.Refusual from Circulation..Orders A " +
                        " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
-                       " where ReaderId = @ReaderId and A.StatusName not in ('Завершено')";
+                       " where ReaderId = @ReaderId and A.StatusName not in ('Завершено', 'Для возврата в хранение')";
             }
         }
         public string GET_ORDERS_HISTORY
         {
             get
             {
-                return "select * from Circulation..Orders where ReaderId = @ReaderId and StatusName in ('Завершено')";
+                return "select * from Circulation..Orders where ReaderId = @ReaderId and StatusName in ('Завершено', 'Для возврата в хранение')";
             }
         }
 
