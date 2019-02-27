@@ -18,7 +18,7 @@ namespace ImportBJUserRolesAndRights
             Obsluzhivanie = 3,
         }
         string TARGET_BASE = "BJACC";
-        string ConnectionString = "Data Source=127.0.0.1;Initial Catalog=BJVVV;Integrated Security=True;Connect Timeout=1200";
+        string ConnectionString = "Data Source=127.0.0.1;Initial Catalog=BJVVV;Integrated Security=True;Connect Timeout=1200;";
         List<FieldInfo> Fields = new List<FieldInfo>();
         List<string> AKC = new List<string>();
         List<string> Obsluzhivanie = new List<string>();
@@ -71,24 +71,83 @@ namespace ImportBJUserRolesAndRights
                         user.HashPwd = BJUserInfo.HashPassword(user.password);
                         user.UserStatus.Add(us);
                     }
-
                 }
-                Users[0] = user;
+                Users.RemoveAt(0);//удаляем пустой
+                Users.Add(user);
             }
-            InsertRoles(TARGET_BASE);
-            InsertRoleRights(TARGET_BASE, (int)Roles.AKC, AKC);
-            InsertRoleRights(TARGET_BASE, (int)Roles.Obsluzhivanie, Obsluzhivanie);
-            //InsertUsers(Users);
+            InsertRoles();
+            InsertRoleRights( (int)Roles.AKC, AKC);
+            InsertRoleRights( (int)Roles.Obsluzhivanie, Obsluzhivanie);
+            InsertUsers(Users);
 
 
         }
 
-        void InsertRoleRights(string BaseName, int IdRole, List<string> Rights)
+        private void InsertUsers(List<BJUserInfo> users)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 SqlCommand command = new SqlCommand();
                 command.Connection = connection;
+                command.Connection.Open();
+                command.Parameters.Add("Login", SqlDbType.NVarChar);
+                command.Parameters.Add("Password", SqlDbType.VarChar);
+                command.Parameters.Add("Name", SqlDbType.NVarChar);
+                command.Parameters.Add("NewId", SqlDbType.Int);
+                command.Parameters.Add("RoleId", SqlDbType.Int);
+                command.Parameters.Add("DeptId", SqlDbType.Int);
+                command.Parameters.Add("UChar", SqlDbType.Int);
+
+
+                foreach (var user in users)
+                {
+                    command.Parameters["Login"].Value = user.login;
+
+                    byte[] bytes = Encoding.Unicode.GetBytes(user.HashPwd);
+                    char[] chars = new char[user.password.Length];
+                    string newpass = Encoding.Unicode.GetString(bytes);
+                    command.Parameters["Password"].Value = "";//Encoding.Default.GetString(bytes);
+                    //char c = char.Parse(newpass[0].ToString());
+                    command.Parameters["Name"].Value = user.login;
+                    command.Parameters["NewId"].Value = DBNull.Value;
+                    command.Parameters["RoleId"].Value = DBNull.Value;
+                    command.Parameters["DeptId"].Value = DBNull.Value;
+                    command.Parameters["UChar"].Value = DBNull.Value;
+
+                    command.CommandText = " insert into " + TARGET_BASE + "..USERS (LOGIN, HASH, NAME  ) " +
+                                                            " values               (upper(@Login), @Password, @Name);" +
+                                                            "select scope_identity();";
+                    int idUser = Convert.ToInt32(command.ExecuteScalar());
+                    foreach (char c in newpass)
+                    {
+                        command.Parameters["UChar"].Value = (int)c;
+                        command.Parameters["NewId"].Value = idUser;
+                        command.CommandText = " update " + TARGET_BASE + "..USERS set HASH = HASH+char(@UChar) where ID = @NewId";
+                        command.ExecuteNonQuery();
+                    }
+
+                    foreach (var status in user.UserStatus)
+                    {
+                        command.Parameters["NewId"].Value = idUser;
+                        command.Parameters["RoleId"].Value = status.RoleId;
+                        command.Parameters["DeptId"].Value = status.DepId;
+                        command.CommandText = "insert into " + TARGET_BASE + "..USERSTATUS (IDUSER, IDROLE, IDDEPT) " +
+                                                                                " values    (@NewId,@RoleId, @DeptId)";
+                        command.ExecuteNonQuery();
+                    }
+
+                }
+            }
+
+        }
+
+        void InsertRoleRights(int IdRole, List<string> Rights)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                connection.Open();
                 int i = 0;
                 foreach (string right in Rights)
                 {
@@ -97,7 +156,7 @@ namespace ImportBJUserRolesAndRights
                         i++;
                         continue;
                     }
-                    command.CommandText = " insert into " + BaseName + "..USERSROLERIGHTS (IDROLE, IDFIELD, MNFIELD) values " +
+                    command.CommandText = " insert into " + TARGET_BASE + "..USERSROLERIGHTS (IDROLE, IDFIELD, MNFIELD) values " +
                         "                   (" + IdRole + ", " + Fields[i].Id.ToString() + "," + Fields[i].MNFIELD.ToString() + ")";
                     command.ExecuteNonQuery();
                     i++;
@@ -105,25 +164,25 @@ namespace ImportBJUserRolesAndRights
             }
         }
 
-        void InsertRoles(string BaseName)
+        void InsertRoles()
         {
-            DataTable result = new DataTable();
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 SqlCommand command = new SqlCommand();
                 command.Connection = connection;
-
-                command.CommandText = " delete from " + BaseName + "..ROLES where ID != 1 ";
+                connection.Open();
+                command.CommandText = " delete from " + TARGET_BASE + "..USERSROLE where ID != 1 ";
                 command.ExecuteNonQuery();
 
-                command.CommandText = "set IDENTITY_INSERT [" + BaseName + "].[dbo].[USERSROLE] on;" +
-                                    " insert into " + BaseName + "..ROLES (ID, ROLE, OPERATION ) values (2,'АКЦ','АКЦ');" +
-                                    " insert into " + BaseName + "..ROLES (ID, ROLE, OPERATION ) values (3,'Обслуживание','Обслуживание');" +
-                                    " insert into " + BaseName + "..ROLES (ID, ROLE, OPERATION ) values (4,'Гость','Гость');" +
-                                    "set IDENTITY_INSERT [" + BaseName + "].[dbo].[USERSROLE] off;";
+                command.CommandText = "set IDENTITY_INSERT [" + TARGET_BASE + "].[dbo].[USERSROLE] on;" +
+                                    " insert into " + TARGET_BASE + "..USERSROLE (ID, ROLE, OPERATION ) values (2,'АКЦ','АКЦ');" +
+                                    " insert into " + TARGET_BASE + "..USERSROLE (ID, ROLE, OPERATION ) values (3,'Обслуживание','Обслуживание');" +
+                                    " insert into " + TARGET_BASE + "..USERSROLE (ID, ROLE, OPERATION ) values (4,'Гость','Гость');" +
+                                    "set IDENTITY_INSERT [" + TARGET_BASE + "].[dbo].[USERSROLE] off;";
                 command.ExecuteNonQuery();
-
-                command.CommandText = "update " + BaseName + "..USERSTATUS set IDROLE = 4 where IDUSER != 1";
+                //присваиваем всем существующим гостя бесправного
+                command.CommandText = "update " + TARGET_BASE + "..USERSTATUS set IDROLE = 4 where IDUSER != 1" +
+                                      "update " + TARGET_BASE + "..USERS set LOGIN = 'Z_' + LOGIN where IDUSER != 1; ";
                 command.ExecuteNonQuery();
             }
         }

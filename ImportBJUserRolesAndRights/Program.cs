@@ -14,10 +14,10 @@ namespace ImportBJUserRolesAndRights
 
         static void Main(string[] args)
         {
-            PreparingBJACC acc = new PreparingBJACC();
-            acc.Execute();
-
-            
+            PreparingBJVVV vvv = new PreparingBJVVV();
+            vvv.Execute();
+        //    PreparingBJACC acc = new PreparingBJACC();
+        //    acc.Execute();
         }
 
     }

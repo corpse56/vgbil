@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +38,16 @@ namespace ImportBJUserRolesAndRights
             }
             //STR[Y-1] = (char)0;
             string NEWPASS = new string(STR);
+
+            // Get an array of bytes representing the unicode string, two for each character.
+            byte[] source = Encoding.Unicode.GetBytes(NEWPASS);
+
+            // Convert the Unicode bytes to UTF-8 representation.
+            byte[] converted = Encoding.Convert(Encoding.Unicode, Encoding.UTF8, source);
+
+            // Now that we have converted the bytes, save them to a new string.
+            string utf8 = Encoding.UTF8.GetString(converted);
+
             return (NEWPASS);
         }
         private static int GetSecretChar(int X)
