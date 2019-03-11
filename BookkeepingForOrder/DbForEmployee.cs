@@ -11,8 +11,6 @@ namespace BookkeepingForOrder
     {
         private SqlDataAdapter SqlDA;
         private SqlConnection SqlCon;
-        private OleDbDataAdapter OleDA;
-        private OleDbConnection OleCon;
         private string OrdTableType;
         private string BASE;
         private Form1 F1;
@@ -22,10 +20,6 @@ namespace BookkeepingForOrder
             SqlDA = new SqlDataAdapter();
             SqlDA.SelectCommand = new SqlCommand();
             SqlDA.SelectCommand.Connection = SqlCon;
-            OleCon = new OleDbConnection(XmlConnections.GetConnection("/Connections/Reader"));
-            OleDA = new OleDbDataAdapter();
-            OleDA.SelectCommand = new OleDbCommand();
-            OleDA.SelectCommand.Connection = OleCon;
             this.BASE = BASE_;
             this.OrdTableType = OrdTableType_;
             this.F1 = f1;

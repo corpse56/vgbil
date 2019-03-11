@@ -10,25 +10,28 @@ using System.Threading.Tasks;
 
 namespace ImportBJUserRolesAndRights
 {
-    class PreparingBJACC
+    class PreparingBJFCC
     {
         enum Roles
         {
-            AKC = 2,
+            Adminstrator = 1,
+            FKC = 2,
             Obsluzhivanie = 3,
+            Katalogizator = 4,
+            Guest = 5
         }
-        string TARGET_BASE = "BJACC";
+        string TARGET_BASE = "BJFCC";
         //string ConnectionString = "Data Source=192.168.4.25,1443;Initial Catalog=BJVVV;Persist Security Info=True;User ID=pereezd;Password=pereezd_123;Connect Timeout=1200";
         string ConnectionString = "Data Source=127.0.0.1;Initial Catalog=BJVVV;Integrated Security=True;";
-
         List<FieldInfo> Fields = new List<FieldInfo>();
-        List<string> AKC = new List<string>();
+        List<string> FKC = new List<string>();
         List<string> Obsluzhivanie = new List<string>();
+        List<string> Katalogizator = new List<string>();
 
         List<BJUserInfo> Users = new List<BJUserInfo>();
         public void Execute()
         {
-            using (var reader = new StreamReader(@"e:\новые права библиоджет\Роли BJACC.csv", Encoding.Default))
+            using (var reader = new StreamReader(@"e:\новые права библиоджет\Роли BJFCC.csv", Encoding.Default))
             {
                 while (!reader.EndOfStream)
                 {
@@ -36,17 +39,19 @@ namespace ImportBJUserRolesAndRights
                     var values = line.Split(';');
                     FieldInfo field = GetField(values[0]);
                     if (field == null) continue;
-                    Debug.Assert(field.Id != -1);
+                    Debug.Assert(field.Id != -1, values[0]);
 
                     Fields.Add(field);
-                    AKC.Add(values[1]);
+                    FKC.Add(values[1]);
                     Obsluzhivanie.Add(values[2]);
+                    Katalogizator.Add(values[3]);
                     Debug.Assert(values[1].ToUpper() != "NULL" || values[1].ToUpper() != "1");
                     Debug.Assert(values[2].ToUpper() != "NULL" || values[2].ToUpper() != "1");
+                    Debug.Assert(values[3].ToUpper() != "NULL" || values[3].ToUpper() != "1");
                 }
             }
 
-            using (var reader = new StreamReader(@"e:\новые права библиоджет\Пользователи BJACC.csv", Encoding.Default))
+            using (var reader = new StreamReader(@"e:\новые права библиоджет\Пользователи BJFCC.csv", Encoding.Default))
             {
                 BJUserInfo user = new BJUserInfo();
                 while (!reader.EndOfStream)
@@ -55,7 +60,7 @@ namespace ImportBJUserRolesAndRights
                     var values = line.Split(';');
                     UserStatus us = new UserStatus();
                     us.DepId = GetDepId(values[3]);
-                    Debug.Assert(us.DepId != -1);
+                    Debug.Assert(us.DepId != -1, values[3]);
                     us.RoleId = GetRoleId(values[2]);
                     Debug.Assert(us.RoleId != -1);
                     us.DepName = values[3];
@@ -77,9 +82,10 @@ namespace ImportBJUserRolesAndRights
                 Users.RemoveAt(0);//удаляем пустой
                 Users.Add(user);
             }
-            //InsertRoles();
-            //InsertRoleRights( (int)Roles.AKC, AKC);
-            //InsertRoleRights( (int)Roles.Obsluzhivanie, Obsluzhivanie);
+            InsertRoles();
+            InsertRoleRights( (int)Roles.FKC, FKC);
+            InsertRoleRights((int)Roles.Obsluzhivanie, Obsluzhivanie);
+            InsertRoleRights((int)Roles.Katalogizator, Katalogizator);
             InsertUsers(Users);
 
 
@@ -108,7 +114,7 @@ namespace ImportBJUserRolesAndRights
                     byte[] bytes = Encoding.Unicode.GetBytes(user.HashPwd);
                     char[] chars = new char[user.password.Length];
                     string newpass = Encoding.Unicode.GetString(bytes);
-                    command.Parameters["Password"].Value = user.HashPwd;//Encoding.Default.GetString(bytes);
+                    command.Parameters["Password"].Value = "";//Encoding.Default.GetString(bytes);
                     //char c = char.Parse(newpass[0].ToString());
                     command.Parameters["Name"].Value = user.login;
                     command.Parameters["NewId"].Value = DBNull.Value;
@@ -120,13 +126,13 @@ namespace ImportBJUserRolesAndRights
                                                             " values               (upper(@Login), @Password, @Name);" +
                                                             "select scope_identity();";
                     int idUser = Convert.ToInt32(command.ExecuteScalar());
-                    //foreach (char c in newpass)
-                    //{
-                    //    command.Parameters["UChar"].Value = (int)c;
-                    //    command.Parameters["NewId"].Value = idUser;
-                    //    command.CommandText = " update " + TARGET_BASE + "..USERS set HASH = HASH+char(@UChar) where ID = @NewId";
-                    //    command.ExecuteNonQuery();
-                    //}
+                    foreach (char c in newpass)
+                    {
+                        command.Parameters["UChar"].Value = (int)c;
+                        command.Parameters["NewId"].Value = idUser;
+                        command.CommandText = " update " + TARGET_BASE + "..USERS set HASH = HASH+char(@UChar) where ID = @NewId";
+                        command.ExecuteNonQuery();
+                    }
 
                     foreach (var status in user.UserStatus)
                     {
@@ -177,9 +183,10 @@ namespace ImportBJUserRolesAndRights
                 command.ExecuteNonQuery();
 
                 command.CommandText = "set IDENTITY_INSERT [" + TARGET_BASE + "].[dbo].[USERSROLE] on;" +
-                                    " insert into " + TARGET_BASE + "..USERSROLE (ID, ROLE, OPERATION ) values (2,'АКЦ','АКЦ');" +
-                                    " insert into " + TARGET_BASE + "..USERSROLE (ID, ROLE, OPERATION ) values (3,'Обслуживание','Обслуживание');" +
-                                    " insert into " + TARGET_BASE + "..USERSROLE (ID, ROLE, OPERATION ) values (4,'Гость','Гость');" +
+                                    " insert into " + TARGET_BASE + "..USERSROLE (ID, ROLE, OPERATION ) values (2,'ФКЦ','ФКЦ');" +
+                                    " insert into " + TARGET_BASE + "..USERSROLE (ID, ROLE, OPERATION ) values (3,'Обслуживание читателей','Обслуживание читателей');" +
+                                    " insert into " + TARGET_BASE + "..USERSROLE (ID, ROLE, OPERATION ) values (4,'Каталогизатор','Каталогизация');" +
+                                    " insert into " + TARGET_BASE + "..USERSROLE (ID, ROLE, OPERATION ) values (5,'Гость','Гость');" +
                                     "set IDENTITY_INSERT [" + TARGET_BASE + "].[dbo].[USERSROLE] off;";
                 command.ExecuteNonQuery();
                 //присваиваем всем существующим гостя бесправного
@@ -191,10 +198,13 @@ namespace ImportBJUserRolesAndRights
 
         private FieldInfo GetField(string fieldName)
         {
-            if (fieldName == "Источник финансирования" ||
-                fieldName == "Наименование коллекции" ||
-                fieldName == "Финансирующая организация" ||
-                fieldName == "Примечание о финансировании")
+            if (fieldName == "Приплетено\\Соединено к ... или с..." ||
+                                                                    fieldName == "Наименование коллекции" ||
+                                                                    fieldName == "Финансирующая организация" ||
+                                                                    //fieldName == "Примечание о финансировании")
+                                                                    fieldName == "Трофей\\Принадлежность к" ||
+                                                                    fieldName == "Экземпляр владельца" ||
+                                                                    fieldName == "Источник финансирования")
             {
                 return null;
             }
@@ -247,10 +257,14 @@ namespace ImportBJUserRolesAndRights
         {
             switch (RoleName)
             {
-                case "АКЦ":
+                case "ФКЦ":
                     return 2;
                 case "Обслуживание читателей":
                     return 3;
+                case "Каталогизатор":
+                    return 4;
+                case "Гость":
+                    return 5;
                 case "Администратор":
                     return 1;
                 default:

@@ -13,7 +13,7 @@ namespace ImportBJUserRolesAndRights
     class PreparingBJVVV
     {
         string TARGET_BASE = "BJVVV";
-        string ConnectionString = "Data Source=127.0.0.1;Initial Catalog=BJVVV;Integrated Security=True;Connect Timeout=1200;";
+        string ConnectionString = "Data Source=192.168.4.25,1443;Initial Catalog=BJVVV;Persist Security Info=True;User ID=pereezd;Password=pereezd_123;Connect Timeout=1200";
         List<FieldInfo> Fields = new List<FieldInfo>();
         List<BJUserInfo> Users = new List<BJUserInfo>();
 
@@ -257,7 +257,7 @@ namespace ImportBJUserRolesAndRights
                 command.ExecuteNonQuery();
 
                 command.CommandText = "update " + TARGET_BASE + "..USERSTATUS set IDROLE = 12 where IDUSER != 1;" +
-                                      "update " + TARGET_BASE + "..USERS set LOGIN = substring(LOGIN+'_',1,25) where ID != 1;";
+                                      "update " + TARGET_BASE + "..USERS set LOGIN = substring('Z_'+LOGIN,1,25) where ID != 1;";
                 command.ExecuteNonQuery();
             }
         }

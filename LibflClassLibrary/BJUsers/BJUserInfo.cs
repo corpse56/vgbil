@@ -8,21 +8,28 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ImportBJUserRolesAndRights
+namespace LibflClassLibrary.BJUsers
 {
-    class UserStatus
+    public class UserStatus
     {
         public int RoleId;
+        public string RoleName;
         public int DepId;
         public string DepName;
     }
-    class BJUserInfo
+    public class BJUserInfo
     {
-        public string login;
-        public string password;
+        public string Login;
+        public string Password;
         public string HashPwd;
         public List<UserStatus> UserStatus = new List<UserStatus>();
-
+        BJUserLoader loader = new BJUserLoader();
+        internal static BJUserInfo GetUserByLogin(string login)
+        {
+            BJUserLoader loader = new BJUserLoader();
+            BJUserInfo result = loader.GetUserByLogin(login);
+            return result;
+        }
 
         public static string HashPassword(string password)
         {

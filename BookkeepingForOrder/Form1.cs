@@ -10,6 +10,8 @@ using System.Data.SqlClient;
 using System.Drawing.Printing;
 using System.Threading;
 using System.Runtime.InteropServices;
+using LibflClassLibrary.Controls;
+using LibflClassLibrary.BJUsers;
 
 namespace BookkeepingForOrder
 {
@@ -33,26 +35,36 @@ namespace BookkeepingForOrder
         DataTable ReadersTable;
         DataTable ReadersHisTable;
 
+        BJUserInfo user;
+
+
         [DllImport("user32.dll")]
         private static extern bool FlashWindow(IntPtr hwnd, bool bInvert);
 
 
         public Form1()
         {
-            /*OleCon = new OleDbConnection(XmlConnections.GetConnection("/Connections/Reader"));
-            OleDA = new OleDbDataAdapter();
-            OleDA.SelectCommand = new OleDbCommand();
-            OleDA.SelectCommand.Connection = OleCon;*/
             SqlCon = new SqlConnection(XmlConnections.GetConnection("/Connections/Zakaz"));
             SqlDA = new SqlDataAdapter();
             SqlDA.SelectCommand = new SqlCommand();
             SqlDA.SelectCommand.Connection = SqlCon;
-            auth = new authorization(this);
-            auth.ShowDialog();  //потом откоментировать обратно
-            if (auth.DialogResult != DialogResult.Cancel)
-            {
-                db = new DbForEmployee(this.OrderTableType,this.BASE,this);
-            }
+
+
+
+            fBJAuthorization fAuth = new fBJAuthorization();
+            fAuth.ShowDialog();
+            user = fAuth.
+
+            
+
+            //auth = new authorization(this);
+            //auth.ShowDialog();  //потом откоментировать обратно
+            //if (auth.DialogResult != DialogResult.Cancel)
+            //{
+            //    db = new DbForEmployee(this.OrderTableType,this.BASE,this);
+            //}
+
+
             InitializeComponent();
             
         }

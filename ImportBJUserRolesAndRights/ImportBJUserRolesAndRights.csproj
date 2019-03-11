@@ -44,7 +44,10 @@
   <ItemGroup>
     <Compile Include="BJUserInfo.cs" />
     <Compile Include="FieldInfo.cs" />
+    <Compile Include="PreparingBJFCC.cs" />
     <Compile Include="PreparingBJACC.cs" />
+    <Compile Include="PreparingBJSCC.cs" />
+    <Compile Include="PreparingREDKOSTJ.cs" />
     <Compile Include="PreparingBJVVV.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

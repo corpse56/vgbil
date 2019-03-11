@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ALISReaderRemote">
-      <HintPath>bin\Debug\ALISReaderRemote\ALISReaderRemote.dll</HintPath>
+    <Reference Include="ALISReaderRemote, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\ALISReaderRemote.dll</HintPath>
     </Reference>
     <Reference Include="ForWork">
       <HintPath>bin\Debug\ALISReaderRemote\ForWork.dll</HintPath>

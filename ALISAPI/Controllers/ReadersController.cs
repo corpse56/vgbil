@@ -330,7 +330,8 @@ namespace ALISAPI.Controllers
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        string RegisterConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+        //string RegisterConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+        string RegisterConnectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Readers;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
         /// <summary>
         /// Пререгистрация удалённого читателя. Создаёт временную запись удалённого пользователя, которую нужно подтвердить. 
         /// Высылается письмо на указанный ящик со ссылкой для подтверждения регистрации.

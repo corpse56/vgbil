@@ -125,6 +125,9 @@
     <Compile Include="ALISAPI\ResponseObjects\Readers\LoginType.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Circulation\ReaderBasket.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Readers\ReaderViewFactory.cs" />
+    <Compile Include="BJUsers\BJUserDBWrapper.cs" />
+    <Compile Include="BJUsers\BJUserInfo.cs" />
+    <Compile Include="BJUsers\BJUserLoader.cs" />
     <Compile Include="Books\BJBooks\BJBookJsonConverter.cs" />
     <Compile Include="Books\BJBooks\BJExemplars\BJConvoluteInfo.cs" />
     <Compile Include="Books\BJBooks\BJExemplars\BJElectronicExemplarAvailabilityStatus.cs" />
@@ -167,6 +170,12 @@
     <Compile Include="Circulation\OrderHistoryInfo.cs" />
     <Compile Include="Circulation\OrderInfo.cs" />
     <Compile Include="Circulation\OrderTypes.cs" />
+    <Compile Include="Controls\fBJAuthorization.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\fBJAuthorization.Designer.cs">
+      <DependentUpon>fBJAuthorization.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Readers\fReaderRegistrationAndRights.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,6 +255,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\fBJAuthorization.resx">
+      <DependentUpon>fBJAuthorization.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Readers\fReaderRegistrationAndRights.resx">
       <DependentUpon>fReaderRegistrationAndRights.cs</DependentUpon>
     </EmbeddedResource>
