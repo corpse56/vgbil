@@ -32,7 +32,7 @@
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbRoles = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.bOk = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -44,6 +44,7 @@
             this.tbLogin.Name = "tbLogin";
             this.tbLogin.Size = new System.Drawing.Size(372, 29);
             this.tbLogin.TabIndex = 0;
+            this.tbLogin.Text = "NATALIA.V.KONONOVA";
             this.tbLogin.TextChanged += new System.EventHandler(this.tbLogin_TextChanged);
             // 
             // tbPassword
@@ -54,6 +55,7 @@
             this.tbPassword.PasswordChar = '*';
             this.tbPassword.Size = new System.Drawing.Size(372, 29);
             this.tbPassword.TabIndex = 0;
+            this.tbPassword.Text = "20170706";
             // 
             // label1
             // 
@@ -75,15 +77,15 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Пароль";
             // 
-            // comboBox1
+            // cbRoles
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 191);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(372, 32);
-            this.comboBox1.TabIndex = 2;
+            this.cbRoles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRoles.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbRoles.FormattingEnabled = true;
+            this.cbRoles.Location = new System.Drawing.Point(12, 191);
+            this.cbRoles.Name = "cbRoles";
+            this.cbRoles.Size = new System.Drawing.Size(372, 32);
+            this.cbRoles.TabIndex = 2;
             // 
             // label3
             // 
@@ -112,7 +114,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 293);
             this.Controls.Add(this.bOk);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbRoles);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -120,10 +122,11 @@
             this.Controls.Add(this.tbLogin);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "fBJAuthorization";
             this.Text = "Авторизация";
+            this.Load += new System.EventHandler(this.fBJAuthorization_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -135,7 +138,7 @@
         private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbRoles;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button bOk;
     }

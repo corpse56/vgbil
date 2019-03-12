@@ -16,18 +16,24 @@ namespace LibflClassLibrary.BJUsers
         public string RoleName;
         public int DepId;
         public string DepName;
+        public override string ToString()
+        {
+            return $"[{RoleName}] {DepName}";
+        }
     }
     public class BJUserInfo
     {
         public string Login;
-        public string Password;
-        public string HashPwd;
+        public string FIO;
+        //public string Password;
+        public string HashedPwd;
         public List<UserStatus> UserStatus = new List<UserStatus>();
+        public UserStatus SelectedUserStatus { get; set; }
         BJUserLoader loader = new BJUserLoader();
         internal static BJUserInfo GetUserByLogin(string login)
         {
             BJUserLoader loader = new BJUserLoader();
-            BJUserInfo result = loader.GetUserByLogin(login);
+            BJUserInfo result = loader.GetUserByLogin(login.ToUpper());
             return result;
         }
 

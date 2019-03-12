@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -35,7 +36,8 @@ namespace ALISAPI_TEST
         };
 
 
-        readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
+        readonly string ALIS_ADDRESS = "https://opac.libfl.ru/ALISAPI/";
+        //readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
         //readonly string ALIS_ADDRESS = "http://localhost:27873/";
         public Form1()
         {
@@ -77,14 +79,18 @@ namespace ALISAPI_TEST
         {
             AuthorizeInfo request = new AuthorizeInfo();
             request.login = "189245";
-            request.password = "12";
+            request.password = "1234";
             string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
-
-            using (HttpClient client = new HttpClient())
+            for (int i = 0; i < 100000; i++)
             {
-                var response = client.PostAsync(ALIS_ADDRESS+"Readers/Authorize/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
-                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result + " " + response.Result.StatusCode;
-                //tbResponse.Text = response.Result.Content.ToString();
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                using (HttpClient client = new HttpClient())
+                {
+                    var response = client.PostAsync(ALIS_ADDRESS + "Readers/Authorize/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                    tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result + " " + response.Result.StatusCode + sw.Elapsed.Milliseconds;
+                    //tbResponse.Text = response.Result.Content.ToString();
+                }
             }
 
         }

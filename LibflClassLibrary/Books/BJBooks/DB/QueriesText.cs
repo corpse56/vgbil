@@ -423,7 +423,8 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         {
             get
             {
-                return " select A.LOGIN, A.HASH, B.IDROLE, B.IDDEPT DepId, C.ROLE, D.NAME DepName from BJVVV..USERS A " +
+                return  " select A.LOGIN, A.HASH, B.IDROLE, B.IDDEPT DepId, C.ROLE, D.NAME DepName, A.NAME FIO " +
+                        " from BJVVV..USERS A " +
                         " left join BJVVV..USERSTATUS B on A.ID = B.IDUSER " +
                         " left join BJVVV..USERSROLE C on B.IDROLE = C.ID " +
                         " left join BJVVV..LIST_8 D on B.IDDEPT = D.ID" +

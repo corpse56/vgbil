@@ -12,6 +12,7 @@ using System.Threading;
 using System.Runtime.InteropServices;
 using LibflClassLibrary.Controls;
 using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books;
 
 namespace BookkeepingForOrder
 {
@@ -29,7 +30,6 @@ namespace BookkeepingForOrder
         public SqlConnection SqlCon;
         private ExtGui.RoundProgress RndPrg;
         public DbForEmployee db;
-        Thread prg;
         DataTable MainTable;
         DataTable HisTable;
         DataTable ReadersTable;
@@ -48,15 +48,6 @@ namespace BookkeepingForOrder
             SqlDA = new SqlDataAdapter();
             SqlDA.SelectCommand = new SqlCommand();
             SqlDA.SelectCommand.Connection = SqlCon;
-
-
-
-            fBJAuthorization fAuth = new fBJAuthorization();
-            fAuth.ShowDialog();
-            user = fAuth.
-
-            
-
             //auth = new authorization(this);
             //auth.ShowDialog();  //потом откоментировать обратно
             //if (auth.DialogResult != DialogResult.Cancel)
@@ -68,6 +59,28 @@ namespace BookkeepingForOrder
             InitializeComponent();
             
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            fBJAuthorization fAuth = new fBJAuthorization();
+            fAuth.ShowDialog();
+            if (fAuth.DialogResult == DialogResult.Cancel || fAuth.User == null)
+            {
+                Close();
+                return;
+            }
+            user = fAuth.User;
+
+            //if ((this.EmpID == "") || (this.EmpID == null) || (this.Floor == "") || (this.Floor == null))
+            //{
+            //    MessageBox.Show("¬ы не авторизованы! ѕрограмма заканчивает свою работу", "¬нимание!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    Close();
+            //    return;
+            //}
+            //label1.Text = this.Floor + "  : " + this.FIO;
+            label1.Text = $"{user.SelectedUserStatus.DepName} {user.FIO}";
+
+        }
+
         private void FormMainTable()
         {
             MainTable = db.GetTable(this.ForSQL);
@@ -434,20 +447,6 @@ namespace BookkeepingForOrder
             //dgwHis.Columns[6].Visible = false;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            //tabControl1.SelectedTab = tabControl1.TabPages[1];
-            //this.EmpID = "1";//потом убрать
-            
-            if ((this.EmpID == "") || (this.EmpID == null) || (this.Floor == "") || (this.Floor == null))
-            {
-                MessageBox.Show("¬ы не авторизованы! ѕрограмма заканчивает свою работу", "¬нимание!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Close();
-                return;
-            }
-            label1.Text = this.Floor + "  : " + this.FIO;
-                        
-        }
 
         public bool Login(string login, string pass)
         {//                                    SELECT Employee.* FROM Employee WHERE (((Employee.Login)="1") AND ((Employee.Password)="1"));
@@ -653,7 +652,6 @@ namespace BookkeepingForOrder
 
         private void button2_Click(object sender, EventArgs e)
         {
-            prg.Abort();
             this.Close();
             this.DialogResult = DialogResult.Cancel;
         }
@@ -662,7 +660,7 @@ namespace BookkeepingForOrder
         {
             switch (tabControl1.SelectedTab.Name)
             {
-                case "tabPage1":
+                case "tpEmployeeOrders":
                     {
                         FormMainTable();
                         FormMainTable_Interface();
@@ -675,7 +673,7 @@ namespace BookkeepingForOrder
                         tabControl1.TabPages.RemoveByKey("tab2");
                         break;
                     }
-                case "tabPage2":
+                case "tpReaderOrders":
                     {
                         FormReadersTable();
                         FormReaderTable_Interface();
@@ -703,127 +701,18 @@ namespace BookkeepingForOrder
                     {
                         FormHisTable();
                         FormHisTable_Interface();
-                        /*prg = new Thread(delegate()
-                        {
-                            button4.Invoke((ThreadStart)delegate()
-                            {
-                                button4.Enabled = false;
-                            });
-
-                            FormHisTable();
-                            if (!this.IsHandleCreated) return;
-                            this.Invoke((ThreadStart)delegate()
-                            {
-                                FormHisTable_Interface();
-                            });
-                            if (this.DialogResult != DialogResult.Cancel)
-                            {
-                                button4.Invoke((ThreadStart)delegate()
-                                {
-                                    button1.Enabled = true;
-                                });
-                            }
-                            RndPrg.Invoke(((ThreadStart)delegate()
-                            {
-                                RndPrg.Dispose();
-                                if (HisTable.Rows.Count == 0)
-                                {
-                                    button4.Enabled = false;
-                                }
-                                else
-                                {
-                                    button4.Enabled = true;
-                                }
-                            }));
-                            //Thread.CurrentThread.Join(1000);
-                        });
-                        prg.Start();
-
-                        RndPrg = new ExtGui.RoundProgress();
-                        RndPrg.Visible = true;
-                        RndPrg.Name = "progress";
-                        this.Controls.Add(RndPrg);
-                        RndPrg.BringToFront();
-                        RndPrg.Size = new Size(40, 60);
-                        RndPrg.Location = new Point(350, 250);
-                        RndPrg.BackColor = SystemColors.AppWorkspace;*/
-
                         break;
                     }
-
-
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void Form1_Shown(object sender, EventArgs e)
         {
 
             FormMainTable();
             FormMainTable_Interface();
-            //prg = new Thread(delegate()
-            //{
-            //    button1.Invoke((ThreadStart)delegate()
-            //    {
-            //        button1.Enabled = false;
-            //    });
 
-            //    FormMainTable();
-            //    this.Invoke((ThreadStart)delegate()
-            //    {
-            //        FormMainTable_Interface();
-            //    });
-            //    if (this.DialogResult != DialogResult.Cancel)
-            //    {
-            //        button1.Invoke((ThreadStart)delegate()
-            //        {
-            //            button1.Enabled = true;
-            //        });
-            //    }
-            //    RndPrg.Invoke(((ThreadStart)delegate()
-            //    {
-            //        RndPrg.Dispose();
-            //        if (MainTable.Rows.Count == 0)
-            //        {
-            //            button1.Enabled = false;
-            //        }
-            //        else
-            //        {
-            //            button1.Enabled = true;
-            //        }
-            //    }));
-            //    //Thread.CurrentThread.Join(1000);
-            //});
-            //prg.Start();
-
-            //RndPrg = new ExtGui.RoundProgress();
-            //RndPrg.Visible = true;
-            //RndPrg.Name = "progress";
-            //this.Controls.Add(RndPrg);
-            //RndPrg.BringToFront();
-            //RndPrg.Size = new Size(40, 60);
-            //RndPrg.Location = new Point(350, 250);
-            //RndPrg.BackColor = SystemColors.AppWorkspace;
-            //prg.Start();
-            //Thread.CurrentThread.Join();
-            /*int i = 1;
-            while (prg.ThreadState == ThreadState.Running)
-            {
-                i++;
-            }*/
-            //FormMainTable();
-            //FormMainTable_Interface();
-            //RndPrg.Dispose();
-
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -838,13 +727,10 @@ namespace BookkeepingForOrder
 
             if ((dgwEmp.Rows.Count > 0) || (dgwReaders.Rows.Count > 0))
             {
-                //WINDOWINFO inf = new WINDOWINFO();
-                //bool tip = GetWindowInfo(this.Handle, ref inf);
                 FLASHWINFO fInfo = new FLASHWINFO();
                 fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
                 fInfo.hwnd = this.Handle;
                 fInfo.dwFlags = 2;// FLASHW_TIMERNOFG;   моргать пока не не попадет на передний план
-                //fInfo.dwFlags = 2;// FLASHW_TIMERNOFG;   моргать пока не не попадет на передний план
                 fInfo.uCount = UInt32.MaxValue;
                 fInfo.dwTimeout = 0;
                 FlashWindowEx(ref fInfo);
@@ -857,7 +743,6 @@ namespace BookkeepingForOrder
                 FLASHWINFO fInfo = new FLASHWINFO();
                 fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
                 fInfo.hwnd = this.Handle;
-                //fInfo.dwFlags = 3 | 12;// FLASHW_TIMERNOFG;   моргать пока не не попадет на передний план
                 fInfo.dwFlags = 0;// FLASHW_TIMERNOFG;   моргать пока не не попадет на передний план
                 fInfo.uCount = UInt32.MaxValue;
                 fInfo.dwTimeout = 0;
@@ -868,7 +753,6 @@ namespace BookkeepingForOrder
         }
         private void button3_Click_1(object sender, EventArgs e)
         {
-            prg.Abort();
             this.Close();
             this.DialogResult = DialogResult.Cancel;
             Close();
@@ -1174,11 +1058,6 @@ namespace BookkeepingForOrder
             }
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            MessageBox.Show(comboBox1.Items[comboBox1.SelectedIndex].ToString());
-            
-        }
 
         private void button6_Click(object sender, EventArgs e)
         {

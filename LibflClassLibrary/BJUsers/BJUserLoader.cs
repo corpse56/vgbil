@@ -16,6 +16,8 @@ namespace LibflClassLibrary.BJUsers
             if (table.Rows.Count == 0) return null;
             BJUserInfo result = new BJUserInfo();
             result.Login = login;
+            result.HashedPwd = table.Rows[0]["HASH"].ToString();
+            result.FIO = table.Rows[0]["FIO"].ToString();
             result.UserStatus = new List<UserStatus>();
             foreach (DataRow row in table.Rows)
             {

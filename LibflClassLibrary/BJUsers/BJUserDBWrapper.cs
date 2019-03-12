@@ -13,7 +13,7 @@ namespace LibflClassLibrary.BJUsers
     class BJUserDBWrapper
     {
         string ConnectionString = AppSettings.ConnectionString;
-        public Bibliojet BJQueries;
+        public Bibliojet BJQueries = new Bibliojet("BJVVV");
 
         internal DataTable GetUserByLogin(string login)
         {
