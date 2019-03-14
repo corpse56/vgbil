@@ -103,6 +103,10 @@ namespace LibflClassLibrary.Circulation
             //{ 1999,   "Невозможно определить доступ"},
         }
 
+        public List<OrderInfo> GetOrdersForStorage(int depId, string depName)
+        {
+            return loader.GetOrdersForStorage(depId, depName);
+        }
 
         public OrderInfo GetOrder(int orderId)
         {

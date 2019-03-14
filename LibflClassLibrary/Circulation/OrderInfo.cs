@@ -42,5 +42,6 @@ namespace LibflClassLibrary.Circulation
         public string Refusual { get; set; }
         public int IssuingDepartmentId { get; set; }
         public string BookUrl { get; set; }
+        public string Fund { get; set; }
     }
 }

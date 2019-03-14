@@ -119,6 +119,17 @@ namespace LibflClassLibrary.Circulation.DB
 
         }
 
+        internal DataTable GetOrdersForStorage(int depId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_FOR_STORAGE, connection);
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal void DeleteOrder(int orderId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

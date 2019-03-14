@@ -42,9 +42,9 @@
             this.tbLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbLogin.Location = new System.Drawing.Point(12, 44);
             this.tbLogin.Name = "tbLogin";
-            this.tbLogin.Size = new System.Drawing.Size(372, 29);
+            this.tbLogin.Size = new System.Drawing.Size(668, 29);
             this.tbLogin.TabIndex = 0;
-            this.tbLogin.Text = "NATALIA.V.KONONOVA";
+            this.tbLogin.Text = "EKATERINA.A.LISOVSKAYA";
             this.tbLogin.TextChanged += new System.EventHandler(this.tbLogin_TextChanged);
             // 
             // tbPassword
@@ -53,9 +53,9 @@
             this.tbPassword.Location = new System.Drawing.Point(12, 118);
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.PasswordChar = '*';
-            this.tbPassword.Size = new System.Drawing.Size(372, 29);
+            this.tbPassword.Size = new System.Drawing.Size(668, 29);
             this.tbPassword.TabIndex = 0;
-            this.tbPassword.Text = "20170706";
+            this.tbPassword.Text = "katya";
             // 
             // label1
             // 
@@ -84,7 +84,7 @@
             this.cbRoles.FormattingEnabled = true;
             this.cbRoles.Location = new System.Drawing.Point(12, 191);
             this.cbRoles.Name = "cbRoles";
-            this.cbRoles.Size = new System.Drawing.Size(372, 32);
+            this.cbRoles.Size = new System.Drawing.Size(668, 32);
             this.cbRoles.TabIndex = 2;
             // 
             // label3
@@ -100,7 +100,7 @@
             // bOk
             // 
             this.bOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bOk.Location = new System.Drawing.Point(152, 247);
+            this.bOk.Location = new System.Drawing.Point(305, 247);
             this.bOk.Name = "bOk";
             this.bOk.Size = new System.Drawing.Size(75, 34);
             this.bOk.TabIndex = 3;
@@ -112,7 +112,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(401, 293);
+            this.ClientSize = new System.Drawing.Size(692, 293);
             this.Controls.Add(this.bOk);
             this.Controls.Add(this.cbRoles);
             this.Controls.Add(this.label3);

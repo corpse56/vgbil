@@ -8,6 +8,25 @@ namespace LibflClassLibrary.Circulation.DB
 {
     class CirculationQueries
     {
+        internal string GET_ORDERS_FOR_STORAGE
+        {
+            get
+            {
+                return " select A.*, null Refusual from Circulation..Orders A " +
+                       //" left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                       " where A.StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу')";
+            }
+        }
+        internal string GET_ORDERS_HISTORY_FOR_STORAGE
+        {
+            get
+            {
+                return " select A.*,B.Refusual from Circulation..Orders A " +
+                       " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                       " where A.StatusName in ('Завершено')";
+            }
+        }
+
         internal string GET_ORDER
         {
             get

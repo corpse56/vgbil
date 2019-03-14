@@ -13,6 +13,8 @@ using System.Runtime.InteropServices;
 using LibflClassLibrary.Controls;
 using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books;
+using LibflClassLibrary.Circulation;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 
 namespace BookkeepingForOrder
 {
@@ -81,9 +83,65 @@ namespace BookkeepingForOrder
 
         }
 
+        private void ShowReaderOrders()
+        {
+            KeyValuePair<string, string>[] columns =
+            {
+                new KeyValuePair<string, string> ( "pin", "ПИН"),
+                new KeyValuePair<string, string> ( "author", "Автор"),
+                new KeyValuePair<string, string> ( "title", "Заглавие"),
+                new KeyValuePair<string, string> ( "inv", "Инв. номер"),
+                new KeyValuePair<string, string> ( "cipher", "Расст. шифр"),
+                new KeyValuePair<string, string> ( "pubdate", "Дата издания"),
+                new KeyValuePair<string, string> ( "readerid", "Номер читателя"),
+                new KeyValuePair<string, string> ( "fio", "ФИО читателя"),
+                new KeyValuePair<string, string> ( "startdate", "Дата формирования заказа"),
+                new KeyValuePair<string, string> ( "orderid", "orderid"),
+                //new KeyValuePair<string, string> ( "c2", "ids_srt"),
+                //new KeyValuePair<string, string> ( "c3", "id заказа")
+            };
+            foreach (var c in columns)
+                dgwReaders.Columns.Add(c.Key, c.Value);
+
+            dgwReaders.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgwReaders.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dgwReaders.Columns["startdate"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+            dgwReaders.Columns["pin"].Width = 74;
+            dgwReaders.Columns["author"].Width = 125;
+            dgwReaders.Columns["title"].Width = 265;
+            dgwReaders.Columns["inv"].Width = 80;
+            dgwReaders.Columns["cipher"].Width = 100;
+            dgwReaders.Columns["readerid"].Width = 80;
+            dgwReaders.Columns["fio"].Width = 120;
+            dgwReaders.Columns["pubdate"].Visible = false;
+            dgwReaders.Columns["startdate"].Width = 80;
+            dgwReaders.Columns["orderid"].Visible = false;
+
+            CirculationInfo circulation = new CirculationInfo();
+            List<OrderInfo> orders = circulation.GetOrdersForStorage(user.SelectedUserStatus.DepId, user.SelectedUserStatus.DepName);
+            foreach(var order in orders)
+            {
+                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                dgwReaders.Rows.Add();
+                var row = dgwReaders.Rows[dgwReaders.Rows.Count - 1];
+
+                row.Cells["startdate"].Value = order.StartDate;
+                row.Cells["pin"].Value = order.BookId;
+                row.Cells["author"].Value = order.Book.Author;
+                row.Cells["title"].Value = order.Book.Title;
+                row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
+                row.Cells["cipher"].Value = exemplar.Fields["899$j"].ToString();
+                row.Cells["readerid"].Value = order.ReaderId;
+                row.Cells["fio"].Value = order.ReaderId;
+                row.Cells["orderid"].Value = order.OrderId;
+
+            }
+        }
+        //EKATERINA.A.LISOVSKAYA katya - 3 этаж
+
         private void FormMainTable()
         {
-            MainTable = db.GetTable(this.ForSQL);
+            //MainTable = db.GetTable(this.ForSQL);
         }
         private void FormHisTable()
         {
@@ -675,12 +733,13 @@ namespace BookkeepingForOrder
                     }
                 case "tpReaderOrders":
                     {
-                        FormReadersTable();
-                        FormReaderTable_Interface();
-                        if (ReadersTable.Rows.Count == 0)
-                            button8.Enabled = false;
-                        else
-                            button8.Enabled = true;
+                        ShowReaderOrders();
+                        //FormReadersTable();
+                        //FormReaderTable_Interface();
+                        //if (ReadersTable.Rows.Count == 0)
+                        //    button8.Enabled = false;
+                        //else
+                        //    button8.Enabled = true;
 
                         tabControl1.TabPages.RemoveByKey("tab2");
                         break;
