@@ -15,6 +15,7 @@ using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books;
 using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using LibflClassLibrary.Readers;
 
 namespace BookkeepingForOrder
 {
@@ -97,8 +98,9 @@ namespace BookkeepingForOrder
                 new KeyValuePair<string, string> ( "fio", "ФИО читателя"),
                 new KeyValuePair<string, string> ( "startdate", "Дата формирования заказа"),
                 new KeyValuePair<string, string> ( "orderid", "orderid"),
-                //new KeyValuePair<string, string> ( "c2", "ids_srt"),
-                //new KeyValuePair<string, string> ( "c3", "id заказа")
+                new KeyValuePair<string, string> ( "status", "Статус заказа"),
+                new KeyValuePair<string, string> ( "note", "Инв. метка")
+                new KeyValuePair<string, string> ( "pubdate", "pubdate")
             };
             foreach (var c in columns)
                 dgwReaders.Columns.Add(c.Key, c.Value);
@@ -116,6 +118,9 @@ namespace BookkeepingForOrder
             dgwReaders.Columns["pubdate"].Visible = false;
             dgwReaders.Columns["startdate"].Width = 80;
             dgwReaders.Columns["orderid"].Visible = false;
+            dgwReaders.Columns["status"].Width = 100;
+            dgwReaders.Columns["note"].Width = 60;
+            dgwReaders.Columns["pubdate"].Visible = false;
 
             CirculationInfo circulation = new CirculationInfo();
             List<OrderInfo> orders = circulation.GetOrdersForStorage(user.SelectedUserStatus.DepId, user.SelectedUserStatus.DepName);
@@ -134,7 +139,9 @@ namespace BookkeepingForOrder
                 row.Cells["readerid"].Value = order.ReaderId;
                 row.Cells["fio"].Value = order.ReaderId;
                 row.Cells["orderid"].Value = order.OrderId;
-
+                row.Cells["status"].Value = order.StatusName;
+                row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
+                row.Cells["pubdate"].Value = order.Book.PublishDate;
             }
         }
         //EKATERINA.A.LISOVSKAYA katya - 3 этаж
@@ -871,10 +878,16 @@ namespace BookkeepingForOrder
                 MessageBox.Show("Не выбрана ни одна строка!");
                 return;
             }
-            PrintBlankReaders pb = new PrintBlankReaders(db, dgwReaders, this.Floor, this); //когда принтер заработаетвключить это
+            PrintBlankReaders pb = new PrintBlankReaders(db, dgwReaders, user.SelectedUserStatus.DepName, this); //когда принтер заработаетвключить это
             pb.Print();
-            //pb.Print();
-            db.ChangeStatus(dgwReaders.SelectedRows[0].Cells["oid"].Value.ToString(), this.EmpID, this.Floor);
+            ReaderInfo reader = ReaderInfo.GetReader(Convert.ToInt32(dgwReaders.SelectedRows[0].Cells["readerid"].Value));
+            
+            
+
+            //db.ChangeStatus(dgwReaders.SelectedRows[0].Cells["oid"].Value.ToString(), this.EmpID, this.Floor);
+            CirculationInfo circulation = new CirculationInfo();
+            circulation.ChangeOrderStatus(reader,user, Convert.ToInt32(dgwReaders.SelectedRows[0].Cells["orderid"].Value), CirculationStatuses.EmployeeLookingForBook.Value);
+
             dgwReaders.Rows.Remove(dgwReaders.SelectedRows[0]);
             if (dgwReaders.Rows.Count == 0)
             {
@@ -1180,10 +1193,6 @@ namespace BookkeepingForOrder
 
         }
 
-        private void button13_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void button14_Click(object sender, EventArgs e)
         {
@@ -1197,12 +1206,6 @@ namespace BookkeepingForOrder
         {
             button14_Click(sender, e);
         }
-
-
-
-
-
-
 
     }
 }

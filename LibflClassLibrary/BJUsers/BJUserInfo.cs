@@ -23,6 +23,7 @@ namespace LibflClassLibrary.BJUsers
     }
     public class BJUserInfo
     {
+        public int Id { get; set; }
         public string Login;
         public string FIO;
         //public string Password;

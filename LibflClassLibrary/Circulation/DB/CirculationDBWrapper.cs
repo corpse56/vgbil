@@ -238,6 +238,8 @@ namespace LibflClassLibrary.Circulation.DB
             }
 
         }
+
+
         private int GetFirstFreeLitresAccount()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -335,7 +337,7 @@ namespace LibflClassLibrary.Circulation.DB
             this.DeleteFromBasket(reader.NumberReader, new List<string>() { exemplar.BookId });
             return OrderId;
         }
-        private void ChangeOrderStatus(int orderId, string StatusName, int ChangerId, int DepartmentId, string Refusual)
+        public void ChangeOrderStatus(int orderId, string StatusName, int ChangerId, int DepartmentId, string Refusual)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

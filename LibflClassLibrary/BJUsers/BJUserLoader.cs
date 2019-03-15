@@ -15,6 +15,7 @@ namespace LibflClassLibrary.BJUsers
             DataTable table = wrapper.GetUserByLogin(login);
             if (table.Rows.Count == 0) return null;
             BJUserInfo result = new BJUserInfo();
+            result.Id = Convert.ToInt32(table.Rows[0]["ID"]);
             result.Login = login;
             result.HashedPwd = table.Rows[0]["HASH"].ToString();
             result.FIO = table.Rows[0]["FIO"].ToString();

@@ -1,5 +1,6 @@
 ﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
+using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation.DB;
@@ -86,10 +87,7 @@ namespace LibflClassLibrary.Circulation.Loaders
                 case OrderTypes.SelfOrder.Id:
                     dbWrapper.NewOrder(exemplar as BJExemplarInfo, reader, ReturnInDays, CirculationStatuses.SelfOrder.Value, AlligatBookId, IssuingDepId);
                     break;
-
             }
-
-
         }
 
         internal bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
@@ -284,6 +282,12 @@ namespace LibflClassLibrary.Circulation.Loaders
         {
             dbWrapper.AssignLitresAccount(readerId);
 
+        }
+
+        internal void ChangeOrderStatus(ReaderInfo reader, BJUserInfo user, int orderId, string status)
+        {
+            //dbWrapper.ChangeOrderStatus(reader.NumberReader, user.Id, KeyValueMapping.LocationCodeToName[user.SelectedUserStatus.DepId], status);
+            dbWrapper.ChangeOrderStatus(orderId, status, user.Id, KeyValueMapping.
         }
     }
 }

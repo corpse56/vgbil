@@ -1,5 +1,6 @@
 ﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
+using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
@@ -463,5 +464,9 @@ namespace LibflClassLibrary.Circulation
             return result;
         }
 
+        public void ChangeOrderStatus(ReaderInfo reader, BJUserInfo user, int OrderId, string status)
+        {
+            loader.ChangeOrderStatus(reader, user, OrderId, status);
+        }
     }
 }
