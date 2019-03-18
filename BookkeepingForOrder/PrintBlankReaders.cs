@@ -86,7 +86,7 @@ namespace BookkeepingForOrder
             this.printFont = new Font("Arial Unicode MS", 10f);
             //pd.PrinterSettings.PrinterName = "Zebra TLP2844";
             //pd.PrinterSettings.PrinterName = "HP LaserJet 5000 Series PCL 5";
-            //pd.PrinterSettings.PrinterName = "HP Universal Printing PCL 6 2055";
+            pd.PrinterSettings.PrinterName = "HP LaserJet M1522 MFP Series PCL 6";
 
 
             //Reader = ReaderInfo.GetReader(Convert.ToInt32(dg.SelectedRows[0].Cells["readerid"].Value));
@@ -159,7 +159,7 @@ namespace BookkeepingForOrder
                 rectangle = new Rectangle(0, CurrentY, 70, 50);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
                 printFont = new Font("Arial Unicode MS", 10f);
-                str = F1.Floor.Substring(F1.Floor.IndexOf("-") + 2);
+                str = F1.user.SelectedUserStatus.DepName.Substring(F1.user.SelectedUserStatus.DepName.IndexOf("-") + 2);
                 e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
 
                 rectangle = new Rectangle(70, CurrentY, 245, 25);
@@ -167,10 +167,12 @@ namespace BookkeepingForOrder
                 printFont = new Font("Arial Unicode MS", 13f);
                 str = "Билет № " + dg.SelectedRows[0].Cells["readerid"].Value.ToString();
                 e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+
                 CurrentY += 25;
                 rectangle = new Rectangle(70, CurrentY, 245, 25);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
-                F1.SqlDA.SelectCommand.CommandText = "select FamilyName+' ' +substring([Name],1,1)+'. ' + substring(ISNULL(FatherName,' '),1,1)+case when FatherName is null then '' else '.' end  from  Readers..Main where NumberReader =" + dg.SelectedRows[0].Cells["readerid"].Value.ToString();
+                F1.SqlDA.SelectCommand.CommandText = "select FamilyName+' ' +substring([Name],1,1)+'. ' + substring(ISNULL(FatherName,' '),1,1)+case when FatherName is null then '' else '.' end " +
+                                                    " from  Readers..Main where NumberReader =" + dg.SelectedRows[0].Cells["readerid"].Value.ToString();
                 DS = new DataSet();
                 t = F1.SqlDA.Fill(DS, "t");
                 printFont = new Font("Arial Unicode MS", 10f);
@@ -243,7 +245,7 @@ namespace BookkeepingForOrder
                     "left join BJVVV..DATAEXTPLAIN Plng on Plng.IDDATAEXT = lng.ID " +
                     "left join BJVVV..DATAEXT tom on A.IDMAIN = tom.IDMAIN and tom.MNFIELD = 225 and tom.MSFIELD = '$h' " +
                     "left join BJVVV..DATAEXTPLAIN Ptom on Ptom.IDDATAEXT = tom.ID " +
-                    "where A.IDMAIN = " + dg.SelectedRows[0].Cells["idm"].Value.ToString();
+                    "where A.IDMAIN = " + dg.SelectedRows[0].Cells["pin"].Value.ToString();
                 DS = new DataSet();
                 t = F1.SqlDA.Fill(DS, "t");
                 str = "Год: " + DS.Tables["t"].Rows[0][0].ToString() + "   Том: " + DS.Tables["t"].Rows[0][1].ToString();
@@ -370,7 +372,7 @@ namespace BookkeepingForOrder
                 rectangle = new Rectangle(0, CurrentY, 70, 50);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
                 printFont = new Font("Arial Unicode MS", 10f);
-                str = F1.Floor.Substring(F1.Floor.IndexOf("-") + 2);
+                str = F1.user.SelectedUserStatus.DepName.Substring(F1.user.SelectedUserStatus.DepName.IndexOf("-") + 2);
                 e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
 
                 rectangle = new Rectangle(70, CurrentY, 245, 25);

@@ -12,9 +12,9 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return " select A.*, null Refusual from Circulation..Orders A " +
-                       //" left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
-                       " where A.StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу')";
+                return " select A.*, B.Refusual from Circulation..Orders A " +
+                       " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                       " where A.StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу', 'Отказ')";
             }
         }
         internal string GET_ORDERS_HISTORY_FOR_STORAGE
@@ -240,5 +240,16 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        public string REFUSE_ORDER
+        {
+            get
+            {
+                return " begin transaction; " +
+                        " update Circulation..Orders set StatusName = @StatusName where ID = @orderId; " +
+                       " insert into Circulation..OrdersFlow (OrderId, StatusName,  Changed,  Changer,    DepartmentId, Refusual ) " +
+                       " values                              (@OrderId, @StatusName,getdate(),    @UserId ,     @DepId,    @cause ); " +
+                       " commit;";
+            }
+        }
     }
 }

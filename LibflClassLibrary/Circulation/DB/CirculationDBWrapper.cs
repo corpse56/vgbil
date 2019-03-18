@@ -124,6 +124,7 @@ namespace LibflClassLibrary.Circulation.DB
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_FOR_STORAGE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
                 DataTable table = new DataTable();
                 int cnt = dataAdapter.Fill(table);
                 return table;
@@ -239,6 +240,24 @@ namespace LibflClassLibrary.Circulation.DB
 
         }
 
+        internal void RefuseOrder(int orderId, string cause, string value, int UserId, int DepId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.REFUSE_ORDER;
+                command.Parameters.Clear();
+                command.Parameters.Add("orderId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("UserId", SqlDbType.Int).Value = UserId;
+                command.Parameters.Add("DepId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("cause", SqlDbType.NVarChar).Value = cause;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = value;
+                command.ExecuteNonQuery();
+            }
+
+        }
 
         private int GetFirstFreeLitresAccount()
         {

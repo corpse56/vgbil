@@ -16,6 +16,7 @@ using LibflClassLibrary.Books;
 using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Readers;
+using LibflClassLibrary.Books.BJBooks;
 
 namespace BookkeepingForOrder
 {
@@ -27,8 +28,8 @@ namespace BookkeepingForOrder
         public string Floor;
         public string FloorID;
         public string ForSQL;
-        public string BASE;
-        public string OrderTableType;
+        public string BASE = "BJVVV";
+        public string OrderTableType = "Orders";
         public SqlDataAdapter SqlDA;
         public SqlConnection SqlCon;
         private ExtGui.RoundProgress RndPrg;
@@ -38,7 +39,7 @@ namespace BookkeepingForOrder
         DataTable ReadersTable;
         DataTable ReadersHisTable;
 
-        BJUserInfo user;
+        public BJUserInfo user;
 
 
         [DllImport("user32.dll")]
@@ -51,16 +52,7 @@ namespace BookkeepingForOrder
             SqlDA = new SqlDataAdapter();
             SqlDA.SelectCommand = new SqlCommand();
             SqlDA.SelectCommand.Connection = SqlCon;
-            //auth = new authorization(this);
-            //auth.ShowDialog();  //потом откоментировать обратно
-            //if (auth.DialogResult != DialogResult.Cancel)
-            //{
-            //    db = new DbForEmployee(this.OrderTableType,this.BASE,this);
-            //}
-
-
             InitializeComponent();
-            
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -72,56 +64,55 @@ namespace BookkeepingForOrder
                 return;
             }
             user = fAuth.User;
-
-            //if ((this.EmpID == "") || (this.EmpID == null) || (this.Floor == "") || (this.Floor == null))
-            //{
-            //    MessageBox.Show("Вы не авторизованы! Программа заканчивает свою работу", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    Close();
-            //    return;
-            //}
-            //label1.Text = this.Floor + "  : " + this.FIO;
             label1.Text = $"{user.SelectedUserStatus.DepName} {user.FIO}";
-
+            this.ForSQL = $" and mhran.ID =  {user.SelectedUserStatus.DepId}  ";
+            db = new DbForEmployee(this.OrderTableType, this.BASE, this);
         }
-
+        bool InitReloadReaderOrders = true;
         private void ShowReaderOrders()
         {
-            KeyValuePair<string, string>[] columns =
+            if (InitReloadReaderOrders)
             {
-                new KeyValuePair<string, string> ( "pin", "ПИН"),
-                new KeyValuePair<string, string> ( "author", "Автор"),
-                new KeyValuePair<string, string> ( "title", "Заглавие"),
-                new KeyValuePair<string, string> ( "inv", "Инв. номер"),
-                new KeyValuePair<string, string> ( "cipher", "Расст. шифр"),
-                new KeyValuePair<string, string> ( "pubdate", "Дата издания"),
-                new KeyValuePair<string, string> ( "readerid", "Номер читателя"),
-                new KeyValuePair<string, string> ( "fio", "ФИО читателя"),
-                new KeyValuePair<string, string> ( "startdate", "Дата формирования заказа"),
-                new KeyValuePair<string, string> ( "orderid", "orderid"),
-                new KeyValuePair<string, string> ( "status", "Статус заказа"),
-                new KeyValuePair<string, string> ( "note", "Инв. метка")
-                new KeyValuePair<string, string> ( "pubdate", "pubdate")
-            };
-            foreach (var c in columns)
-                dgwReaders.Columns.Add(c.Key, c.Value);
+                KeyValuePair<string, string>[] columns =
+                {
+                    new KeyValuePair<string, string> ( "pin", "ПИН"),
+                    new KeyValuePair<string, string> ( "author", "Автор"),
+                    new KeyValuePair<string, string> ( "title", "Заглавие"),
+                    new KeyValuePair<string, string> ( "inv", "Инв. номер"),
+                    new KeyValuePair<string, string> ( "cipher", "Расст. шифр"),
+                    new KeyValuePair<string, string> ( "readerid", "Номер читателя"),
+                    new KeyValuePair<string, string> ( "fio", "ФИО читателя"),
+                    new KeyValuePair<string, string> ( "startdate", "Дата формирования заказа"),
+                    new KeyValuePair<string, string> ( "orderid", "orderid"),
+                    new KeyValuePair<string, string> ( "status", "Статус заказа"),
+                    new KeyValuePair<string, string> ( "note", "Инв. метка"),
+                    new KeyValuePair<string, string> ( "pubdate", "Дата издания"),
+                    new KeyValuePair<string, string> ( "refusual", "Причина отказа")
+                };
+                foreach (var c in columns)
+                    dgwReaders.Columns.Add(c.Key, c.Value);
 
-            dgwReaders.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgwReaders.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            dgwReaders.Columns["startdate"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-            dgwReaders.Columns["pin"].Width = 74;
-            dgwReaders.Columns["author"].Width = 125;
-            dgwReaders.Columns["title"].Width = 265;
-            dgwReaders.Columns["inv"].Width = 80;
-            dgwReaders.Columns["cipher"].Width = 100;
-            dgwReaders.Columns["readerid"].Width = 80;
-            dgwReaders.Columns["fio"].Width = 120;
-            dgwReaders.Columns["pubdate"].Visible = false;
-            dgwReaders.Columns["startdate"].Width = 80;
-            dgwReaders.Columns["orderid"].Visible = false;
-            dgwReaders.Columns["status"].Width = 100;
-            dgwReaders.Columns["note"].Width = 60;
-            dgwReaders.Columns["pubdate"].Visible = false;
-
+                dgwReaders.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                dgwReaders.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+                dgwReaders.Columns["startdate"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+                dgwReaders.Columns["pin"].Width = 74;
+                dgwReaders.Columns["author"].Width = 125;
+                dgwReaders.Columns["title"].Width = 265;
+                dgwReaders.Columns["inv"].Width = 80;
+                dgwReaders.Columns["cipher"].Width = 100;
+                dgwReaders.Columns["readerid"].Width = 80;
+                dgwReaders.Columns["fio"].Width = 120;
+                dgwReaders.Columns["startdate"].Width = 80;
+                dgwReaders.Columns["orderid"].Visible = false;
+                dgwReaders.Columns["status"].Width = 100;
+                dgwReaders.Columns["note"].Width = 60;
+                dgwReaders.Columns["pubdate"].Visible = false;
+                InitReloadReaderOrders = false;
+            }
+            else
+            {
+                dgwReaders.Rows.Clear();
+            }
             CirculationInfo circulation = new CirculationInfo();
             List<OrderInfo> orders = circulation.GetOrdersForStorage(user.SelectedUserStatus.DepId, user.SelectedUserStatus.DepName);
             foreach(var order in orders)
@@ -131,7 +122,7 @@ namespace BookkeepingForOrder
                 var row = dgwReaders.Rows[dgwReaders.Rows.Count - 1];
 
                 row.Cells["startdate"].Value = order.StartDate;
-                row.Cells["pin"].Value = order.BookId;
+                row.Cells["pin"].Value = order.BookId.Substring(order.BookId.IndexOf("_")+1);
                 row.Cells["author"].Value = order.Book.Author;
                 row.Cells["title"].Value = order.Book.Title;
                 row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
@@ -142,6 +133,7 @@ namespace BookkeepingForOrder
                 row.Cells["status"].Value = order.StatusName;
                 row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
                 row.Cells["pubdate"].Value = order.Book.PublishDate;
+                row.Cells["refusual"].Value = string.IsNullOrEmpty(order.Refusual) ? "<нет>" : order.Refusual;
             }
         }
         //EKATERINA.A.LISOVSKAYA katya - 3 этаж
@@ -152,7 +144,7 @@ namespace BookkeepingForOrder
         }
         private void FormHisTable()
         {
-            HisTable = db.GetHistory(this.ForSQL);
+            //HisTable = db.GetHistory(this.ForSQL);
         }
         private void FormReadersTable()
         {
@@ -623,98 +615,6 @@ namespace BookkeepingForOrder
         }
 
 
-
-        private void tabPage2_Paint(object sender, PaintEventArgs e)
-        {
-
-            PaperSize size;
-            Rectangle rectangle;
-            StringFormat format;
-            //string str = this.printString;
-            string str = "Дата формирования заказа: " + DateTime.Now.ToString("dd.MM.yyyy HH:MM");
-            size = new PaperSize("bar", 314, 492);
-            Size rectsize = new Size(314, 492);
-            Font printFont = new Font("code128", 10f);
-
-            rectangle = new Rectangle(new Point(0, 0), new Size(314, 490));
-            format = new StringFormat(StringFormatFlags.NoClip);// (0x4000);
-            format.LineAlignment = StringAlignment.Far;
-            format.Alignment = StringAlignment.Far;
-            format.FormatFlags = StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft;
-
-            //format.LineAlignment = StringAlignment.Center;
-            //format.FormatFlags = StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft;
-            //format.Alignment = StringAlignment.Center;
-            //format.FormatFlags = StringFormatFlags.NoClip;
-            //e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawLine(Pens.Black, new Point(280, 0), new Point(280, 490));
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-            
-            str = "БЛАНК-ЗАКАЗ ДЛЯ ВЫДАЧИ ЛИТЕРАТУРЫ НА\r\n ДЛИТЕЛЬНОЕ ПОЛЬЗОВАНИЕ В ОТДЕЛЫ";
-            format.LineAlignment = StringAlignment.Near;
-            format.Alignment = StringAlignment.Center;
-            //e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            //g.DrawString(this.printString, this.printFont, Brushes.Black, rectangle, format);
-            //this.printString = "";
-
-            e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawLine(Pens.Black, new Point(280, 0), new Point(280, 490));
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-            format.Alignment = StringAlignment.Near;
-            format.Alignment = StringAlignment.Near;
-            rectangle = new Rectangle(new Point(250, 0), new Size(30, 490));
-            str = "Отдел: " + dgwHis.SelectedRows[0].Cells["dp"].Value.ToString() + " (" + dgwHis.SelectedRows[0].Cells["fio"].Value.ToString() + ")";//db.GetReader(dg.SelectedRows[0].Cells["idr"].Value.ToString());
-
-            //e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            rectangle = new Rectangle(new Point(200, 0), new Size(30, 240));
-            str = "Шифр: " + dgwHis.SelectedRows[0].Cells["shifr"].Value.ToString();
-            e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            rectangle = new Rectangle(new Point(200, 240), new Size(30, 250));
-            str = "Инв. : " + dgwHis.SelectedRows[0].Cells["inv"].Value.ToString();
-            e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            rectangle = new Rectangle(new Point(170, 0), new Size(30, 490));
-            str = "Автор : " + dgwHis.SelectedRows[0].Cells["avt"].Value.ToString();
-            format.LineAlignment = StringAlignment.Center;
-            e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            rectangle = new Rectangle(new Point(90, 0), new Size(80, 490));
-            str = "Заглавие : " + dgwHis.SelectedRows[0].Cells["zag"].Value.ToString();
-            format.LineAlignment = StringAlignment.Near;
-            //e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            rectangle = new Rectangle(new Point(60, 0), new Size(30, 490));
-            str = "Год издания: " + dgwHis.SelectedRows[0].Cells["izd"].Value.ToString();
-            e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            rectangle = new Rectangle(new Point(20, 0), new Size(40, 490));
-            str = "Получил______________________________ ";
-            format.LineAlignment = StringAlignment.Far;
-            //e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-
-            rectangle = new Rectangle(new Point(0, 0), new Size(40, 490));
-            str = "*123459854*";//вставить год
-            format.LineAlignment = StringAlignment.Center;
-            format.Alignment = StringAlignment.Center;
-            //format.FormatFlags = StringFormatFlags.
-            //e.Graphics.DrawRectangle(Pens.Red, rectangle);
-            //e.Graphics.DrawString(str, new Font("C39HrP24DhTt", 36f), Brushes.Black, rectangle, format);
-
-            //throw new Exception("The method or operation is not implemented.");
-
-        }
-
-
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -727,13 +627,13 @@ namespace BookkeepingForOrder
             {
                 case "tpEmployeeOrders":
                     {
-                        FormMainTable();
-                        FormMainTable_Interface();
+                        //FormMainTable();
+                        //FormMainTable_Interface();
 
-                        if (MainTable.Rows.Count == 0)
-                            button1.Enabled = false;
-                        else
-                            button1.Enabled = true;
+                        //if (MainTable.Rows.Count == 0)
+                        //    bEmployeeOrder.Enabled = false;
+                        //else
+                        //    bEmployeeOrder.Enabled = true;
 
                         tabControl1.TabPages.RemoveByKey("tab2");
                         break;
@@ -751,22 +651,22 @@ namespace BookkeepingForOrder
                         tabControl1.TabPages.RemoveByKey("tab2");
                         break;
                     }
-                case "tabPage3":
+                case "tpReaderHistoryOrders":
                     {
                         FormReadersHisTable();
                         FormReaderHisTable_Interface();
                         if (ReadersHisTable.Rows.Count == 0)
-                            button8.Enabled = false;
+                            bPrintReaderOrder.Enabled = false;
                         else
-                            button8.Enabled = true;
+                            bPrintReaderOrder.Enabled = true;
 
                         tabControl1.TabPages.RemoveByKey("tab2");
                         break;
                     }
                 case "tabHis":
                     {
-                        FormHisTable();
-                        FormHisTable_Interface();
+                        //FormHisTable();
+                        //FormHisTable_Interface();
                         break;
                     }
             }
@@ -785,13 +685,23 @@ namespace BookkeepingForOrder
         {
 
             //int rc = dgwEmp.Rows.Count;
-            FormMainTable();
-            FormMainTable_Interface();
+            //FormMainTable();
+            //FormMainTable_Interface();
             //int rc1 = dgwReaders.Rows.Count;
-            FormReadersTable();
-            FormReaderTable_Interface();
+            //FormReadersTable();
+            //FormReaderTable_Interface();
+            ShowReaderOrders();
+            bool NeedFlash = false;
+            foreach (DataGridViewRow row in dgwReaders.Rows)
+            {
+                if (row.Cells["status"].Value.ToString() == CirculationStatuses.OrderIsFormed.Value)
+                {
+                    NeedFlash = true;
+                    break;
+                }
+            }
 
-            if ((dgwEmp.Rows.Count > 0) || (dgwReaders.Rows.Count > 0))
+            if ((dgwEmp.Rows.Count > 0) || (NeedFlash))
             {
                 FLASHWINFO fInfo = new FLASHWINFO();
                 fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
@@ -801,8 +711,8 @@ namespace BookkeepingForOrder
                 fInfo.dwTimeout = 0;
                 FlashWindowEx(ref fInfo);
 
-                button1.Enabled = true;
-                button8.Enabled = true;
+                bEmployeeOrder.Enabled = true;
+                //bPrintReaderOrder.Enabled = true;
             }
             else
             {
@@ -813,8 +723,8 @@ namespace BookkeepingForOrder
                 fInfo.uCount = UInt32.MaxValue;
                 fInfo.dwTimeout = 0;
                 FlashWindowEx(ref fInfo);
-                button1.Enabled = false;
-                button8.Enabled = false;
+                bEmployeeOrder.Enabled = false;
+                //bPrintReaderOrder.Enabled = false;
             }
         }
         private void button3_Click_1(object sender, EventArgs e)
@@ -823,7 +733,7 @@ namespace BookkeepingForOrder
             this.DialogResult = DialogResult.Cancel;
             Close();
         }
-        private void button1_Click(object sender, EventArgs e)//заказ сотрудников на сегодня
+        private void bEmployeeOrder_Click(object sender, EventArgs e)//заказ сотрудников на сегодня
         {
             if (dgwEmp.SelectedRows.Count == 0)
             {
@@ -845,10 +755,10 @@ namespace BookkeepingForOrder
                 fInfo.uCount = UInt32.MaxValue;
                 fInfo.dwTimeout = 0;
                 FlashWindowEx(ref fInfo);
-                button1.Enabled = false;
+                bEmployeeOrder.Enabled = false;
             }
             else
-                button1.Enabled = true;
+                bEmployeeOrder.Enabled = true;
             //tabControl1.TabPages.Add("tab2", "Временно вместо принтера. Принтер выведет то же самое.");
             //tabControl1.TabPages["tab2"].Paint += new PaintEventHandler(tabPage2_Paint);
             //tabControl1.SelectedTab = tabControl1.TabPages["tab2"];
@@ -871,7 +781,7 @@ namespace BookkeepingForOrder
             //tabControl1.SelectedTab = tabControl1.TabPages["tab2"];
 
         }
-        private void button8_Click(object sender, EventArgs e)//заказ читателей на сегодня
+        private void bPrintReaderOrder_Click(object sender, EventArgs e)//заказ читателей на сегодня
         {
             if (dgwReaders.SelectedRows.Count == 0)
             {
@@ -881,15 +791,27 @@ namespace BookkeepingForOrder
             PrintBlankReaders pb = new PrintBlankReaders(db, dgwReaders, user.SelectedUserStatus.DepName, this); //когда принтер заработаетвключить это
             pb.Print();
             ReaderInfo reader = ReaderInfo.GetReader(Convert.ToInt32(dgwReaders.SelectedRows[0].Cells["readerid"].Value));
-            
-            
 
-            //db.ChangeStatus(dgwReaders.SelectedRows[0].Cells["oid"].Value.ToString(), this.EmpID, this.Floor);
-            CirculationInfo circulation = new CirculationInfo();
-            circulation.ChangeOrderStatus(reader,user, Convert.ToInt32(dgwReaders.SelectedRows[0].Cells["orderid"].Value), CirculationStatuses.EmployeeLookingForBook.Value);
 
-            dgwReaders.Rows.Remove(dgwReaders.SelectedRows[0]);
-            if (dgwReaders.Rows.Count == 0)
+            if (dgwReaders.SelectedRows[0].Cells["status"].Value.ToString() == CirculationStatuses.OrderIsFormed.Value)
+            {
+                CirculationInfo circulation = new CirculationInfo();
+                circulation.ChangeOrderStatus(reader, user, Convert.ToInt32(dgwReaders.SelectedRows[0].Cells["orderid"].Value), CirculationStatuses.EmployeeLookingForBook.Value);
+            }
+            //dgwReaders.Rows.Remove(dgwReaders.SelectedRows[0]);
+
+            timer1_Tick(sender, e);
+            bool NeedFlash = false;
+            foreach (DataGridViewRow row in dgwReaders.Rows)
+            {
+                if (row.Cells["status"].Value.ToString() == CirculationStatuses.OrderIsFormed.Value)
+                {
+                    NeedFlash = true;
+                    break;
+                }
+            }
+
+            if (NeedFlash)
             {
                 FLASHWINFO fInfo = new FLASHWINFO();
                 fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
@@ -899,16 +821,12 @@ namespace BookkeepingForOrder
                 fInfo.uCount = UInt32.MaxValue;
                 fInfo.dwTimeout = 0;
                 FlashWindowEx(ref fInfo);
-                button8.Enabled = false;
             }
-            else
-                button8.Enabled = true;
-            //tabControl1.TabPages.Add("tab2", "Временно вместо принтера. Принтер выведет то же самое.");
-            //tabControl1.TabPages["tab2"].Paint += new PaintEventHandler(tabPage2_Paint);
-            //tabControl1.SelectedTab = tabControl1.TabPages["tab2"];
+
+            ShowReaderOrders();
 
         }
-        private void button9_Click(object sender, EventArgs e)//история читателей на сегодня
+        private void bReadersHistory_Click(object sender, EventArgs e)//история читателей на сегодня
         {
             if (dgwRHis.SelectedRows.Count == 0)
             {
@@ -918,9 +836,9 @@ namespace BookkeepingForOrder
             PrintBlankReaders pb = new PrintBlankReaders(db, dgwRHis, this.Floor, this); //когда принтер заработаетвключить это
             pb.Print();
             if (dgwRHis.Rows.Count == 0)
-                button8.Enabled = false;
+                bPrintReaderOrder.Enabled = false;
             else
-                button8.Enabled = true;
+                bPrintReaderOrder.Enabled = true;
         }
         private void button5_Click(object sender, EventArgs e)
         {
@@ -934,7 +852,7 @@ namespace BookkeepingForOrder
             fInfo.uCount = UInt32.MaxValue;
             fInfo.dwTimeout = 0;
             FlashWindowEx(ref fInfo);
-            button1.Enabled = false;
+            bEmployeeOrder.Enabled = false;
 
         }
 
@@ -1133,9 +1051,8 @@ namespace BookkeepingForOrder
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Form2 f2 = new Form2(dgwRHis, this);
+            Form2 f2 = new Form2(dgwReaders, this);
             f2.Show();
-
         }
 
 
@@ -1207,5 +1124,28 @@ namespace BookkeepingForOrder
             button14_Click(sender, e);
         }
 
+        private void bRefusual_Click(object sender, EventArgs e)
+        {
+            if (dgwReaders.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Не выбрана ни одна строка!");
+                return;
+            }
+            if (dgwReaders.SelectedRows[0].Cells["status"].Value.ToString() != CirculationStatuses.EmployeeLookingForBook.Value)
+            {
+                MessageBox.Show("Вы не можете дать отказ только на заказ со статусом \"Сотрудник подбирает книгу\"!");
+                return;
+            }
+            Refusal rf = new Refusal(dgwReaders.SelectedRows[0].Cells["orderid"].Value.ToString());
+            rf.ShowDialog();
+            if (rf.Cause == "")
+                return;
+            CirculationInfo circulation = new CirculationInfo();
+            circulation.RefuseOrder(Convert.ToInt32(dgwReaders.SelectedRows[0].Cells["orderid"].Value), rf.Cause, user);
+            //db.RefusualReader(rf.Cause, dgwRHis.SelectedRows[0].Cells["oid"].Value.ToString());
+            //FormReadersHisTable();
+            //FormReaderHisTable_Interface();
+            ShowReaderOrders();
+        }
     }
 }

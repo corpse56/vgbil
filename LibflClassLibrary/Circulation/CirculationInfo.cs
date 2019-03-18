@@ -468,5 +468,10 @@ namespace LibflClassLibrary.Circulation
         {
             loader.ChangeOrderStatus(reader, user, OrderId, status);
         }
+
+        public void RefuseOrder(int OrderId, string Cause, BJUserInfo user)
+        {
+            loader.RefuseOrder(OrderId, Cause, user);
+        }
     }
 }

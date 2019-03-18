@@ -286,8 +286,14 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         internal void ChangeOrderStatus(ReaderInfo reader, BJUserInfo user, int orderId, string status)
         {
-            //dbWrapper.ChangeOrderStatus(reader.NumberReader, user.Id, KeyValueMapping.LocationCodeToName[user.SelectedUserStatus.DepId], status);
-            dbWrapper.ChangeOrderStatus(orderId, status, user.Id, KeyValueMapping.
+            dbWrapper.ChangeOrderStatus(orderId, status, user.Id, KeyValueMapping.BJDepartmentIdToUnifiedLocationId[user.SelectedUserStatus.DepId], null);
+        }
+
+        internal void RefuseOrder(int orderId, string cause, BJUserInfo user)
+        {
+
+            dbWrapper.RefuseOrder(orderId, cause, CirculationStatuses.Refusual.Value,user.Id, KeyValueMapping.BJDepartmentIdToUnifiedLocationId[user.SelectedUserStatus.DepId]);
+
         }
     }
 }

@@ -52,8 +52,6 @@
             AutoPostBack = "true" >
             
             <asp:TabPanel ID="TabPanel1" runat="server" HeaderText="Заказ книг из основного фонда" Enabled = "true">
-                
-
                 <HeaderTemplate>
                     
 
@@ -70,23 +68,15 @@
 
                                      <table id="table3" style="z-index: 107; left: 9px; top: 66px;" width="99%">
                                       
-                                         
- 
-
-                                      
                                       <tr>
                                           
-
                                           <td valign="top" style="height: 26px; width: 43%;" >
                                               
-
                                               <asp:Table ID="BasketTable" runat="server" BorderStyle="Solid" GridLines="Both" 
                                                   style="color:Black;table-layout:inherit;border-color:Black;border-width:3px;border-style:Solid;z-index: 100; width: 100%;">
                                                   
-
                                                   <asp:TableRow ID="TableRow1" runat="server">
                                                       
-
                                                       <asp:TableCell ID="TableCell1" runat="server" RowSpan="3"></asp:TableCell>
                                                       
 
@@ -146,10 +136,6 @@
 
                                               </asp:Table>
                                               
-                                              
- 
-
-                                              
                                           </td>
                                           
 
@@ -160,165 +146,78 @@
                                           
 
                                           <td valign="top" style="height: 26px; width: 43%;">
-                                              
-                                              
- 
-
                                               
                                               <asp:Table ID="OrdersTable" runat="server" BorderStyle="Solid" GridLines="Both" 
                                                   style=" table-layout:inherit; border-color:Black;border-width:3px;border-style:Solid;z-index:100;width:100%; color: Black;">
-                                                  
 
                                               </asp:Table>
-                                              
-                                              
- 
-
-                                              
+                                                 
                                           </td>
                                           
-
                                       </tr>
-                                      
-
-                                         
- 
-
-
-                                      
 
                                       <tr>
-                                          
-
                                           <td valign="top">
-
-                                              
-
-
-
                                               <asp:Button ID="Button3" runat="server" style="display:none;" Text="Button" />
-                                                        
-
                                                         <asp:Label ID="ErrorLabelOF" runat="server"></asp:Label>
-
-                                              
-
-
-
                                               </td>
-                                          
-
                                           <td valign="top" class="style1">
-                                              
-                                              
- 
-
-                                              
                                           </td>
-                                          
-
                                           <td valign="top" style="height: 26px; width: 43%;">
-                                              
-
                                               <asp:Table ID="Table6" runat="server" BorderStyle="Solid" GridLines="Both" 
                                                   style="table-layout:inherit;border-color:Black;border-width:3px;border-style:Solid;z-index: 100; width: 100%;">
-                                                  
-
                                               </asp:Table>
-                                              
-
                                           </td>
-                                          
-
                                       </tr>
-                                      
-
-                                         
- 
-
-
-                                      
-
                                   </table>
-                                     
-
                                   </asp:Panel>
                                           
 
                                           <table>
                                   
-                                              
- 
-
-                                  
+                                             
                                   <tr style="margin:7px; height:40px; padding:7px">
                                       
 
                                   <div style="float: right; width: 160px; margin-top:7px"><asp:Button ID="Button2" runat="server" Text="Обновить статусы" style="height: 25px;"  /></div>
                                              
-                                      
- 
-
-                                             
                                   <div style="float: left; margin-right: 160px; margin-top:7px"><asp:Button ID="Button1" onclick="Button1_Click1" runat="server" Text="Заказать выделенный" style="height: 25px"  /></div>
-
-                                      
-
-
-
                                       <!--<td style="height: 26px; width: 3%;" valign="top">
                                       </td>
                                       
                                       <td style="height: 26px; width: 100%; margin: 1px; border-width:medium; border-color:Black" valign="top" align ="right" >
                                       </td>-->
                                       
-                                      
- 
-
-                                      
                                   </tr>
-                                              
-
-                              </table>
-                              
-
-                              
-                         
- 
-
- 
-
-                              
-
-                              
+                              </table> 
                         </ContentTemplate>
                 
-
             </asp:TabPanel>
-            <asp:TabPanel ID="TabPanel2" runat="server" HeaderText="Электронные книги">
+                <asp:TabPanel ID="TabPanel2" runat="server" HeaderText="Электронные книги" >
                 
 
                 <ContentTemplate>
                     
 
                    <asp:Label ID="Label2" runat="server" Text="Нет заказанных электронных книг"></asp:Label>
-                    
+                                                            <asp:Table ID="tEBook" runat="server"></asp:Table>
 
-                    <asp:Table ID="tEBook" runat="server">
-                        
 
-                    </asp:Table>
-                    
+                                       <asp:Label ID="Label15" runat="server" Text="333"></asp:Label>
+
 
                 </ContentTemplate>
                 
 
             </asp:TabPanel>
+
             <asp:TabPanel ID="TabPanel7" runat="server" HeaderText="История выдачи электронные книги">
                 
 
                 <ContentTemplate>
-                    
+<br />
+<br />
+<br />
 
                     <asp:Table ID="tEBook_HST" runat="server">
                         
@@ -631,10 +530,7 @@
 
                 <br /><br />
 
-                                
-
-
-
+                               
                     <asp:Table ID="tISSUED_HST" runat="server" Font-Size = "20px">
                         
 
@@ -701,10 +597,6 @@
 
                     </asp:GridView>  
         
-                 
- 
-  
-        
                 <br /><br />
                                 
 
@@ -719,20 +611,10 @@
                                             
 
                         <RowStyle Wrap="True"></RowStyle>
-                                            
-
                         <Columns>
-                            
-
                             <asp:BoundField HeaderText="Заглавие">
-                            
-
                             <HeaderStyle BackColor="Silver" />
-                            
-
                             </asp:BoundField>
-                            
-
                             <asp:BoundField HeaderText="Автор" >
                             
 
@@ -780,11 +662,7 @@
                                             
 
                         <RowStyle Wrap="True"></RowStyle>
-                                            
-
                         <Columns>
-                            
-
                             <asp:BoundField HeaderText="Заглавие">
                             
 
@@ -822,14 +700,8 @@
                             
 
                         </Columns>
-                                            
-
                     </asp:GridView>  
-                 
-  
                 <br /><br />
-                                
-
                 <asp:Label ID="Label13" runat="server" Text="История книг выданных из фонда Славянского Культурного Центра"></asp:Label>
                                 
 
@@ -889,17 +761,7 @@
                  
   
                 <br /><br />
-                    
-                    
-                                
- 
- 
-
-                    
-                    
                 </asp:Panel>
-                
-
             </ContentTemplate>
                 
 
@@ -971,6 +833,8 @@
                 
 
             </asp:TabPanel>
+
+
         </asp:TabContainer>
            <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel1">
             <ProgressTemplate>
@@ -1021,13 +885,13 @@
              }
              function actTabChng() {
                  //var load = document.getElementById("TabContainer1_TabPanel1_load");
-                 var load = document.getElementById("load");
+                 //var load = document.getElementById("load");
                  //load.click();
 
                  //alert(load.nodeName);
 
-                 __doPostBack('TabContainer1$TabPanel1$Button3', '');
-                 __doPostBack('TabContainer1$TabPanel2$Button4', '');
+                 //__doPostBack('TabContainer1$TabPanel1$Button3', '');
+                 //__doPostBack('TabContainer1$TabPanel2$Button4', '');
              }
              // Sys.Application.notifyScriptLoaded();
              Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
