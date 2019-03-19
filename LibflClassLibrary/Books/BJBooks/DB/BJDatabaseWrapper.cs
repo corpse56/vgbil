@@ -116,6 +116,20 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        internal string GetCipher(string _899b, int iDMAIN)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_CIPHER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = iDMAIN;
+                dataAdapter.SelectCommand.Parameters.Add("fnd", SqlDbType.NVarChar).Value = _899b;
+                dataAdapter.Fill(table);
+                return (table.Rows.Count == 0) ? "" : table.Rows[0]["PLAIN"].ToString();
+            }
+
+        }
+
         internal DataTable Clarify_205a_1(int iddata)
         {
             DataSet ds = new DataSet();

@@ -12,18 +12,19 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return " select A.*, B.Refusual from Circulation..Orders A " +
-                       " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
-                       " where A.StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу', 'Отказ')";
+                return  " select A.*, B.Refusual " +
+                        " from Circulation..Orders A " +
+                        " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                        " where A.StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу')";
             }
         }
         internal string GET_ORDERS_HISTORY_FOR_STORAGE
         {
             get
             {
-                return " select A.*,B.Refusual from Circulation..Orders A " +
-                       " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
-                       " where A.StatusName in ('Завершено')";
+                return " select top 300 A.*,B.Refusual from Circulation..Orders A " +
+                       " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName " +
+                       " where A.StatusName not in ('Заказ сформирован','Сотрудник хранения подбирает книгу', 'Электронная выдача' )";
             }
         }
 
@@ -156,8 +157,8 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,           StartDate,  ReturnDate,                               Barcode,   Fund, AlligatBookId)" +
-                       " values                         (@BookId,  @ExemplarId, @ReaderId, @StatusName,   getdate(), DATEADD(day , @ReturnInDays , getdate()), @Barcode, @Fund,         @AlligatBookId ); " +
+                return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,    StartDate,        ReturnDate,                        Barcode,   Fund,   AlligatBookId,   IssuingDepId)" +
+                       " values                         (@BookId,  @ExemplarId, @ReaderId, @StatusName,   getdate(), DATEADD(day , @ReturnInDays , getdate()), @Barcode, @Fund,  @AlligatBookId,   @IssuingDepId ); " +
                        " select SCOPE_IDENTITY() ";
             }
         }
@@ -192,7 +193,7 @@ namespace LibflClassLibrary.Circulation.DB
             get
             {
                 return " select 1 from Circulation..Orders where ReaderId = @IDReader " +
-                       " and BookId = @BookId";
+                       " and BookId = @BookId and StatusName not in ('Завершено','Для возврата в хранение')";
             }
         }
 

@@ -432,6 +432,17 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        public string GET_CIPHER
+        {
+            get
+            {
+                return "select cipher.PLAIN " +
+                    " from " + this.Fund + "..DATAEXT A " +
+                    " left join " + this.Fund + "..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 899 and B.MSFIELD = '$j' " +
+                    " left join " + this.Fund + "..DATAEXTPLAIN cipher on cipher.IDDATAEXT = B.ID " +
+                    " where A.IDMAIN = @idmain and A.MNFIELD = 899 and A.MSFIELD = '$b' and A.SORT = @fnd and cipher.PLAIN is not null";
+            }
+        }
     }
 
 

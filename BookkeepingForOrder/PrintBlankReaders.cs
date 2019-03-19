@@ -21,7 +21,7 @@ namespace BookkeepingForOrder
         private Form1 F1;
         private System.Windows.Forms.DataGridView dg;
         private int PaperSizeForReaders = 800;
-        private int PaperSizeForEmployee = 837;
+        private int PaperSizeForEmployee = 860;
         private ReaderInfo Reader;
         public PrintBlankReaders(DbForEmployee db_, System.Windows.Forms.DataGridView dg_, string Dept, Form1 f1)
         {
@@ -239,10 +239,12 @@ namespace BookkeepingForOrder
                 rectangle = new Rectangle(0, CurrentY, 315, 25);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
                 F1.SqlDA.SelectCommand.CommandText = "select (case when Plng.PLAIN is null then '<нет>' else Plng.PLAIN end) as first," +
-                    " (case when Ptom.PLAIN is null then '<нет>' else Ptom.PLAIN end) as second " +
+                    " (case when Ptom.PLAIN is null then '<нет>' else Ptom.PLAIN end) as second, Pmesto.PLAIN mesto " +
                     "from BJVVV..DATAEXT A  " +
                     "left join BJVVV..DATAEXT lng on A.IDMAIN = lng.IDMAIN and lng.MNFIELD = 2100 and lng.MSFIELD = '$d' " +
                     "left join BJVVV..DATAEXTPLAIN Plng on Plng.IDDATAEXT = lng.ID " +
+                    "left join BJVVV..DATAEXT mesto on A.IDMAIN = mesto.IDMAIN and mesto.MNFIELD = 210 and mesto.MSFIELD = '$a' " +
+                    "left join BJVVV..DATAEXTPLAIN Pmesto on Pmesto.IDDATAEXT = mesto.ID " +
                     "left join BJVVV..DATAEXT tom on A.IDMAIN = tom.IDMAIN and tom.MNFIELD = 225 and tom.MSFIELD = '$h' " +
                     "left join BJVVV..DATAEXTPLAIN Ptom on Ptom.IDDATAEXT = tom.ID " +
                     "where A.IDMAIN = " + dg.SelectedRows[0].Cells["pin"].Value.ToString();
@@ -254,7 +256,7 @@ namespace BookkeepingForOrder
                 CurrentY += 25;
                 rectangle = new Rectangle(0, CurrentY, 315, 25);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
-                str = "Место издания: " + dg.SelectedRows[0].Cells["pubdate"].Value.ToString();
+                str = "Место издания: " + DS.Tables["t"].Rows[0]["mesto"].ToString();
                 e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
 
                 //rectangle = new Rectangle(0, 325, 315, 25);
@@ -453,11 +455,13 @@ namespace BookkeepingForOrder
 
                 rectangle = new Rectangle(0, CurrentY, 315, 25);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
-                F1.SqlDA.SelectCommand.CommandText = "select (case when Plng.PLAIN is null then '<нет>' else Plng.PLAIN end) as first, " +
-                    "(case when Ptom.PLAIN is null then '<нет>' else Ptom.PLAIN end) as second " +
+                F1.SqlDA.SelectCommand.CommandText = "select (case when Plng.PLAIN is null then '<нет>' else Plng.PLAIN end) as first," +
+                    " (case when Ptom.PLAIN is null then '<нет>' else Ptom.PLAIN end) as second, Pmesto.PLAIN mesto " +
                     "from BJVVV..DATAEXT A  " +
                     "left join BJVVV..DATAEXT lng on A.IDMAIN = lng.IDMAIN and lng.MNFIELD = 2100 and lng.MSFIELD = '$d' " +
                     "left join BJVVV..DATAEXTPLAIN Plng on Plng.IDDATAEXT = lng.ID " +
+                    "left join BJVVV..DATAEXT mesto on A.IDMAIN = mesto.IDMAIN and mesto.MNFIELD = 210 and mesto.MSFIELD = '$a' " +
+                    "left join BJVVV..DATAEXTPLAIN Pmesto on Pmesto.IDDATAEXT = mesto.ID " +
                     "left join BJVVV..DATAEXT tom on A.IDMAIN = tom.IDMAIN and tom.MNFIELD = 225 and tom.MSFIELD = '$h' " +
                     "left join BJVVV..DATAEXTPLAIN Ptom on Ptom.IDDATAEXT = tom.ID " +
                     "where A.IDMAIN = " + dg.SelectedRows[0].Cells["pin"].Value.ToString();
@@ -469,7 +473,7 @@ namespace BookkeepingForOrder
 
                 rectangle = new Rectangle(0, CurrentY, 315, 25);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
-                str = "Место издания: " + dg.SelectedRows[0].Cells["pubdate"].Value.ToString();
+                str = "Место издания: " + DS.Tables["t"].Rows[0]["mesto"].ToString();
                 e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
                 CurrentY += 25;
 

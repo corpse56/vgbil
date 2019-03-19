@@ -119,6 +119,18 @@ namespace LibflClassLibrary.Circulation.DB
 
         }
 
+        internal DataTable GetOrdersHistoryForStorage(int depId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_HISTORY_FOR_STORAGE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal DataTable GetOrdersForStorage(int depId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -319,7 +331,8 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Parameters.Add("Fund", SqlDbType.NVarChar).Value = exemplar.Fund;
                 command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.ElectronicIssue.Value;
                 OrderId = Convert.ToInt32(command.ExecuteScalar());
-                string url = @"http://catalog.libfl.ru/Bookreader/Viewer?OrderId=" + OrderId + "&view_mode=HQ";
+                string ViewMode = (exemplar.IsExistsLQ) ? "LQ" : "HQ";
+                string url = @"http://catalog.libfl.ru/Bookreader/Viewer?OrderId=" + OrderId + "&view_mode="+ViewMode;
                 command.Parameters.Add("OrderId", SqlDbType.Int).Value = OrderId;
                 command.Parameters.Add("BookUrl", SqlDbType.NVarChar).Value = url;
                 command.CommandText = "update Circulation..Orders set BookUrl = @BookUrl where ID = @OrderId";

@@ -108,6 +108,10 @@ namespace LibflClassLibrary.Circulation
         {
             return loader.GetOrdersForStorage(depId, depName);
         }
+        public List<OrderInfo> GetOrdersHistoryForStorage(int depId, string depName)
+        {
+            return loader.GetOrdersHistoryForStorage(depId, depName);
+        }
 
         public OrderInfo GetOrder(int orderId)
         {
@@ -307,19 +311,11 @@ namespace LibflClassLibrary.Circulation
                     default:
                         throw new Exception("C008");
 
-                }
-
-                //BJExemplarInfo exemplar = this.GetFirstFreeExemplar(book, request.OrderType);
-                //if (exemplar == null)
-                //{
-                //    throw new Exception("C005");
-                //}
-
-                //this.NewOrder(exemplar, reader, request.OrderType);
-                
+                }                
             }
 
         }
+
 
         public void ProlongOrder(int OrderId)
         {

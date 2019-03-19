@@ -118,6 +118,7 @@ namespace BookkeepingForOrder
             foreach(var order in orders)
             {
                 BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                ReaderInfo reader = ReaderInfo.GetReader(order.ReaderId);
                 dgwReaders.Rows.Add();
                 var row = dgwReaders.Rows[dgwReaders.Rows.Count - 1];
 
@@ -126,9 +127,9 @@ namespace BookkeepingForOrder
                 row.Cells["author"].Value = order.Book.Author;
                 row.Cells["title"].Value = order.Book.Title;
                 row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
-                row.Cells["cipher"].Value = exemplar.Fields["899$j"].ToString();
+                row.Cells["cipher"].Value = exemplar.Cipher;
                 row.Cells["readerid"].Value = order.ReaderId;
-                row.Cells["fio"].Value = order.ReaderId;
+                row.Cells["fio"].Value = $"{reader.FamilyName} {reader.Name.Substring(0,1)}. {reader.FatherName.Substring(0, 1)}.";
                 row.Cells["orderid"].Value = order.OrderId;
                 row.Cells["status"].Value = order.StatusName;
                 row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
@@ -136,6 +137,77 @@ namespace BookkeepingForOrder
                 row.Cells["refusual"].Value = string.IsNullOrEmpty(order.Refusual) ? "<нет>" : order.Refusual;
             }
         }
+        bool InitReloadReaderHistoryOrders = true;
+
+        private void ShowReaderHistoryOrders()
+        {
+            if (InitReloadReaderHistoryOrders)
+            {
+                KeyValuePair<string, string>[] columns =
+                {
+                    new KeyValuePair<string, string> ( "pin", "ПИН"),
+                    new KeyValuePair<string, string> ( "author", "Автор"),
+                    new KeyValuePair<string, string> ( "title", "Заглавие"),
+                    new KeyValuePair<string, string> ( "inv", "Инв. номер"),
+                    new KeyValuePair<string, string> ( "cipher", "Расст. шифр"),
+                    new KeyValuePair<string, string> ( "readerid", "Номер читателя"),
+                    new KeyValuePair<string, string> ( "fio", "ФИО читателя"),
+                    new KeyValuePair<string, string> ( "startdate", "Дата формирования заказа"),
+                    new KeyValuePair<string, string> ( "orderid", "orderid"),
+                    new KeyValuePair<string, string> ( "status", "Статус заказа"),
+                    new KeyValuePair<string, string> ( "note", "Инв. метка"),
+                    new KeyValuePair<string, string> ( "pubdate", "Дата издания"),
+                    new KeyValuePair<string, string> ( "refusual", "Причина отказа")
+                };
+                foreach (var c in columns)
+                    dgwRHis.Columns.Add(c.Key, c.Value);
+
+                dgwRHis.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                dgwRHis.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+                dgwRHis.Columns["startdate"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+                dgwRHis.Columns["pin"].Width = 74;
+                dgwRHis.Columns["author"].Width = 125;
+                dgwRHis.Columns["title"].Width = 265;
+                dgwRHis.Columns["inv"].Width = 80;
+                dgwRHis.Columns["cipher"].Width = 100;
+                dgwRHis.Columns["readerid"].Width = 80;
+                dgwRHis.Columns["fio"].Width = 120;
+                dgwRHis.Columns["startdate"].Width = 80;
+                dgwRHis.Columns["orderid"].Visible = false;
+                dgwRHis.Columns["status"].Width = 100;
+                dgwRHis.Columns["note"].Width = 60;
+                dgwRHis.Columns["pubdate"].Visible = false;
+                InitReloadReaderHistoryOrders = false;
+            }
+            else
+            {
+                dgwRHis.Rows.Clear();
+            }
+            CirculationInfo circulation = new CirculationInfo();
+            List<OrderInfo> orders = circulation.GetOrdersHistoryForStorage(user.SelectedUserStatus.DepId, user.SelectedUserStatus.DepName);
+            foreach (var order in orders)
+            {
+                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                ReaderInfo reader = ReaderInfo.GetReader(order.ReaderId);
+                dgwRHis.Rows.Add();
+                var row = dgwRHis.Rows[dgwRHis.Rows.Count - 1];
+
+                row.Cells["startdate"].Value = order.StartDate;
+                row.Cells["pin"].Value = order.BookId.Substring(order.BookId.IndexOf("_") + 1);
+                row.Cells["author"].Value = order.Book.Author;
+                row.Cells["title"].Value = order.Book.Title;
+                row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
+                row.Cells["cipher"].Value = exemplar.Cipher;
+                row.Cells["readerid"].Value = order.ReaderId;
+                row.Cells["fio"].Value = $"{reader.FamilyName} {reader.Name.Substring(0, 1)}. {reader.FatherName.Substring(0, 1)}.";
+                row.Cells["orderid"].Value = order.OrderId;
+                row.Cells["status"].Value = order.StatusName;
+                row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
+                row.Cells["pubdate"].Value = order.Book.PublishDate;
+                row.Cells["refusual"].Value = string.IsNullOrEmpty(order.Refusual) ? "<нет>" : order.Refusual;
+            }
+        }
+
         //EKATERINA.A.LISOVSKAYA katya - 3 этаж
 
         private void FormMainTable()
@@ -653,12 +725,13 @@ namespace BookkeepingForOrder
                     }
                 case "tpReaderHistoryOrders":
                     {
-                        FormReadersHisTable();
-                        FormReaderHisTable_Interface();
-                        if (ReadersHisTable.Rows.Count == 0)
-                            bPrintReaderOrder.Enabled = false;
-                        else
-                            bPrintReaderOrder.Enabled = true;
+                        ShowReaderHistoryOrders();
+                        //FormReadersHisTable();
+                        //FormReaderHisTable_Interface();
+                        //if (ReadersHisTable.Rows.Count == 0)
+                        //    bPrintReaderOrder.Enabled = false;
+                        //else
+                        //    bPrintReaderOrder.Enabled = true;
 
                         tabControl1.TabPages.RemoveByKey("tab2");
                         break;
@@ -691,6 +764,7 @@ namespace BookkeepingForOrder
             //FormReadersTable();
             //FormReaderTable_Interface();
             ShowReaderOrders();
+            ShowReaderHistoryOrders();
             bool NeedFlash = false;
             foreach (DataGridViewRow row in dgwReaders.Rows)
             {
@@ -1051,7 +1125,7 @@ namespace BookkeepingForOrder
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Form2 f2 = new Form2(dgwReaders, this);
+            Form2 f2 = new Form2(dgwRHis, this);
             f2.Show();
         }
 

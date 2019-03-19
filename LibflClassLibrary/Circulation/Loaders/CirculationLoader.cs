@@ -145,6 +145,38 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
+        internal List<OrderInfo> GetOrdersHistoryForStorage(int depId, string depName)
+        {
+            DataTable table = dbWrapper.GetOrdersHistoryForStorage(depId);
+            List<OrderInfo> Orders = new List<OrderInfo>();
+            int i = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                i++;
+                OrderInfo order = FillOrderFromDataRow(row);
+                Orders.Add(order);
+            }
+            Predicate<OrderInfo> isWrongFloor = delegate (OrderInfo order)
+            {
+                if (order.ExemplarId == 0)
+                {
+                    return true;
+                }
+                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                if (exemplar.Fields["899$a"].ToString() == depName)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            };
+            Orders.RemoveAll(isWrongFloor);
+
+            return Orders;
+        }
+
         internal List<OrderInfo> GetOrdersForStorage(int depId, string depName)
         {
             DataTable table = dbWrapper.GetOrdersForStorage(depId);

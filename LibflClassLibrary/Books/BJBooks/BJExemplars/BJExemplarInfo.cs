@@ -38,7 +38,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         public bool IsAlligat { get; set; }
         public string ConvolutePin { get; set; }
         public int ConvoluteIdData { get; set; }
-
+        public string Cipher { get; set; }
         public DateTime Created; //для новых поступлений. Дата присвоения инвентарного номера.
 
         public BJFields Fields = new BJFields();
@@ -59,8 +59,6 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         }
         public static BJExemplarInfo GetExemplarByIdData(int iddata, string fund)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetExemplar(iddata);
             BJExemplarInfo exemplar = new BJExemplarInfo((int)table.Rows[0]["IDDATA"]);
@@ -91,11 +89,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 }
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());//добавляем все поля блока 260 к объекту экземпляра
             }
-            sw.Stop();
-            sw.Start();
             exemplar.ExemplarAccess = BJExemplarInfo.GetExemplarAccess(exemplar);
-            sw.Stop();
-            sw.Start();
             if (exemplar.Fields["482$a"].MNFIELD != 0)//это приплётышь
             {
                 BJConvoluteInfo convolute = BJExemplarInfo.GetConvoluteInfo(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
@@ -115,8 +109,10 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 //это не приплётышь ConvolutePin 
                 exemplar.ConvolutePin = null;
             }
-            sw.Stop();
-            sw.Start();
+
+
+            exemplar.Cipher = string.IsNullOrEmpty(exemplar.Fields["899$j"].ToString()) ? dbw.GetCipher(exemplar.Fields["899$b"].ToString(), exemplar.IDMAIN) : exemplar.Fields["899$j"].ToString();
+
             return exemplar;
         }
 
