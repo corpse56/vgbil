@@ -416,7 +416,7 @@ namespace CirculationACC
             // TODO: данная строка кода позволяет загрузить данные в таблицу "bRIT_SOVETDataSet.ZAKAZ". При необходимости она может быть перемещена или удалена.
             //this.zAKAZTableAdapter.Fill(this.bRIT_SOVETDataSet.ZAKAZ);
             //this.EmpID = "1";
-            if (this.bjUser == null)
+            if (this.bjUser == null)//это не забывать исправлять
             {
                 MessageBox.Show("Вы не авторизованы! Программа заканчивает свою работу", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
