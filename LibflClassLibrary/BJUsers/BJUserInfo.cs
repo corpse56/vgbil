@@ -30,10 +30,10 @@ namespace LibflClassLibrary.BJUsers
         public string HashedPwd;
         public List<UserStatus> UserStatus = new List<UserStatus>();
         public UserStatus SelectedUserStatus { get; set; }
-        BJUserLoader loader = new BJUserLoader();
-        internal static BJUserInfo GetUserByLogin(string login)
+        BJUserLoader loader;
+        public static BJUserInfo GetUserByLogin(string login, string fund)
         {
-            BJUserLoader loader = new BJUserLoader();
+            BJUserLoader loader = new BJUserLoader(fund);
             BJUserInfo result = loader.GetUserByLogin(login.ToUpper());
             return result;
         }

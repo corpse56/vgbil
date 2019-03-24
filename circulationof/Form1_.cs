@@ -19,6 +19,8 @@ using System.Diagnostics;
 using System.IO.Ports;
 using System.ServiceModel;
 using LibflClassLibrary.Controls.Readers;
+using LibflClassLibrary.Controls;
+using LibflClassLibrary.BJUsers;
 
 namespace Circulation
 {
@@ -41,18 +43,33 @@ namespace Circulation
         public dbReader ReaderSetBarcode;
         public ExtGui.RoundProgress RndPrg;
         public string BASENAME;
-
+        BJUserInfo user;
         public Form1()
         {
             try
             {
                 BASENAME = "Reservation_R";
-                f2 = new Form2(this);
+                //f2 = new Form2(this);
                 InitializeComponent();
+                fBJAuthorization auth = new fBJAuthorization();
+                auth.ShowDialog();
+                if (auth.User != null) 
+                {
+                    this.user = auth.User;
+                    this.textBox1.Text = user.FIO;//R.Tables[0].Rows[0]["NAME"].ToString();
+                    this.EmpID = user.Id.ToString();// R.Tables[0].Rows[0]["ID"].ToString();
+                    this.DepID = user.SelectedUserStatus.DepId.ToString();// R.Tables[0].Rows[0]["DEPT"].ToString();
+                    this.DepName = user.SelectedUserStatus.DepName;//this.GetDepName(F1.DepID);
+                    this.textBox2.Text = user.SelectedUserStatus.DepName;
+                }
+
+
                 dbw = new DBWork(this);
                 //sc = new _BarcScan(this);
                 this.StartPosition = FormStartPosition.CenterScreen;
-                f2.ShowDialog();
+                //f2.ShowDialog();
+
+
                 Form1.Scanned += new ScannedEventHandler(Form1_Scanned);
                 this.button2.Enabled = false;
                 this.button4.Enabled = false;

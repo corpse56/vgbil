@@ -38,6 +38,11 @@
 
             </td>
             </tr>
+                <tr>
+                    <td>
+                        
+                    </td>
+                </tr>
         </table>
             <br  />
             <br  />
@@ -47,7 +52,7 @@
                 oncheckedchanged="RadioButton1_CheckedChanged" /> <br />
             <!--<asp:RadioButton ID="RadioButton3" runat="server" text="Удалённый читатель **"  AutoPostBack ="true"
                 GroupName = "112" oncheckedchanged="RadioButton3_CheckedChanged"/>    <br />-->
-
+            
             <asp:RadioButton ID="RadioButton2" runat="server" text="Сотрудник **"  AutoPostBack ="true"
                 GroupName = "112" oncheckedchanged="RadioButton2_CheckedChanged"/>
         </center>

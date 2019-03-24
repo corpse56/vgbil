@@ -19,6 +19,8 @@ using System.IO.Ports;
 using System.IO;
 using LibflClassLibrary.Readers.ReadersRight;
 using LibflClassLibrary.Controls.Readers;
+using LibflClassLibrary.Controls;
+using LibflClassLibrary.BJUsers;
 
 namespace CirculationACC
 {
@@ -34,17 +36,25 @@ namespace CirculationACC
         private Auth f2;
         private Prolong f4;
         SerialPort port;
-
+        private BJUserInfo bjUser;
         public ExtGui.RoundProgress RndPrg;
         public Form1()
         {
 
-            f2 = new Auth(this);
+            //f2 = new Auth(this);
             InitializeComponent();
 
             this.StartPosition = FormStartPosition.CenterScreen;
-            f2.ShowDialog();
+            //f2.ShowDialog();
 
+            fBJAuthorization au = new fBJAuthorization("BJACC");
+            au.ShowDialog();
+            if (au.User != null)
+            {
+                bjUser = au.User;
+                this.EmpID = bjUser.Id; //dbG.EmpID;
+                this.textBox1.Text = bjUser.FIO;//dbG.UserName;
+            }
             //Form1.Scanned += new ScannedEventHandler(Form1_Scanned);
             this.bConfirm.Enabled = false;
             this.bCancel.Enabled = false;
@@ -406,7 +416,7 @@ namespace CirculationACC
             // TODO: данная строка кода позволяет загрузить данные в таблицу "bRIT_SOVETDataSet.ZAKAZ". При необходимости она может быть перемещена или удалена.
             //this.zAKAZTableAdapter.Fill(this.bRIT_SOVETDataSet.ZAKAZ);
             //this.EmpID = "1";
-            if (f2.Canceled)
+            if (this.bjUser == null)
             {
                 MessageBox.Show("Вы не авторизованы! Программа заканчивает свою работу", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();

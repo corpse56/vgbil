@@ -13,16 +13,21 @@ namespace LibflClassLibrary.Controls
 {
     public partial class fBJAuthorization : Form
     {
-        public fBJAuthorization()
+        public fBJAuthorization(string fund)
         {
             this.DialogResult = DialogResult.Cancel;
             InitializeComponent();
+            Fund = fund;
         }
+
+        private string Fund;
+
         public BJUserInfo User { get; set; }
         
+
         private void tbLogin_TextChanged(object sender, EventArgs e)
         {
-            User = BJUserInfo.GetUserByLogin(tbLogin.Text);
+            User = BJUserInfo.GetUserByLogin(tbLogin.Text, this.Fund);
             if (User == null)
             {
                 cbRoles.Items.Clear();
@@ -76,6 +81,14 @@ namespace LibflClassLibrary.Controls
         private void fBJAuthorization_Load(object sender, EventArgs e)
         {
             tbLogin_TextChanged(sender, e);
+        }
+
+        private void fBJAuthorization_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (this.DialogResult != DialogResult.OK)
+            {
+                this.User = null;
+            }
         }
     }
 }

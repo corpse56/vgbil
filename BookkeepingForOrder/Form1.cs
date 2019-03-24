@@ -56,7 +56,7 @@ namespace BookkeepingForOrder
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            fBJAuthorization fAuth = new fBJAuthorization();
+            fBJAuthorization fAuth = new fBJAuthorization("BJVVV");
             fAuth.ShowDialog();
             if (fAuth.DialogResult == DialogResult.Cancel || fAuth.User == null)
             {

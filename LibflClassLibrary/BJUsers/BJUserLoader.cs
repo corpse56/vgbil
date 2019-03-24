@@ -9,10 +9,18 @@ namespace LibflClassLibrary.BJUsers
 {
     class BJUserLoader
     {
-        BJUserDBWrapper wrapper = new BJUserDBWrapper();
+        BJUserDBWrapper wrapper;
+        private string fund;
+
+        public BJUserLoader(string fund)
+        {
+            this.fund = fund;
+            wrapper = new BJUserDBWrapper(fund);
+        }
+
         public BJUserInfo GetUserByLogin(string login)
         {
-            DataTable table = wrapper.GetUserByLogin(login);
+            DataTable table = wrapper.GetUserByLogin(login, fund);
             if (table.Rows.Count == 0) return null;
             BJUserInfo result = new BJUserInfo();
             result.Id = Convert.ToInt32(table.Rows[0]["ID"]);

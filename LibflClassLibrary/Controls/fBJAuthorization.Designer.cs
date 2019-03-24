@@ -44,7 +44,6 @@
             this.tbLogin.Name = "tbLogin";
             this.tbLogin.Size = new System.Drawing.Size(668, 29);
             this.tbLogin.TabIndex = 0;
-            this.tbLogin.Text = "EKATERINA.A.LISOVSKAYA";
             this.tbLogin.TextChanged += new System.EventHandler(this.tbLogin_TextChanged);
             // 
             // tbPassword
@@ -55,7 +54,6 @@
             this.tbPassword.PasswordChar = '*';
             this.tbPassword.Size = new System.Drawing.Size(668, 29);
             this.tbPassword.TabIndex = 0;
-            this.tbPassword.Text = "katya";
             // 
             // label1
             // 
@@ -125,7 +123,9 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "fBJAuthorization";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Авторизация";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.fBJAuthorization_FormClosing);
             this.Load += new System.EventHandler(this.fBJAuthorization_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

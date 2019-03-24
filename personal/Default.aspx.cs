@@ -29,6 +29,7 @@ using Utilities;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.ExportToVufind;
+using LibflClassLibrary.BJUsers;
 
 public partial class _Default : System.Web.UI.Page
 {
@@ -40,16 +41,18 @@ public partial class _Default : System.Web.UI.Page
     public ReaderLib CurReader;
     private string script = "";
 
-
+    BJUserInfo bjUser;
     protected void Page_Load(object sender, EventArgs e)
     {
         ZCon = new SqlConnection(WebConfigurationManager.ConnectionStrings["Zakaz"].ConnectionString);
-        CurReader = new ReaderLib(this.User.Identity.Name, Request["id"]);
+        bjUser = (BJUserInfo)Session["bjUser"];
+        CurReader = new ReaderLib(this.User.Identity.Name, Request["id"], bjUser);
         string ip = Server.MachineName;
 
         if (!Page.IsPostBack)
         {
-            Session.Clear();
+            //Session.Clear();
+            
             TabContainer1.ActiveTabIndex = 0;
             TabContainer1.Style["overflow"] = "auto";
             //переносим из безликой корзины в корзину читателя.
@@ -241,12 +244,13 @@ public partial class _Default : System.Web.UI.Page
         BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(int.Parse(iddata), "BJVVV");
         SqlCommand command = new SqlCommand();
         ZCon.Open();
-        command = new SqlCommand("insert into Reservation_E..Orders (ID_Reader, ID_Book_EC, Status, Start_Date, InvNumber,  Form_Date,    IDDATA, ID_Book_CC, Duration) "+
-                                                            "values (@IDREADER, @IDMAIN,     0,      getdate(), @INV, getdate(), @IDDATA          ,  0,          4    )", ZCon);
+        command = new SqlCommand("insert into Reservation_E..Orders (ID_Reader, ID_Book_EC, Status, Start_Date, InvNumber,  Form_Date,    IDDATA, ID_Book_CC, Duration, DepId) "+
+                                                            "values (@IDREADER, @IDMAIN,     0,      getdate(), @INV, getdate(), @IDDATA          ,  0,          4 ,     @DepId   )", ZCon);
         command.Parameters.Add("IDREADER", SqlDbType.Int).Value = int.Parse(idreader);
         command.Parameters.Add("IDMAIN", SqlDbType.Int).Value = exemplar.IDMAIN;
         command.Parameters.Add("INV", SqlDbType.NVarChar).Value = exemplar.Fields["899$p"].ToString();
         command.Parameters.Add("IDDATA", SqlDbType.Int).Value = exemplar.IdData;
+        command.Parameters.Add("DepId", SqlDbType.Int).Value = bjUser.SelectedUserStatus.DepId;
         command.ExecuteNonQuery();
         ZCon.Close();
         return exemplar.IDMAIN;
@@ -347,7 +351,14 @@ public partial class _Default : System.Web.UI.Page
             spisok.Add(new KeyValuePair<string, Book>(b.Language, b));
         }
         spisok.Sort(BiblioDescriptionCompare);
-        Session.Add("spisok", spisok);
+        if (Session["spisok"] == null)
+        {
+            Session.Add("spisok", spisok);
+        }
+        else
+        {
+            Session["spisok"] = spisok;
+        }
 
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('Default2.aspx','_blank')", true);
     }
