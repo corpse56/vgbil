@@ -51,7 +51,7 @@ namespace Circulation
                 BASENAME = "Reservation_R";
                 //f2 = new Form2(this);
                 InitializeComponent();
-                fBJAuthorization auth = new fBJAuthorization();
+                fBJAuthorization auth = new fBJAuthorization("BJVVV");
                 auth.ShowDialog();
                 if (auth.User != null) 
                 {

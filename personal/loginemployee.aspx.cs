@@ -134,7 +134,7 @@ public partial class loginemployee : System.Web.UI.Page
     string litres = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        Label1.Text = "Уважаемые читатели! По техническим причинам Библиотека временно приостановит обслуживание читателей с 26 декабря 2018 года и до 26 марта 2019 года. <a href = \"https://libfl.ru/ru/news/inostranka-ogranichit-obsluzhivanie-chitateley-do-konca-yanvarya-2019-goda\">Подробности.</a>";
+        //Label1.Text = "Уважаемые читатели! По техническим причинам Библиотека временно приостановит обслуживание читателей с 26 декабря 2018 года и до 26 марта 2019 года. <a href = \"https://libfl.ru/ru/news/inostranka-ogranichit-obsluzhivanie-chitateley-do-konca-yanvarya-2019-goda\">Подробности.</a>";
 
         //mname == "VGBIL-OPAC";
         //if (Server.MachineName == "VGBIL-OPAC")
@@ -171,8 +171,8 @@ public partial class loginemployee : System.Web.UI.Page
 
 
         //для входа под любым читателем. не забывать закомментироват
-        //CurReader.ID = "224189";
-        //ReaderInfo rrr = ReaderInfo.GetReader(224189);
+        //CurReader.ID = "230911";
+        //ReaderInfo rrr = ReaderInfo.GetReader(230911);
         //CurReader.ReaderType = 1;
         //FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
         //RedirectWithCookie("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + CurReader.ReaderType + "&litres=" + litres, CurReader);
@@ -181,7 +181,7 @@ public partial class loginemployee : System.Web.UI.Page
 
         if (RadioButton2.Checked)//сотрудник для ДП
         {
-            BJUserInfo bjUser = BJUserInfo.GetUserByLogin(Login1.UserName.ToLower());
+            BJUserInfo bjUser = BJUserInfo.GetUserByLogin(Login1.UserName.ToLower(), "BJVVV");
 
                 
             //DA = new SqlDataAdapter();
@@ -210,7 +210,7 @@ public partial class loginemployee : System.Web.UI.Page
                 CurReader.SetReaderType(2);
                 FormsAuthentication.RedirectFromLoginPage(Login1.UserName, false);
                 MoveToHistory();
-                Response.Redirect("SelectRole.aspx?EmpId=" + CurReader.ID + "&type=2");
+                Response.Redirect("SelectRole.aspx?EmpId=" + CurReader.ID + "&type=2&id=" + CurReader.idSession);
                 //Response.Redirect("default.aspx" + "?id=" + CurReader.idSession + "&type=2");
             }
         }

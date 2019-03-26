@@ -68,7 +68,7 @@ public partial class persacc : System.Web.UI.Page
         
         DA = new SqlDataAdapter();
         DA.SelectCommand = new SqlCommand();
-        Label14.Text = "Уважаемые читатели! По техническим причинам Библиотека временно приостановит обслуживание читателей с 26 декабря 2018 года и до 26 марта 2019 года. <a href = \"https://libfl.ru/ru/news/inostranka-ogranichit-obsluzhivanie-chitateley-do-konca-yanvarya-2019-goda\">Подробности.</a>";
+        //Label14.Text = "Уважаемые читатели! По техническим причинам Библиотека временно приостановит обслуживание читателей с 26 декабря 2018 года и до 26 марта 2019 года. <a href = \"https://libfl.ru/ru/news/inostranka-ogranichit-obsluzhivanie-chitateley-do-konca-yanvarya-2019-goda\">Подробности.</a>";
 
         Label1.Text = "Личный кабинет читателя : " + reader.FIO;
         TabContainer1.ActiveTabIndex = 0;
@@ -2266,10 +2266,10 @@ public partial class persacc : System.Web.UI.Page
             }
             else
             {
-                ScriptManager.RegisterClientScriptBlock(this, typeof(string), "isinv",
-                    "<script language=\"javascript\" type=\"text/javascript\">alert('По техническим причинам заказ книг приостановлен до 26 марта 2019 года. Заказать можно только электронные копии.')</SCRIPT>",
-                    false);
-                continue;
+                //ScriptManager.RegisterClientScriptBlock(this, typeof(string), "isinv",
+                //    "<script language=\"javascript\" type=\"text/javascript\">alert('По техническим причинам заказ книг приостановлен до 26 марта 2019 года. Заказать можно только электронные копии.')</SCRIPT>",
+                //    false);
+                //continue;
 
                 if (!OrderingInv.mhr.Contains("Абонемент"))
                 {

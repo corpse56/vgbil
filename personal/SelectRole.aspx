@@ -9,13 +9,13 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:Label ID="Label1" runat="server" Text="Выберите роль"></asp:Label>
+            <asp:Label ID="Label1" runat="server" Text="Выберите роль" Font-Size ="X-Large"></asp:Label>
             <br />
             <br />
-            <asp:DropDownList ID="ddlRoles" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="ddlRoles" runat="server" Font-Size ="X-Large"></asp:DropDownList>
             <br />
             <br />
-            <asp:Button ID="Button1" runat="server" Text="Продолжить" OnClick="Button1_Click" />
+            <asp:Button ID="Button1" runat="server" Text="Продолжить" OnClick="Button1_Click" Font-Size ="X-Large" />
         </div>
     </form>
 </body>

@@ -89,7 +89,14 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 }
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());//добавляем все поля блока 260 к объекту экземпляра
             }
-            exemplar.ExemplarAccess = BJExemplarInfo.GetExemplarAccess(exemplar);
+            try
+            {
+                exemplar.ExemplarAccess = BJExemplarInfo.GetExemplarAccess(exemplar);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             if (exemplar.Fields["482$a"].MNFIELD != 0)//это приплётышь
             {
                 BJConvoluteInfo convolute = BJExemplarInfo.GetConvoluteInfo(exemplar.Fields["482$a"].ToString(), exemplar.Fund);

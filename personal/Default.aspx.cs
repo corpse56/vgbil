@@ -46,6 +46,10 @@ public partial class _Default : System.Web.UI.Page
     {
         ZCon = new SqlConnection(WebConfigurationManager.ConnectionStrings["Zakaz"].ConnectionString);
         bjUser = (BJUserInfo)Session["bjUser"];
+        if (bjUser == null)
+        {
+            FormsAuthentication.RedirectToLoginPage();
+        }
         CurReader = new ReaderLib(this.User.Identity.Name, Request["id"], bjUser);
         string ip = Server.MachineName;
 

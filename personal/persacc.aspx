@@ -39,7 +39,7 @@
     style="z-index:-90; display:none" Text="Button" Visible="true" />
 
     <center>
-        <asp:Label ID="Label14" runat="server" Text="Label" ForeColor ="Red" Font-Size ="XX-Large"></asp:Label>
+        <!--<asp:Label ID="Label14" runat="server" Text="Label" ForeColor ="Red" Font-Size ="XX-Large"></asp:Label>-->
         <br />
         <br />
         <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label></center>

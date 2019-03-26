@@ -54,6 +54,8 @@ namespace CirculationSCC
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.bComment = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -99,8 +101,6 @@ namespace CirculationSCC
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
-            this.button6 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -140,6 +140,7 @@ namespace CirculationSCC
             this.button3.TabIndex = 7;
             this.button3.Text = "—менить сотрудника";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.bChangeLogin);
             // 
             // textBox1
@@ -388,6 +389,24 @@ namespace CirculationSCC
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "‘ормул€р читател€";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(771, 99);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(174, 61);
+            this.button6.TabIndex = 25;
+            this.button6.Text = "¬ыдать права бесплатного абонемента";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(12, 70);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(600, 85);
+            this.readerRightsView1.TabIndex = 24;
             // 
             // bComment
             // 
@@ -796,24 +815,6 @@ namespace CirculationSCC
             this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
-            // 
-            // readerRightsView1
-            // 
-            this.readerRightsView1.Location = new System.Drawing.Point(12, 70);
-            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.readerRightsView1.Name = "readerRightsView1";
-            this.readerRightsView1.Size = new System.Drawing.Size(600, 85);
-            this.readerRightsView1.TabIndex = 24;
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(771, 99);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(174, 61);
-            this.button6.TabIndex = 25;
-            this.button6.Text = "¬ыдать права бесплатного абонемента";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form1
             // 

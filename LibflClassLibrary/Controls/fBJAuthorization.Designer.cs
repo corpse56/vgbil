@@ -53,7 +53,7 @@
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.PasswordChar = '*';
             this.tbPassword.Size = new System.Drawing.Size(668, 29);
-            this.tbPassword.TabIndex = 0;
+            this.tbPassword.TabIndex = 1;
             // 
             // label1
             // 
@@ -83,7 +83,7 @@
             this.cbRoles.Location = new System.Drawing.Point(12, 191);
             this.cbRoles.Name = "cbRoles";
             this.cbRoles.Size = new System.Drawing.Size(668, 32);
-            this.cbRoles.TabIndex = 2;
+            this.cbRoles.TabIndex = 3;
             // 
             // label3
             // 
@@ -101,13 +101,14 @@
             this.bOk.Location = new System.Drawing.Point(305, 247);
             this.bOk.Name = "bOk";
             this.bOk.Size = new System.Drawing.Size(75, 34);
-            this.bOk.TabIndex = 3;
+            this.bOk.TabIndex = 4;
             this.bOk.Text = "Войти";
             this.bOk.UseVisualStyleBackColor = true;
             this.bOk.Click += new System.EventHandler(this.bOk_Click);
             // 
             // fBJAuthorization
             // 
+            this.AcceptButton = this.bOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(692, 293);

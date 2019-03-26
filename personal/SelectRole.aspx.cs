@@ -31,6 +31,6 @@ public partial class SelectRole : System.Web.UI.Page
             }
         }
         Session["bjUser"] = bjUser;
-        Response.Redirect("default.aspx" + "?id=abrakadabra&type=2");
+        Response.Redirect("default.aspx" + "?id="+Request["id"]+"&type=2");
     }
 }
