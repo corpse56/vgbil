@@ -66,7 +66,7 @@ namespace LibflClassLibrary.ExportToVufind
             StringWriter strwriter = new StringWriter(sb);
             JsonWriter writer = new JsonTextWriter(strwriter);
 
-            string exTitre, barcode, description, price, doctype, library, section, place, status, messages, liability;
+            string exTitre, barcode, description, cote, doctype, library, section, place, status, messages, liability;
             int k = 1;
             HtmlDocument ExemplarsDocument = new HtmlDocument();
             ExemplarsDocument.Load(@"d:\VGBIL\WATERBEAR\waterbear (exemplaires).htm");
@@ -77,64 +77,6 @@ namespace LibflClassLibrary.ExportToVufind
                 exTitre = td_exemplar[1].InnerText.Trim(' ');
                 if (exTitre.StartsWith(Titre) == true)
                 {
-                    barcode = td_exemplar[0].InnerText.Trim(' ');
-                    description = td_exemplar[1].InnerText.Trim(' ');
-                    price = td_exemplar[2].InnerHtml.ToString();
-
-                    if (price.IndexOf("value=\"") > 0)
-                    {
-                        price = price.Substring(price.IndexOf("value=\"") + 7);
-                        price = price.Remove(price.IndexOf("\">"));
-                    }
-
-                    doctype = td_exemplar[3].InnerHtml.ToString();
-                    if (doctype.IndexOf("selected=\"selected\">") > 0)
-                    {
-                        doctype = doctype.Substring(doctype.IndexOf("selected=\"selected\">") + 20);
-                        doctype = doctype.Remove(doctype.IndexOf("</option>"));
-                    }
-                    else doctype = "-";
-
-                    library = td_exemplar[4].InnerHtml.ToString();
-                    if (library.IndexOf("selected=\"selected\">") > 0)
-                    {
-                        library = library.Substring(library.IndexOf("selected=\"selected\">") + 20);
-                        library = library.Remove(library.IndexOf("</option>"));
-                    }
-                    else library = "-";
-
-                    section = td_exemplar[5].InnerHtml.ToString();
-                    if (section.IndexOf("selected=\"selected\">") > 0)
-                    {
-                        section = section.Substring(section.IndexOf("selected=\"selected\">") + 20);
-                        section = section.Remove(section.IndexOf("</option>"));
-                    }
-                    else section = "-";
-
-                    place = td_exemplar[6].InnerHtml.ToString();
-                    if (place.IndexOf("selected=\"selected\">") > 0)
-                    {
-                        place = place.Substring(place.IndexOf("selected=\"selected\">") + 20);
-                        place = place.Remove(place.IndexOf("</option>"));
-                    }
-                    else place = "-";
-
-                    status = td_exemplar[7].InnerHtml.ToString();
-                    if (status.IndexOf("selected=\"selected\">") > 0)
-                    {
-                        status = status.Substring(status.IndexOf("selected=\"selected\">") + 20);
-                        status = status.Remove(status.IndexOf("</option>"));
-                    }
-                    else status = "-";
-
-                    messages = td_exemplar[8].InnerText.Trim(' ');
-                    liability = td_exemplar[9].InnerText.Trim(' ');
-
-                    //MessageBox.Show(barcode +"              "+ description + "              " + price + "            " + doctype +
-                    //    "                     " + library + "                                  " +
-                    //    section + "                   " + place + "                        " + status + "                  " + 
-                    //    messages + "              " + liability);
-
                     writer.WriteStartObject();
                     writer.WritePropertyName(k.ToString()); //"1"
                     writer.WriteStartObject();
@@ -148,10 +90,66 @@ namespace LibflClassLibrary.ExportToVufind
                     writer.WritePropertyName("exemplar_access_group");
                     writer.WriteValue(KeyValueMapping.AccessCodeToGroup[1007]);
 
+                    barcode = td_exemplar[0].InnerText.Trim(' '); // code barre
                     writer.WritePropertyName("exemplar_id");
                     writer.WriteValue(barcode);//вообще это iddata, но тут любой можно,поскольку всегда свободно "1"
                     writer.WritePropertyName("exemplar_location");
                     writer.WriteValue("2046");
+
+                    //description = td_exemplar[1].InnerText.Trim(' '); // notice
+                    cote = td_exemplar[2].InnerHtml.ToString(); //cote: exemplar_placing_cipher
+                    if (cote.IndexOf("value=\"") > 0) // 
+                    {
+                        cote = cote.Substring(cote.IndexOf("value=\"") + 7);
+                        cote = cote.Remove(cote.IndexOf("\">"));
+                        writer.WritePropertyName("exemplar_placing_cipher");
+                        writer.WriteValue(cote);
+                    }
+
+                    doctype = td_exemplar[3].InnerHtml.ToString(); // 	type doc: CD, DVD,Livre, Revue
+                    if (doctype.IndexOf("selected=\"selected\">") > 0) // exemplar_carrier 
+                    {
+                        doctype = doctype.Substring(doctype.IndexOf("selected=\"selected\">") + 20);
+                        doctype = doctype.Remove(doctype.IndexOf("</option>"));
+                        if (doctype == "Livre")
+                        {
+                            doctype = "бумага";
+                        }
+                        writer.WritePropertyName("exemplar_carrier");
+                        writer.WriteValue(doctype);
+                    }
+
+                    library = td_exemplar[4].InnerHtml.ToString(); // bibliotheque: 
+                    if (library.IndexOf("selected=\"selected\">") > 0)
+                    {
+                        library = library.Substring(library.IndexOf("selected=\"selected\">") + 20);
+                        library = library.Remove(library.IndexOf("</option>"));
+                    }
+
+                    section = td_exemplar[5].InnerHtml.ToString();  // section: Adulte, Jeunesse
+                    if (section.IndexOf("selected=\"selected\">") > 0)
+                    {
+                        section = section.Substring(section.IndexOf("selected=\"selected\">") + 20);
+                        section = section.Remove(section.IndexOf("</option>"));
+                    }
+
+                    place = td_exemplar[6].InnerHtml.ToString(); // emplacement: exemplar_location
+                    if (place.IndexOf("selected=\"selected\">") > 0)
+                    {
+                        place = place.Substring(place.IndexOf("selected=\"selected\">") + 20);
+                        place = place.Remove(place.IndexOf("</option>"));
+                    }
+
+                    status = td_exemplar[7].InnerHtml.ToString();
+                    if (status.IndexOf("selected=\"selected\">") > 0)
+                    {
+                        status = status.Substring(status.IndexOf("selected=\"selected\">") + 20);
+                        status = status.Remove(status.IndexOf("</option>"));
+                    }
+
+                    messages = td_exemplar[8].InnerText.Trim(' '); // message liste
+                    liability = td_exemplar[9].InnerText.Trim(' '); // prêt en cours
+
 
                     //Exemplar; exemplar_rack_location
                     //Exemplar; exemplar_placing_cipher
