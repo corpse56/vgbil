@@ -192,7 +192,7 @@ namespace Circulation
                 string re = R.Tables["t"].Rows[0]["NumberSC"].ToString().Trim().Replace("\0", "") + R.Tables["t"].Rows[0]["SerialSC"].ToString().Trim().Replace("\0", "");
                 if (re == "")
                 {
-                    return "Читателю не присвоен штрихкод и нет социальной карты";
+                    return "Читателю не присвоен штрихкод";
                 }
                 return re;
             }

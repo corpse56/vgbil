@@ -157,15 +157,10 @@
                                       <td style="height: 26px; width: 43%;" valign="top">
                                         
                                          
-                                          <!--<asp:Button ID="Button1" runat="server" onclick="Button1_Click1" Text="Заказать выделенные" style="height: 25px"  /> &nbsp;&nbsp;-->
-                                          <!--<asp:Button ID="Button2" runat="server" Text="Отметить все" 
-                                              onclick="Button2_Click"  />&nbsp;&nbsp;-->
                                           <asp:Button ID="Button4" runat="server" Text="Сформировать список БО" 
                                               onclick="Button4_Click"  OnClientClick="aspnetForm.target ='_blank';" />&nbsp;&nbsp;
                                           <asp:Button ID="Button5" runat="server" Text="Очистить корзину" 
                                               onclick="Button5_Click"  />&nbsp;&nbsp;
-                                          <!--<asp:Button ID="Button6" runat="server" Text="Удалить выбранные" 
-                                              onclick="Button6_Click"  />&nbsp;&nbsp;-->
                                               
                                       </td>
                                       <td style="height: 26px; width: 3%;" valign="top">

@@ -506,7 +506,7 @@ namespace InvOfBookForOrder
                     }
                 }
                 else
-                if ((DateTime.Now.Hour >= 17) && (DateTime.Now.Minute >= 30))//выходные
+                if ((DateTime.Now.Hour >= 17) && (DateTime.Now.Minute >= 30))//выходные /// 17
                 {
                     return "на сегодня приём заказов окончен. Выберите другую дату.";
                 }

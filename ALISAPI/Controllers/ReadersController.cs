@@ -1,19 +1,24 @@
 ﻿using ALISAPI.Errors;
 using ALISReaderRemote;
 using DataProviderAPI.ValueObjects;
+using LibflClassLibrary.ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects;
+using LibflClassLibrary.ALISAPI.ResponseObjects.General;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Readers;
 using LibflClassLibrary.Readers;
+using LibflClassLibrary.Readers.ReadersJSONViewers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -26,119 +31,220 @@ namespace ALISAPI.Controllers
         /// <summary>
         /// Получает читателя по номеру читательского билета
         /// </summary>
-        /// <param name="id">Номер читательского билета</param>
+        /// <param name="ReaderId">Номер читательского билета</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("Readers/{id}")]
-        [ResponseType(typeof(ReaderInfo))]
-        public HttpResponseMessage Get(int id)
+        [Route("Readers/{ReaderId}")]
+        [ResponseType(typeof(ReaderSimpleView))]
+        public HttpResponseMessage Get(int ReaderId)
         {
             ReaderInfo reader;
             try
             {
-                reader = ReaderInfo.GetReader(id);
+                reader = ReaderInfo.GetReader(ReaderId);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
-            return ALISResponseFactory.CreateResponse(reader, Request);
+            ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
+            return ALISResponseFactory.CreateResponse(result, Request);
         }
 
         /// <summary>
         /// Получает читателя по Email
         /// </summary>
-        /// <param name="email">Email читателя</param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("Readers/ByEmail/{email}")]
-        [ResponseType(typeof(ReaderInfo))]
-        public HttpResponseMessage Get(string email)
-        {
-            ReaderInfo reader;
-            try
-            {
-                reader = ReaderInfo.GetReader(email);
-            }
-            catch (Exception ex)
-            {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
-            }
-            return ALISResponseFactory.CreateResponse(reader, Request);
-        }
-
-
-        /// <summary>
-        /// Получить читателя по oauth-токену
-        /// </summary>
-        /// <returns></returns>
         [HttpPost]
-        [Route("Readers/GetByOauthToken")]
-        [ResponseType(typeof(ReaderInfo))]
-        public HttpResponseMessage GetByOauthToken()
+        [Route("Readers/ByEmail")]
+        [ResponseType(typeof(ReaderSimpleView))]
+        public HttpResponseMessage ByEmail()
         {
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
-            AccessToken request;
+            UserEmail request = new UserEmail();
             try
             {
-                request = JsonConvert.DeserializeObject<AccessToken>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+                request = JsonConvert.DeserializeObject<UserEmail>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
+
 
             ReaderInfo reader;
             try
             {
-                reader = ReaderInfo.GetReaderByOAuthToken(request);
+                reader = ReaderInfo.GetReader(request.Email);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
+            if (reader == null)
+            {
+                return ALISErrorFactory.CreateError("R004", Request);
+            }
+            ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
 
-            return ALISResponseFactory.CreateResponse(reader, Request);
+            return ALISResponseFactory.CreateResponse(result, Request);
         }
 
-        /// <summary>
-        /// Изменить пароль читателя по номеру читателя и дате его рождения
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("Readers/ChangePasswordLocalReader")]
-        [ResponseType(typeof(ReaderInfo))]
-        //[RequestType(typeof(ChangePassword))]
-        public HttpResponseMessage ChangePasswordLocalReader()
-        {
+        //этот метод решили просто убрать. он не нужен, так как токены будет проверять сервер авторизации
+        ///// <summary>
+        ///// Получить читателя по oauth-токену
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpPost]
+        //[Route("Readers/GetByOauthToken")]
+        //[ResponseType(typeof(ReaderInfo))]
+        //public HttpResponseMessage GetByOauthToken()
+        //{
+        //    string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+        //    AccessToken request;
+        //    try
+        //    {
+        //        request = JsonConvert.DeserializeObject<AccessToken>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+        //    }
+        //    catch
+        //    {
+        //        return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+        //    }
+
+        //    ReaderInfo reader;
+        //    try
+        //    {
+        //        reader = ReaderInfo.GetReaderByOAuthToken(request);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+        //    }
+
+        //    return ALISResponseFactory.CreateResponse(reader, Request);
+        //}
+
+
+        //Этот метод распался на два метода - проверка совпадения дня рождения и установление пароля
+        ///// <summary>
+        ///// Изменить пароль читателя по номеру читателя и дате его рождения
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpPost]
+        //[Route("Readers/ChangePasswordLocalReader")]
+        ////[ResponseType(typeof(ReaderInfo))]
+        //public HttpResponseMessage ChangePasswordLocalReader()
+        //{
             
+        //    string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+        //    ChangePasswordLocalReader request;
+        //    try
+        //    {
+        //        request = JsonConvert.DeserializeObject<ChangePasswordLocalReader>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+        //    }
+        //    catch
+        //    {
+        //        return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+        //    }
+
+        //    ReaderInfo reader;
+        //    try
+        //    {
+        //        reader = ReaderInfo.GetReader(request.NumberReader);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
+        //    }
+        //    try
+        //    {
+        //        reader.ChangePasswordLocalReader(request);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+        //    }
+
+        //    return ALISResponseFactory.CreateResponse(Request);
+        //}
+
+        /// <summary>
+        /// Узнать, соответствует ли дата рождения номеру читательского билета
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Readers/IsBirthDateMatchReaderId")]
+        public HttpResponseMessage IsBirthDateMatchReaderId()
+        {
+
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
-            ChangePasswordLocalReader request;
+            BirthDateMatchReaderId request;
             try
             {
-                request = JsonConvert.DeserializeObject<ChangePasswordLocalReader>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+                request = JsonConvert.DeserializeObject<BirthDateMatchReaderId>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             ReaderInfo reader;
             try
             {
-                reader = ReaderInfo.GetReader(request.NumberReader);
+                reader = ReaderInfo.GetReader(request.ReaderId);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("R004", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError("R004", Request);
+            }
+            BooleanResponse result = new BooleanResponse();
+            try
+            {
+                result.Result = reader.IsBirthDateMatchReaderId(request);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
+
+            return ALISResponseFactory.CreateResponse(result, Request);
+        }
+
+        /// <summary>
+        /// Установить пароль читателю. Принимает номер читателя и пароль.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Readers/SetPasswordLocalReader")]
+        public HttpResponseMessage SetPasswordLocalReader()
+        {
+
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            SetPasswordLocalReader request;
+            try
+            {
+                request = JsonConvert.DeserializeObject<SetPasswordLocalReader>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request);
+            }
+
+            ReaderInfo reader;
+            try
+            {
+                reader = ReaderInfo.GetReader(request.ReaderId);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError("R004", Request);
             }
             try
             {
-                reader.ChangePasswordLocalReader(request);
+                reader.SetPasswordLocalReader(request, reader);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
 
             return ALISResponseFactory.CreateResponse(Request);
@@ -152,7 +258,7 @@ namespace ALISAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Readers/Authorize")]
-        [ResponseType(typeof(ReaderInfo))]
+        [ResponseType(typeof(ReaderSimpleView))]
         public HttpResponseMessage Authorize()
         {
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
@@ -163,7 +269,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
             ReaderInfo reader;
 
@@ -173,9 +279,12 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("R001", Request, HttpStatusCode.NotFound);
+                HttpResponseMessage rm = ALISErrorFactory.CreateError("R001", Request);
+                return rm;
             }
-            return ALISResponseFactory.CreateResponse(reader, Request);
+            ReaderSimpleView result = ReaderViewFactory.GetReaderSimpleView(reader);
+
+            return ALISResponseFactory.CreateResponse(result, Request);
         }
 
 
@@ -184,16 +293,27 @@ namespace ALISAPI.Controllers
         /// Получить тип логина для заданного логина. 
         /// </summary>
         /// <param name="Login">Логин. Может быть номером читательского билета либо Email</param>
-        /// <returns>string</returns>
-        [HttpGet]
-        [Route("Readers/GetLoginType/{login}")]
-        [ResponseType(typeof(string))]
-        public HttpResponseMessage GetLoginType(string Login)
+        [HttpPost]
+        [Route("Readers/GetLoginType")]
+        [ResponseType(typeof(LoginType))]
+        public HttpResponseMessage GetLoginType()
         {
-            string result = ReaderInfo.GetLoginType(Login);
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            UserLogin request = new UserLogin();
+            try
+            {
+                request = JsonConvert.DeserializeObject<UserLogin>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request);
+            }
+
+
+            string result = ReaderInfo.GetLoginType(request.Login);
             if (result.ToLower() == "notdefined")
             {
-                return ALISErrorFactory.CreateError("R003", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError("R003", Request);
             }
             LoginType type = new LoginType();
             type.LoginTypeValue = result;
@@ -210,7 +330,8 @@ namespace ALISAPI.Controllers
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        string RegisterConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+        //string RegisterConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+        string RegisterConnectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Readers;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
         /// <summary>
         /// Пререгистрация удалённого читателя. Создаёт временную запись удалённого пользователя, которую нужно подтвердить. 
         /// Высылается письмо на указанный ящик со ссылкой для подтверждения регистрации.
@@ -230,16 +351,20 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
-
+            DateTime BirthDate;
+            if (!DateTime.TryParseExact(request.BirthDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out BirthDate))
+            {
+                throw new Exception("G001");
+            }
             try
             {
-                re.RegSendEmailAndSaveTemp(request.FamilyName,request.Name, request.FatherName, request.BirthDate, request.Email, request.CountryId, request.MobilePhone, request.Password);
+                re.RegSendEmailAndSaveTemp(request.FamilyName,request.Name, request.FatherName, BirthDate, request.Email, request.CountryId, request.MobilePhone, request.Password);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
@@ -262,7 +387,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             try
@@ -271,7 +396,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
@@ -293,7 +418,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             ReaderRemote re = new ReaderRemote(RegisterConnectionString);
@@ -304,7 +429,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
@@ -329,7 +454,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             ReaderRemote re = new ReaderRemote(RegisterConnectionString);
@@ -340,7 +465,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
@@ -362,7 +487,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             ReaderRemote re = new ReaderRemote(RegisterConnectionString);
@@ -373,7 +498,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }

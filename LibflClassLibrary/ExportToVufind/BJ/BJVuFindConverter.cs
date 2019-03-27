@@ -96,7 +96,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
 
         
 
-        private bool SpecialFilter(int IDMAIN)
+        private bool SpecialFilter(int IDMAIN, DataTable record)
         {
             if ((IDMAIN == 52109) && (Fund == "REDKOSTJ"))
             {
@@ -108,6 +108,14 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 //эта запись образец заполнения электронной копии
                 return false;
             }
+
+            var list = record.AsEnumerable();
+            DataRow row = list.FirstOrDefault(x => (int)x["MNFIELD"] == 338 && x["MSFIELD"].ToString() == "$b");
+            if (row != null) return false;
+            row = list.FirstOrDefault(x => (int)x["MNFIELD"] == 899 && x["MSFIELD"].ToString() == "$x" && x["SORT"].ToString().ToLower() == "э");
+            if (row != null) return false;
+
+
 
             return true;
         }
@@ -372,7 +380,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
 
                 writer.WriteEndObject();
                 result.MethodOfAccess.Add("4002");
-                BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(-1, string.Empty);//фейковый электронный экземпляр. если его не добавить и если бумажных экземпляров нет, то будет 0 экземпляров и документ не попадёт в индекс, хотя етсь электронный экземпляр
+                BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(idmain, fund);//фейковый электронный экземпляр. если его не добавить и если бумажных экземпляров нет, то будет 0 экземпляров и документ не попадёт в индекс, хотя етсь электронный экземпляр
                 result.Exemplars.Add(ElExemplar);
 
                 //определить структуру, в которую полностью запись ложится и здесь её проверять, чтобы правильно вычисляемые поля проставить.
@@ -550,7 +558,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             DataTable record = loader.GetBJRecord(ID_BJ);
             if (record.Rows.Count == 0) return null;
             int currentIDMAIN = (int)record.Rows[0]["IDMAIN"];
-            if (!SpecialFilter(currentIDMAIN)) return null;
+            if (!SpecialFilter(currentIDMAIN, record)) return null;
             string level = record.Rows[0]["Level"].ToString();
             string level_id = record.Rows[0]["level_id"].ToString();
             int lev_id = int.Parse(level_id);

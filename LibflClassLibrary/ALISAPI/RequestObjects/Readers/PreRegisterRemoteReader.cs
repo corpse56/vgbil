@@ -10,7 +10,7 @@ namespace LibflClassLibrary.ALISAPI.RequestObjects.Readers
         public string FamilyName { get; set; }
         public string Name { get; set; }
         public string FatherName { get; set; }
-        public DateTime BirthDate { get; set; }
+        public string BirthDate { get; set; }
         public string Email { get; set; }
         public int CountryId { get; set; }
         public string MobilePhone { get; set; }

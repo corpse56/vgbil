@@ -54,6 +54,8 @@ namespace Circulation
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.bGiveFreeAbonement = new System.Windows.Forms.Button();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.bComment = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -77,6 +79,7 @@ namespace Circulation
             this.DateIssue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.button12 = new System.Windows.Forms.Button();
@@ -102,10 +105,7 @@ namespace Circulation
             this.обращаемость нигToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bGiveFreeAbonement = new System.Windows.Forms.Button();
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
-            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -144,6 +144,7 @@ namespace Circulation
             this.button3.TabIndex = 7;
             this.button3.Text = "—менить сотрудника";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // textBox1
@@ -393,6 +394,24 @@ namespace Circulation
             this.tabPage4.Text = "‘ормул€р читател€";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // bGiveFreeAbonement
+            // 
+            this.bGiveFreeAbonement.Location = new System.Drawing.Point(771, 102);
+            this.bGiveFreeAbonement.Name = "bGiveFreeAbonement";
+            this.bGiveFreeAbonement.Size = new System.Drawing.Size(174, 61);
+            this.bGiveFreeAbonement.TabIndex = 25;
+            this.bGiveFreeAbonement.Text = "¬ыдать права бесплатного абонемента";
+            this.bGiveFreeAbonement.UseVisualStyleBackColor = true;
+            this.bGiveFreeAbonement.Click += new System.EventHandler(this.bGiveFreeAbonement_Click);
+            // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(10, 68);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(621, 95);
+            this.readerRightsView1.TabIndex = 24;
+            // 
             // bComment
             // 
             this.bComment.Location = new System.Drawing.Point(951, 102);
@@ -619,6 +638,15 @@ namespace Circulation
             this.DateVozvFact.Name = "DateVozvFact";
             this.DateVozvFact.ReadOnly = true;
             this.DateVozvFact.Width = 80;
+            // 
+            // Penalt
+            // 
+            this.Penalt.HeaderText = "Ќарушение";
+            this.Penalt.Name = "Penalt";
+            this.Penalt.ReadOnly = true;
+            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Penalt.Width = 85;
             // 
             // tabPage2
             // 
@@ -855,16 +883,6 @@ namespace Circulation
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Text = "—писок нарушителей сроков пользовани€";
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Click += new System.EventHandler(this.списокЌарушителей—роковѕользовани€ToolStripMenuItem_Click);
             // 
-            // bGiveFreeAbonement
-            // 
-            this.bGiveFreeAbonement.Location = new System.Drawing.Point(771, 102);
-            this.bGiveFreeAbonement.Name = "bGiveFreeAbonement";
-            this.bGiveFreeAbonement.Size = new System.Drawing.Size(174, 61);
-            this.bGiveFreeAbonement.TabIndex = 25;
-            this.bGiveFreeAbonement.Text = "¬ыдать права бесплатного абонемента";
-            this.bGiveFreeAbonement.UseVisualStyleBackColor = true;
-            this.bGiveFreeAbonement.Click += new System.EventHandler(this.bGiveFreeAbonement_Click);
-            // 
             // dataGridViewButtonColumn1
             // 
             this.dataGridViewButtonColumn1.HeaderText = "Ќарушение";
@@ -872,23 +890,6 @@ namespace Circulation
             this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
-            // 
-            // readerRightsView1
-            // 
-            this.readerRightsView1.Location = new System.Drawing.Point(10, 68);
-            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
-            this.readerRightsView1.Name = "readerRightsView1";
-            this.readerRightsView1.Size = new System.Drawing.Size(621, 95);
-            this.readerRightsView1.TabIndex = 24;
-            // 
-            // Penalt
-            // 
-            this.Penalt.HeaderText = "Ќарушение";
-            this.Penalt.Name = "Penalt";
-            this.Penalt.ReadOnly = true;
-            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Penalt.Width = 85;
             // 
             // Form1
             // 

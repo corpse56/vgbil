@@ -16,11 +16,19 @@
 
         <center>
             <br />
+            <!--<asp:Label ID="Label1" runat="server" ForeColor ="Red" Font-Size ="XX-Large" Text="Уважаемые читатели! По техническим причинам Библиотека временно приостановит обслуживание читателей с 26 декабря 2018 года и до 26 марта 2019 года." >
+                </asp:Label>-->
+                <br />
+            
+            
+
+
+            <br />
             <table>
             <tr>
             <td>
             <asp:Login ID="Login1" runat="server" ForeColor="Black" LoginButtonText="Войти" 
-                PasswordLabelText="Пароль:" TitleText="Авторизация" UserNameLabelText="Номер читательского билета, email или номер социальной карты*:" 
+                PasswordLabelText="Пароль:" TitleText="Авторизация" UserNameLabelText="Номер читательского билета или email:" 
                 DestinationPageUrl="~/Default.aspx" DisplayRememberMe="False" 
                 OnAuthenticate="Login1_Authenticate" RememberMeText="" Height="110px" 
                 PasswordRecoveryText="Забыли пароль?" PasswordRecoveryUrl="~/PassRec.aspx" >
@@ -30,6 +38,11 @@
 
             </td>
             </tr>
+                <tr>
+                    <td>
+                        
+                    </td>
+                </tr>
         </table>
             <br  />
             <br  />
@@ -39,21 +52,20 @@
                 oncheckedchanged="RadioButton1_CheckedChanged" /> <br />
             <!--<asp:RadioButton ID="RadioButton3" runat="server" text="Удалённый читатель **"  AutoPostBack ="true"
                 GroupName = "112" oncheckedchanged="RadioButton3_CheckedChanged"/>    <br />-->
-
+            
             <asp:RadioButton ID="RadioButton2" runat="server" text="Сотрудник **"  AutoPostBack ="true"
                 GroupName = "112" oncheckedchanged="RadioButton2_CheckedChanged"/>
         </center>
           
     <!--<div style="vertical-align:middle; margin-top:15%">-->
     <p>
-        * - Необходимо указать либо номер читательского билета, 
-        либо номер социалной карты (первые 19 цифр), либо email.</p>
+        * - Необходимо указать либо номер читательского билета либо email.</p>
     <!--<asp:Panel ID="Panel1" runat="server" Visible ="false" >
     Если Вы не зарегистрированы в библиотеке, то Вам необходимо:
     <br />
     1. <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl ="http://80.250.173.145/WebReaderT/Default.aspx" >Заполнить регистрационную карточку читателя</asp:HyperLink>
     <br />
-    2. Приехать в библиотеку имея при себе паспорт и одну фотографию либо социальную карту
+    2. Приехать в библиотеку имея при себе паспорт и одну фотографию
     <br />
     3. Сотрудник отдела регистрации зарегистрирует Вас.
     </asp:Panel>-->

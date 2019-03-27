@@ -16,67 +16,196 @@ namespace ALISAPI.Controllers
 {
     public class CirculationController : ApiController
     {
-        
+
         /// <summary>
         /// Получает содержимое корзины читателя по номеру читательского билета
         /// </summary>
-        /// <param name="idReader">Номер читательского билета</param>
+        /// <param name="ReaderId">Номер читательского билета</param>
         /// <returns>Содержимое корзины</returns>
         [HttpGet]
-        [Route("Circulation/Basket/{idReader}")]
-        [ResponseType(typeof(List<BookSimpleView>))]
-        public HttpResponseMessage Get([Description("Номер чит билета")]int idReader)
+        [Route("Circulation/Basket/{ReaderId}")]
+        [ResponseType(typeof(List<BasketInfo>))]
+        public HttpResponseMessage Basket([Description("Номер чит билета")]int ReaderId)
         {
 
             CirculationInfo Circulation = new CirculationInfo();
-            List<BookSimpleView> result = new List<BookSimpleView>();
             List<BasketInfo> basket;
             try
             {
-                basket = Circulation.GetBasket(idReader);
+                basket = Circulation.GetBasket(ReaderId);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
-            foreach (BasketInfo bi in basket)
+            return ALISResponseFactory.CreateResponse(basket, Request);
+        }
+
+        /// <summary>
+        /// Удаляет книги из корзины читателя. Метод принимает в теле номер читателя и ID книг, которые нужно удалить.
+        /// </summary>
+        /// <returns>HTTP200</returns>
+        [HttpPost]
+        [Route("Circulation/DeleteFromBasket")]
+        public HttpResponseMessage DeleteFromBasket()
+        {
+
+            CirculationInfo Circulation = new CirculationInfo();
+            BasketDelete request;
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            try
             {
-                result.Add(bi.Book);
+                request = JsonConvert.DeserializeObject<BasketDelete>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
+            try
+            {
+                Circulation.DeleteFromBasket(request);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError("G001", Request);
+            }
+            return ALISResponseFactory.CreateResponse(Request);
+        }
+
+
+        /// <summary>
+        /// Получает заказы читателя и их статусы. Описание книги и её экземпляры включено в объект заказа.
+        /// </summary>
+        /// <param name="ReaderId">Номер читательского билета</param>
+        /// <returns>Заказы читателя</returns>
+        [HttpGet]
+        [Route("Circulation/Orders/{ReaderId}")]
+        [ResponseType(typeof(List<OrderInfo>))]
+        public HttpResponseMessage Orders([Description("Номер чит билета")]int ReaderId)
+        {
+            CirculationInfo Circulation = new CirculationInfo();
+            List<OrderInfo> result = new List<OrderInfo>();
+            try
+            {
+                result = Circulation.GetOrders(ReaderId);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
             return ALISResponseFactory.CreateResponse(result, Request);
         }
 
         /// <summary>
-        /// Получает заказы читателя и их статусы
+        /// Получает заказ по номеру. Описание книги и её экземпляры включено в объект заказа.
         /// </summary>
-        /// <param name="idReader">Номер читательского билета</param>
-        /// <returns>Заказы читателя</returns>
+        /// <param name="OrderId">Номер заказа</param>
+        /// <returns>Заказ читателя</returns>
         [HttpGet]
-        [Route("Circulation/Orders/{idReader}")]
-        [ResponseType(typeof(List<BookSimpleView>))]
-        public HttpResponseMessage Orders([Description("Номер чит билета")]int idReader)
+        [Route("Circulation/Orders/ById/{OrderId}")]
+        public HttpResponseMessage OrdersById(int OrderId)
         {
-
             CirculationInfo Circulation = new CirculationInfo();
-            List<OrderInfo> result = new List<OrderInfo>();
-            List<BasketInfo> basket;
+            OrderInfo result = new OrderInfo();
             try
             {
-                result = Circulation.GetOrders(idReader);
+                result = Circulation.GetOrder(OrderId);
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.NotFound);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
-            //foreach (BasketInfo bi in basket)
-            //{
-            //    result.Add(bi.Book);
-            //}
-
             return ALISResponseFactory.CreateResponse(result, Request);
         }
 
+
+        /// <summary>
+        /// Получает историю заказов читателя. Описание книги и её экземпляры включено в объект истории.
+        /// </summary>
+        /// <param name="ReaderId">Номер читательского билета</param>
+        /// <returns>Заказы читателя</returns>
+        [HttpGet]
+        [Route("Circulation/OrdersHistory/{ReaderId}")]
+        [ResponseType(typeof(List<OrderHistoryInfo>))]
+        public HttpResponseMessage OrdersHistory([Description("Номер чит билета")]int ReaderId)
+        {
+            CirculationInfo Circulation = new CirculationInfo();
+            List<OrderHistoryInfo> result = new List<OrderHistoryInfo>();
+            try
+            {
+                result = Circulation.GetOrdersHistory(ReaderId);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
+            return ALISResponseFactory.CreateResponse(result, Request);
+        }
+
+        /// <summary>
+        /// Помещает заказ в историю.
+        /// </summary>
+        /// <param name="OrderId">Id заказа</param>
+        [HttpPost]
+        [Route("Circulation/MoveOrderToHistory/{OrderId}")]
+        public HttpResponseMessage MoveOrderToHistory(int OrderId)
+        {
+            CirculationInfo Circulation = new CirculationInfo();
+            try
+            {
+                Circulation.DeleteOrder(OrderId);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
+            return ALISResponseFactory.CreateResponse(Request);
+        }
+
+        /// <summary>
+        /// Продлевает заказ.
+        /// </summary>
+        /// <param name="OrderId">Id заказа</param>
+        [HttpPost]
+        [Route("Circulation/ProlongOrder/{OrderId}")]
+        public HttpResponseMessage ProlongOrder(int OrderId)
+        {
+            CirculationInfo Circulation = new CirculationInfo();
+            try
+            {
+                Circulation.ProlongOrder(OrderId);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
+            return ALISResponseFactory.CreateResponse(Request);
+        }
+
+        // возможные действия вошли в корзину не надо отдельного метода.
+        ///// <summary>
+        ///// Выдаёт варианты действия с книгой. Их всего 4: Выдать на дом, выдать в зал, Выдать электронную копию и действия невозможны.
+        ///// </summary>
+        ///// <param name="idReader">Номер читательского билета</param>
+        ///// <returns>Варианты действий читателя с книгой</returns>
+        //[HttpPost]
+        //[Route("Circulation/AcceptableActions")]
+        //[ResponseType(typeof(List<BookSimpleView>))]
+        //public HttpResponseMessage AcceptableActions()
+        //{
+        //    //получить массив ID книг и номер читателя
+        //    List<string> result = new List<string>();
+        //    try
+        //    {
+        //        //возвратить возможные действия с книгой для этого читателя
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+        //    }
+        //    return ALISResponseFactory.CreateResponse(result, Request);
+        //}
 
         /// <summary>
         /// Вставить в персональную корзину читателя список id книг. Метод нужно вызывать после авторизации.
@@ -95,7 +224,7 @@ namespace ALISAPI.Controllers
             }
             catch
             {
-                return ALISErrorFactory.CreateError("G001", Request, HttpStatusCode.BadRequest);
+                return ALISErrorFactory.CreateError("G001", Request);
             }
 
             CirculationInfo Circulation = new CirculationInfo();
@@ -107,11 +236,44 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError(ex.Message, Request, HttpStatusCode.InternalServerError);
+                return ALISErrorFactory.CreateError(ex.Message, Request);
             }
             return ALISResponseFactory.CreateResponse(Request);
         }
 
+        /// <summary>
+        /// Сделать заказ на выдачу книги.
+        /// </summary>
+        /// <returns>HTTP204</returns>
+        [HttpPost]
+        [Route("Circulation/Order")]
+        //[ResponseType(typeof(ReaderInfo))]
+        public HttpResponseMessage Order()
+        {
+            string JSONRequest = Request.Content.ReadAsStringAsync().Result;
+            MakeOrder request;
+            try
+            {
+                request = JsonConvert.DeserializeObject<MakeOrder>(JSONRequest, ALISSettings.ALISDateFormatJSONSettings);
+            }
+            catch
+            {
+                return ALISErrorFactory.CreateError("G001", Request);
+            }
+
+            CirculationInfo Circulation = new CirculationInfo();
+
+
+            try
+            {
+                Circulation.MakeOrder(request);
+            }
+            catch (Exception ex)
+            {
+                return ALISErrorFactory.CreateError(ex.Message, Request);
+            }
+            return ALISResponseFactory.CreateResponse(Request);
+        }
 
 
 

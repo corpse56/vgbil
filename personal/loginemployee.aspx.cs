@@ -21,6 +21,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Utilities;
 using LibflClassLibrary.Readers;
+using LibflClassLibrary.BJUsers;
 
 public partial class loginemployee : System.Web.UI.Page
 {
@@ -52,7 +53,7 @@ public partial class loginemployee : System.Web.UI.Page
 /// 
 /// ѕозвол€ет получить €зык ввода дл€ любого активного окна в любой момент времени.
 /// 
-public static class CurrentCultureInfo
+    public static class CurrentCultureInfo
 {
     #region Fields & Properties
     private static int lpdwProcessId;
@@ -129,237 +130,234 @@ public static class CurrentCultureInfo
     }
 }
 
-        Reader CurReader;
-        string litres = "";
-        protected void Page_Load(object sender, EventArgs e)
+    Reader CurReader;
+    string litres = "";
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        //Label1.Text = "”важаемые читатели! ѕо техническим причинам Ѕиблиотека временно приостановит обслуживание читателей с 26 декабр€ 2018 года и до 26 марта 2019 года. <a href = \"https://libfl.ru/ru/news/inostranka-ogranichit-obsluzhivanie-chitateley-do-konca-yanvarya-2019-goda\">ѕодробности.</a>";
+
+        //mname == "VGBIL-OPAC";
+        //if (Server.MachineName == "VGBIL-OPAC")
+        if (Server.MachineName == "VGBIL-OPAC")
         {
+            Panel1.Visible = true;
 
-
-
-            //mname == "VGBIL-OPAC";
-            //if (Server.MachineName == "VGBIL-OPAC")
-            if (Server.MachineName == "VGBIL-OPAC")
-            {
-                Panel1.Visible = true;
-
-            }
-            CurReader = new Reader("",Request["id"]);
-            if ((Request["litres"] == null) || (Request["litres"] == "0"))
-            {
-                litres = "0";
-            }
-            if (Request["litres"] == "1")
-            {
-                litres = "1";
-            }
-            MoveToHistoryEL(CurReader);
-            HyperLink2.NavigateUrl = "http://opac.libfl.ru/WebRemoteReg/Default.aspx?id="+Request["id"];
-            if (!Page.IsPostBack)
-            {
-                string f = System.AppDomain.CurrentDomain.BaseDirectory;
-                Login1.PasswordRecoveryUrl = "~/PassRec_ChooseT.aspx?id=" + Request["id"];
-                Login1.Focus();
-            }
         }
-
-
-        protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
+        CurReader = new Reader("",Request["id"]);
+        if ((Request["litres"] == null) || (Request["litres"] == "0"))
         {
-            SqlConnection.ClearAllPools();
-            SqlDataAdapter DA;
-            string RedirectUrl = "";
+            litres = "0";
+        }
+        if (Request["litres"] == "1")
+        {
+            litres = "1";
+        }
+        MoveToHistoryEL(CurReader);
+        HyperLink2.NavigateUrl = "http://opac.libfl.ru/WebRemoteReg/Default.aspx?id="+Request["id"];
+        if (!Page.IsPostBack)
+        {
+            string f = System.AppDomain.CurrentDomain.BaseDirectory;
+            Login1.PasswordRecoveryUrl = "~/PassRec_ChooseT.aspx?id=" + Request["id"];
+            Login1.Focus();
+        }
+    }
+
+
+    protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
+    {
+        SqlConnection.ClearAllPools();
+        SqlDataAdapter DA;
+        string RedirectUrl = "";
 
 
         //дл€ входа под любым читателем. не забывать закомментироват
-        //CurReader.ID = "167870";
-        //ReaderInfo rrr = ReaderInfo.GetReader(167870);
-        //CurReader.ReaderType = 0;
+        //CurReader.ID = "230911";
+        //ReaderInfo rrr = ReaderInfo.GetReader(230911);
+        //CurReader.ReaderType = 1;
         //FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
         //RedirectWithCookie("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + CurReader.ReaderType + "&litres=" + litres, CurReader);
         //дл€ входа под любым читателем. не забывать закомментироват
 
 
         if (RadioButton2.Checked)//сотрудник дл€ ƒѕ
+        {
+            BJUserInfo bjUser = BJUserInfo.GetUserByLogin(Login1.UserName.ToLower(), "BJVVV");
+
+                
+            //DA = new SqlDataAdapter();
+            //DA.SelectCommand = new SqlCommand();
+            //DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/BJVVV"));
+            //DA.SelectCommand.Parameters.Add("login", SqlDbType.NVarChar);
+            //DA.SelectCommand.Parameters.Add("pass", SqlDbType.NVarChar);
+            //DA.SelectCommand.Parameters["login"].Value = Login1.UserName.ToLower();
+            //DA.SelectCommand.Parameters["pass"].Value = Login1.Password.ToLower();
+
+
+
+            //DA.SelectCommand.CommandText = "select USERS.ID id,USERS.NAME uname,dpt.NAME dname from BJVVV..USERS " +
+            //                                " join BJVVV..LIST_8 dpt on USERS.DEPT = dpt.ID where lower([LOGIN]) = @login and lower(PASSWORD) = @pass";
+            ////DA.SelectCommand.CommandText = "select USERS.ID id,USERS.NAME uname,dpt.NAME dname from BJVVV..USERS " +
+            ////                               " join BJVVV..LIST_8 dpt on USERS.DEPT = dpt.ID where lower([LOGIN]) = 'admin'";
+
+            //DataSet usr = new DataSet();
+            //int i = DA.Fill(usr);
+            //DA.SelectCommand.Connection.Close();
+
+            if (bjUser != null)
             {
-
-                DA = new SqlDataAdapter();
-                DA.SelectCommand = new SqlCommand();
-                DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/BJVVV"));
-                DA.SelectCommand.Parameters.Add("login", SqlDbType.NVarChar);
-                DA.SelectCommand.Parameters.Add("pass", SqlDbType.NVarChar);
-                DA.SelectCommand.Parameters["login"].Value = Login1.UserName.ToLower();
-                DA.SelectCommand.Parameters["pass"].Value = Login1.Password.ToLower();
-
-
-
-                DA.SelectCommand.CommandText = "select USERS.ID id,USERS.NAME uname,dpt.NAME dname from BJVVV..USERS " +
-                                               " join BJVVV..LIST_8 dpt on USERS.DEPT = dpt.ID where lower([LOGIN]) = @login and lower(PASSWORD) = @pass";
-                //DA.SelectCommand.CommandText = "select USERS.ID id,USERS.NAME uname,dpt.NAME dname from BJVVV..USERS " +
-                //                               " join BJVVV..LIST_8 dpt on USERS.DEPT = dpt.ID where lower([LOGIN]) = 'admin'";
-
-                DataSet usr = new DataSet();
-                int i = DA.Fill(usr);
-                if (i == 0)
-                {//нет такого сотрудника
-
-                    //   OleDA.SelectCommand.CommandText = "select * from MAIN where NumberSC = " + Login1.UserName + " and Password = '" + Login1.Password + "'";
-                }
-                DA.SelectCommand.Connection.Close();
-                //FormsIdentity d = new FormsIdentity();
-
-                if (i > 0)
-                {
-                    CurReader.ID = usr.Tables[0].Rows[0]["ID"].ToString();
-                    CurReader.SetReaderType(2);
-                    FormsAuthentication.RedirectFromLoginPage(Login1.UserName, false);
-                    MoveToHistory();
-                    Response.Redirect("default.aspx" + "?id=" + CurReader.idSession +"&type=2");
-                }
+                Session.Add("bjUser", bjUser);
+                CurReader.ID = bjUser.Id.ToString();
+                CurReader.SetReaderType(2);
+                FormsAuthentication.RedirectFromLoginPage(Login1.UserName, false);
+                MoveToHistory();
+                Response.Redirect("SelectRole.aspx?EmpId=" + CurReader.ID + "&type=2&id=" + CurReader.idSession);
+                //Response.Redirect("default.aspx" + "?id=" + CurReader.idSession + "&type=2");
             }
-            if (RadioButton1.Checked)//читатель.
+        }
+        if (RadioButton1.Checked)//читатель.
+        {
+            DA = new SqlDataAdapter();
+            DA.SelectCommand = new SqlCommand();
+            DA.SelectCommand.Parameters.Add("login", SqlDbType.Int);
+            DA.SelectCommand.Parameters.Add("pass", SqlDbType.NVarChar);
+
+            DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/BJVVV"));
+            UInt64 res = 9999999999999999999;
+            Int32 login;
+
+
+            DataSet usr = new DataSet();
+            int i;
+            if (!UInt64.TryParse(Login1.UserName,out res))//ввели email типа. не провер€етс€ на валидность ввода, а просто ищетс€ то, что ввели в колонке Email
             {
-                DA = new SqlDataAdapter();
-                DA.SelectCommand = new SqlCommand();
-                DA.SelectCommand.Parameters.Add("login", SqlDbType.Int);
-                DA.SelectCommand.Parameters.Add("pass", SqlDbType.NVarChar);
+                //читател€ нет ни по номеру ни по социалке. ищем по email
+                DA.SelectCommand.Parameters.Add("Email", SqlDbType.NVarChar);
 
-                DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/BJVVV"));
-                UInt64 res = 9999999999999999999;
-                Int32 login;
+                DA.SelectCommand.Parameters["Email"].Value = Login1.UserName;
+                DA.SelectCommand.Parameters["login"].Value = 1;
+                DA.SelectCommand.Parameters["pass"].Value = Login1.UserName;
 
+                DA.SelectCommand.CommandText = "select * from Readers..Main " +
+                                            " where [Email] = @Email ";
 
-                DataSet usr = new DataSet();
-                int i;
-                if (!UInt64.TryParse(Login1.UserName,out res))//ввели email типа. не провер€етс€ на валидность ввода, а просто ищетс€ то, что ввели в колонке Email
+                usr = new DataSet();
+                i = DA.Fill(usr);
+
+                for (int j = 0; j < i; j++)//так как email повтор€етс€ (это временно), то искать нужно по всем.
                 {
-                    //читател€ нет ни по номеру ни по социалке. ищем по email
-                    DA.SelectCommand.Parameters.Add("Email", SqlDbType.NVarChar);
-
-                    DA.SelectCommand.Parameters["Email"].Value = Login1.UserName;
-                    DA.SelectCommand.Parameters["login"].Value = 1;
-                    DA.SelectCommand.Parameters["pass"].Value = Login1.UserName;
-
-                    DA.SelectCommand.CommandText = "select * from Readers..Main " +
-                                               " where [Email] = @Email ";
-
-                    usr = new DataSet();
-                    i = DA.Fill(usr);
-
-                    for (int j = 0; j < i; j++)//так как email повтор€етс€ (это временно), то искать нужно по всем.
-                    {
-                        DA.SelectCommand.Parameters["Email"].Value = usr.Tables[0].Rows[0]["Email"].ToString();
-                        string pass = HashPass(Login1.Password, usr.Tables[0].Rows[0]["WordReg"].ToString());
-                        DA.SelectCommand.Parameters["pass"].Value = pass;
-
-
-                        DA.SelectCommand.CommandText = "select * from Readers..Main where Email = @Email and Password = @pass";
-                        //DataSet usr = new DataSet();
-                        i = DA.Fill(usr, "t");
-                        if (i == 0)//email не найден
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            CurReader.ID = usr.Tables["t"].Rows[0]["NumberReader"].ToString();
-                            int rtype = Convert.ToInt32(usr.Tables["t"].Rows[0]["TypeReader"]);
-                            if (rtype == 0)
-                            {
-                                CurReader.SetReaderType(0);
-                            }
-                            else
-                            {
-                                CurReader.SetReaderType(1);
-                            }
-                            if ((CurReader.idSession != null) && (CurReader.idSession != string.Empty))
-                                InsertSession(CurReader);
-                            FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
-                            //Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type="+rtype.ToString()+"&litres=" + litres);
-                            RedirectUrl = GetRedirectURL();
-                            RedirectWithCookie(RedirectUrl, CurReader);
-
-                        }
-                    }
-
-                    return;
-                }
-                else if (Int32.TryParse(Login1.UserName.ToLower(), out login))//ввели номер читател€
-                {
-                    DA.SelectCommand.Parameters["login"].Value = login;
-                    DA.SelectCommand.Parameters["pass"].Value = Login1.Password;
-
-                    DA.SelectCommand.CommandText = "select * from Readers..Main " +
-                                               " where [NumberReader] = @login ";
-
-                    usr = new DataSet();
-                    i = DA.Fill(usr);
-                    if (i == 0)
-                    {//нет такого читател€
-                        return;
-                    }
-
+                    DA.SelectCommand.Parameters["Email"].Value = usr.Tables[0].Rows[0]["Email"].ToString();
                     string pass = HashPass(Login1.Password, usr.Tables[0].Rows[0]["WordReg"].ToString());
                     DA.SelectCommand.Parameters["pass"].Value = pass;
 
 
-                    //DA.SelectCommand.CommandText = "select * from Readers.dbo.Main where [NumberReader] = @login";
-                    DA.SelectCommand.CommandText = "select * from Readers.dbo.Main where [NumberReader] = @login and PASSWORD = @pass";
-
-                    usr = new DataSet();
+                    DA.SelectCommand.CommandText = "select * from Readers..Main where Email = @Email and Password = @pass";
+                    //DataSet usr = new DataSet();
                     i = DA.Fill(usr, "t");
-                }
-                else//ввели номер социалки
-                {
-
-                    DA.SelectCommand.Parameters.Add("login_sc", SqlDbType.NVarChar);
-                    DA.SelectCommand.Parameters["login_sc"].Value = Login1.UserName.ToLower();
-                    DA.SelectCommand.Parameters["pass"].Value = Login1.Password;
-                    DA.SelectCommand.Parameters["login"].Value = 0;
-                    
-                    DA.SelectCommand.CommandText = "select * from Readers..Main " +
-                                              " where [NumberSC] = @login_sc ";
-
-                    usr = new DataSet();
-                    i = DA.Fill(usr);
-                    if (i == 0)
-                    {//нет такого читател€
-                        return;
-                    }
-
-                    string pass = HashPass(Login1.Password, usr.Tables[0].Rows[0]["WordReg"].ToString());
-                    DA.SelectCommand.Parameters["pass"].Value = pass;
-
-
-                    DA.SelectCommand.CommandText = "select * from Readers..Main where NumberSC = @login_sc and Password = @pass";
-                    usr = new DataSet();
-                    i = DA.Fill(usr, "t");
-                }
-
-                DA.SelectCommand.Connection.Close();
-
-                if (i > 0)
-                {
-                    CurReader.ID = usr.Tables["t"].Rows[0]["NumberReader"].ToString();
-                    int rtype = Convert.ToInt32(usr.Tables["t"].Rows[0]["TypeReader"]);
-                    if (rtype == 0)
+                    if (i == 0)//email не найден
                     {
-                        CurReader.SetReaderType(0);
+                        continue;
                     }
                     else
                     {
-                        CurReader.SetReaderType(1);
+                        CurReader.ID = usr.Tables["t"].Rows[0]["NumberReader"].ToString();
+                        int rtype = Convert.ToInt32(usr.Tables["t"].Rows[0]["TypeReader"]);
+                        if (rtype == 0)
+                        {
+                            CurReader.SetReaderType(0);
+                        }
+                        else
+                        {
+                            CurReader.SetReaderType(1);
+                        }
+                        if ((CurReader.idSession != null) && (CurReader.idSession != string.Empty))
+                            InsertSession(CurReader);
+                        FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
+                        //Response.Redirect("persacc.aspx" + "?id=" + CurReader.idSession + "&type="+rtype.ToString()+"&litres=" + litres);
+                        RedirectUrl = GetRedirectURL();
+                        RedirectWithCookie(RedirectUrl, CurReader);
+
                     }
-                    //CurReader.idSession = CreateSession();
-                    if ((CurReader.idSession != null) && (CurReader.idSession != string.Empty))
-                        InsertSession(CurReader);
-                    FormsAuthentication.RedirectFromLoginPage(CurReader.ID, true);
-
-                    RedirectUrl = GetRedirectURL();
-                    RedirectWithCookie(RedirectUrl, CurReader);
-
                 }
+
+                return;
+            }
+            else if (Int32.TryParse(Login1.UserName.ToLower(), out login))//ввели номер читател€
+            {
+                DA.SelectCommand.Parameters["login"].Value = login;
+                DA.SelectCommand.Parameters["pass"].Value = Login1.Password;
+
+                DA.SelectCommand.CommandText = "select * from Readers..Main " +
+                                            " where [NumberReader] = @login ";
+
+                usr = new DataSet();
+                i = DA.Fill(usr);
+                if (i == 0)
+                {//нет такого читател€
+                    return;
+                }
+
+                string pass = HashPass(Login1.Password, usr.Tables[0].Rows[0]["WordReg"].ToString());
+                DA.SelectCommand.Parameters["pass"].Value = pass;
+
+
+                //DA.SelectCommand.CommandText = "select * from Readers.dbo.Main where [NumberReader] = @login";
+                DA.SelectCommand.CommandText = "select * from Readers.dbo.Main where [NumberReader] = @login and PASSWORD = @pass";
+
+                usr = new DataSet();
+                i = DA.Fill(usr, "t");
+            }
+            else//ввели номер социалки
+            {
+
+                DA.SelectCommand.Parameters.Add("login_sc", SqlDbType.NVarChar);
+                DA.SelectCommand.Parameters["login_sc"].Value = Login1.UserName.ToLower();
+                DA.SelectCommand.Parameters["pass"].Value = Login1.Password;
+                DA.SelectCommand.Parameters["login"].Value = 0;
+                    
+                DA.SelectCommand.CommandText = "select * from Readers..Main " +
+                                            " where [NumberSC] = @login_sc ";
+
+                usr = new DataSet();
+                i = DA.Fill(usr);
+                if (i == 0)
+                {//нет такого читател€
+                    return;
+                }
+
+                string pass = HashPass(Login1.Password, usr.Tables[0].Rows[0]["WordReg"].ToString());
+                DA.SelectCommand.Parameters["pass"].Value = pass;
+
+
+                DA.SelectCommand.CommandText = "select * from Readers..Main where NumberSC = @login_sc and Password = @pass";
+                usr = new DataSet();
+                i = DA.Fill(usr, "t");
+            }
+
+            DA.SelectCommand.Connection.Close();
+
+            if (i > 0)
+            {
+                CurReader.ID = usr.Tables["t"].Rows[0]["NumberReader"].ToString();
+                int rtype = Convert.ToInt32(usr.Tables["t"].Rows[0]["TypeReader"]);
+                if (rtype == 0)
+                {
+                    CurReader.SetReaderType(0);
+                }
+                else
+                {
+                    CurReader.SetReaderType(1);
+                }
+                //CurReader.idSession = CreateSession();
+                if ((CurReader.idSession != null) && (CurReader.idSession != string.Empty))
+                    InsertSession(CurReader);
+                FormsAuthentication.RedirectFromLoginPage(CurReader.ID, true);
+
+                RedirectUrl = GetRedirectURL();
+                RedirectWithCookie(RedirectUrl, CurReader);
+
             }
         }
+    }
 
         private string GetRedirectURL()
         {
@@ -631,7 +629,7 @@ public static class CurrentCultureInfo
         {
             if (RadioButton1.Checked)
             {
-                Login1.UserNameLabelText = "Ќомер читательского билета, email или номер социальной карты*: ";
+                Login1.UserNameLabelText = "Ќомер читательского билета или email*: ";
             }
             if (RadioButton3.Checked)
             {
@@ -647,7 +645,7 @@ public static class CurrentCultureInfo
         {
             if (RadioButton1.Checked)
             {
-                Login1.UserNameLabelText = "Ќомер читательского билета, email или номер социальной карты*: ";
+                Login1.UserNameLabelText = "Ќомер читательского билета или email*: ";
             }
             if (RadioButton3.Checked)
             {

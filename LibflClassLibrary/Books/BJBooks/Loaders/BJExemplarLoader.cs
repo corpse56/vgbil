@@ -64,5 +64,11 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             }
             return listResult;
         }
+
+        internal bool IsExistsDigitalCopy(string BookId)
+        {
+            DataTable table = dbWrapper.IsExistsDigitalCopy(BookId);
+            return (table.Rows.Count == 0)? false : true;
+        }
     }
 }

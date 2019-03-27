@@ -93,110 +93,45 @@ namespace WriteOff
         }
         private void bMakeActForYear_Click(object sender, EventArgs e)
         {
-            if (comboBox1.Text == string.Empty)
-            {
-                MessageBox.Show("Выберите отдел фондодержателя!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            if (comboBox2.Text == string.Empty)
-            {
-                MessageBox.Show("Выберите год!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            KeyValuePair<string, string> item = (KeyValuePair<string, string>)comboBox3.SelectedItem;
-            string ActNumberSort = item.Key.ToString();
-            string ActNumber = item.Value.ToString();
-            ActNumber = "Абонемент";
-            using (ExcelWork excel = new ExcelWork(ActNumber))
-            {
-                try
-                {
-                    excel.Init();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    return;
-                }
-                List<BJExemplarInfo> exemplars = wi.GetBooksPerYear(Convert.ToInt32(comboBox2.SelectedItem), "АБ");
-                int RowIndex = 0;
-                int Cost = 0;
-                //foreach (BJBookInfo b in books)
-                {
-                    foreach (BJExemplarInfo exemplar in exemplars)
-                    {
-                        string check = exemplar.Fields["929$b"].ToString();
-                        if (exemplar.Fields["929$b"].ToString() != string.Empty)
-                        {
-                            //if (exemplar.Fields["929$b"].ToString() == ActNumber)
-                            {
-                                BJBookInfo b = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
-                                RowIndex++;
-                                excel.InsertExemplar(exemplar, b, RowIndex);
-                            }
-                        }
-                    }
-                }
-                excel.InsertDocumentHeader(RowIndex, comboBox1.Text, Cost);
-                MessageBox.Show("Формирование акта успешно завершено!");
-            }
-
+            List<BJExemplarInfo> Exemplars = wi.GetBooksPerYear(Convert.ToInt32(comboBox2.SelectedItem), "АБ");
+            string ActNumber = "Абонемент";
+            GenerateAct(Exemplars, ActNumber);
         }
         private void bMakeActPerYearOF_Click(object sender, EventArgs e)
         {
-            //2395322
-            BJExemplarInfo exemp = BJExemplarInfo.GetExemplarByIdData(14241077,"BJVVV");
-            BJBookInfo bk = BJBookInfo.GetBookInfoByPIN(exemp.IDMAIN, exemp.Fund);
-            if (comboBox1.Text == string.Empty)
-            {
-                MessageBox.Show("Выберите отдел фондодержателя!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            if (comboBox2.Text == string.Empty)
-            {
-                MessageBox.Show("Выберите год!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            KeyValuePair<string, string> item = (KeyValuePair<string, string>)comboBox3.SelectedItem;
-            string ActNumberSort = item.Key.ToString();
-            string ActNumber = item.Value.ToString();
-            ActNumber = "Основной фонд";
-            using (ExcelWork excel = new ExcelWork(ActNumber))
-            {
-                try
-                {
-                    excel.Init();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    return;
-                }
-                List<BJExemplarInfo> exemplars = wi.GetBooksPerYear(Convert.ToInt32(comboBox2.SelectedItem), "ОФ");
-                int RowIndex = 0;
-                int Cost = 0;
-                //foreach (BJBookInfo b in books)
-                {
-                    foreach (BJExemplarInfo exemplar in exemplars)
-                    {
-                        string check = exemplar.Fields["929$b"].ToString();
-                        if (exemplar.Fields["929$b"].ToString() != string.Empty)
-                        {
-                            //if (exemplar.Fields["929$b"].ToString() == ActNumber)
-                            {
-                                BJBookInfo b = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
-                                RowIndex++;
-                                excel.InsertExemplar(exemplar, b, RowIndex);
-                            }
-                        }
-                    }
-                }
-                excel.InsertDocumentHeader(RowIndex, comboBox1.Text, Cost);
-                MessageBox.Show("Формирование акта успешно завершено!");
-            }
-
+            List<BJExemplarInfo> Exemplars = wi.GetBooksPerYear(Convert.ToInt32(comboBox2.SelectedItem), "ОФ");
+            string ActNumber = "Основной фонд";
+            GenerateAct(Exemplars, ActNumber);
         }
         private void bAnotherFundholder_Click(object sender, EventArgs e)
+        {
+            List<BJExemplarInfo> Exemplars = wi.GetBooksPerYearAnotherFundholder(Convert.ToInt32(comboBox2.SelectedItem));
+            string ActNumber = "Другие фондодержатели";
+            GenerateAct(Exemplars, ActNumber);
+        }
+        private void bByYearInActNameOF_Click(object sender, EventArgs e)
+        {
+            List<BJExemplarInfo> Exemplars = wi.GetBooksPerYearInActNameOF(Convert.ToInt32(comboBox2.SelectedItem)-2000);
+            string ActNumber = "Основной фонд";
+            GenerateAct(Exemplars, ActNumber);
+
+        }
+        private void bByYearInActNameAB_Click(object sender, EventArgs e)
+        {
+            List<BJExemplarInfo> Exemplars = wi.GetBooksPerYearInActNameAB(Convert.ToInt32(comboBox2.SelectedItem) - 2000);
+            string ActNumber = "Абонемент";
+            GenerateAct(Exemplars, ActNumber);
+        }
+        private void bByYearInActNameAnotherFundholder_Click(object sender, EventArgs e)
+        {
+            List<BJExemplarInfo> Exemplars = wi.GetBooksPerYearInActNameAnotherFundholder(Convert.ToInt32(comboBox2.SelectedItem) - 2000);
+            string ActNumber = "Другие фондодержатели";
+            GenerateAct(Exemplars, ActNumber);
+        }
+
+
+
+        private void GenerateAct(List<BJExemplarInfo> Exemplars, string ActNumber)
         {
             if (comboBox1.Text == string.Empty)
             {
@@ -210,8 +145,6 @@ namespace WriteOff
             }
             KeyValuePair<string, string> item = (KeyValuePair<string, string>)comboBox3.SelectedItem;
             string ActNumberSort = item.Key.ToString();
-            string ActNumber = item.Value.ToString();
-            ActNumber = "Другие фондодержатели";
             using (ExcelWork excel = new ExcelWork(ActNumber))
             {
                 try
@@ -223,7 +156,7 @@ namespace WriteOff
                     MessageBox.Show(ex.Message);
                     return;
                 }
-                List<BJExemplarInfo> Exemplars = wi.GetBooksPerYearAnotherFundholder(Convert.ToInt32(comboBox2.SelectedItem));
+                
                 int RowIndex = 0;
                 int Cost = 0;
                 //foreach (BJBookInfo b in books)
@@ -247,7 +180,6 @@ namespace WriteOff
             }
 
         }
-
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {

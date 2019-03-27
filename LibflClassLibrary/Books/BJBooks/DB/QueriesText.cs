@@ -138,13 +138,24 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             get
             {
                 return " select * from " + this.Fund + "..DATAEXT A" +
-                        " left join " + this.Fund + "..DATAEXT B on A.IDDATA = B.IDDATA " +
-                        " left join " + this.Fund + "..DATAEXTPLAIN C on C.IDDATAEXT = B.ID " +
-                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and C.PLAIN = @inv" +
+                        //" left join " + this.Fund + "..DATAEXT B on A.IDDATA = B.IDDATA " +
+                        //" left join " + this.Fund + "..DATAEXTPLAIN C on C.IDDATAEXT = A.ID " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv" +
                         " and not exists (select 1 from " + this.Fund + "..DATAEXT C where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')";
             }
         }
-
+        
+        public string GET_CONVOLUTE_BY_INVENTORY_NUMBER
+        {
+            get
+            {
+                return " select * from " + this.Fund + "..DATAEXT A" +
+                        //" left join " + this.Fund + "..DATAEXT B on A.IDDATA = B.IDDATA " +
+                        //" left join " + this.Fund + "..DATAEXTPLAIN C on C.IDDATAEXT = A.ID " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv" +
+                        " and not exists (select 1 from " + this.Fund + "..DATAEXT C where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')";
+            }
+        }
 
         public string GET_HYPERLINK
         {
@@ -255,8 +266,12 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         {
             get
             {
-                return " select * from Reservation_O..Orders A " +
-                               " where IDDATA = @iddata and Status not in (8,10,11)";
+                return " select 1 from Reservation_O..Orders A " +
+                       " where IDDATA = @iddata and Status not in (8,10,11)" +
+                       " union all" +
+                       " select 1 from Reservation_R..ISSUED_OF where IDDATA = @iddata";
+                       //" union all " +
+                       //" select 1 from Circulation..Orders";
             }
         }
 
@@ -395,7 +410,40 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                 return "select * from BookAddInf..BookProject where IDBook = @IDMAIN and IDBase = " + ((this.Fund == "BJVVV") ? "1" : "2");
             }
         }
+
+        public string IS_EXISTS_DIGITAL_COPY
+        {
+            get
+            {
+                return "select 1 from " + this.Fund + "..DATAEXT where MNFIELD = 940 and MSFIELD = '$a' and IDMAIN = @IDMAIN";
+            }
+        }
+
+        public string GET_BJVVV_USER_BY_LOGIN
+        {
+            get
+            {
+                return  " select A.ID, A.LOGIN, A.HASH, B.IDROLE, B.IDDEPT DepId, C.ROLE, D.NAME DepName, A.NAME FIO " +
+                        " from " + this.Fund + "..USERS A " +
+                        " left join " + this.Fund + "..USERSTATUS B on A.ID = B.IDUSER " +
+                        " left join " + this.Fund + "..USERSROLE C on B.IDROLE = C.ID " +
+                        " left join " + this.Fund + "..LIST_8 D on B.IDDEPT = D.ID" +
+                        " where A.LOGIN = @login ";
+            }
+        }
+
+        public string GET_CIPHER
+        {
+            get
+            {
+                return "select cipher.PLAIN " +
+                    " from " + this.Fund + "..DATAEXT A " +
+                    " left join " + this.Fund + "..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 899 and B.MSFIELD = '$j' " +
+                    " left join " + this.Fund + "..DATAEXTPLAIN cipher on cipher.IDDATAEXT = B.ID " +
+                    " where A.IDMAIN = @idmain and A.MNFIELD = 899 and A.MSFIELD = '$b' and A.SORT = @fnd and cipher.PLAIN is not null";
+            }
+        }
     }
 
-   
+
 }

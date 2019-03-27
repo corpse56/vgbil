@@ -12,8 +12,8 @@ namespace LibflClassLibrary.ExportToVufind
         {
             get
             {
-                string connectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
-                //string connectionString = @"Data Source=127.0.0.1\SQL2008R2;Integrated Security=True;Connect Timeout=1200";
+                string connectionString = "Data Source=192.168.4.25,1443;Initial Catalog=BJVVV;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
+                //string connectionString = @"Data Source=127.0.0.1;Initial Catalog=BJVVV;Integrated Security=True;";
 
                 return connectionString;
             }
@@ -144,6 +144,18 @@ namespace LibflClassLibrary.ExportToVufind
                 //return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=alisapi;Pwd=api_alis_pwd;Database=libfl_oauth;SslMode=None";
             }
         }
+        public static string DevOauthMySqlConnectionString
+        {
+            get
+            {
+                //старый пароль до аварии
+                //return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=oauth;Pwd=oauthpwd;Database=oauth";
+                //новый пароль и пользователь. Доступ только с 80.250.173.142 и с моих локальных айпишников
+                return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=alis;Pwd=dibagura23s;Database=libfl_oauth;SslMode=None";
+                //return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=alisapi;Pwd=api_alis_pwd;Database=libfl_oauth;SslMode=None";
+                //return "Server=192.168.6.216;Port=3306;Character Set=utf8;Uid=alisapi;Pwd=api_alis_pwd;Database=libfl_oauth;SslMode=None";
+            }
+        }
 
 
 
@@ -161,5 +173,5 @@ namespace LibflClassLibrary.ExportToVufind
         //<add name="PasswordFileServer" providerName="System.Data.SqlClient" connectionString="Image_123Viewer"/>
 
     }
-    
+
 }

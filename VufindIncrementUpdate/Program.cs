@@ -20,7 +20,7 @@ namespace VufindIncrementUpdate
         private static Logger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
-            
+
             Program.LitresIncrementUpdate();
             Program.BJIncrementUpdate("BJVVV");
             Program.BJIncrementUpdate("REDKOSTJ");
@@ -35,6 +35,21 @@ namespace VufindIncrementUpdate
 
         static void BJIncrementUpdate(string Fund)
         {
+            ///////////////////////////////////////////////////////////////////////
+            //BJVuFindConverter converter1 = new BJVuFindConverter(Fund);
+
+            //BJDatabaseWrapper wrapper1 = new BJDatabaseWrapper(Fund);
+            //int IDMAIN1 = 909236;
+            //DataTable BJRecord1 = wrapper1.GetBJRecord(IDMAIN1);
+            //if (BJRecord1.Rows.Count == 0)
+            //{
+            //    return;
+            //}
+            //VufindDoc doc1 = converter1.CreateVufindDocument(IDMAIN1);
+            ///////////////////////////////////////////////////////////////////////
+
+
+
             logger.Info("Начало инкрементной загрузки "+Fund+"...");
             Console.WriteLine("Начало инкрементной загрузки " + Fund + "...");
             BJVufindIndexUpdater bj = new BJVufindIndexUpdater(@"catalog.libfl.ru", Fund);
@@ -104,24 +119,30 @@ namespace VufindIncrementUpdate
 
             //для отладки
             //UpdatedBooks = UpdatedBooks.Take(5).ToList();
-
-            foreach (IncrementStruct elt in UpdatedBooks)
+            try
             {
-                BJDatabaseWrapper wrapper = new BJDatabaseWrapper(Fund);
-                int IDMAIN = int.Parse(elt.Id.Substring(elt.Id.IndexOf("_")+1));
-                DataTable BJRecord =  wrapper.GetBJRecord(IDMAIN);
-                if (BJRecord.Rows.Count == 0)
+                foreach (IncrementStruct elt in UpdatedBooks)
                 {
-                    continue;
+                    BJDatabaseWrapper wrapper = new BJDatabaseWrapper(Fund);
+                    int IDMAIN = int.Parse(elt.Id.Substring(elt.Id.IndexOf("_") + 1));
+                    DataTable BJRecord = wrapper.GetBJRecord(IDMAIN);
+                    if (BJRecord.Rows.Count == 0)
+                    {
+                        continue;
+                    }
+                    doc = converter.CreateVufindDocument(IDMAIN);
+                    if (doc == null)
+                    {
+                        continue;
+                    }
+                    UpdatedBooksList.Add(doc);
                 }
-                doc = converter.CreateVufindDocument(IDMAIN);
-                if (doc == null)
-                {
-                    continue;
-                }
-                UpdatedBooksList.Add(doc);
             }
-
+            catch (Exception ex)
+            {
+                logger.Error("Формирование списка обновляемых записей завершилось неудачей.  \n" + ex.Message);
+                Console.WriteLine("Error...");
+            }
 
 
             try

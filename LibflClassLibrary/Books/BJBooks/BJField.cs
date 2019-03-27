@@ -52,7 +52,7 @@ namespace LibflClassLibrary.Books.BJBooks
         public string MSFIELD { get; set; }
         public DateTime Created { get; set; }
         public DateTime Changed { get; set; }
-
+        public int IDINLIST { get; set; }
         public string FieldCode
         {
             get

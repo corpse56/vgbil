@@ -33,9 +33,17 @@
             this.ReadersAuthorize = new System.Windows.Forms.Button();
             this.ReadersGetByOauthToken = new System.Windows.Forms.Button();
             this.bChangePwd = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.bReadersPreregister = new System.Windows.Forms.Button();
             this.bInsertIntoBasket = new System.Windows.Forms.Button();
             this.bPreRegister = new System.Windows.Forms.Button();
+            this.IsBirthDateMatchReaderId = new System.Windows.Forms.Button();
+            this.SetPasswordLocalReader = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.bDeleteFromBasket = new System.Windows.Forms.Button();
+            this.bCirculationMakeOrder = new System.Windows.Forms.Button();
+            this.bFindAllAccessCodes = new System.Windows.Forms.Button();
+            this.bCirculationGetOrders = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -89,15 +97,15 @@
             this.bChangePwd.UseVisualStyleBackColor = true;
             this.bChangePwd.Click += new System.EventHandler(this.bChangePwd_Click);
             // 
-            // button1
+            // bReadersPreregister
             // 
-            this.button1.Location = new System.Drawing.Point(365, 260);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.bReadersPreregister.Location = new System.Drawing.Point(14, 454);
+            this.bReadersPreregister.Name = "bReadersPreregister";
+            this.bReadersPreregister.Size = new System.Drawing.Size(278, 34);
+            this.bReadersPreregister.TabIndex = 7;
+            this.bReadersPreregister.Text = "Readers/Preregister";
+            this.bReadersPreregister.UseVisualStyleBackColor = true;
+            this.bReadersPreregister.Click += new System.EventHandler(this.bReadersPreregister_Click);
             // 
             // bInsertIntoBasket
             // 
@@ -119,14 +127,102 @@
             this.bPreRegister.UseVisualStyleBackColor = true;
             this.bPreRegister.Click += new System.EventHandler(this.bPreRegister_Click);
             // 
+            // IsBirthDateMatchReaderId
+            // 
+            this.IsBirthDateMatchReaderId.Location = new System.Drawing.Point(14, 335);
+            this.IsBirthDateMatchReaderId.Name = "IsBirthDateMatchReaderId";
+            this.IsBirthDateMatchReaderId.Size = new System.Drawing.Size(278, 51);
+            this.IsBirthDateMatchReaderId.TabIndex = 10;
+            this.IsBirthDateMatchReaderId.Text = "Readers/IsBirthDateMatchReaderId";
+            this.IsBirthDateMatchReaderId.UseVisualStyleBackColor = true;
+            this.IsBirthDateMatchReaderId.Click += new System.EventHandler(this.IsBirthDateMatchReaderId_Click);
+            // 
+            // SetPasswordLocalReader
+            // 
+            this.SetPasswordLocalReader.Location = new System.Drawing.Point(14, 392);
+            this.SetPasswordLocalReader.Name = "SetPasswordLocalReader";
+            this.SetPasswordLocalReader.Size = new System.Drawing.Size(278, 56);
+            this.SetPasswordLocalReader.TabIndex = 11;
+            this.SetPasswordLocalReader.Text = "Readers/SetPasswordLocalReader";
+            this.SetPasswordLocalReader.UseVisualStyleBackColor = true;
+            this.SetPasswordLocalReader.Click += new System.EventHandler(this.SetPasswordLocalReader_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(14, 541);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(278, 39);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_2);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(14, 494);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(278, 41);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
+            // bDeleteFromBasket
+            // 
+            this.bDeleteFromBasket.Location = new System.Drawing.Point(207, 14);
+            this.bDeleteFromBasket.Name = "bDeleteFromBasket";
+            this.bDeleteFromBasket.Size = new System.Drawing.Size(237, 35);
+            this.bDeleteFromBasket.TabIndex = 14;
+            this.bDeleteFromBasket.Text = "Circulation/DeleteFromBasket";
+            this.bDeleteFromBasket.UseVisualStyleBackColor = true;
+            this.bDeleteFromBasket.Click += new System.EventHandler(this.bDeleteFromBasket_Click);
+            // 
+            // bCirculationMakeOrder
+            // 
+            this.bCirculationMakeOrder.Location = new System.Drawing.Point(207, 55);
+            this.bCirculationMakeOrder.Name = "bCirculationMakeOrder";
+            this.bCirculationMakeOrder.Size = new System.Drawing.Size(237, 39);
+            this.bCirculationMakeOrder.TabIndex = 15;
+            this.bCirculationMakeOrder.Text = "Circulation/MakeOrder";
+            this.bCirculationMakeOrder.UseVisualStyleBackColor = true;
+            this.bCirculationMakeOrder.Click += new System.EventHandler(this.bCirculationMakeOrder_Click);
+            // 
+            // bFindAllAccessCodes
+            // 
+            this.bFindAllAccessCodes.Location = new System.Drawing.Point(239, 102);
+            this.bFindAllAccessCodes.Name = "bFindAllAccessCodes";
+            this.bFindAllAccessCodes.Size = new System.Drawing.Size(266, 56);
+            this.bFindAllAccessCodes.TabIndex = 16;
+            this.bFindAllAccessCodes.Text = "Все варианты статусов доступа для тестирования";
+            this.bFindAllAccessCodes.UseVisualStyleBackColor = true;
+            this.bFindAllAccessCodes.Click += new System.EventHandler(this.bFindAllAccessCodes_Click);
+            // 
+            // bCirculationGetOrders
+            // 
+            this.bCirculationGetOrders.Location = new System.Drawing.Point(239, 164);
+            this.bCirculationGetOrders.Name = "bCirculationGetOrders";
+            this.bCirculationGetOrders.Size = new System.Drawing.Size(257, 55);
+            this.bCirculationGetOrders.TabIndex = 17;
+            this.bCirculationGetOrders.Text = "Circulation/GetOrders";
+            this.bCirculationGetOrders.UseVisualStyleBackColor = true;
+            this.bCirculationGetOrders.Click += new System.EventHandler(this.bCirculationGetOrders_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.bCirculationGetOrders);
+            this.Controls.Add(this.bFindAllAccessCodes);
+            this.Controls.Add(this.bCirculationMakeOrder);
+            this.Controls.Add(this.bDeleteFromBasket);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.SetPasswordLocalReader);
+            this.Controls.Add(this.IsBirthDateMatchReaderId);
             this.Controls.Add(this.bPreRegister);
             this.Controls.Add(this.bInsertIntoBasket);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.bReadersPreregister);
             this.Controls.Add(this.bChangePwd);
             this.Controls.Add(this.ReadersGetByOauthToken);
             this.Controls.Add(this.ReadersAuthorize);
@@ -148,9 +244,17 @@
         private System.Windows.Forms.Button ReadersAuthorize;
         private System.Windows.Forms.Button ReadersGetByOauthToken;
         private System.Windows.Forms.Button bChangePwd;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bReadersPreregister;
         private System.Windows.Forms.Button bInsertIntoBasket;
         private System.Windows.Forms.Button bPreRegister;
+        private System.Windows.Forms.Button IsBirthDateMatchReaderId;
+        private System.Windows.Forms.Button SetPasswordLocalReader;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button bDeleteFromBasket;
+        private System.Windows.Forms.Button bCirculationMakeOrder;
+        private System.Windows.Forms.Button bFindAllAccessCodes;
+        private System.Windows.Forms.Button bCirculationGetOrders;
     }
 }
 

@@ -17,23 +17,25 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         public string Fund { get; set; }
         public string AFTable { get; set; }
         public Bibliojet BJQueries;
-
+        private string connectionString;
         public BJDatabaseWrapper(string fund)
         {
             this.Fund = fund;
             BJQueries = new Bibliojet(fund);
+            connectionString = AppSettings.ConnectionString; 
         }
        
 
         public DataTable GetBJRecord(int idmain)
         {
-            string connectionString = AppSettings.ConnectionString;
-            DataSet ds = new DataSet();
+            DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.SELECT_RECORD_QUERY, connection);
                 dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int ).Value = idmain;
-                return this.ExecuteSelectQuery(dataAdapter);
+                dataAdapter.Fill(table);
+                return table;
+                //return this.ExecuteSelectQuery(dataAdapter);
             }
         }
 
@@ -51,7 +53,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetIncrementUpdate()
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -62,7 +63,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetIncrementCovers()
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -71,9 +71,21 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        internal DataTable IsExistsDigitalCopy(string bookId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_EXISTS_DIGITAL_COPY, connection);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("IDMAIN", SqlDbType.Int).Value = BookBase.GetIDMAIN(bookId);
+                dataAdapter.Fill(table);
+                return table;
+            }
+
+        }
+
         internal DataTable GetIncrementDeleted()
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -84,7 +96,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable Clarify_10a(int iddata)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -96,7 +107,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable Clarify_517a(int iddata)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -106,9 +116,22 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        internal string GetCipher(string _899b, int iDMAIN)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_CIPHER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = iDMAIN;
+                dataAdapter.SelectCommand.Parameters.Add("fnd", SqlDbType.NVarChar).Value = _899b;
+                dataAdapter.Fill(table);
+                return (table.Rows.Count == 0) ? "" : table.Rows[0]["PLAIN"].ToString();
+            }
+
+        }
+
         internal DataTable Clarify_205a_1(int iddata)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -120,7 +143,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable Clarify_205a_2(int iddata)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -130,9 +152,9 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+
         internal DataTable Clarify_205a_3(int iddata)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -144,7 +166,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetElectronicExemplarAccessLevel(int IDMAIN,int IDProject)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -158,7 +179,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable Clarify_606a(int idchain)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -170,7 +190,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetIdDataOfAllExemplars(int idmain)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -182,7 +201,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetExemplar(int iddata)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -194,19 +212,29 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         
         internal DataTable GetExemplar(string InventoryNumber)
         {
-            string connectionString = AppSettings.ConnectionString;
-            DataSet ds = new DataSet();
+            DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_EXEMPLAR_BY_INVENTORY_NUMBER, connection);
                 dataAdapter.SelectCommand.Parameters.Add("inv", SqlDbType.NVarChar).Value = InventoryNumber;
-                return this.ExecuteSelectQuery(dataAdapter);
+                dataAdapter.Fill(table);
+                return table;
+            }
+        }
+        internal DataTable GetConvolute(string inventoryNumber)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_CONVOLUTE_BY_INVENTORY_NUMBER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("inv", SqlDbType.NVarChar).Value = inventoryNumber;
+                dataAdapter.Fill(table);
+                return table;
             }
         }
 
         internal DataTable GetHyperLink(int IDMAIN)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -218,7 +246,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetBookScanInfo(int IDMAIN)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {                
@@ -243,7 +270,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetAllIdmainWithImages()
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -254,7 +280,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetImage(int idmain)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -266,7 +291,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetParentIDMAIN(int ParentPIN)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -278,7 +302,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetMaxIDMAIN()
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -289,7 +312,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetTitle(int IDMAIN)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -301,7 +323,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetAFAllValues(string AFTable, int AFLinkId)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -314,7 +335,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetRTF(int IDMAIN)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -328,7 +348,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable IsAlligat(int IDDATA)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -340,7 +359,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable Clarify_101a(int IDINLIST)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -351,7 +369,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         }
         internal DataTable IsIssuedOrOrderedEmployee(int IDMAIN, int IDDATA)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -363,7 +380,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         }
         internal DataTable IsSelfIssuedOrOrderedEmployee(int IDDATA, int IDMAIN, int IdReader)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -377,7 +393,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable IsIssuedToReader(int iddata)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -389,7 +404,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetEmployeeStatus(int idmain)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -401,7 +415,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetLastIncrementDate()
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -413,7 +426,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal void SetLastIncrementDate(DateTime LastIncrement)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -427,7 +439,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetBusyElectronicExemplarCount(int Id)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -439,7 +450,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetNearestFreeDateForElectronicIssue(int Id)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -451,7 +461,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable IsOneDayPastAfterReturn(int IDMAIN, int IDREADER)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -464,7 +473,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable IsElectronicCopyIsuuedToReader(int IDMAIN, int IDREADER)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -477,7 +485,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable GetElectronicViewKeyForReader(int IDMAIN, int IDREADER)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -490,7 +497,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal DataTable IsElectronicCopyIssued(int IDMAIN)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -502,7 +508,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         internal void IssueElectronicCopyToReader(int IDMAIN, int IssuePeriodDays, string ViewKey, int IDREADER, TypeReader ReaderType)
         {
-            string connectionString = AppSettings.ConnectionString;
             DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

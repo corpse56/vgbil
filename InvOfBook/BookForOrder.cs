@@ -157,7 +157,7 @@ namespace BookForOrder
         {
             DataSet DS = new DataSet();
             SqlConnection con;// = new SqlConnection("Data Source=192.168.3.241;Initial Catalog=TECHNOLOG_VVV;Persist Security Info=True;User ID=Sasha;Password=Corpse536");
-            if (mname == "VGBIL-OPAC")//внешний опак
+            if ((mname == "VGBIL-OPAC") || (mname == "ADMINPC"))//внешний опак
             {
                 con = new SqlConnection(XmlConnections.GetConnection("/Connections/TechOut"));
             }
@@ -225,7 +225,7 @@ namespace BookForOrder
         {
             DataSet DS = new DataSet();
             SqlConnection con;// = new SqlConnection("Data Source=192.168.3.241;Initial Catalog=TECHNOLOG_VVV;Persist Security Info=True;User ID=Sasha;Password=Corpse536");
-            if (mname == "VGBIL-OPAC")//внешний опак
+            if ((mname == "VGBIL-OPAC") || (mname == "ADMINPC"))//внешний опак
             {
                 con = new SqlConnection(XmlConnections.GetConnection("/Connections/TechOut"));
             }

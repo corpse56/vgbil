@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using OposScanner_CCO;
+//using OposScanner_CCO;
 using System.Drawing.Printing;
 using System.Data.SqlClient;
 using Test1;

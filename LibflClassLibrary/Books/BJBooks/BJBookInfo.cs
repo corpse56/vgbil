@@ -18,6 +18,7 @@ using LibflClassLibrary.ExportToVufind.Vufind;
 using LibflClassLibrary.ExportToVufind.BJ;
 using LibflClassLibrary.ExportToVufind;
 using Utilities;
+using System.Diagnostics;
 
 /// <summary>
 /// Сводное описание для BookInfo
@@ -54,9 +55,10 @@ namespace LibflClassLibrary.Books.BJBooks
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetBJRecord(pin);
             BJBookInfo result = new BJBookInfo();
+            result.Id = $"{fund}_{pin}";
             result.ID = pin;
             result.Fund = fund;
-            BJExemplarInfo exemplar = new BJExemplarInfo(0);
+            //BJExemplarInfo exemplar = new BJExemplarInfo(0);
             int CurrentIdData = 0;
             foreach (DataRow row in table.Rows)
             {
@@ -64,7 +66,7 @@ namespace LibflClassLibrary.Books.BJBooks
                 {
                     if ((int)row["IDBLOCK"] == 270)//если есть гиперссылка
                     {
-                        result.DigitalCopy = new BJElectronicExemplarInfo(-1, fund);
+                         result.DigitalCopy = new BJElectronicExemplarInfo(pin, fund);
                     }
                     else
                     {
@@ -77,16 +79,15 @@ namespace LibflClassLibrary.Books.BJBooks
                     {
                         CurrentIdData = (int)row["IDDATA"];
                         result.Exemplars.Add(BJExemplarInfo.GetExemplarByIdData(CurrentIdData, fund));
-                        exemplar = new BJExemplarInfo((int)row["IDDATA"]);
-                        exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+                        //exemplar = new BJExemplarInfo((int)row["IDDATA"]);
+                        //exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
                     }
                     else
                     {
-                        exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+                        //exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
                     }
                 }
             }
-            
             table = dbw.GetRTF(pin);
             if (table.Rows.Count != 0)
             {
@@ -97,7 +98,12 @@ namespace LibflClassLibrary.Books.BJBooks
             }
             return result;
         }
-
+        public static BJBookInfo GetBookInfoByPIN(string FullPin)
+        {
+            string fund = FullPin.Substring(0, FullPin.IndexOf("_"));
+            int IDRecord = int.Parse(FullPin.Substring(FullPin.LastIndexOf("_") + 1));
+            return BJBookInfo.GetBookInfoByPIN(IDRecord, fund);
+        }
         public static BJBookInfo GetBookInfoByInventoryNumber(string inv, string fund)
         {
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);

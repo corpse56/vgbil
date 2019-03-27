@@ -19,6 +19,7 @@ using Itenso.Rtf.Support;
 using System.Web;
 using System.Configuration;
 using Newtonsoft.Json.Linq;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 
 public partial class persacc : System.Web.UI.Page
 {
@@ -67,6 +68,8 @@ public partial class persacc : System.Web.UI.Page
         
         DA = new SqlDataAdapter();
         DA.SelectCommand = new SqlCommand();
+        //Label14.Text = "Уважаемые читатели! По техническим причинам Библиотека временно приостановит обслуживание читателей с 26 декабря 2018 года и до 26 марта 2019 года. <a href = \"https://libfl.ru/ru/news/inostranka-ogranichit-obsluzhivanie-chitateley-do-konca-yanvarya-2019-goda\">Подробности.</a>";
+
         Label1.Text = "Личный кабинет читателя : " + reader.FIO;
         TabContainer1.ActiveTabIndex = 0;
         string ip = Server.MachineName;
@@ -147,13 +150,13 @@ public partial class persacc : System.Web.UI.Page
         //this.LangChang += new System.Windows.Forms.InputLanguageChangedEventHandler(persacc_LangChang);
 
         //SqlDataAdapter DA = new SqlDataAdapter();
-        
+
         DS = new DataSet();
         DA = new SqlDataAdapter();
         Con = new SqlConnection(XmlConnections.GetConnection("/Connections/ZakazO"));
-        switch (TabContainer1.ActiveTabIndex)
+        switch (TabContainer1.ActiveTab.ID)
         {
-            case 4://История выданных книг
+            case "TabPanel4"://История выданных книг
                 //основной фонд
                 DA.SelectCommand = new SqlCommand();
                 DA.SelectCommand.Connection = Con;
@@ -277,7 +280,7 @@ public partial class persacc : System.Web.UI.Page
                 FillISSUED_SCC_HST(DS.Tables["frm"]);
 
                 break;
-            case 3://выданные книги
+            case "TabPanel3"://выданные книги
                 //основной фонд
                 DA.SelectCommand = new SqlCommand();
                 DA.SelectCommand.Connection = Con;
@@ -383,17 +386,20 @@ public partial class persacc : System.Web.UI.Page
                 FillISSUED_SCC(DS.Tables["frm"]);
 
                 break;
-            case 1://электронные книги
+            case "TabPanel2"://электронные книги
 
-                FillEBOOK(GetEBOOKTable());
-
+                Label15.Text = "test";
+                //FillEBOOK(GetEBOOKTable());
+                DataTable tt = GetEBOOKTable();
+                FillEBOOK(tt);
+                Label15.Text = tt.Rows.Count.ToString();
                 break;
-            case 2://история электронные книги
+            case "TabPanel7"://история электронные книги
 
                 FillEBOOK_HST(GetEBOOK_HSTTable());
 
                 break;
-            case 0://начальная вкладка
+            case "TabPanel1"://начальная вкладка
                 if (BuildBasketTable(BasketTable))
                 {
                     Button1.Enabled = true;
@@ -405,10 +411,10 @@ public partial class persacc : System.Web.UI.Page
 
                 BuildOrdersTable(OrdersTable);
                 break;
-            case 5://история заказов. Вообще бесполезная вкладка
+            case "TabPanel6"://история заказов. Вообще бесполезная вкладка
                 BuildOrdHisTable(tORDHIS);
                 break;
-            case 6:
+            case "TabPanel8":
                 //TabContainer1_ActiveTabChanged(sender, e);
                 ShowLitRes();
                 break;
@@ -1828,6 +1834,7 @@ public partial class persacc : System.Web.UI.Page
         //    Label2.Visible = true;
         //else
         Label2.Visible = false;
+        Label15.Text = t.Rows.Count.ToString();
         tEBook.Rows.Clear();
         tEBook.BorderStyle = BorderStyle.Solid;
         tEBook.BorderWidth = 2;
@@ -1882,11 +1889,7 @@ public partial class persacc : System.Web.UI.Page
             tc.Text = ((DateTime)row["dret"]).ToString("dd.MM.yyyy");
             tr.Cells.Add(tc);
             tc = new TableCell();
-            //tc.Text = "<a href=\"http://80.250.173.145/viewer.aspx?pin=" + row["idm"].ToString() + "&idbase=1&idr=" + row["idr"].ToString()
-            //    + "&vkey=" + row["vkey"].ToString() + "\">Просмотр</a>";
-            //string HostName = System.Environment.MachineName;
             string HostName = HttpContext.Current.Server.MachineName;
-            //string HostName1 = Page.Server.MachineName;
             string ElBookViewerServer = "";
 
 
@@ -1894,7 +1897,8 @@ public partial class persacc : System.Web.UI.Page
             //HostName = "VGBIL-OPAC";
             if ((HostName == "VGBIL-OPAC") || (HostName == "ADMINPCAT"))
             {
-                bool IsExistsLQ = GetIsExistsLQ(row["idm"].ToString());
+                BJElectronicExemplarInfo electronicCopy = new BJElectronicExemplarInfo(Convert.ToInt32(row["idm"]), "BJVVV");
+                bool IsExistsLQ = electronicCopy.IsExistsLQ;
                 string redirectUrl = "";
                 if (IsExistsLQ)
                 {
@@ -1907,7 +1911,6 @@ public partial class persacc : System.Web.UI.Page
                 tc.Text = "<a href=\"" + redirectUrl + "?pin=" + row["idm"].ToString() + "&idbase=1&idr=" + row["idr"].ToString() + "&type=" + row["rtype"]
                     + "&vkey=" + HttpUtility.UrlEncode(row["vkey"].ToString()) + "\" Target = \"_blank\">Просмотр</a>";
 
-                //ElBookViewerServer = ConfigurationManager.AppSettings["ExternalElectronicBookViewer"];
             }
             else
             {
@@ -1922,7 +1925,7 @@ public partial class persacc : System.Web.UI.Page
             tc = new TableCell();
             LinkButton del3 = new LinkButton();
             del3.Text = "Сдать";
-            del3.ID = "eldel"+row["id"].ToString();
+            del3.ID = "eldel" + row["id"].ToString();
             del3.ForeColor = Color.Red;
             del3.Click += new EventHandler(del3_Click);
             tc.Controls.Add(del3);
@@ -2077,6 +2080,7 @@ public partial class persacc : System.Web.UI.Page
     //int at =-1 ;
     protected void TabContainer1_ActiveTabChanged(object sender, EventArgs e)
     {
+
         //if (TabContainer1.ActiveTabIndex == 6)
         //{
         //    at = 6;
@@ -2091,7 +2095,7 @@ public partial class persacc : System.Web.UI.Page
         //if (temp == false)
         {
             temp = true;
-            if (TabContainer1.ActiveTabIndex == 7)
+            if (TabContainer1.ActiveTab.ID == "TabPanel5")
             {
                 if ((reader.Session != string.Empty) && (reader.Session != null))
                     DeleteSession(reader);
@@ -2099,27 +2103,21 @@ public partial class persacc : System.Web.UI.Page
                 FormsAuthentication.SignOut();
                 Response.Redirect("loginemployee.aspx");
             }
-            if (TabContainer1.ActiveTabIndex == 3)//Выданные книги
-            {
-                //tISSUED
-            }
-            if (TabContainer1.ActiveTabIndex == 4)//История выданных книг
-            {
-
-            }
-            if (TabContainer1.ActiveTabIndex == 0)
-            {
-                //Session.Clear();
-                //Page_Load(sender, e);
-            }
-            if (TabContainer1.ActiveTabIndex == 6)
+            if (TabContainer1.ActiveTab.ID == "TabPanel8")
             {
                 ShowLitRes();
                 
             }
-            
+            //if (TabContainer1.ActiveTab.ID == "TabPanel2")
+            {
+                //FillEBOOK(GetEBOOKTable());
+                //Label15.Text = "TabPanel2";
+            }
+
+            //Label15.Text = "TabPanel2222";
+
         }
-        
+
     }
     private void ShowLitRes()
     {
@@ -2268,6 +2266,11 @@ public partial class persacc : System.Web.UI.Page
             }
             else
             {
+                //ScriptManager.RegisterClientScriptBlock(this, typeof(string), "isinv",
+                //    "<script language=\"javascript\" type=\"text/javascript\">alert('По техническим причинам заказ книг приостановлен до 26 марта 2019 года. Заказать можно только электронные копии.')</SCRIPT>",
+                //    false);
+                //continue;
+
                 if (!OrderingInv.mhr.Contains("Абонемент"))
                 {
                     switch (DaysBetween.Days)

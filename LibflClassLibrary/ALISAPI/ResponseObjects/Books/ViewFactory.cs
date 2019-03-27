@@ -1,10 +1,12 @@
-﻿using LibflClassLibrary.Books.BJBooks;
+﻿using LibflClassLibrary.Books;
+using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.ExportToVufind.BJ;
 using LibflClassLibrary.ExportToVufind.Vufind;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,23 +21,12 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             string fund = ID.Substring(0, ID.IndexOf("_"));
             int IDRecord = int.Parse(ID.Substring(ID.LastIndexOf("_")+1));
             BookSimpleView result = new BookSimpleView();
-            string str1 = "", str2 = "", str3 = "";
-            fund = string.Format("Здравствуйте, {0}! Доброго {1}","Александр","Утра");
-            fund = string.Format(str1, str2, str3);
             switch (fund)
             {
                 case "BJVVV":
-                    result = ViewFactory.GetBJ(IDRecord, fund);
-                    break;
                 case "REDKOSTJ":
-                    result = ViewFactory.GetBJ(IDRecord, fund);
-                    break;
                 case "BJACC":
-                    result = ViewFactory.GetBJ(IDRecord, fund);
-                    break;
                 case "BJFCC":
-                    result = ViewFactory.GetBJ(IDRecord, fund);
-                    break;
                 case "BJSCC":
                     result = ViewFactory.GetBJ(IDRecord, fund);
                     break;
@@ -49,58 +40,90 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
 
         private static BookSimpleView GetBJ(int IDMAIN, string fund)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             BookSimpleView result = new BookSimpleView();
-            BJVuFindConverter converter = new BJVuFindConverter(fund);
-            VufindDoc vfDoc = converter.CreateVufindDocument(IDMAIN);
-            if (vfDoc == null) return null;
-            result.ID = vfDoc.id;
-            result.Annotation = vfDoc.Annotation.ToString();
-            result.Author = vfDoc.author.ToString();
-            result.Fund = KeyValueMapping.FundCodeToRUSName[KeyValueMapping.FundENGToFundCode[fund]];
-            result.Genre = vfDoc.genre.ToString();
-            result.Language = vfDoc.language.ToString();
-            result.PlaceOfPublication = vfDoc.PlaceOfPublication.ToString();
-            result.PublishDate = vfDoc.publishDate.ToString();
-            result.Publisher = vfDoc.publisher.ToString();
-            result.Title = vfDoc.title.ToString();
-            result.CoverURL = VuFindConverter.GetCoverExportPath(result.ID);            /////http://cdn.libfl.ru/covers/BJVVV/000/025/169/JPEG_AB/cover.jpg
-
-            string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf";
-            using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
-            {
-                LoginPath += @"\" + fund.ToUpper() + @"\" + result.CoverURL + @"\cover.jpg";
-                if (File.Exists(LoginPath))
-                {
-                    result.CoverURL = $"http://cdn.libfl.ru/{fund.ToUpper()}/{result.CoverURL.Replace("\\", "/")}cover.jpg";
-                }
-                else
-                {
-                    result.CoverURL = null;
-                }
-            }
             BJBookInfo bjBook = BJBookInfo.GetBookInfoByPIN(IDMAIN, fund);
+            sw.Stop();
+            sw.Start();
+            //BJVuFindConverter converter = new BJVuFindConverter(fund);
+            //VufindDoc vfDoc = converter.CreateVufindDocument(IDMAIN);
+            //if (vfDoc == null) return null;
+            result.ID = bjBook.Id;
+            result.Annotation = bjBook.Fields["330$a"].ToString();//vfDoc.Annotation.ToString();
+            result.Author = bjBook.Fields["700$a"].ToString(); //vfDoc.author.ToString();
+            result.Fund = KeyValueMapping.FundCodeToRUSName[KeyValueMapping.FundENGToFundCode[fund]];
+            result.Genre = bjBook.Fields["922$e"].ToString(); //vfDoc.genre.ToString();
+            result.Language = bjBook.Fields["101$a"].ToString();//vfDoc.language.ToString();
+            result.PlaceOfPublication = bjBook.Fields["210$a"].ToString();//vfDoc.PlaceOfPublication.ToString();
+            result.PublishDate = bjBook.Fields["2100$d"].ToString();//vfDoc.publishDate.ToString();
+            result.Publisher = bjBook.Fields["210$c"].ToString();//vfDoc.publisher.ToString();
+            result.Title = bjBook.Fields["200$a"].ToString(); //vfDoc.title.ToString();
+            result.CoverURL = VuFindConverter.GetCoverExportPath(result.ID);            /////http://cdn.libfl.ru/covers/BJVVV/000/025/169/JPEG_AB/cover.jpg
+            string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf";
+            sw.Stop();
+            sw.Start();
+
+            //это может тормозить сильно
+            //using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
+            //{
+            //    LoginPath += @"\" + fund.ToUpper() + @"\" + result.CoverURL + @"\cover.jpg";
+            //    if (File.Exists(LoginPath))
+            //    {
+            //        result.CoverURL = $"http://cdn.libfl.ru/{fund.ToUpper()}/{result.CoverURL.Replace("\\", "/")}cover.jpg";
+            //    }
+            //    else
+            //    {
+            //        result.CoverURL = null;
+            //    }
+            //}
+            //заменим на это и надо сказать, что неизвестно есть ли обложка или нет...
+            result.CoverURL = $"http://cdn.libfl.ru/{fund.ToUpper()}/{result.CoverURL.Replace("\\", "/")}cover.jpg";
+
+
+            result.RTF = bjBook.RTF;
 
             result.Exemplars = GetBJExemplars(bjBook);
             result.IsExistsDigitalCopy = (bjBook.DigitalCopy == null) ? false : true;
-            result.DigitalCopy = new DigitalCopySimpleView();
+            
             if (result.IsExistsDigitalCopy)
             {
                 BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(IDMAIN, fund);
-                var Status = ElExemplar.Statuses.Find(x => x.Project == BJElectronicAvailabilityProjects.VGBIL);
-                if (Status.Code == BJElectronicExemplarAvailabilityCodes.vfreeview)
-                {
-                    result.DigitalCopy.DigitalAccess = "Свободный доступ";
-                }
-                else if (Status.Code == BJElectronicExemplarAvailabilityCodes.vloginview)
-                {
-                    result.DigitalCopy.DigitalAccess = "Доступ через личный кабинет";
-                }
-                else
-                {
-                    result.DigitalCopy.DigitalAccess = "Доступ запрещён";
-                }
+                ExemplarSimpleView ExemplarView = new ExemplarSimpleView();
+                ExemplarView.MethodOfAccess = "Удалённый доступ";
+                ExemplarView.MethodOfAccessCode = 4002;
+                ExemplarView.AccessCode = ElExemplar.ExemplarAccess.Access;
+                ExemplarView.Access = KeyValueMapping.AccessCodeToNameALISVersion[ElExemplar.ExemplarAccess.Access];
+                ExemplarView.ID = 0;
+                ExemplarView.Barcode = "E00000000";
+                ExemplarView.Carrier = "Электронная копия";
+                ExemplarView.CarrierCode = 3011;
+                ExemplarView.Location = "Электронный доступ";
+                ExemplarView.LocationCode = 2030;
+                ExemplarView.BookUrl = (ExemplarView.AccessCode == 1001) ? @"http://catalog.libfl.ru/Bookreader/Viewer?bookID=" + ElExemplar.BookId + "&view_mode=HQ" : null;
+                result.Exemplars.Add(ExemplarView);
             }
             return result;
+        }
+
+        public static ElectronicCopyFullView GetElectronicCopyFullView(string BookId)
+        {
+            ElectronicCopyFullView electronicCopyFullView = new ElectronicCopyFullView();
+            BJElectronicExemplarInfo exemplar;
+            exemplar = new BJElectronicExemplarInfo(BookBase.GetIDMAIN(BookId),BookBase.GetFund(BookId));
+            exemplar.FillFileFields();
+            electronicCopyFullView.AccessCode = exemplar.ExemplarAccess.Access;
+            electronicCopyFullView.HeightFirstFile = exemplar.HeightFirstFile;
+            electronicCopyFullView.IsExistsHQ = exemplar.IsExistsHQ;
+            electronicCopyFullView.IsExistsLQ = exemplar.IsExistsLQ;
+            electronicCopyFullView.JPGFiles = exemplar.JPGFiles;
+            electronicCopyFullView.MethodOfAccessCode = exemplar.ExemplarAccess.MethodOfAccess;
+            electronicCopyFullView.Path_Cover = exemplar.Path_Cover;
+            electronicCopyFullView.Path_HQ = exemplar.Path_HQ;
+            electronicCopyFullView.Path_LQ = exemplar.Path_LQ;
+            electronicCopyFullView.WidthFirstFile = exemplar.WidthFirstFile;
+
+            return electronicCopyFullView;
         }
 
         private static List<ExemplarSimpleView> GetBJExemplars(BJBookInfo bjBook)
@@ -110,10 +133,21 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             List<ExemplarSimpleView> result = new List<ExemplarSimpleView>();
             foreach(BJExemplarInfo exemplar in bjBook.Exemplars)
             {
-                ExemplarSimpleView ExemplarView = new ExemplarSimpleView();
+                ExemplarSimpleView ExemplarView = GetExemplarSimpleView(exemplar);
+                if (ExemplarView == null) continue;
+                result.Add(ExemplarView);
+            }
+            return result;
+        }
+        public static ExemplarSimpleView GetExemplarSimpleView(BJExemplarInfo exemplar)
+        {
+            ExemplarSimpleView ExemplarView = new ExemplarSimpleView();
+            try
+            {
+                if (exemplar.Fields["929$b"].MNFIELD != 0) return null;
                 ExemplarView.Barcode = exemplar.Fields["899$w"].ToString();
                 ExemplarView.Carrier = exemplar.Fields["921$a"].ToString();
-                ExemplarView.CarrierCode = KeyValueMapping.CarrierNameToCode[ExemplarView.Carrier];
+                //ExemplarView.CarrierCode = KeyValueMapping.CarrierNameToCode[ExemplarView.Carrier];
                 ExemplarView.ID = exemplar.IdData;
                 ExemplarView.InventoryNote = exemplar.Fields["899$x"].ToString();
                 ExemplarView.InventoryNumber = exemplar.Fields["899$p"].ToString();
@@ -124,10 +158,15 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 ExemplarView.AccessCode = exemplar.ExemplarAccess.Access;
                 ExemplarView.Access = KeyValueMapping.AccessCodeToName[ExemplarView.AccessCode];
                 ExemplarView.RackLocation = exemplar.Fields["899$c"].ToString();
-                ExemplarView.Status = "Свободно";
-                result.Add(ExemplarView);
+                //ExemplarView.Status = exemplar.IsIssuedToReader() ? "Занято" : "Свободно";
             }
-            return result;
+            catch
+            {
+                //throw new Exception("B002");
+                //continue;
+                return null;
+            }
+            return ExemplarView;
         }
     }
 }

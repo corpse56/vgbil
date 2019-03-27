@@ -51,14 +51,18 @@ namespace OneTimeProjectForGlueGoogleExportXMLs
                  //"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180919-04.03_S.xml",
                  //@"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\1.xml",
                  //@"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\2.xml",
-                @"e:\google export\GoogleExport20181102-11.22_B.xml",
-                @"e:\google export\GoogleExport20181112-11.58_B.xml",
+                //@"e:\google export\GoogleExport20181102-11.22_B.xml",
+                //@"e:\google export\GoogleExport20181112-11.58_B.xml",
                // @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180914-11.28_B.xml",
                // @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180914-12.29_B.xml",
                // @"f:\google export\20180919-20180919T145955Z-001\20180919\BJ2M21GOOGL_B\GoogleExport20180915-02.51_B.xml",
+               @"E:\google export\20181212\GoogleExport20181127-05.48_B.xml",
+               @"E:\google export\20181212\GoogleExport20181127-23.42_B.xml",
+               @"E:\google export\20181212\GoogleExport20181128-22.24_B.xml",
+               @"E:\google export\20181212\GoogleExport20181129-17.52_B.xml",
             };
 
-            using (XmlWriter xw = XmlWriter.Create(@"e:\google export\GoogleExport20181116_B_ALL.xml"))
+            using (XmlWriter xw = XmlWriter.Create(@"e:\google export\GoogleExport20181213_B_ALL.xml"))
             {
                 
                 xw.WriteStartDocument();

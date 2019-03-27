@@ -9,8 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CirculationSCC", "Circulati
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "personal", "personal\", "{6F89A4F3-4FC4-44DE-89C9-A74855CC2878}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
-		ProjectReferences = "{CA4020F7-B048-4DFA-9E13-3E04DB83B093}|LibflClassLibrary.dll;"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		ProjectReferences = "{CA4020F7-B048-4DFA-9E13-3E04DB83B093}|LibflClassLibrary.dll;{59c057bf-40ec-4a9e-ae49-1d70b1fc0521}|InvOfBook.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/personal"
 		Debug.AspNetCompiler.PhysicalPath = "personal\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\personal\"
@@ -83,8 +83,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "elcirp", "elcirp\", "{30A76
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportFullDatabaseToExcel", "ExportFullDatabaseToExcel\ExportFullDatabaseToExcel.csproj", "{B9124E5A-C576-4578-9B8F-BDB087138157}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenStat", "GenStat\GenStat.csproj", "{E890864F-D72A-4818-92FA-1EE7BF3F93C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportToVufind", "ExportToVufind\ExportToVufind.csproj", "{2B6E5A78-107E-4958-94B3-12EE837434DA}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -246,6 +244,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{43CBF2E9-8CE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WriteoffExcel", "WriteoffExcel\WriteoffExcel.csproj", "{DF2197FC-6287-4BA9-8CFF-3CAFF098F598}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportBJUserRolesAndRights", "ImportBJUserRolesAndRights\ImportBJUserRolesAndRights.csproj", "{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalkThroughAllCovers", "WalkThroughAllCovers\WalkThroughAllCovers.csproj", "{D3656821-75F7-4273-BF97-50066A35C808}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -296,10 +298,6 @@ Global
 		{B9124E5A-C576-4578-9B8F-BDB087138157}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9124E5A-C576-4578-9B8F-BDB087138157}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9124E5A-C576-4578-9B8F-BDB087138157}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E890864F-D72A-4818-92FA-1EE7BF3F93C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E890864F-D72A-4818-92FA-1EE7BF3F93C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E890864F-D72A-4818-92FA-1EE7BF3F93C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E890864F-D72A-4818-92FA-1EE7BF3F93C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B6E5A78-107E-4958-94B3-12EE837434DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B6E5A78-107E-4958-94B3-12EE837434DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B6E5A78-107E-4958-94B3-12EE837434DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -396,6 +394,14 @@ Global
 		{DF2197FC-6287-4BA9-8CFF-3CAFF098F598}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF2197FC-6287-4BA9-8CFF-3CAFF098F598}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF2197FC-6287-4BA9-8CFF-3CAFF098F598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3656821-75F7-4273-BF97-50066A35C808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3656821-75F7-4273-BF97-50066A35C808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3656821-75F7-4273-BF97-50066A35C808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3656821-75F7-4273-BF97-50066A35C808}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -414,6 +420,8 @@ Global
 		{64066C7E-5692-46BE-AD4F-522A89310F08} = {F06A4AB3-9392-4157-B11A-9CCEE75EC75E}
 		{2A22DBD4-961C-4116-BDE2-C1457C62F065} = {F06A4AB3-9392-4157-B11A-9CCEE75EC75E}
 		{A7B2D729-46D3-48C7-AE2E-417A19BDD42D} = {172B6033-F306-482B-B443-5D565ADCB12A}
+		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC} = {172B6033-F306-482B-B443-5D565ADCB12A}
+		{D3656821-75F7-4273-BF97-50066A35C808} = {172B6033-F306-482B-B443-5D565ADCB12A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA724ECA-4FCD-4BF4-9553-7CA9DBF07D8D}

@@ -16,13 +16,14 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <ManifestCertificateThumbprint>21A8FFBE4E7B5F8CF36D114868288831BFD7BD1A</ManifestCertificateThumbprint>
     <ManifestKeyFile>CirculationOF_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
     <SignManifests>false</SignManifests>
+    <TargetFrameworkProfile />
     <PublishUrl>D:\projects\crcnof\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -47,6 +48,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,16 +57,17 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Itenso.Rtf.Converter.Html, Version=1.4.0.0, Culture=neutral, PublicKeyToken=d7f23b760ed5c748, processorArchitecture=MSIL">
-      <HintPath>..\packages\Intenso\Itenso.Rtf.Converter.Html.dll</HintPath>
+    <Reference Include="Itenso.Rtf.Converter.Html">
+      <HintPath>bin\Debug\Itenso.Rtf.Converter.Html.dll</HintPath>
     </Reference>
-    <Reference Include="Itenso.Rtf.Interpreter, Version=1.4.0.0, Culture=neutral, PublicKeyToken=d7f23b760ed5c748, processorArchitecture=MSIL">
-      <HintPath>..\packages\Intenso\Itenso.Rtf.Interpreter.dll</HintPath>
+    <Reference Include="Itenso.Rtf.Interpreter">
+      <HintPath>bin\Debug\Itenso.Rtf.Interpreter.dll</HintPath>
     </Reference>
-    <Reference Include="Itenso.Rtf.Parser, Version=1.4.0.0, Culture=neutral, PublicKeyToken=d7f23b760ed5c748, processorArchitecture=MSIL">
-      <HintPath>..\packages\Intenso\Itenso.Rtf.Parser.dll</HintPath>
+    <Reference Include="Itenso.Rtf.Parser">
+      <HintPath>bin\Debug\Itenso.Rtf.Parser.dll</HintPath>
     </Reference>
     <Reference Include="Itenso.Sys, Version=2.3.0.0, Culture=neutral, PublicKeyToken=d7f23b760ed5c748, processorArchitecture=MSIL">
       <HintPath>..\packages\Intenso\Itenso.Sys.dll</HintPath>

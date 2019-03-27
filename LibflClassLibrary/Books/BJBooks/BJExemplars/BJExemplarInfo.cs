@@ -2,7 +2,7 @@
 using LibflClassLibrary.ExportToVufind;
 using System;
 using System.Data;
-
+using System.Diagnostics;
 
 namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 {
@@ -28,11 +28,17 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 
         public string Fund { get; set; }
         public int IDMAIN { get; set; }
-
+        public string BookId
+        {
+            get
+            {
+                return $"{Fund}_{IDMAIN.ToString()}";
+            }
+        }
         public bool IsAlligat { get; set; }
-        public int ConvolutePin { get; set; }
+        public string ConvolutePin { get; set; }
         public int ConvoluteIdData { get; set; }
-
+        public string Cipher { get; set; }
         public DateTime Created; //для новых поступлений. Дата присвоения инвентарного номера.
 
         public BJFields Fields = new BJFields();
@@ -83,9 +89,58 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 }
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());//добавляем все поля блока 260 к объекту экземпляра
             }
-            exemplar.ExemplarAccess = BJExemplarInfo.GetExemplarAccess(exemplar);
+            try
+            {
+                exemplar.ExemplarAccess = BJExemplarInfo.GetExemplarAccess(exemplar);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (exemplar.Fields["482$a"].MNFIELD != 0)//это приплётышь
+            {
+                BJConvoluteInfo convolute = BJExemplarInfo.GetConvoluteInfo(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
+                BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
+                if (convolute != null)//нашёлся конволют
+                {
+                    exemplar.ConvolutePin = $"{convolute.Fund}_{convolute.IDMAIN}";
+                    exemplar.ConvoluteIdData = convolute.IDDATA;
+                }
+                else//не нашёлся конволют
+                {
+                    exemplar.ConvolutePin = null;
+                }
+            }
+            else
+            {
+                //это не приплётышь ConvolutePin 
+                exemplar.ConvolutePin = null;
+            }
+
+
+            exemplar.Cipher = string.IsNullOrEmpty(exemplar.Fields["899$j"].ToString()) ? dbw.GetCipher(exemplar.Fields["899$b"].ToString(), exemplar.IDMAIN) : exemplar.Fields["899$j"].ToString();
 
             return exemplar;
+        }
+
+        private static BJConvoluteInfo GetConvoluteInfo(string InventoryNumber, string fund)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
+            //DataTable table = dbw.GetExemplar(InventoryNumber);
+            DataTable table = dbw.GetConvolute(InventoryNumber);
+            sw.Stop();
+            if (table.Rows.Count == 0)
+            {
+                return null;
+            }
+            BJConvoluteInfo convolute = new BJConvoluteInfo();
+            convolute.Fund = fund;
+            convolute.IDDATA = (int)table.Rows[0]["IDDATA"];
+            convolute.IDMAIN = (int)table.Rows[0]["IDMAIN"];
+            return convolute;
+
         }
 
         private static BJExemplarAccessInfo GetExemplarAccess(BJExemplarInfo exemplar)

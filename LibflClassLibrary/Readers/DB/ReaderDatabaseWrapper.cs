@@ -19,9 +19,10 @@ namespace LibflClassLibrary.Readers.DB
         public ReaderDatabaseWrapper()
         {
             ReaderQueries = new ReaderQueries();
+            ConnectionString = AppSettings.ConnectionString;
             //для демо базы
-            ConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
-            //ConnectionString = AppSettings.ConnectionString;
+            //ConnectionString = "Data Source = 127.0.0.1; Initial Catalog = Readers; Integrated Security = True;";
+            //ConnectionString = "Data Source=80.250.173.142;Initial Catalog=Readers;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
         }
 
         internal DataTable GetReaderByEmail(string Email)
@@ -61,7 +62,8 @@ namespace LibflClassLibrary.Readers.DB
 
         internal DataTable GetReaderIdByOAuthToken(string token)
         {
-            string connectionString = AppSettings.OauthMySqlConnectionString;
+            //string connectionString = AppSettings.OauthMySqlConnectionString;
+            string connectionString = AppSettings.DevOauthMySqlConnectionString;
             DataTable table = new DataTable();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
