@@ -16,6 +16,7 @@ using System.Web.Security;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.Readers;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 
 public partial class OrderElCopy : System.Web.UI.Page
 {
@@ -155,7 +156,10 @@ public partial class OrderElCopy : System.Web.UI.Page
 
         if (HttpContext.Current.Server.MachineName == "VGBIL-OPAC")
         {
-            bool IsExistsLQ = GetIsExistsLQ(IDMAIN);
+            //bool IsExistsLQ = false;//GetIsExistsLQ(IDMAIN);
+            BJElectronicExemplarInfo electronicCopy = new BJElectronicExemplarInfo(Convert.ToInt32(IDMAIN), "BJVVV");
+            bool IsExistsLQ = electronicCopy.IsExistsLQ;
+
             if (IsExistsLQ)
             {
                 Response.Redirect(@"http://catalog.libfl.ru/Bookreader/Viewer?bookID=BJVVV_" + IDMAIN + "&view_mode=LQ");
@@ -170,24 +174,24 @@ public partial class OrderElCopy : System.Web.UI.Page
             Response.Redirect(redirect);
         }
     }
-    private bool GetIsExistsLQ(string IDMAIN)
-    {
-        LibflAPI.ServiceSoapClient api = new LibflAPI.ServiceSoapClient();
-        string book = api.GetBookInfoByID("BJVVV_" + IDMAIN);
-        JObject jbook = JObject.Parse(book);
-        JArray Exemplars = (JArray)jbook["Exemplars"];
-        bool IsExistsLQ = false;
-        foreach (JToken exm in Exemplars)
-        {
-            if (exm["IsElectronicCopy"].ToString().ToLower() == "false")
-            {
-                continue;
-            }
-            if (exm["IsExistsLQ"].ToString().ToLower() == "true")
-            {
-                IsExistsLQ = true;
-            }
-        }
-        return IsExistsLQ;
-    }
+    //private bool GetIsExistsLQ(string IDMAIN)
+    //{
+    //    LibflAPI.ServiceSoapClient api = new LibflAPI.ServiceSoapClient();
+    //    string book = api.GetBookInfoByID("BJVVV_" + IDMAIN);
+    //    JObject jbook = JObject.Parse(book);
+    //    JArray Exemplars = (JArray)jbook["Exemplars"];
+    //    bool IsExistsLQ = false;
+    //    foreach (JToken exm in Exemplars)
+    //    {
+    //        if (exm["IsElectronicCopy"].ToString().ToLower() == "false")
+    //        {
+    //            continue;
+    //        }
+    //        if (exm["IsExistsLQ"].ToString().ToLower() == "true")
+    //        {
+    //            IsExistsLQ = true;
+    //        }
+    //    }
+    //    return IsExistsLQ;
+    //}
 }

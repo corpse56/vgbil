@@ -373,6 +373,8 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 writer.WritePropertyName("exemplar_carrier");
                 writer.WriteValue("3011");
 
+                result.format.Add("3011");
+
                 writer.WritePropertyName("exemplar_id");
                 writer.WriteValue("ebook");//для всех у кого есть электронная копия. АПИ когда это значение встретит, сразу вернёт "доступно"
                 writer.WritePropertyName("exemplar_location");
@@ -442,7 +444,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     MD5Hashes.Add(Extensions.CalculateMD5(file.FullName));//собираем хэши существующих обложек
                 }
 
-                BJDatabaseWrapper wrapper = new BJDatabaseWrapper(Fund);
+                //BJDatabaseWrapper wrapper = new BJDatabaseWrapper(Fund);
                 DataTable pics = BJLoader.GetImage(IDMAIN);
                 foreach (DataRow pic in pics.Rows)//Копируем считанные из базы обложки на файловое хранилище
                 {
@@ -481,7 +483,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                         while (true)//если до сюда дошло, значит надо сохранить во что бы то ни стало
                         {
                             int i = 0;
-                            if (!File.Exists(path + (i++).ToString() + ".jpg"))
+                            if (!File.Exists(path + (++i).ToString() + ".jpg"))
                             {
                                 string filename = path + (i).ToString() + ".jpg";
                                 //img.Save(filename, ImageFormat.Jpeg);

@@ -1934,26 +1934,26 @@ public partial class persacc : System.Web.UI.Page
             tEBook.Rows.Add(tr);
         }
     }
-    private bool GetIsExistsLQ(string IDMAIN)
-    {
-        LibflAPI.ServiceSoapClient api = new LibflAPI.ServiceSoapClient();
-        string book = api.GetBookInfoByID("BJVVV_" + IDMAIN);
-        JObject jbook = JObject.Parse(book);
-        JArray Exemplars = (JArray)jbook["Exemplars"];
-        bool IsExistsLQ = false;
-        foreach (JToken exm in Exemplars)
-        {
-            if (exm["IsElectronicCopy"].ToString().ToLower() == "false")
-            {
-                continue;
-            }
-            if (exm["IsExistsLQ"].ToString().ToLower() == "true")
-            {
-                IsExistsLQ = true;
-            }
-        }
-        return IsExistsLQ;
-    }
+    //private bool GetIsExistsLQ(string IDMAIN)
+    //{
+    //    LibflAPI.ServiceSoapClient api = new LibflAPI.ServiceSoapClient();
+    //    string book = api.GetBookInfoByID("BJVVV_" + IDMAIN);
+    //    JObject jbook = JObject.Parse(book);
+    //    JArray Exemplars = (JArray)jbook["Exemplars"];
+    //    bool IsExistsLQ = false;
+    //    foreach (JToken exm in Exemplars)
+    //    {
+    //        if (exm["IsElectronicCopy"].ToString().ToLower() == "false")
+    //        {
+    //            continue;
+    //        }
+    //        if (exm["IsExistsLQ"].ToString().ToLower() == "true")
+    //        {
+    //            IsExistsLQ = true;
+    //        }
+    //    }
+    //    return IsExistsLQ;
+    //}
     private void FillEBOOK_HST(DataTable t)
     {
         tEBook_HST.Rows.Clear();

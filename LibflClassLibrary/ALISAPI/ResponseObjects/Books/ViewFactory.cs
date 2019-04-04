@@ -1,6 +1,7 @@
 ﻿using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using LibflClassLibrary.Circulation;
 using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.ExportToVufind.BJ;
 using LibflClassLibrary.ExportToVufind.Vufind;
@@ -36,6 +37,35 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             }
 
             return result;
+        }
+        public static BookSimpleView GetBookSimpleViewWithAvailabilityStatus(string ID)
+        {
+            BookSimpleView result = GetBookSimpleView(ID);
+            
+            if (result == null) return null;
+            CirculationInfo ci = new CirculationInfo();
+            bool IsAvailable = false;
+            foreach (ExemplarSimpleView e in result.Exemplars)
+            {
+                if (e.CarrierCode == 3011)
+                {
+                    BJBookInfo book = BJBookInfo.GetBookInfoByPIN(ID);
+                    e.AvailabilityStatus = (result.Exemplars.Count - 1 - ci.GetBusyExemplarsCount(book) <= 0) ? "Unavailable" : "Available";
+                }
+                else
+                {
+                    e.AvailabilityStatus = ci.GetExemplarAvailabilityStatus(e.ID, BJBookInfo.GetFund(ID));
+                }
+                if (e.AvailabilityStatus == "Available")
+                {
+                    IsAvailable = true;
+                }
+            }
+
+            result.AvailabilityStatus = IsAvailable ? "Available" : "Unavailable";
+
+            return result;
+
         }
 
         private static BookSimpleView GetBJ(int IDMAIN, string fund)

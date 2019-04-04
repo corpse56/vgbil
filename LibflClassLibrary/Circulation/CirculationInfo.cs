@@ -104,6 +104,16 @@ namespace LibflClassLibrary.Circulation
             //{ 1999,   "Невозможно определить доступ"},
         }
 
+        internal void GetElectronicExemplarAvailabilityStatus(string iD)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal string GetExemplarAvailabilityStatus(int idData, string fund)
+        {
+            return loader.GetExemplarAvailabilityStatus(idData, fund);
+        }
+
         public List<OrderInfo> GetOrdersForStorage(int depId, string depName)
         {
             return loader.GetOrdersForStorage(depId, depName);
@@ -414,7 +424,7 @@ namespace LibflClassLibrary.Circulation
             return loader.IsTwentyFourHoursPastSinceReturn(reader, book);
         }
 
-        private int GetBusyExemplarsCount(BJBookInfo book)
+        public int GetBusyExemplarsCount(BJBookInfo book)
         {
             return loader.GetBusyExemplarsCount(book);
         }

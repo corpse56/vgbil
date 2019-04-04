@@ -252,5 +252,16 @@ namespace LibflClassLibrary.Circulation.DB
                        " commit;";
             }
         }
+
+        public string GET_EXEMPLAR_AVAILABILITY_STATUS
+        {
+            get
+            {
+                return  " select top 1 ID from Circulation..Orders where ExemplarId = @idData and Fund = @fund " +
+                        " and StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу','На бронеполке','Выдано в зал','Выдано на дом','Выдано с чужой бронеполки'," +
+                        " 'Электронная выдача','Ожидает выдачи','Для возврата в хранение') ";
+            }
+
+        }
     }
 }

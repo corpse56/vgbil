@@ -28,7 +28,7 @@ namespace ALISAPI.Controllers
             BookSimpleView book;
             try
             {
-                book = ViewFactory.GetBookSimpleView(id);
+                book = ViewFactory.GetBookSimpleViewWithAvailabilityStatus(id);
             }
             catch (Exception ex)
             {

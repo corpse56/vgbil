@@ -248,6 +248,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportBJUserRolesAndRights"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalkThroughAllCovers", "WalkThroughAllCovers\WalkThroughAllCovers.csproj", "{D3656821-75F7-4273-BF97-50066A35C808}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CirculationApp", "CirculationApp\CirculationApp.csproj", "{10420E1E-22F9-4F1B-B904-26C08DC79E26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -402,6 +404,10 @@ Global
 		{D3656821-75F7-4273-BF97-50066A35C808}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3656821-75F7-4273-BF97-50066A35C808}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3656821-75F7-4273-BF97-50066A35C808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10420E1E-22F9-4F1B-B904-26C08DC79E26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10420E1E-22F9-4F1B-B904-26C08DC79E26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10420E1E-22F9-4F1B-B904-26C08DC79E26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10420E1E-22F9-4F1B-B904-26C08DC79E26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

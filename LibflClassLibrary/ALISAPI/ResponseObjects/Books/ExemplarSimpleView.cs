@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,9 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
         public int CarrierCode { get; set; }
         //public string EditionClass { get; set; }
         public string BookUrl { get; set; }
-        public string Status { get; set; }//занято, свободно, выдано.....
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string AvailabilityStatus { get; set; }
+
     }
 }

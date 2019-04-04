@@ -3021,9 +3021,9 @@ namespace Circulation
             //---------------------------------------------------------------------------------
             Conn.SQLDA.SelectCommand.CommandText = "select * from " + BASENAME + "..[ISSUED_OF_ACTIONS] A " +
                   " left join BJVVV..USERS U on U.ID = A.IDEMP " +
-                  //" left join BJVVV..LIST_8 B on B.ID = U.DEPT "+
+                  " left join BJVVV..USERSTATUS B on B.IDUSER = U.ID "+
                   " where  Cast(Cast(DATEACTION As VarChar(11)) As DateTime) between '" + f3.StartDate.ToString("yyyyMMdd") + "' and '" + f3.EndDate.ToString("yyyyMMdd") + "' " +
-                  " and IDACTION = 3 and U.DEPT = " + this.DepID;
+                  " and IDACTION = 3 and B.IDDEPT = " + this.DepID;
             DS = new DataSet();
             int s21 = Conn.SQLDA.Fill(DS, "t");//продлен срок пользования изданием
             //---------------------------------------------------------------------------------

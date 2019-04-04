@@ -18,6 +18,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Readers
             result.ReaderId = reader.NumberReader;
             result.MobilePhone = reader.MobileTelephone;
             result.Email = reader.Email;
+            result.IsRemoteReader = reader.IsRemoteReader;
             return result;
         }
     }

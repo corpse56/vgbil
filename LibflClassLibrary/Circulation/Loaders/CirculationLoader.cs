@@ -145,6 +145,12 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
+        internal string GetExemplarAvailabilityStatus(int idData, string fund)
+        {
+            DataTable table = dbWrapper.GetExemplarAvailabilityStatus(idData, fund);
+            return (table.Rows.Count == 0) ? "Available" : "Unavailable";
+        }
+
         internal List<OrderInfo> GetOrdersHistoryForStorage(int depId, string depName)
         {
             DataTable table = dbWrapper.GetOrdersHistoryForStorage(depId);

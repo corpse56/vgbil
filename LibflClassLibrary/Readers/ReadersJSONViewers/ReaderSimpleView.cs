@@ -14,5 +14,7 @@ namespace LibflClassLibrary.Readers.ReadersJSONViewers
         public string Email { get; set; }
         public string MobilePhone { get; set; }
 
+        public bool IsRemoteReader { get; set; }
+
     }
 }

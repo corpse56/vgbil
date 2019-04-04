@@ -171,9 +171,9 @@ public partial class loginemployee : System.Web.UI.Page
 
 
         //для входа под любым читателем. не забывать закомментироват
-        //CurReader.ID = "230911";
-        //ReaderInfo rrr = ReaderInfo.GetReader(230911);
-        //CurReader.ReaderType = 1;
+        //CurReader.ID = "171887";
+        //ReaderInfo rrr = ReaderInfo.GetReader(171887);
+        //CurReader.ReaderType = 0;
         //FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
         //RedirectWithCookie("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + CurReader.ReaderType + "&litres=" + litres, CurReader);
         //для входа под любым читателем. не забывать закомментироват
@@ -183,7 +183,7 @@ public partial class loginemployee : System.Web.UI.Page
         {
             BJUserInfo bjUser = BJUserInfo.GetUserByLogin(Login1.UserName.ToLower(), "BJVVV");
 
-                
+            
             //DA = new SqlDataAdapter();
             //DA.SelectCommand = new SqlCommand();
             //DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/BJVVV"));

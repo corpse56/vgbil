@@ -1,0 +1,1004 @@
+namespace CirculationApp
+{
+    partial class MainForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.label3 = new System.Windows.Forms.Label();
+            this.bChangeAuthorization = new System.Windows.Forms.Button();
+            this.tbCurrentEmployee = new System.Windows.Forms.TextBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.MainTab = new System.Windows.Forms.TabPage();
+            this.button14 = new System.Windows.Forms.Button();
+            this.bCancel = new System.Windows.Forms.Button();
+            this.bConfirm = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.RPhoto = new System.Windows.Forms.PictureBox();
+            this.lReader = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lTitle = new System.Windows.Forms.Label();
+            this.lAuthor = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.dgvLOG = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label4 = new System.Windows.Forms.Label();
+            this.FormularTab = new System.Windows.Forms.TabPage();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
+            this.bReaderRegistration = new System.Windows.Forms.Button();
+            this.bComment = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.pbFormular = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button21 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.bOrdersHistory = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.label22 = new System.Windows.Forms.Label();
+            this.lFromularNumber = new System.Windows.Forms.Label();
+            this.lFormularName = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.Formular = new System.Windows.Forms.DataGridView();
+            this.N = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Avtor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Zaglavie = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.God = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateIssue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ReferenceTab = new System.Windows.Forms.TabPage();
+            this.bSaveReferenceToFile = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lReferenceName = new System.Windows.Forms.Label();
+            this.Statistics = new System.Windows.Forms.DataGridView();
+            this.bShowReference = new System.Windows.Forms.Button();
+            this.AttendanceTab = new System.Windows.Forms.TabPage();
+            this.bEmulation = new System.Windows.Forms.Button();
+            this.lInfoAttendance = new System.Windows.Forms.Label();
+            this.lAttendance = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.label10 = new System.Windows.Forms.Label();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip();
+            this.выданные нигиЌа“екущийћоментToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.просроченные нигиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.списокƒействийќператора«аѕериодToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.отчЄтќтдела«аѕериодToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.все ниги÷ентрајмериканской ультурыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.обращаемость нигToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.список ниг— оторых—н€таќтветственностьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.списокЌарушителей—роковѕользовани€ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.tabControl1.SuspendLayout();
+            this.MainTab.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLOG)).BeginInit();
+            this.FormularTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Formular)).BeginInit();
+            this.ReferenceTab.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Statistics)).BeginInit();
+            this.AttendanceTab.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.SystemColors.Control;
+            this.label3.Location = new System.Drawing.Point(12, 114);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(266, 17);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "¬ данный момент работает сотрудник:";
+            // 
+            // bChangeAuthorization
+            // 
+            this.bChangeAuthorization.Location = new System.Drawing.Point(790, 102);
+            this.bChangeAuthorization.Margin = new System.Windows.Forms.Padding(4);
+            this.bChangeAuthorization.Name = "bChangeAuthorization";
+            this.bChangeAuthorization.Size = new System.Drawing.Size(215, 28);
+            this.bChangeAuthorization.TabIndex = 7;
+            this.bChangeAuthorization.Text = "—менить сотрудника";
+            this.bChangeAuthorization.UseVisualStyleBackColor = true;
+            this.bChangeAuthorization.Click += new System.EventHandler(this.bChangeAuthorization_Click);
+            // 
+            // tbCurrentEmployee
+            // 
+            this.tbCurrentEmployee.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.tbCurrentEmployee.Location = new System.Drawing.Point(292, 106);
+            this.tbCurrentEmployee.Margin = new System.Windows.Forms.Padding(4);
+            this.tbCurrentEmployee.Name = "tbCurrentEmployee";
+            this.tbCurrentEmployee.ReadOnly = true;
+            this.tbCurrentEmployee.Size = new System.Drawing.Size(490, 23);
+            this.tbCurrentEmployee.TabIndex = 8;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.MainTab);
+            this.tabControl1.Controls.Add(this.FormularTab);
+            this.tabControl1.Controls.Add(this.ReferenceTab);
+            this.tabControl1.Controls.Add(this.AttendanceTab);
+            this.tabControl1.Location = new System.Drawing.Point(15, 138);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1193, 561);
+            this.tabControl1.TabIndex = 9;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            // 
+            // MainTab
+            // 
+            this.MainTab.Controls.Add(this.button14);
+            this.MainTab.Controls.Add(this.bCancel);
+            this.MainTab.Controls.Add(this.bConfirm);
+            this.MainTab.Controls.Add(this.label1);
+            this.MainTab.Controls.Add(this.groupBox2);
+            this.MainTab.Controls.Add(this.groupBox1);
+            this.MainTab.Controls.Add(this.dgvLOG);
+            this.MainTab.Controls.Add(this.label4);
+            this.MainTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MainTab.Location = new System.Drawing.Point(4, 25);
+            this.MainTab.Margin = new System.Windows.Forms.Padding(4);
+            this.MainTab.Name = "MainTab";
+            this.MainTab.Padding = new System.Windows.Forms.Padding(4);
+            this.MainTab.Size = new System.Drawing.Size(1185, 532);
+            this.MainTab.TabIndex = 0;
+            this.MainTab.Text = "ѕриЄм/выдача изданий";
+            this.MainTab.UseVisualStyleBackColor = true;
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(1085, 503);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(92, 24);
+            this.button14.TabIndex = 7;
+            this.button14.Text = "эмул€ци€";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // bCancel
+            // 
+            this.bCancel.Location = new System.Drawing.Point(511, 494);
+            this.bCancel.Name = "bCancel";
+            this.bCancel.Size = new System.Drawing.Size(75, 31);
+            this.bCancel.TabIndex = 6;
+            this.bCancel.Text = "ќтмена";
+            this.bCancel.UseVisualStyleBackColor = true;
+            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
+            // 
+            // bConfirm
+            // 
+            this.bConfirm.Location = new System.Drawing.Point(381, 494);
+            this.bConfirm.Name = "bConfirm";
+            this.bConfirm.Size = new System.Drawing.Size(116, 31);
+            this.bConfirm.TabIndex = 1;
+            this.bConfirm.Text = "ѕодтвердить";
+            this.bConfirm.UseVisualStyleBackColor = true;
+            this.bConfirm.Click += new System.EventHandler(this.bConfirm_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.ForeColor = System.Drawing.Color.Green;
+            this.label1.Location = new System.Drawing.Point(299, 302);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(373, 31);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "—читайте штрихкод издани€";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.RPhoto);
+            this.groupBox2.Controls.Add(this.lReader);
+            this.groupBox2.Location = new System.Drawing.Point(501, 336);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(676, 119);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "„итатель";
+            // 
+            // RPhoto
+            // 
+            this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RPhoto.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.RPhoto.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.RPhoto.Location = new System.Drawing.Point(577, 12);
+            this.RPhoto.Name = "RPhoto";
+            this.RPhoto.Size = new System.Drawing.Size(93, 101);
+            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.RPhoto.TabIndex = 6;
+            this.RPhoto.TabStop = false;
+            this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
+            // 
+            // lReader
+            // 
+            this.lReader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lReader.Location = new System.Drawing.Point(6, 19);
+            this.lReader.Name = "lReader";
+            this.lReader.Size = new System.Drawing.Size(565, 89);
+            this.lReader.TabIndex = 5;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.lTitle);
+            this.groupBox1.Controls.Add(this.lAuthor);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Location = new System.Drawing.Point(12, 336);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(475, 119);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "»здание";
+            // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(6, 72);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(115, 25);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "«аглавие: ";
+            // 
+            // lTitle
+            // 
+            this.lTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lTitle.Location = new System.Drawing.Point(127, 72);
+            this.lTitle.Name = "lTitle";
+            this.lTitle.Size = new System.Drawing.Size(329, 36);
+            this.lTitle.TabIndex = 5;
+            // 
+            // lAuthor
+            // 
+            this.lAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lAuthor.Location = new System.Drawing.Point(91, 32);
+            this.lAuthor.Name = "lAuthor";
+            this.lAuthor.Size = new System.Drawing.Size(365, 25);
+            this.lAuthor.TabIndex = 5;
+            // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.Location = new System.Drawing.Point(6, 32);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(79, 25);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "јвтор:";
+            // 
+            // dgvLOG
+            // 
+            this.dgvLOG.AllowUserToAddRows = false;
+            this.dgvLOG.AllowUserToDeleteRows = false;
+            this.dgvLOG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvLOG.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4});
+            this.dgvLOG.Location = new System.Drawing.Point(12, 32);
+            this.dgvLOG.Margin = new System.Windows.Forms.Padding(4);
+            this.dgvLOG.Name = "dgvLOG";
+            this.dgvLOG.ReadOnly = true;
+            this.dgvLOG.RowHeadersVisible = false;
+            this.dgvLOG.Size = new System.Drawing.Size(1165, 266);
+            this.dgvLOG.TabIndex = 2;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "»нв. Ќомер";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 130;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "»здание";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 470;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "„итатель";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 200;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.HeaderText = "–езультат";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 15);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(124, 17);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "∆урнал событий:";
+            // 
+            // FormularTab
+            // 
+            this.FormularTab.Controls.Add(this.readerRightsView1);
+            this.FormularTab.Controls.Add(this.bReaderRegistration);
+            this.FormularTab.Controls.Add(this.bComment);
+            this.FormularTab.Controls.Add(this.button4);
+            this.FormularTab.Controls.Add(this.button2);
+            this.FormularTab.Controls.Add(this.pbFormular);
+            this.FormularTab.Controls.Add(this.button1);
+            this.FormularTab.Controls.Add(this.button21);
+            this.FormularTab.Controls.Add(this.button17);
+            this.FormularTab.Controls.Add(this.bOrdersHistory);
+            this.FormularTab.Controls.Add(this.button10);
+            this.FormularTab.Controls.Add(this.numericUpDown3);
+            this.FormularTab.Controls.Add(this.label22);
+            this.FormularTab.Controls.Add(this.lFromularNumber);
+            this.FormularTab.Controls.Add(this.lFormularName);
+            this.FormularTab.Controls.Add(this.label24);
+            this.FormularTab.Controls.Add(this.label17);
+            this.FormularTab.Controls.Add(this.Formular);
+            this.FormularTab.Location = new System.Drawing.Point(4, 25);
+            this.FormularTab.Name = "FormularTab";
+            this.FormularTab.Padding = new System.Windows.Forms.Padding(3);
+            this.FormularTab.Size = new System.Drawing.Size(1185, 532);
+            this.FormularTab.TabIndex = 3;
+            this.FormularTab.Text = "‘ормул€р читател€";
+            this.FormularTab.UseVisualStyleBackColor = true;
+            // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(460, 97);
+            this.readerRightsView1.TabIndex = 26;
+            // 
+            // bReaderRegistration
+            // 
+            this.bReaderRegistration.Location = new System.Drawing.Point(771, 102);
+            this.bReaderRegistration.Name = "bReaderRegistration";
+            this.bReaderRegistration.Size = new System.Drawing.Size(174, 64);
+            this.bReaderRegistration.TabIndex = 25;
+            this.bReaderRegistration.Text = "¬ыдать права бесплатного абонемента";
+            this.bReaderRegistration.UseVisualStyleBackColor = true;
+            this.bReaderRegistration.Click += new System.EventHandler(this.bReaderRegistration_Click);
+            // 
+            // bComment
+            // 
+            this.bComment.Location = new System.Drawing.Point(951, 102);
+            this.bComment.Name = "bComment";
+            this.bComment.Size = new System.Drawing.Size(225, 31);
+            this.bComment.TabIndex = 23;
+            this.bComment.Text = " омментарий о читателе";
+            this.bComment.UseVisualStyleBackColor = true;
+            this.bComment.Click += new System.EventHandler(this.bComment_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(771, 69);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(175, 27);
+            this.button4.TabIndex = 22;
+            this.button4.Text = "—н€ть ответственность";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(771, 41);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(174, 26);
+            this.button2.TabIndex = 21;
+            this.button2.Text = "ќтослать email";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_2);
+            // 
+            // pbFormular
+            // 
+            this.pbFormular.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbFormular.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.pbFormular.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.pbFormular.Location = new System.Drawing.Point(665, 6);
+            this.pbFormular.Name = "pbFormular";
+            this.pbFormular.Size = new System.Drawing.Size(100, 105);
+            this.pbFormular.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbFormular.TabIndex = 20;
+            this.pbFormular.TabStop = false;
+            this.pbFormular.Click += new System.EventHandler(this.pbFormular_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(951, 69);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(228, 27);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "ѕродлить выделенное";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button21
+            // 
+            this.button21.Location = new System.Drawing.Point(951, 6);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(228, 33);
+            this.button21.TabIndex = 18;
+            this.button21.Text = "ѕоиск читател€ по фамилии";
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(951, 40);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(228, 27);
+            this.button17.TabIndex = 16;
+            this.button17.Text = "ѕросмотр сведений о читателе";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // bOrdersHistory
+            // 
+            this.bOrdersHistory.Location = new System.Drawing.Point(771, 6);
+            this.bOrdersHistory.Name = "bOrdersHistory";
+            this.bOrdersHistory.Size = new System.Drawing.Size(175, 33);
+            this.bOrdersHistory.TabIndex = 15;
+            this.bOrdersHistory.Text = "»стори€ выдач";
+            this.bOrdersHistory.UseVisualStyleBackColor = true;
+            this.bOrdersHistory.Click += new System.EventHandler(this.bOrdersHistory_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(749, 505);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(230, 23);
+            this.button10.TabIndex = 9;
+            this.button10.Text = "Ќайти";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.Location = new System.Drawing.Point(593, 506);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(150, 23);
+            this.numericUpDown3.TabIndex = 8;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label22.Location = new System.Drawing.Point(6, 505);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(581, 24);
+            this.label22.TabIndex = 5;
+            this.label22.Text = "—читайте штрихкод или введите номер читательского билета:";
+            // 
+            // lFromularNumber
+            // 
+            this.lFromularNumber.AutoSize = true;
+            this.lFromularNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lFromularNumber.Location = new System.Drawing.Point(289, 9);
+            this.lFromularNumber.Name = "lFromularNumber";
+            this.lFromularNumber.Size = new System.Drawing.Size(0, 17);
+            this.lFromularNumber.TabIndex = 4;
+            // 
+            // lFormularName
+            // 
+            this.lFormularName.AutoSize = true;
+            this.lFormularName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lFormularName.Location = new System.Drawing.Point(108, 47);
+            this.lFormularName.Name = "lFormularName";
+            this.lFormularName.Size = new System.Drawing.Size(0, 17);
+            this.lFormularName.TabIndex = 4;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label24.Location = new System.Drawing.Point(3, 3);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(280, 24);
+            this.label24.TabIndex = 3;
+            this.label24.Text = "Ќомер читательского билета:";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label17.Location = new System.Drawing.Point(3, 40);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(99, 24);
+            this.label17.TabIndex = 3;
+            this.label17.Text = "„итатель:";
+            // 
+            // Formular
+            // 
+            this.Formular.AllowUserToAddRows = false;
+            this.Formular.AllowUserToDeleteRows = false;
+            this.Formular.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Formular.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.N,
+            this.Avtor,
+            this.Zaglavie,
+            this.God,
+            this.DateIssue,
+            this.DateVozv,
+            this.DateVozvFact,
+            this.Penalt});
+            this.Formular.Location = new System.Drawing.Point(0, 187);
+            this.Formular.MultiSelect = false;
+            this.Formular.Name = "Formular";
+            this.Formular.ReadOnly = true;
+            this.Formular.RowHeadersVisible = false;
+            this.Formular.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Formular.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Formular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.Formular.Size = new System.Drawing.Size(1176, 312);
+            this.Formular.TabIndex = 2;
+            // 
+            // N
+            // 
+            this.N.HeaderText = "є";
+            this.N.Name = "N";
+            this.N.ReadOnly = true;
+            this.N.Width = 30;
+            // 
+            // Avtor
+            // 
+            this.Avtor.HeaderText = "јвтор";
+            this.Avtor.Name = "Avtor";
+            this.Avtor.ReadOnly = true;
+            this.Avtor.Width = 150;
+            // 
+            // Zaglavie
+            // 
+            this.Zaglavie.HeaderText = "«аглавие";
+            this.Zaglavie.Name = "Zaglavie";
+            this.Zaglavie.ReadOnly = true;
+            this.Zaglavie.Width = 250;
+            // 
+            // God
+            // 
+            this.God.HeaderText = "√од издани€";
+            this.God.Name = "God";
+            this.God.ReadOnly = true;
+            this.God.Width = 75;
+            // 
+            // DateIssue
+            // 
+            this.DateIssue.HeaderText = "ƒата выдачи";
+            this.DateIssue.Name = "DateIssue";
+            this.DateIssue.ReadOnly = true;
+            this.DateIssue.Width = 80;
+            // 
+            // DateVozv
+            // 
+            this.DateVozv.HeaderText = "ѕредпола гаема€ дата возврата";
+            this.DateVozv.Name = "DateVozv";
+            this.DateVozv.ReadOnly = true;
+            this.DateVozv.Width = 80;
+            // 
+            // DateVozvFact
+            // 
+            this.DateVozvFact.HeaderText = "‘актичес ка€ дата возврата";
+            this.DateVozvFact.Name = "DateVozvFact";
+            this.DateVozvFact.ReadOnly = true;
+            this.DateVozvFact.Width = 80;
+            // 
+            // Penalt
+            // 
+            this.Penalt.HeaderText = "Ќарушение";
+            this.Penalt.Name = "Penalt";
+            this.Penalt.ReadOnly = true;
+            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Penalt.Width = 85;
+            // 
+            // ReferenceTab
+            // 
+            this.ReferenceTab.Controls.Add(this.bSaveReferenceToFile);
+            this.ReferenceTab.Controls.Add(this.flowLayoutPanel1);
+            this.ReferenceTab.Controls.Add(this.Statistics);
+            this.ReferenceTab.Controls.Add(this.bShowReference);
+            this.ReferenceTab.Location = new System.Drawing.Point(4, 25);
+            this.ReferenceTab.Margin = new System.Windows.Forms.Padding(4);
+            this.ReferenceTab.Name = "ReferenceTab";
+            this.ReferenceTab.Padding = new System.Windows.Forms.Padding(4);
+            this.ReferenceTab.Size = new System.Drawing.Size(1185, 532);
+            this.ReferenceTab.TabIndex = 1;
+            this.ReferenceTab.Text = "—правка";
+            this.ReferenceTab.UseVisualStyleBackColor = true;
+            // 
+            // bSaveReferenceToFile
+            // 
+            this.bSaveReferenceToFile.Enabled = false;
+            this.bSaveReferenceToFile.Location = new System.Drawing.Point(775, 497);
+            this.bSaveReferenceToFile.Name = "bSaveReferenceToFile";
+            this.bSaveReferenceToFile.Size = new System.Drawing.Size(234, 28);
+            this.bSaveReferenceToFile.TabIndex = 5;
+            this.bSaveReferenceToFile.Text = "—охранить в файл";
+            this.bSaveReferenceToFile.UseVisualStyleBackColor = true;
+            this.bSaveReferenceToFile.Click += new System.EventHandler(this.bSaveReferenceToFile_Click);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.lReferenceName);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 9);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1171, 28);
+            this.flowLayoutPanel1.TabIndex = 4;
+            // 
+            // lReferenceName
+            // 
+            this.lReferenceName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lReferenceName.AutoSize = true;
+            this.lReferenceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lReferenceName.Location = new System.Drawing.Point(3, 0);
+            this.lReferenceName.Name = "lReferenceName";
+            this.lReferenceName.Size = new System.Drawing.Size(0, 26);
+            this.lReferenceName.TabIndex = 3;
+            // 
+            // Statistics
+            // 
+            this.Statistics.AllowUserToAddRows = false;
+            this.Statistics.AllowUserToDeleteRows = false;
+            this.Statistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Statistics.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.Statistics.Location = new System.Drawing.Point(7, 43);
+            this.Statistics.Name = "Statistics";
+            this.Statistics.ReadOnly = true;
+            this.Statistics.RowHeadersVisible = false;
+            this.Statistics.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.Statistics.Size = new System.Drawing.Size(1171, 447);
+            this.Statistics.TabIndex = 1;
+            this.Statistics.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_CellMouseDoubleClick);
+            this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
+            // 
+            // bShowReference
+            // 
+            this.bShowReference.Location = new System.Drawing.Point(1013, 496);
+            this.bShowReference.Name = "bShowReference";
+            this.bShowReference.Size = new System.Drawing.Size(169, 29);
+            this.bShowReference.TabIndex = 0;
+            this.bShowReference.Text = "¬ывести в таблицу";
+            this.bShowReference.UseVisualStyleBackColor = true;
+            this.bShowReference.Click += new System.EventHandler(this.bShowReference_Click);
+            // 
+            // AttendanceTab
+            // 
+            this.AttendanceTab.Controls.Add(this.bEmulation);
+            this.AttendanceTab.Controls.Add(this.lInfoAttendance);
+            this.AttendanceTab.Controls.Add(this.lAttendance);
+            this.AttendanceTab.Location = new System.Drawing.Point(4, 25);
+            this.AttendanceTab.Name = "AttendanceTab";
+            this.AttendanceTab.Padding = new System.Windows.Forms.Padding(3);
+            this.AttendanceTab.Size = new System.Drawing.Size(1185, 532);
+            this.AttendanceTab.TabIndex = 4;
+            this.AttendanceTab.Text = "”чЄт посещаемости";
+            this.AttendanceTab.UseVisualStyleBackColor = true;
+            // 
+            // bEmulation
+            // 
+            this.bEmulation.Location = new System.Drawing.Point(1087, 502);
+            this.bEmulation.Name = "bEmulation";
+            this.bEmulation.Size = new System.Drawing.Size(92, 24);
+            this.bEmulation.TabIndex = 11;
+            this.bEmulation.Text = "эмул€ци€";
+            this.bEmulation.UseVisualStyleBackColor = true;
+            this.bEmulation.Click += new System.EventHandler(this.bEmulation_Click);
+            // 
+            // lInfoAttendance
+            // 
+            this.lInfoAttendance.AutoSize = true;
+            this.lInfoAttendance.Location = new System.Drawing.Point(346, 302);
+            this.lInfoAttendance.Name = "lInfoAttendance";
+            this.lInfoAttendance.Size = new System.Drawing.Size(425, 17);
+            this.lInfoAttendance.TabIndex = 10;
+            this.lInfoAttendance.Text = "—читайте штрихкод читател€, чтобы увеличить посещаемость";
+            // 
+            // lAttendance
+            // 
+            this.lAttendance.AutoSize = true;
+            this.lAttendance.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lAttendance.Location = new System.Drawing.Point(240, 98);
+            this.lAttendance.Name = "lAttendance";
+            this.lAttendance.Size = new System.Drawing.Size(668, 31);
+            this.lAttendance.TabIndex = 9;
+            this.lAttendance.Text = "Ќа сегодн€ посещаемость составл€ет: 0 человек(а)";
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 750;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.Location = new System.Drawing.Point(440, 28);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(384, 42);
+            this.label10.TabIndex = 11;
+            this.label10.Text = " ниговыдача ¬√Ѕ»Ћ";
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.выданные нигиЌа“екущийћоментToolStripMenuItem,
+            this.просроченные нигиToolStripMenuItem,
+            this.списокƒействийќператора«аѕериодToolStripMenuItem,
+            this.отчЄтќтдела«аѕериодToolStripMenuItem,
+            this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem,
+            this.все ниги÷ентрајмериканской ультурыToolStripMenuItem,
+            this.обращаемость нигToolStripMenuItem,
+            this.список ниг— оторых—н€таќтветственностьToolStripMenuItem,
+            this.списокЌарушителей—роковѕользовани€ToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(331, 202);
+            // 
+            // выданные нигиЌа“екущийћоментToolStripMenuItem
+            // 
+            this.выданные нигиЌа“екущийћоментToolStripMenuItem.Name = "выданные нигиЌа“екущийћоментToolStripMenuItem";
+            this.выданные нигиЌа“екущийћоментToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.выданные нигиЌа“екущийћоментToolStripMenuItem.Text = "¬ыданные книги на текущий момент";
+            this.выданные нигиЌа“екущийћоментToolStripMenuItem.Click += new System.EventHandler(this.выданные нигиЌа“екущийћоментToolStripMenuItem_Click);
+            // 
+            // просроченные нигиToolStripMenuItem
+            // 
+            this.просроченные нигиToolStripMenuItem.Name = "просроченные нигиToolStripMenuItem";
+            this.просроченные нигиToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.просроченные нигиToolStripMenuItem.Text = "ѕросроченные книги";
+            this.просроченные нигиToolStripMenuItem.Click += new System.EventHandler(this.просроченные нигиToolStripMenuItem_Click);
+            // 
+            // списокƒействийќператора«аѕериодToolStripMenuItem
+            // 
+            this.списокƒействийќператора«аѕериодToolStripMenuItem.Name = "списокƒействийќператора«аѕериодToolStripMenuItem";
+            this.списокƒействийќператора«аѕериодToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.списокƒействийќператора«аѕериодToolStripMenuItem.Text = "—писок действий оператора за период";
+            this.списокƒействийќператора«аѕериодToolStripMenuItem.Click += new System.EventHandler(this.списокƒействийќператора«аѕериодToolStripMenuItem_Click);
+            // 
+            // отчЄтќтдела«аѕериодToolStripMenuItem
+            // 
+            this.отчЄтќтдела«аѕериодToolStripMenuItem.Name = "отчЄтќтдела«аѕериодToolStripMenuItem";
+            this.отчЄтќтдела«аѕериодToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.отчЄтќтдела«аѕериодToolStripMenuItem.Text = "ќтчЄт отдела за период";
+            this.отчЄтќтдела«аѕериодToolStripMenuItem.Click += new System.EventHandler(this.отчЄтќтдела«аѕериодToolStripMenuItem_Click);
+            // 
+            // отчЄт“екущегоќператора«аѕериодToolStripMenuItem
+            // 
+            this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem.Name = "отчЄт“екущегоќператора«аѕериодToolStripMenuItem";
+            this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem.Text = "ќтчЄт текущего оператора за период";
+            this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem.Click += new System.EventHandler(this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem_Click);
+            // 
+            // все ниги÷ентрајмериканской ультурыToolStripMenuItem
+            // 
+            this.все ниги÷ентрајмериканской ультурыToolStripMenuItem.Name = "все ниги÷ентрајмериканской ультурыToolStripMenuItem";
+            this.все ниги÷ентрајмериканской ультурыToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.все ниги÷ентрајмериканской ультурыToolStripMenuItem.Text = "¬се книги ÷ј ";
+            this.все ниги÷ентрајмериканской ультурыToolStripMenuItem.Click += new System.EventHandler(this.все ниги÷ентрајмериканской ультурыToolStripMenuItem_Click);
+            // 
+            // обращаемость нигToolStripMenuItem
+            // 
+            this.обращаемость нигToolStripMenuItem.Name = "обращаемость нигToolStripMenuItem";
+            this.обращаемость нигToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.обращаемость нигToolStripMenuItem.Text = "ќбращаемость книг";
+            this.обращаемость нигToolStripMenuItem.Click += new System.EventHandler(this.обращаемость нигToolStripMenuItem_Click);
+            // 
+            // список ниг— оторых—н€таќтветственностьToolStripMenuItem
+            // 
+            this.список ниг— оторых—н€таќтветственностьToolStripMenuItem.Name = "список ниг— оторых—н€таќтветственностьToolStripMenuItem";
+            this.список ниг— оторых—н€таќтветственностьToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.список ниг— оторых—н€таќтветственностьToolStripMenuItem.Text = "—писок книг, с которых сн€та ответственность";
+            this.список ниг— оторых—н€таќтветственностьToolStripMenuItem.Click += new System.EventHandler(this.список ниг— оторых—н€таќтветственностьToolStripMenuItem_Click);
+            // 
+            // списокЌарушителей—роковѕользовани€ToolStripMenuItem
+            // 
+            this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Name = "списокЌарушителей—роковѕользовани€ToolStripMenuItem";
+            this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Text = "—писок нарушителей сроков пользовани€";
+            this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Click += new System.EventHandler(this.списокЌарушителей—роковѕользовани€ToolStripMenuItem_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(15, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(137, 99);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 10;
+            this.pictureBox1.TabStop = false;
+            // 
+            // dataGridViewButtonColumn1
+            // 
+            this.dataGridViewButtonColumn1.HeaderText = "Ќарушение";
+            this.dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
+            this.dataGridViewButtonColumn1.ReadOnly = true;
+            this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewButtonColumn1.Width = 85;
+            // 
+            // MainForm
+            // 
+            this.AcceptButton = this.bConfirm;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1217, 707);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tbCurrentEmployee);
+            this.Controls.Add(this.bChangeAuthorization);
+            this.Controls.Add(this.label3);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
+            this.Name = "MainForm";
+            this.Text = " ниговыдача ¬√Ѕ»Ћ";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.tabControl1.ResumeLayout(false);
+            this.MainTab.ResumeLayout(false);
+            this.MainTab.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLOG)).EndInit();
+            this.FormularTab.ResumeLayout(false);
+            this.FormularTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Formular)).EndInit();
+            this.ReferenceTab.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Statistics)).EndInit();
+            this.AttendanceTab.ResumeLayout(false);
+            this.AttendanceTab.PerformLayout();
+            this.contextMenuStrip2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button bChangeAuthorization;
+        public System.Windows.Forms.TextBox tbCurrentEmployee;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage MainTab;
+        private System.Windows.Forms.TabPage ReferenceTab;
+        private System.Windows.Forms.DataGridView dgvLOG;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button bCancel;
+        private System.Windows.Forms.Button bConfirm;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label lReader;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lTitle;
+        private System.Windows.Forms.Label lAuthor;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button bShowReference;
+        private System.Windows.Forms.DataGridView Statistics;
+        private System.Windows.Forms.Label lReferenceName;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.TabPage ttabPage4;
+        private System.Windows.Forms.Label lFormularName;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label lFromularNumber;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.DataGridViewTextBoxColumn N;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Avtor;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Zaglavie;
+        private System.Windows.Forms.DataGridViewTextBoxColumn God;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateIssue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateVozv;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateVozvFact;
+        private System.Windows.Forms.DataGridViewButtonColumn Penalt;
+        private System.Windows.Forms.Button bSaveReferenceToFile;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button bOrdersHistory;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.Button button21;
+        public System.Windows.Forms.DataGridView Formular;
+        private System.Windows.Forms.DataGridViewButtonColumn dataGridViewButtonColumn1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.PictureBox RPhoto;
+        private System.Windows.Forms.PictureBox pbFormular;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem выданные нигиЌа“екущийћоментToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem просроченные нигиToolStripMenuItem;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ToolStripMenuItem списокƒействийќператора«аѕериодToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem отчЄтќтдела«аѕериодToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem все ниги÷ентрајмериканской ультурыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem отчЄт“екущегоќператора«аѕериодToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem обращаемость нигToolStripMenuItem;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ToolStripMenuItem список ниг— оторых—н€таќтветственностьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem списокЌарушителей—роковѕользовани€ToolStripMenuItem;
+        private System.Windows.Forms.TabPage AttendanceTab;
+        private System.Windows.Forms.TabPage FormularTab;
+        private System.Windows.Forms.Button bEmulation;
+        private System.Windows.Forms.Label lInfoAttendance;
+        private System.Windows.Forms.Label lAttendance;
+        private System.Windows.Forms.Button bComment;
+        private System.Windows.Forms.Button bReaderRegistration;
+        private LibflClassLibrary.Controls.Readers.ReaderRightsView readerRightsView1;
+        //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
+        //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
+        //private CrystalReport1 CrystalReport11;
+        //private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
+        //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
+        //private CrystalDecisions.CrystalReports.Engine.ReportDocument reportDocument1;
+        //private CrystalReport1 CrystalReport11;
+        //private CrystalReport2 CrystalReport21;
+        //private CrystalReport3 CrystalReport31;
+    }
+}
+

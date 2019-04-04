@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
         public string Genre { get; set; }
 
         public string CoverURL { get; set; }
-        
+
         public bool IsExistsDigitalCopy { get; set; }
         //public DigitalCopySimpleView DigitalCopy { get; set; }
 
@@ -28,7 +29,8 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
 
         public string RTF { get; set; }
 
-        
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string AvailabilityStatus {get;set;}
 
     }
 }

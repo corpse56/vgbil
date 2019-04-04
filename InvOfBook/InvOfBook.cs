@@ -494,9 +494,9 @@ namespace InvOfBookForOrder
             }
             if ((DateTime.Now.DayOfWeek == DayOfWeek.Saturday) || (DateTime.Now.DayOfWeek == DayOfWeek.Sunday))
             {
-                if ((DateTime.Now.Date == new DateTime(2018, 4, 21)))
+                if ((DateTime.Now.Date == new DateTime(2019, 4, 20)))
                 {
-                    if ((DateTime.Now.Hour >= 19) && (DateTime.Now.Minute >= 50))//библионочь
+                    if ((DateTime.Now.Hour >= 21) && (DateTime.Now.Minute >= 40))//библионочь
                     {
                         return "на сегодня приём заказов окончен. Выберите другую дату.";
                     }
@@ -506,7 +506,7 @@ namespace InvOfBookForOrder
                     }
                 }
                 else
-                if ((DateTime.Now.Hour >= 17) && (DateTime.Now.Minute >= 30))//выходные /// 17
+                if ((DateTime.Now.Hour >= 20) && (DateTime.Now.Minute >= 40))//выходные /// 17
                 {
                     return "на сегодня приём заказов окончен. Выберите другую дату.";
                 }
@@ -517,7 +517,7 @@ namespace InvOfBookForOrder
             }
             else
             {
-                if ((DateTime.Now.Hour >= 20) && (DateTime.Now.Minute >= 30))//будни
+                if ((DateTime.Now.Hour >= 20) && (DateTime.Now.Minute >= 40))//будни
                 {
                     return "на сегодня прием заказов окончен. Выберите другую дату.";
                 }

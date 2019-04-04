@@ -15,6 +15,17 @@ namespace WalkThroughAllCovers
             string login = AppSettings.LoginFileServerRead;
             string pwd = AppSettings.PasswordFileServerRead;
             string _directoryPath = @"\\" + ip + @"\BookAddInf\BJVVV\";
+            //GetCoversHeightLargerThanWidth(_directoryPath, login, pwd);
+
+
+
+
+            //File.WriteAllLines("BJVVV.txt", covers);
+            Console.WriteLine("finish");
+            Console.ReadKey();
+        }
+        private static List<string> GetCoversHeightLargerThanWidth(string _directoryPath, string login, string pwd)
+        {
             List<string> covers = new List<string>();
             using (new NetworkConnection(_directoryPath, new NetworkCredential(login, pwd)))
             {
@@ -26,7 +37,7 @@ namespace WalkThroughAllCovers
                         if (img.Width > img.Height)
                         {
                             //\\192.168.4.30\BookAddInf\BJVVV\000\008\668\JPEG_AB\cover.jpg
-                            string pin = file.Substring(file.IndexOf("AddInf")+7);
+                            string pin = file.Substring(file.IndexOf("AddInf") + 7);
                             pin = pin.Substring(pin.IndexOf("\\"));
                             pin = $"{pin[1]}{pin[2]}{pin[3]}{pin[5]}{pin[6]}{pin[7]}{pin[9]}{pin[10]}{pin[11]}";
                             pin = pin.TrimStart('0');
@@ -36,9 +47,22 @@ namespace WalkThroughAllCovers
                     }
                 }
             }
-            File.WriteAllLines("BJVVV.txt", covers);
-            Console.WriteLine("finish");
-            Console.ReadKey();
+            return covers;
+        }
+        private static void RenameCoversJPEG_AB(string _directoryPath, string login, string pwd)
+        {
+            //base_001.jpg
+            List<string> covers = new List<string>();
+            using (new NetworkConnection(_directoryPath, new NetworkCredential(login, pwd)))
+            {
+                foreach (string file in Directory.EnumerateFiles(_directoryPath, "*.*", SearchOption.AllDirectories))
+                {
+                    if (file.ToLower().Contains("cover.jpg"))
+                    {
+
+                    }
+                }
+            }
         }
     }
 }
