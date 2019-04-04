@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace LibflClassLibrary.Books.BJBooks.Loaders
 {
@@ -50,6 +51,54 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             foreach (DataRow r in table.Rows)
             {
                 result.Add(r["PLAIN"].ToString());
+            }
+            return result;
+        }
+
+        internal BJBookInfo GetBookInfoByPIN(int pin)
+        {
+            DataTable table = dbWrapper.GetBJRecord(pin);
+            BJBookInfo result = new BJBookInfo();
+            result.Id = $"{Fund}_{pin}";
+            result.ID = pin;
+            result.Fund = Fund;
+            //BJExemplarInfo exemplar = new BJExemplarInfo(0);
+            int CurrentIdData = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                if ((int)row["IDBLOCK"] != 260)
+                {
+                    if ((int)row["IDBLOCK"] == 270)//если есть гиперссылка
+                    {
+                        result.DigitalCopy = new BJElectronicExemplarInfo(pin, Fund);
+                    }
+                    else
+                    {
+                        result.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+                    }
+                }
+                else
+                {
+                    if (CurrentIdData != (int)row["IDDATA"])
+                    {
+                        CurrentIdData = (int)row["IDDATA"];
+                        result.Exemplars.Add(BJExemplarInfo.GetExemplarByIdData(CurrentIdData, fund));
+                        //exemplar = new BJExemplarInfo((int)row["IDDATA"]);
+                        //exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+                    }
+                    else
+                    {
+                        //exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+                    }
+                }
+            }
+            table = dbWrapper.GetRTF(pin);
+            if (table.Rows.Count != 0)
+            {
+                RichTextBox rtb = new RichTextBox();
+                rtb.Rtf = table.Rows[0][0].ToString();
+                result.RTF = rtb.Text;
+                rtb.Dispose();
             }
             return result;
         }
@@ -139,6 +188,7 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             return dbWrapper.GetAllIdmainWithImages();
         }
 
+
         internal DataTable GetIdDataOfAllExemplars(int idmain)
         {
             return dbWrapper.GetIdDataOfAllExemplars(idmain);
@@ -204,5 +254,20 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             }
             return BJElectronicExemplarAvailabilityCodes.vstop;
         }
+
+
+        internal BJBookInfo GetBJBookByBar(string data)
+        {
+            //здесь ищем по всем базам. просто передаём BJVVV, но запрашивать будем все базы по очереди.
+
+            DataTable table = dbWrapper.GetBJBookByBar(data);
+            if (table.Rows.Count > 1) throw new Exception("Штрихкодов в базах найдено более одного.");
+            if (table.Rows.Count == 0) return null;
+            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(Convert.ToInt32(table.Rows[0]["IDMAIN"]), table.Rows[0]["fund"].ToString());
+            return book;
+        }
+
+
+
     }
 }

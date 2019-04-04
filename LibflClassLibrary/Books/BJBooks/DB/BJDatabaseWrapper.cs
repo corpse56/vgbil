@@ -209,7 +209,19 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                 return this.ExecuteSelectQuery(dataAdapter);
             }
         }
-        
+
+        internal DataTable GetBJBookByBar(string data)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_BOOK_BY_BAR, connection);
+                dataAdapter.SelectCommand.Parameters.Add("bar", SqlDbType.Int).Value = data;
+                dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal DataTable GetExemplar(string InventoryNumber)
         {
             DataTable table = new DataTable();

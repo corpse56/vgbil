@@ -39,6 +39,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         public string ConvolutePin { get; set; }
         public int ConvoluteIdData { get; set; }
         public string Cipher { get; set; }
+        public string Bar { get; set; }
         public DateTime Created; //для новых поступлений. Дата присвоения инвентарного номера.
 
         public BJFields Fields = new BJFields();
@@ -119,6 +120,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 
 
             exemplar.Cipher = string.IsNullOrEmpty(exemplar.Fields["899$j"].ToString()) ? dbw.GetCipher(exemplar.Fields["899$b"].ToString(), exemplar.IDMAIN) : exemplar.Fields["899$j"].ToString();
+            exemplar.Bar = exemplar.Fields["899$w"].ToString();
 
             return exemplar;
         }
@@ -368,6 +370,8 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             }
         }
 
+
+        //этот метод закрыть с потрохами
         public bool IsIssuedToReader()
         {
             switch (this.Fund)

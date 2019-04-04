@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
+﻿using CirculationApp;
+using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books;
@@ -102,6 +103,68 @@ namespace LibflClassLibrary.Circulation
             //{ 1017,   "Проследовать в Зал выдачи документов 2 этаж. Возможность доступа уточните у сотрудника."},
             //{ 1020,   "Экстремистская литература.Не попадает в индекс.Обрабатывать не нужно."},
             //{ 1999,   "Невозможно определить доступ"},
+        }
+
+        internal void IssueBookToReader(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
+        {
+            //если попали сюда, то книга не свободна, права абонемента есть. нужно проверить если сотрудник
+
+            switch (scannedExemplar.ExemplarAccess.Access)
+            {
+                case 1000://Взять на дом Заказать через личный кабинет, для получения на дом пройти в { { location_2006} }
+                    break;
+                case 1001://Свободый электронный доступ
+                    break;
+                case 1002://Электронный доступ через авторизацию читателя(удаленного читателя)
+                    break;
+                case 1003://Электронный доступ в электронном зале НЭБ, читальные зал(3 этаж)
+                    break;
+                case 1004://ЛитРес: Иностранка
+                    break;
+                case 1005://В помещении бибилотеки Заказать через личный кабинет, для получения заказа пройти в { { location_2007} }
+                    break;
+                case 1006://Взять на дом Проследовать в { { exemplar_location} } для получения книги на дом
+                    break;
+                case 1007://В помещении бибилотеки Проследовать в { { exemplar_location} }, взять самостоятельно для чтения книги в помещении
+                    break;
+                case 1008://Удалённый доступ   Pearson: Иностранка
+                    break;
+                case 1009:// Печать по требованию Печать по требованию
+                    break;
+                case 1010://Уточнить доступ    Проследовать в { { exemplar_location} }. Возможность выдачи уточните у сотрудника
+                    break;
+                case 1011://В помещении бибилотеки Книга находится на выставке в { { exemplar_location} }
+                    break;
+                case 1012://В помещении бибилотеки СПВ. Заказать через личный кабинет, проследовать в { { location_2007} }. Сотрудник поможет Вам с дополнительным оборудованием для просмотра.
+                    break;
+                case 1013://Уточнить доступ    Книга находится в обработке
+                    break;
+                case 1014://В помещении бибилотеки Редкая книга.Проследовать в { { location_2009} }
+                    break;
+                case 1016://Уточнить доступ    Проследовать в { { location_2009} }. Возможность доступа уточните у сотрудника.
+                    break;
+                case 1017://Уточнить доступ    Проследовать в { { location_2007} }. Возможность доступа уточните у сотрудника.
+                    break;
+                case 1020://Уточнить доступ    Экстремистская литература. Не попадает в индекс. Обрабатывать не нужно.
+                    break;
+                case 1999://Уточнить доступ    Проследовать в { { location_2007} }. Возможность доступа уточните у сотрудника.
+                    break;
+            }
+        }
+
+        internal bool IsIssuedToReader(BJExemplarInfo exemplar)
+        {
+            return loader.IsIssuedToReader(exemplar);
+        }
+
+
+        internal BARType CheckBAR(string data)
+        {
+            BJBookInfo book = BJBookInfo.GetBookInfoByBAR(data);
+            if (book != null) return BARType.Book;
+            ReaderInfo reader = ReaderInfo.GetReaderByBar(data);
+            if (reader != null) return BARType.Reader;
+            return BARType.NotExist;
         }
 
         internal void GetElectronicExemplarAvailabilityStatus(string iD)

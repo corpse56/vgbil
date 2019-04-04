@@ -28,18 +28,18 @@ namespace CirculationApp
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.label3 = new System.Windows.Forms.Label();
             this.bChangeAuthorization = new System.Windows.Forms.Button();
             this.tbCurrentEmployee = new System.Windows.Forms.TextBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.MainTabContainer = new System.Windows.Forms.TabControl();
             this.MainTab = new System.Windows.Forms.TabPage();
-            this.button14 = new System.Windows.Forms.Button();
+            this.bMainEmulation = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
             this.bConfirm = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.RPhoto = new System.Windows.Forms.PictureBox();
             this.lReader = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -53,17 +53,15 @@ namespace CirculationApp
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.FormularTab = new System.Windows.Forms.TabPage();
-            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.bReaderRegistration = new System.Windows.Forms.Button();
             this.bComment = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.pbFormular = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button21 = new System.Windows.Forms.Button();
-            this.button17 = new System.Windows.Forms.Button();
+            this.bRemoveResponsibility = new System.Windows.Forms.Button();
+            this.bFormularSendEmail = new System.Windows.Forms.Button();
+            this.bProlong = new System.Windows.Forms.Button();
+            this.bSearchReaderByFIO = new System.Windows.Forms.Button();
+            this.bReaderView = new System.Windows.Forms.Button();
             this.bOrdersHistory = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
+            this.bFormularFindById = new System.Windows.Forms.Button();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.label22 = new System.Windows.Forms.Label();
             this.lFromularNumber = new System.Windows.Forms.Label();
@@ -78,7 +76,6 @@ namespace CirculationApp
             this.DateIssue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ReferenceTab = new System.Windows.Forms.TabPage();
             this.bSaveReferenceToFile = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -89,9 +86,8 @@ namespace CirculationApp
             this.bEmulation = new System.Windows.Forms.Button();
             this.lInfoAttendance = new System.Windows.Forms.Label();
             this.lAttendance = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer();
             this.label10 = new System.Windows.Forms.Label();
-            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.выданныеКнигиНаТекущийМоментToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.просроченныеКнигиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокДействийОператораЗаПериодToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,16 +97,19 @@ namespace CirculationApp
             this.обращаемостьКнигToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокКнигСКоторыхСнятаОтветственностьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокНарушителейСроковПользованияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pbLogo = new System.Windows.Forms.PictureBox();
+            this.RPhoto = new System.Windows.Forms.PictureBox();
+            this.pbFormular = new System.Windows.Forms.PictureBox();
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.tabControl1.SuspendLayout();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
+            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.AcceptBooksTab = new System.Windows.Forms.TabPage();
+            this.MainTabContainer.SuspendLayout();
             this.MainTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLOG)).BeginInit();
             this.FormularTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Formular)).BeginInit();
             this.ReferenceTab.SuspendLayout();
@@ -118,7 +117,9 @@ namespace CirculationApp
             ((System.ComponentModel.ISupportInitialize)(this.Statistics)).BeginInit();
             this.AttendanceTab.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).BeginInit();
             this.SuspendLayout();
             // 
             // label3
@@ -134,7 +135,8 @@ namespace CirculationApp
             // 
             // bChangeAuthorization
             // 
-            this.bChangeAuthorization.Location = new System.Drawing.Point(790, 102);
+            this.bChangeAuthorization.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bChangeAuthorization.Location = new System.Drawing.Point(948, 110);
             this.bChangeAuthorization.Margin = new System.Windows.Forms.Padding(4);
             this.bChangeAuthorization.Name = "bChangeAuthorization";
             this.bChangeAuthorization.Size = new System.Drawing.Size(215, 28);
@@ -145,31 +147,37 @@ namespace CirculationApp
             // 
             // tbCurrentEmployee
             // 
+            this.tbCurrentEmployee.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbCurrentEmployee.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.tbCurrentEmployee.Location = new System.Drawing.Point(292, 106);
+            this.tbCurrentEmployee.Location = new System.Drawing.Point(292, 115);
             this.tbCurrentEmployee.Margin = new System.Windows.Forms.Padding(4);
             this.tbCurrentEmployee.Name = "tbCurrentEmployee";
             this.tbCurrentEmployee.ReadOnly = true;
-            this.tbCurrentEmployee.Size = new System.Drawing.Size(490, 23);
+            this.tbCurrentEmployee.Size = new System.Drawing.Size(648, 23);
             this.tbCurrentEmployee.TabIndex = 8;
             // 
-            // tabControl1
+            // MainTabContainer
             // 
-            this.tabControl1.Controls.Add(this.MainTab);
-            this.tabControl1.Controls.Add(this.FormularTab);
-            this.tabControl1.Controls.Add(this.ReferenceTab);
-            this.tabControl1.Controls.Add(this.AttendanceTab);
-            this.tabControl1.Location = new System.Drawing.Point(15, 138);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1193, 561);
-            this.tabControl1.TabIndex = 9;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.MainTabContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MainTabContainer.Controls.Add(this.MainTab);
+            this.MainTabContainer.Controls.Add(this.FormularTab);
+            this.MainTabContainer.Controls.Add(this.ReferenceTab);
+            this.MainTabContainer.Controls.Add(this.AttendanceTab);
+            this.MainTabContainer.Controls.Add(this.AcceptBooksTab);
+            this.MainTabContainer.Location = new System.Drawing.Point(15, 138);
+            this.MainTabContainer.Margin = new System.Windows.Forms.Padding(4);
+            this.MainTabContainer.Name = "MainTabContainer";
+            this.MainTabContainer.SelectedIndex = 0;
+            this.MainTabContainer.Size = new System.Drawing.Size(1148, 533);
+            this.MainTabContainer.TabIndex = 9;
+            this.MainTabContainer.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // MainTab
             // 
-            this.MainTab.Controls.Add(this.button14);
+            this.MainTab.Controls.Add(this.bMainEmulation);
             this.MainTab.Controls.Add(this.bCancel);
             this.MainTab.Controls.Add(this.bConfirm);
             this.MainTab.Controls.Add(this.label1);
@@ -182,24 +190,26 @@ namespace CirculationApp
             this.MainTab.Margin = new System.Windows.Forms.Padding(4);
             this.MainTab.Name = "MainTab";
             this.MainTab.Padding = new System.Windows.Forms.Padding(4);
-            this.MainTab.Size = new System.Drawing.Size(1185, 532);
+            this.MainTab.Size = new System.Drawing.Size(1140, 504);
             this.MainTab.TabIndex = 0;
             this.MainTab.Text = "Приём/выдача изданий";
             this.MainTab.UseVisualStyleBackColor = true;
             // 
-            // button14
+            // bMainEmulation
             // 
-            this.button14.Location = new System.Drawing.Point(1085, 503);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(92, 24);
-            this.button14.TabIndex = 7;
-            this.button14.Text = "эмуляция";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
+            this.bMainEmulation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bMainEmulation.Location = new System.Drawing.Point(1040, 473);
+            this.bMainEmulation.Name = "bMainEmulation";
+            this.bMainEmulation.Size = new System.Drawing.Size(92, 24);
+            this.bMainEmulation.TabIndex = 7;
+            this.bMainEmulation.Text = "эмуляция";
+            this.bMainEmulation.UseVisualStyleBackColor = true;
+            this.bMainEmulation.Click += new System.EventHandler(this.bMainEmulation_Click);
             // 
             // bCancel
             // 
-            this.bCancel.Location = new System.Drawing.Point(511, 494);
+            this.bCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.bCancel.Location = new System.Drawing.Point(461, 466);
             this.bCancel.Name = "bCancel";
             this.bCancel.Size = new System.Drawing.Size(75, 31);
             this.bCancel.TabIndex = 6;
@@ -209,7 +219,8 @@ namespace CirculationApp
             // 
             // bConfirm
             // 
-            this.bConfirm.Location = new System.Drawing.Point(381, 494);
+            this.bConfirm.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.bConfirm.Location = new System.Drawing.Point(331, 466);
             this.bConfirm.Name = "bConfirm";
             this.bConfirm.Size = new System.Drawing.Size(116, 31);
             this.bConfirm.TabIndex = 1;
@@ -230,27 +241,16 @@ namespace CirculationApp
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.RPhoto);
             this.groupBox2.Controls.Add(this.lReader);
-            this.groupBox2.Location = new System.Drawing.Point(501, 336);
+            this.groupBox2.Location = new System.Drawing.Point(409, 336);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(676, 119);
+            this.groupBox2.Size = new System.Drawing.Size(688, 127);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Читатель";
-            // 
-            // RPhoto
-            // 
-            this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RPhoto.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.RPhoto.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.RPhoto.Location = new System.Drawing.Point(577, 12);
-            this.RPhoto.Name = "RPhoto";
-            this.RPhoto.Size = new System.Drawing.Size(93, 101);
-            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.RPhoto.TabIndex = 6;
-            this.RPhoto.TabStop = false;
-            this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
             // 
             // lReader
             // 
@@ -262,13 +262,16 @@ namespace CirculationApp
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.lTitle);
             this.groupBox1.Controls.Add(this.lAuthor);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Location = new System.Drawing.Point(12, 336);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(475, 119);
+            this.groupBox1.Size = new System.Drawing.Size(367, 127);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Издание";
@@ -311,6 +314,8 @@ namespace CirculationApp
             // 
             this.dgvLOG.AllowUserToAddRows = false;
             this.dgvLOG.AllowUserToDeleteRows = false;
+            this.dgvLOG.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvLOG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLOG.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
@@ -319,10 +324,12 @@ namespace CirculationApp
             this.dataGridViewTextBoxColumn4});
             this.dgvLOG.Location = new System.Drawing.Point(12, 32);
             this.dgvLOG.Margin = new System.Windows.Forms.Padding(4);
+            this.dgvLOG.MaximumSize = new System.Drawing.Size(2000, 270);
+            this.dgvLOG.MinimumSize = new System.Drawing.Size(0, 270);
             this.dgvLOG.Name = "dgvLOG";
             this.dgvLOG.ReadOnly = true;
             this.dgvLOG.RowHeadersVisible = false;
-            this.dgvLOG.Size = new System.Drawing.Size(1165, 266);
+            this.dgvLOG.Size = new System.Drawing.Size(1120, 270);
             this.dgvLOG.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn1
@@ -367,14 +374,13 @@ namespace CirculationApp
             this.FormularTab.Controls.Add(this.readerRightsView1);
             this.FormularTab.Controls.Add(this.bReaderRegistration);
             this.FormularTab.Controls.Add(this.bComment);
-            this.FormularTab.Controls.Add(this.button4);
-            this.FormularTab.Controls.Add(this.button2);
-            this.FormularTab.Controls.Add(this.pbFormular);
-            this.FormularTab.Controls.Add(this.button1);
-            this.FormularTab.Controls.Add(this.button21);
-            this.FormularTab.Controls.Add(this.button17);
+            this.FormularTab.Controls.Add(this.bRemoveResponsibility);
+            this.FormularTab.Controls.Add(this.bFormularSendEmail);
+            this.FormularTab.Controls.Add(this.bProlong);
+            this.FormularTab.Controls.Add(this.bSearchReaderByFIO);
+            this.FormularTab.Controls.Add(this.bReaderView);
             this.FormularTab.Controls.Add(this.bOrdersHistory);
-            this.FormularTab.Controls.Add(this.button10);
+            this.FormularTab.Controls.Add(this.bFormularFindById);
             this.FormularTab.Controls.Add(this.numericUpDown3);
             this.FormularTab.Controls.Add(this.label22);
             this.FormularTab.Controls.Add(this.lFromularNumber);
@@ -382,25 +388,19 @@ namespace CirculationApp
             this.FormularTab.Controls.Add(this.label24);
             this.FormularTab.Controls.Add(this.label17);
             this.FormularTab.Controls.Add(this.Formular);
+            this.FormularTab.Controls.Add(this.pbFormular);
             this.FormularTab.Location = new System.Drawing.Point(4, 25);
             this.FormularTab.Name = "FormularTab";
             this.FormularTab.Padding = new System.Windows.Forms.Padding(3);
-            this.FormularTab.Size = new System.Drawing.Size(1185, 532);
+            this.FormularTab.Size = new System.Drawing.Size(1241, 498);
             this.FormularTab.TabIndex = 3;
             this.FormularTab.Text = "Формуляр читателя";
             this.FormularTab.UseVisualStyleBackColor = true;
             // 
-            // readerRightsView1
-            // 
-            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
-            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
-            this.readerRightsView1.Name = "readerRightsView1";
-            this.readerRightsView1.Size = new System.Drawing.Size(460, 97);
-            this.readerRightsView1.TabIndex = 26;
-            // 
             // bReaderRegistration
             // 
-            this.bReaderRegistration.Location = new System.Drawing.Point(771, 102);
+            this.bReaderRegistration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bReaderRegistration.Location = new System.Drawing.Point(687, 102);
             this.bReaderRegistration.Name = "bReaderRegistration";
             this.bReaderRegistration.Size = new System.Drawing.Size(174, 64);
             this.bReaderRegistration.TabIndex = 25;
@@ -410,7 +410,8 @@ namespace CirculationApp
             // 
             // bComment
             // 
-            this.bComment.Location = new System.Drawing.Point(951, 102);
+            this.bComment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bComment.Location = new System.Drawing.Point(867, 102);
             this.bComment.Name = "bComment";
             this.bComment.Size = new System.Drawing.Size(225, 31);
             this.bComment.TabIndex = 23;
@@ -418,72 +419,65 @@ namespace CirculationApp
             this.bComment.UseVisualStyleBackColor = true;
             this.bComment.Click += new System.EventHandler(this.bComment_Click);
             // 
-            // button4
+            // bRemoveResponsibility
             // 
-            this.button4.Location = new System.Drawing.Point(771, 69);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(175, 27);
-            this.button4.TabIndex = 22;
-            this.button4.Text = "Снять ответственность";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.bRemoveResponsibility.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bRemoveResponsibility.Location = new System.Drawing.Point(687, 69);
+            this.bRemoveResponsibility.Name = "bRemoveResponsibility";
+            this.bRemoveResponsibility.Size = new System.Drawing.Size(175, 27);
+            this.bRemoveResponsibility.TabIndex = 22;
+            this.bRemoveResponsibility.Text = "Снять ответственность";
+            this.bRemoveResponsibility.UseVisualStyleBackColor = true;
+            this.bRemoveResponsibility.Click += new System.EventHandler(this.bRemoveResponsibility_Click);
             // 
-            // button2
+            // bFormularSendEmail
             // 
-            this.button2.Location = new System.Drawing.Point(771, 41);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(174, 26);
-            this.button2.TabIndex = 21;
-            this.button2.Text = "Отослать email";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_2);
+            this.bFormularSendEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bFormularSendEmail.Location = new System.Drawing.Point(688, 41);
+            this.bFormularSendEmail.Name = "bFormularSendEmail";
+            this.bFormularSendEmail.Size = new System.Drawing.Size(174, 26);
+            this.bFormularSendEmail.TabIndex = 21;
+            this.bFormularSendEmail.Text = "Отослать email";
+            this.bFormularSendEmail.UseVisualStyleBackColor = true;
+            this.bFormularSendEmail.Click += new System.EventHandler(this.bFormularSendEmail_Click);
             // 
-            // pbFormular
+            // bProlong
             // 
-            this.pbFormular.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbFormular.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.pbFormular.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.pbFormular.Location = new System.Drawing.Point(665, 6);
-            this.pbFormular.Name = "pbFormular";
-            this.pbFormular.Size = new System.Drawing.Size(100, 105);
-            this.pbFormular.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbFormular.TabIndex = 20;
-            this.pbFormular.TabStop = false;
-            this.pbFormular.Click += new System.EventHandler(this.pbFormular_Click);
+            this.bProlong.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bProlong.Location = new System.Drawing.Point(867, 69);
+            this.bProlong.Name = "bProlong";
+            this.bProlong.Size = new System.Drawing.Size(228, 27);
+            this.bProlong.TabIndex = 19;
+            this.bProlong.Text = "Продлить выделенное";
+            this.bProlong.UseVisualStyleBackColor = true;
+            this.bProlong.Click += new System.EventHandler(this.bProlong_Click);
             // 
-            // button1
+            // bSearchReaderByFIO
             // 
-            this.button1.Location = new System.Drawing.Point(951, 69);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(228, 27);
-            this.button1.TabIndex = 19;
-            this.button1.Text = "Продлить выделенное";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.bSearchReaderByFIO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bSearchReaderByFIO.Location = new System.Drawing.Point(867, 6);
+            this.bSearchReaderByFIO.Name = "bSearchReaderByFIO";
+            this.bSearchReaderByFIO.Size = new System.Drawing.Size(228, 33);
+            this.bSearchReaderByFIO.TabIndex = 18;
+            this.bSearchReaderByFIO.Text = "Поиск читателя по фамилии";
+            this.bSearchReaderByFIO.UseVisualStyleBackColor = true;
+            this.bSearchReaderByFIO.Click += new System.EventHandler(this.bSearchReaderByFIO_Click);
             // 
-            // button21
+            // bReaderView
             // 
-            this.button21.Location = new System.Drawing.Point(951, 6);
-            this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(228, 33);
-            this.button21.TabIndex = 18;
-            this.button21.Text = "Поиск читателя по фамилии";
-            this.button21.UseVisualStyleBackColor = true;
-            this.button21.Click += new System.EventHandler(this.button21_Click);
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(951, 40);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(228, 27);
-            this.button17.TabIndex = 16;
-            this.button17.Text = "Просмотр сведений о читателе";
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
+            this.bReaderView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bReaderView.Location = new System.Drawing.Point(867, 40);
+            this.bReaderView.Name = "bReaderView";
+            this.bReaderView.Size = new System.Drawing.Size(228, 27);
+            this.bReaderView.TabIndex = 16;
+            this.bReaderView.Text = "Просмотр сведений о читателе";
+            this.bReaderView.UseVisualStyleBackColor = true;
+            this.bReaderView.Click += new System.EventHandler(this.bReaderView_Click);
             // 
             // bOrdersHistory
             // 
-            this.bOrdersHistory.Location = new System.Drawing.Point(771, 6);
+            this.bOrdersHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bOrdersHistory.Location = new System.Drawing.Point(687, 6);
             this.bOrdersHistory.Name = "bOrdersHistory";
             this.bOrdersHistory.Size = new System.Drawing.Size(175, 33);
             this.bOrdersHistory.TabIndex = 15;
@@ -491,19 +485,21 @@ namespace CirculationApp
             this.bOrdersHistory.UseVisualStyleBackColor = true;
             this.bOrdersHistory.Click += new System.EventHandler(this.bOrdersHistory_Click);
             // 
-            // button10
+            // bFormularFindById
             // 
-            this.button10.Location = new System.Drawing.Point(749, 505);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(230, 23);
-            this.button10.TabIndex = 9;
-            this.button10.Text = "Найти";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
+            this.bFormularFindById.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bFormularFindById.Location = new System.Drawing.Point(749, 463);
+            this.bFormularFindById.Name = "bFormularFindById";
+            this.bFormularFindById.Size = new System.Drawing.Size(230, 23);
+            this.bFormularFindById.TabIndex = 9;
+            this.bFormularFindById.Text = "Найти";
+            this.bFormularFindById.UseVisualStyleBackColor = true;
+            this.bFormularFindById.Click += new System.EventHandler(this.bFormularFindById_Click);
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(593, 506);
+            this.numericUpDown3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.numericUpDown3.Location = new System.Drawing.Point(593, 464);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -515,9 +511,10 @@ namespace CirculationApp
             // 
             // label22
             // 
+            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label22.Location = new System.Drawing.Point(6, 505);
+            this.label22.Location = new System.Drawing.Point(6, 463);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(581, 24);
             this.label22.TabIndex = 5;
@@ -565,6 +562,9 @@ namespace CirculationApp
             // 
             this.Formular.AllowUserToAddRows = false;
             this.Formular.AllowUserToDeleteRows = false;
+            this.Formular.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Formular.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Formular.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.N,
@@ -575,7 +575,7 @@ namespace CirculationApp
             this.DateVozv,
             this.DateVozvFact,
             this.Penalt});
-            this.Formular.Location = new System.Drawing.Point(0, 187);
+            this.Formular.Location = new System.Drawing.Point(0, 185);
             this.Formular.MultiSelect = false;
             this.Formular.Name = "Formular";
             this.Formular.ReadOnly = true;
@@ -583,7 +583,7 @@ namespace CirculationApp
             this.Formular.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.Formular.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Formular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Formular.Size = new System.Drawing.Size(1176, 312);
+            this.Formular.Size = new System.Drawing.Size(1086, 257);
             this.Formular.TabIndex = 2;
             // 
             // N
@@ -635,15 +635,6 @@ namespace CirculationApp
             this.DateVozvFact.ReadOnly = true;
             this.DateVozvFact.Width = 80;
             // 
-            // Penalt
-            // 
-            this.Penalt.HeaderText = "Нарушение";
-            this.Penalt.Name = "Penalt";
-            this.Penalt.ReadOnly = true;
-            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Penalt.Width = 85;
-            // 
             // ReferenceTab
             // 
             this.ReferenceTab.Controls.Add(this.bSaveReferenceToFile);
@@ -654,15 +645,16 @@ namespace CirculationApp
             this.ReferenceTab.Margin = new System.Windows.Forms.Padding(4);
             this.ReferenceTab.Name = "ReferenceTab";
             this.ReferenceTab.Padding = new System.Windows.Forms.Padding(4);
-            this.ReferenceTab.Size = new System.Drawing.Size(1185, 532);
+            this.ReferenceTab.Size = new System.Drawing.Size(1140, 504);
             this.ReferenceTab.TabIndex = 1;
             this.ReferenceTab.Text = "Справка";
             this.ReferenceTab.UseVisualStyleBackColor = true;
             // 
             // bSaveReferenceToFile
             // 
+            this.bSaveReferenceToFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.bSaveReferenceToFile.Enabled = false;
-            this.bSaveReferenceToFile.Location = new System.Drawing.Point(775, 497);
+            this.bSaveReferenceToFile.Location = new System.Drawing.Point(724, 459);
             this.bSaveReferenceToFile.Name = "bSaveReferenceToFile";
             this.bSaveReferenceToFile.Size = new System.Drawing.Size(234, 28);
             this.bSaveReferenceToFile.TabIndex = 5;
@@ -672,10 +664,12 @@ namespace CirculationApp
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.Controls.Add(this.lReferenceName);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 9);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1171, 28);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1126, 28);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
             // lReferenceName
@@ -692,6 +686,9 @@ namespace CirculationApp
             // 
             this.Statistics.AllowUserToAddRows = false;
             this.Statistics.AllowUserToDeleteRows = false;
+            this.Statistics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Statistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Statistics.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.Statistics.Location = new System.Drawing.Point(7, 43);
@@ -699,14 +696,16 @@ namespace CirculationApp
             this.Statistics.ReadOnly = true;
             this.Statistics.RowHeadersVisible = false;
             this.Statistics.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Statistics.Size = new System.Drawing.Size(1171, 447);
+            this.Statistics.Size = new System.Drawing.Size(1126, 409);
             this.Statistics.TabIndex = 1;
             this.Statistics.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_CellMouseDoubleClick);
             this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
             // 
             // bShowReference
             // 
-            this.bShowReference.Location = new System.Drawing.Point(1013, 496);
+            this.bShowReference.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bShowReference.Enabled = false;
+            this.bShowReference.Location = new System.Drawing.Point(964, 458);
             this.bShowReference.Name = "bShowReference";
             this.bShowReference.Size = new System.Drawing.Size(169, 29);
             this.bShowReference.TabIndex = 0;
@@ -722,14 +721,15 @@ namespace CirculationApp
             this.AttendanceTab.Location = new System.Drawing.Point(4, 25);
             this.AttendanceTab.Name = "AttendanceTab";
             this.AttendanceTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AttendanceTab.Size = new System.Drawing.Size(1185, 532);
+            this.AttendanceTab.Size = new System.Drawing.Size(1241, 498);
             this.AttendanceTab.TabIndex = 4;
             this.AttendanceTab.Text = "Учёт посещаемости";
             this.AttendanceTab.UseVisualStyleBackColor = true;
             // 
             // bEmulation
             // 
-            this.bEmulation.Location = new System.Drawing.Point(1087, 502);
+            this.bEmulation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bEmulation.Location = new System.Drawing.Point(1130, 520);
             this.bEmulation.Name = "bEmulation";
             this.bEmulation.Size = new System.Drawing.Size(92, 24);
             this.bEmulation.TabIndex = 11;
@@ -755,11 +755,6 @@ namespace CirculationApp
             this.lAttendance.Size = new System.Drawing.Size(668, 31);
             this.lAttendance.TabIndex = 9;
             this.lAttendance.Text = "На сегодня посещаемость составляет: 0 человек(а)";
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 750;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // label10
             // 
@@ -849,15 +844,43 @@ namespace CirculationApp
             this.списокНарушителейСроковПользованияToolStripMenuItem.Text = "Список нарушителей сроков пользования";
             this.списокНарушителейСроковПользованияToolStripMenuItem.Click += new System.EventHandler(this.списокНарушителейСроковПользованияToolStripMenuItem_Click);
             // 
-            // pictureBox1
+            // pbLogo
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(15, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(137, 99);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 10;
-            this.pictureBox1.TabStop = false;
+            this.pbLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbLogo.Image")));
+            this.pbLogo.Location = new System.Drawing.Point(15, 12);
+            this.pbLogo.Name = "pbLogo";
+            this.pbLogo.Size = new System.Drawing.Size(137, 99);
+            this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbLogo.TabIndex = 10;
+            this.pbLogo.TabStop = false;
+            // 
+            // RPhoto
+            // 
+            this.RPhoto.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RPhoto.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.RPhoto.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.RPhoto.Location = new System.Drawing.Point(589, 16);
+            this.RPhoto.Name = "RPhoto";
+            this.RPhoto.Size = new System.Drawing.Size(93, 101);
+            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.RPhoto.TabIndex = 6;
+            this.RPhoto.TabStop = false;
+            this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
+            // 
+            // pbFormular
+            // 
+            this.pbFormular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbFormular.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbFormular.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.pbFormular.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.pbFormular.Location = new System.Drawing.Point(581, 6);
+            this.pbFormular.Name = "pbFormular";
+            this.pbFormular.Size = new System.Drawing.Size(100, 105);
+            this.pbFormular.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbFormular.TabIndex = 20;
+            this.pbFormular.TabStop = false;
+            this.pbFormular.Click += new System.EventHandler(this.pbFormular_Click);
             // 
             // dataGridViewButtonColumn1
             // 
@@ -868,15 +891,42 @@ namespace CirculationApp
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
             // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(460, 97);
+            this.readerRightsView1.TabIndex = 26;
+            // 
+            // Penalt
+            // 
+            this.Penalt.HeaderText = "Нарушение";
+            this.Penalt.Name = "Penalt";
+            this.Penalt.ReadOnly = true;
+            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Penalt.Width = 85;
+            // 
+            // AcceptBooksTab
+            // 
+            this.AcceptBooksTab.Location = new System.Drawing.Point(4, 25);
+            this.AcceptBooksTab.Name = "AcceptBooksTab";
+            this.AcceptBooksTab.Padding = new System.Windows.Forms.Padding(3);
+            this.AcceptBooksTab.Size = new System.Drawing.Size(1140, 504);
+            this.AcceptBooksTab.TabIndex = 5;
+            this.AcceptBooksTab.Text = "Приём книг на кафедру из хранения";
+            this.AcceptBooksTab.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AcceptButton = this.bConfirm;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1217, 707);
-            this.Controls.Add(this.pictureBox1);
+            this.ClientSize = new System.Drawing.Size(1176, 684);
+            this.Controls.Add(this.pbLogo);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.MainTabContainer);
             this.Controls.Add(this.tbCurrentEmployee);
             this.Controls.Add(this.bChangeAuthorization);
             this.Controls.Add(this.label3);
@@ -888,16 +938,14 @@ namespace CirculationApp
             this.Name = "MainForm";
             this.Text = "Книговыдача ВГБИЛ";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.tabControl1.ResumeLayout(false);
+            this.MainTabContainer.ResumeLayout(false);
             this.MainTab.ResumeLayout(false);
             this.MainTab.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLOG)).EndInit();
             this.FormularTab.ResumeLayout(false);
             this.FormularTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Formular)).EndInit();
             this.ReferenceTab.ResumeLayout(false);
@@ -907,7 +955,9 @@ namespace CirculationApp
             this.AttendanceTab.ResumeLayout(false);
             this.AttendanceTab.PerformLayout();
             this.contextMenuStrip2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -918,7 +968,7 @@ namespace CirculationApp
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button bChangeAuthorization;
         public System.Windows.Forms.TextBox tbCurrentEmployee;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl MainTabContainer;
         private System.Windows.Forms.TabPage MainTab;
         private System.Windows.Forms.TabPage ReferenceTab;
         private System.Windows.Forms.DataGridView dgvLOG;
@@ -928,13 +978,12 @@ namespace CirculationApp
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button bCancel;
         private System.Windows.Forms.Button bConfirm;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label lReader;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lTitle;
         private System.Windows.Forms.Label lAuthor;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pbLogo;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button bShowReference;
         private System.Windows.Forms.DataGridView Statistics;
@@ -943,7 +992,7 @@ namespace CirculationApp
         private System.Windows.Forms.TabPage ttabPage4;
         private System.Windows.Forms.Label lFormularName;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button bFormularFindById;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label lFromularNumber;
@@ -957,29 +1006,29 @@ namespace CirculationApp
         private System.Windows.Forms.DataGridViewTextBoxColumn DateVozvFact;
         private System.Windows.Forms.DataGridViewButtonColumn Penalt;
         private System.Windows.Forms.Button bSaveReferenceToFile;
-        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button bMainEmulation;
         private System.Windows.Forms.Button bOrdersHistory;
-        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button bReaderView;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.Button button21;
+        private System.Windows.Forms.Button bSearchReaderByFIO;
         public System.Windows.Forms.DataGridView Formular;
         private System.Windows.Forms.DataGridViewButtonColumn dataGridViewButtonColumn1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bProlong;
         private System.Windows.Forms.PictureBox RPhoto;
         private System.Windows.Forms.PictureBox pbFormular;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem выданныеКнигиНаТекущийМоментToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem просроченныеКнигиToolStripMenuItem;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button bFormularSendEmail;
         private System.Windows.Forms.ToolStripMenuItem списокДействийОператораЗаПериодToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem отчётОтделаЗаПериодToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem всеКнигиЦентраАмериканскойКультурыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem отчётТекущегоОператораЗаПериодToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem обращаемостьКнигToolStripMenuItem;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button bRemoveResponsibility;
         private System.Windows.Forms.ToolStripMenuItem списокКнигСКоторыхСнятаОтветственностьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem списокНарушителейСроковПользованияToolStripMenuItem;
         private System.Windows.Forms.TabPage AttendanceTab;
@@ -990,6 +1039,7 @@ namespace CirculationApp
         private System.Windows.Forms.Button bComment;
         private System.Windows.Forms.Button bReaderRegistration;
         private LibflClassLibrary.Controls.Readers.ReaderRightsView readerRightsView1;
+        private System.Windows.Forms.TabPage AcceptBooksTab;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         //private CrystalReport1 CrystalReport11;

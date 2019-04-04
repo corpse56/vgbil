@@ -443,6 +443,23 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                     " where A.IDMAIN = @idmain and A.MNFIELD = 899 and A.MSFIELD = '$b' and A.SORT = @fnd and cipher.PLAIN is not null";
             }
         }
+
+        public string GET_BOOK_BY_BAR
+        {
+            get
+            {
+                return " select *, 'BJVVV' fund from BJVVV..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
+                        " union all " +
+                        " select *, 'REDKOSTJ' fund from REDKOSTJ..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
+                        " union all " +
+                        " select *'BJACC' fund from BJACC..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
+                        " union all " +
+                        " select *'BJFCC' fund from BJFCC..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
+                        " union all " +
+                        " select *,'BJSCC' fund from BJSCC..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar ";
+            }
+        }
+
     }
 
 

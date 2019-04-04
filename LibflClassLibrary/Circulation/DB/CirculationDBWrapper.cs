@@ -119,6 +119,19 @@ namespace LibflClassLibrary.Circulation.DB
 
         }
 
+        internal DataTable IsIssuedToReader(int idData, string fund)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.IS_ISSUED_TO_READER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idData", SqlDbType.Int).Value = idData;
+                dataAdapter.SelectCommand.Parameters.Add("fund", SqlDbType.NVarChar).Value = fund;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal DataTable GetExemplarAvailabilityStatus(int idData, string fund)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -62,6 +63,7 @@ namespace LibflClassLibrary.Readers
         public string LiveStreet { get; set; }
         public string LiveHouse { get; set; }
         public string LiveFlat { get; set; }
+        public Image Photo;
 
 
         public ReaderRightsInfo Rights = null;
@@ -158,6 +160,13 @@ namespace LibflClassLibrary.Readers
                 }
             }
             return "NotDefined";
+        }
+
+        internal static ReaderInfo GetReaderByBar(string data)
+        {
+            ReaderLoader loader = new ReaderLoader();
+            ReaderInfo result = loader.LoadReaderByBar(data);
+            return result;
         }
 
         public void ChangePasswordLocalReader(ChangePasswordLocalReader request)

@@ -22,6 +22,7 @@ using LibflClassLibrary.Controls.Readers;
 using LibflClassLibrary.Controls;
 using LibflClassLibrary.BJUsers;
 using CirculationACC;
+using LibflClassLibrary.Circulation;
 
 namespace CirculationApp
 {
@@ -29,11 +30,10 @@ namespace CirculationApp
 
     public partial class MainForm : Form
     {
-        Department DEPARTMENT = new Department();
+        Department department = new Department();
+        CirculationInfo ci = new CirculationInfo();
 
-
-        public int EmpID;
-        //private Prolong f4;
+        //public int EmpID;
         SerialPort port;
         private BJUserInfo bjUser;
         public ExtGui.RoundProgress RndPrg;
@@ -57,11 +57,6 @@ namespace CirculationApp
             this.bCancel.Enabled = false;
             label4.Text = "Журнал событий " + DateTime.Now.ToShortDateString() + ":";
 
-
-
-           // Formular.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-         //   Formular.Columns.Clear();
-
             port = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
             port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
             port.Handshake = Handshake.RequestToSend;
@@ -70,7 +65,6 @@ namespace CirculationApp
             try
             {
                 port.Open();
-                
             }
             catch (Exception ex)
             {
@@ -89,19 +83,18 @@ namespace CirculationApp
             FromPort = port.ReadLine();
             FromPort = FromPort.Trim();
             port.DiscardInBuffer();
+
+            //вводим прослойку-делегата, чтобы иметь возможность эмулировать штрихкоды
             ScanFuncDelegate ScanDelegate;
             ScanDelegate = new ScanFuncDelegate(Form1_Scanned);
-            //ScanDelegate.Invoke(sender, e);
-            //Invoke(ScanDelegate);
             this.Invoke(ScanDelegate, new object[] { FromPort });
-            //this.Invoke(
         }
 
 
         void Form1_Scanned(string fromport)
         {
-            string g = tabControl1.SelectedTab.ToString();
-            switch (tabControl1.SelectedTab.Text)
+            string g = MainTabContainer.SelectedTab.ToString();
+            switch (MainTabContainer.SelectedTab.Text)
             {
                 case "Формуляр читателя":
                     #region formular
@@ -113,38 +106,8 @@ namespace CirculationApp
 
                 case "Приём/выдача изданий":
                     #region priem
-                    switch (DEPARTMENT.Circulate(fromport))
-                    {
-                        case 0:
-                            DEPARTMENT.RecieveBook(EmpID);
-                            CancelIssue();
-                            break;
-                        case 1:
-                            MessageBox.Show("Штрихкод не найден ни в базе читателей ни в базе книг!");
-                            break;
-                        case 2:
-                            MessageBox.Show("Ожидался штрихкод читателя, а считан штрихкод издания!");
-                            break;
-                        case 3:
-                            MessageBox.Show("Ожидался штрихкод издания, а считан штрихкод читателя!");
-                            break;
-                        case 4:
-                            lAuthor.Text = DEPARTMENT.ScannedBook.AUTHOR;
-                            lTitle.Text = DEPARTMENT.ScannedBook.TITLE;
-                            bCancel.Enabled = true;
-                            label1.Text = "Считайте штрихкод читателя";
-                            break;
-                        case 5:
-                            lReader.Text = DEPARTMENT.ScannedReader.Family + " " + DEPARTMENT.ScannedReader.Name + " " + DEPARTMENT.ScannedReader.Father;
-                            RPhoto.Image = DEPARTMENT.ScannedReader.Photo;
-                            bConfirm.Enabled = true;
-                            this.AcceptButton = bConfirm;
-                            bConfirm.Focus();
-                            label1.Text = "Подтвердите операцию";
-                            break;
 
-                    }
-                    Log();
+                    Circulate(fromport);
                     break;
                     #endregion
 
@@ -160,6 +123,43 @@ namespace CirculationApp
             }
         }
 
+        private void Circulate(string fromport)
+        {
+
+            switch (department.Circulate(fromport, bjUser))
+            {
+                case 0://книга была выдана. нужно принять её в отдел
+                    department.RecieveBook(bjUser);
+                    CancelIssue();
+                    break;
+                case 1:
+                    MessageBox.Show("Штрихкод не найден ни в базе читателей ни в базе книг!");
+                    break;
+                case 2:
+                    MessageBox.Show("Ожидался штрихкод читателя, а считан штрихкод издания!");
+                    break;
+                case 3:
+                    MessageBox.Show("Ожидался штрихкод издания, а считан штрихкод читателя!");
+                    break;
+                case 4:
+                    lAuthor.Text = department.ScannedBook.Fields["700$a"].ToString();
+                    lTitle.Text = department.ScannedBook.Fields["200$a"].ToString();
+                    bCancel.Enabled = true;
+                    label1.Text = "Считайте штрихкод читателя";
+                    break;
+                case 5:
+                    lReader.Text = department.ScannedReader.FamilyName + " " + department.ScannedReader.Name + " " + department.ScannedReader.FatherName;
+                    RPhoto.Image = department.ScannedReader.Photo;
+                    bConfirm.Enabled = true;
+                    this.AcceptButton = bConfirm;
+                    bConfirm.Focus();
+                    label1.Text = "Подтвердите операцию";
+                    break;
+
+            }
+            Log();
+        }
+
         private void AttendanceScan(string fromport)
         {
             if (!ReaderVO.IsReader(fromport))
@@ -171,8 +171,8 @@ namespace CirculationApp
 
             if (!reader.IsAlreadyMarked())
             {
-                DEPARTMENT.AddAttendance(reader);
-                lAttendance.Text = "На сегодня посещаемость составляет: " + DEPARTMENT.GetAttendance() + " человек(а)";
+                department.AddAttendance(reader);
+                lAttendance.Text = "На сегодня посещаемость составляет: " + department.GetAttendance() + " человек(а)";
             }
             else
             {
@@ -235,29 +235,29 @@ namespace CirculationApp
         }
         private void bConfirm_Click(object sender, EventArgs e)
         {
-            if (DEPARTMENT.ScannedReader.IsAlreadyIssuedMoreThanFourBooks())
-            {
-                DialogResult res =  MessageBox.Show("Читателю уже выдано более 4 наименований! Всё равно хотите выдать?","Внимание", MessageBoxButtons.YesNo,MessageBoxIcon.Exclamation);
-                if (res == DialogResult.No)
-                {
-                    CancelIssue();
-                    return;
-                }
-            }
-            switch (DEPARTMENT.ISSUE(EmpID))
+            //if (DEPARTMENT.ScannedReader.IsAlreadyIssuedMoreThanFourBooks())
+            //{
+            //    DialogResult res =  MessageBox.Show("Читателю уже выдано более 4 наименований! Всё равно хотите выдать?","Внимание", MessageBoxButtons.YesNo,MessageBoxIcon.Exclamation);
+            //    if (res == DialogResult.No)
+            //    {
+            //        CancelIssue();
+            //        return;
+            //    }
+            //}
+            switch (department.IssueBookToReader())
             {
                 case 0://успех
                     bConfirm.Enabled = false;
                     bCancel.Enabled = false;
                     CancelIssue();
                     Log();
-                    DEPARTMENT = new Department();
+                    department = new Department();
                     break;
                 case 1://у читателя нет прав для выдачи на дом
                     bConfirm.Enabled = false;
                     bCancel.Enabled = false;
                     CancelIssue();
-                    DEPARTMENT = new Department();
+                    department = new Department();
                     MessageBox.Show("Выдача на дом невозможна так как у читателя отсутствуют права бесплатного абонемента! Перейдите в формуляр читателя, чтобы выдать права.");
                     break;
             }
@@ -272,7 +272,7 @@ namespace CirculationApp
             this.lAuthor.Text = "";
             this.lTitle.Text = "";
             this.lReader.Text = "";
-            DEPARTMENT = new Department();
+            department = new Department();
             label1.Text = "Считайте штрихкод издания";
             bConfirm.Enabled = false;
             bCancel.Enabled = false;
@@ -306,7 +306,7 @@ namespace CirculationApp
             
         }
 
-        private void button10_Click(object sender, EventArgs e)
+        private void bFormularFindById_Click(object sender, EventArgs e)
         {
             ReaderVO reader = new ReaderVO((int)numericUpDown3.Value);
             if (reader.ID == 0)
@@ -317,7 +317,7 @@ namespace CirculationApp
             FillFormular(reader);
 
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void bProlong_Click(object sender, EventArgs e)
         {
             if (Formular.SelectedRows.Count == 0)
             {
@@ -325,7 +325,7 @@ namespace CirculationApp
                 return;
             }
 
-            if (DEPARTMENT.GetCountOfPrologedTimes((int)Formular.SelectedRows[0].Cells["idiss"].Value) > 0)
+            if (department.GetCountOfPrologedTimes((int)Formular.SelectedRows[0].Cells["idiss"].Value) > 0)
             {
                 MessageBox.Show("Нельзя продлить книгу более одного раза!");
                 return;
@@ -334,11 +334,11 @@ namespace CirculationApp
             BookVO book = new BookVO();
             if (Formular.SelectedRows[0].Cells["IsAtHome"].Value.ToString().ToLower().Contains("дом"))
             {
-                DEPARTMENT.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 30, EmpID);
+                department.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 30, EmpID);
             }
             else
             {
-                DEPARTMENT.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 10, EmpID);
+                department.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 10, EmpID);
             }
             ReaderVO reader = new ReaderVO((int)Formular.SelectedRows[0].Cells["idr"].Value);
             FillFormularGrid(reader);
@@ -355,13 +355,14 @@ namespace CirculationApp
 
         private void bChangeAuthorization_Click(object sender, EventArgs e)
         {
-            //BookRecordWork = new DBWork.dbBook("R00063Y0803");
-            //if (f2.Canceled)
-            //if ((this.EmpID == "") || (this.EmpID == null))
-            //{
-            //    MessageBox.Show("Вы не авторизованы! Программа заканчивает свою работу", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    Close();
-            //}
+            fBJAuthorization au = new fBJAuthorization("BJVVV");
+            au.ShowDialog();
+            if (au.User != null)
+            {
+                bjUser = au.User;
+                this.EmpID = bjUser.Id;
+                this.tbCurrentEmployee.Text = bjUser.FIO;
+            }
 
         }
 
@@ -376,7 +377,7 @@ namespace CirculationApp
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (tabControl1.SelectedTab.Text)
+            switch (MainTabContainer.SelectedTab.Text)
             {
                 case "Приём/выдача изданий":
                     Log();
@@ -392,12 +393,12 @@ namespace CirculationApp
                     lFromularNumber.Text = "";
                     lFormularName.Text = "";
                     Formular.Columns.Clear();
-                    AcceptButton = this.button10;
+                    AcceptButton = this.bFormularFindById;
                     pbFormular.Image = null;
                     readerRightsView1.Clear();
                     break;
                 case "Учёт посещаемости":
-                    lAttendance.Text = "На сегодня посещаемость составляет: " + DEPARTMENT.GetAttendance() + " человек(а)";
+                    lAttendance.Text = "На сегодня посещаемость составляет: " + department.GetAttendance() + " человек(а)";
                     break;
 
             }
@@ -422,7 +423,7 @@ namespace CirculationApp
         {
             bSaveReferenceToFile.Enabled = false;
             int x = this.Left + bShowReference.Left;
-            int y = this.Top + bShowReference.Top + tabControl1.Top + 60;
+            int y = this.Top + bShowReference.Top + MainTabContainer.Top + 60;
             contextMenuStrip2.Show(x, y);
         }
 
@@ -596,7 +597,7 @@ namespace CirculationApp
 
         public string emul;
         public string pass;
-        private void button14_Click(object sender, EventArgs e)
+        private void bMainEmulation_Click(object sender, EventArgs e)
         {
             ParolEmulation f20 = new ParolEmulation(this);
             f20.ShowDialog();
@@ -621,7 +622,7 @@ namespace CirculationApp
             f7.ShowDialog();
         }
 
-        private void button17_Click(object sender, EventArgs e)
+        private void bReaderView_Click(object sender, EventArgs e)
         {
             if (lFromularNumber.Text == "")
             {
@@ -633,7 +634,7 @@ namespace CirculationApp
             f9.ShowDialog();
         }
 
-        private void button21_Click(object sender, EventArgs e)
+        private void bSearchReaderByFIO_Click(object sender, EventArgs e)
         {
             //поиск читателя по фамилии
             FindReaderBySurname f16 = new FindReaderBySurname(this);
@@ -649,15 +650,15 @@ namespace CirculationApp
             if (e.RowIndex == -1) return;
             if ((lReferenceName.Text.IndexOf("Список просроченных документов на текущий момент") != -1) )
             {
-                tabControl1.SelectedIndex = 1;
+                MainTabContainer.SelectedIndex = 1;
                 numericUpDown3.Value = int.Parse(Statistics.Rows[e.RowIndex].Cells[3].Value.ToString());
-                button10_Click(sender, new EventArgs());
+                bFormularFindById_Click(sender, new EventArgs());
             }
             if (lReferenceName.Text.Contains("нарушит"))
             {
-                tabControl1.SelectedIndex = 1;
+                MainTabContainer.SelectedIndex = 1;
                 numericUpDown3.Value = int.Parse(Statistics.Rows[e.RowIndex].Cells[2].Value.ToString());
-                button10_Click(sender, new EventArgs());
+                bFormularFindById_Click(sender, new EventArgs());
             }
         }
 
@@ -747,7 +748,6 @@ namespace CirculationApp
             //DatePeriod f3 = new DatePeriod();
             //f3.ShowDialog();
             lReferenceName.Text = "Список просроченных документов на текущий момент";
-            label18.Text = "";
             DBReference dbref = new DBReference();
             Statistics.DataSource = dbref.GetAllOverdueBook();
             if (this.Statistics.Rows.Count == 0)
@@ -803,7 +803,7 @@ namespace CirculationApp
             bSaveReferenceToFile.Enabled = true;
         }
 
-        private void button2_Click_2(object sender, EventArgs e)
+        private void bFormularSendEmail_Click(object sender, EventArgs e)
         {
             if (lFromularNumber.Text == "")
             {
@@ -824,7 +824,6 @@ namespace CirculationApp
                 Statistics.Columns.Clear();
             DatePeriod f3 = new DatePeriod();
             f3.ShowDialog();
-            label18.Text = "";
             lReferenceName.Text = "";
             lReferenceName.Text = "Список действий оператора за период с " + f3.StartDate.ToString("dd.MM.yyyy") + " по " + f3.EndDate.ToString("dd.MM.yyyy") + ": ";
             DBGeneral dbg = new DBGeneral();
@@ -854,7 +853,6 @@ namespace CirculationApp
                 Statistics.Columns.Clear();
             DatePeriod f3 = new DatePeriod();
             f3.ShowDialog();
-            label18.Text = "";
             lReferenceName.Text = "Отчёт отдела за период с " + f3.StartDate.ToString("dd.MM.yyyy") + " по " + f3.EndDate.ToString("dd.MM.yyyy") + ": ";
             DBGeneral dbg = new DBGeneral();
 
@@ -882,7 +880,6 @@ namespace CirculationApp
                 Statistics.Columns.Clear();
             DatePeriod f3 = new DatePeriod();
             f3.ShowDialog();
-            label18.Text = "";
             lReferenceName.Text = "Отчёт текущего оператора за период с " + f3.StartDate.ToString("dd.MM.yyyy") + " по " + f3.EndDate.ToString("dd.MM.yyyy") + ": ";
             DBGeneral dbg = new DBGeneral();
 
@@ -915,7 +912,6 @@ namespace CirculationApp
             //DatePeriod f3 = new DatePeriod();
             //f3.ShowDialog();
             lReferenceName.Text = "Список всех документов ЦАК + ОФ ";
-            label18.Text = "";
             DBReference dbref = new DBReference();
             Statistics.DataSource = dbref.GetAllBooks();
             if (this.Statistics.Rows.Count == 0)
@@ -955,7 +951,6 @@ namespace CirculationApp
             //DatePeriod f3 = new DatePeriod();
             //f3.ShowDialog();
             lReferenceName.Text = "Обращаемость документов ЦАК ";
-            label18.Text = "";
             DBReference dbref = new DBReference();
             Statistics.DataSource = dbref.GetBookNegotiability();
             if (this.Statistics.Rows.Count == 0)
@@ -982,7 +977,7 @@ namespace CirculationApp
             bSaveReferenceToFile.Enabled = true;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void bRemoveResponsibility_Click(object sender, EventArgs e)
         {
             if (Formular.SelectedRows.Count == 0)
             {
@@ -992,7 +987,7 @@ namespace CirculationApp
             DialogResult dr = MessageBox.Show("Вы действительно хотите снять ответственность за выделенную книгу?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 
             if (dr == DialogResult.No) return;
-            DEPARTMENT.RemoveResponsibility((int)Formular.SelectedRows[0].Cells["idiss"].Value, EmpID);
+            department.RemoveResponsibility((int)Formular.SelectedRows[0].Cells["idiss"].Value, EmpID);
             ReaderVO reader = new ReaderVO((int)Formular.SelectedRows[0].Cells["idr"].Value);
             FillFormularGrid(reader);
         }
@@ -1008,7 +1003,6 @@ namespace CirculationApp
             //DatePeriod f3 = new DatePeriod();
             //f3.ShowDialog();
             lReferenceName.Text = "Обращаемость документов ЦАК ";
-            label18.Text = "";
             DBReference dbref = new DBReference();
             Statistics.DataSource = dbref.GetBooksWithRemovedResponsibility();
             if (this.Statistics.Rows.Count == 0)
@@ -1058,7 +1052,6 @@ namespace CirculationApp
             //DatePeriod f3 = new DatePeriod();
             //f3.ShowDialog();
             lReferenceName.Text = "Список нарушителей сроков пользования ";
-            label18.Text = "";
             DBReference dbref = new DBReference();
             Statistics.DataSource = dbref.GetViolators();
             if (this.Statistics.Rows.Count == 0)
@@ -1146,7 +1139,7 @@ namespace CirculationApp
 
         private void bEmulation_Click(object sender, EventArgs e)
         {
-            button14_Click(sender, e);
+            bMainEmulation_Click(sender, e);
         }
     }
   

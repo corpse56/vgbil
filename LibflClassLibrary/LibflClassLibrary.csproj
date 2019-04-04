@@ -149,6 +149,7 @@
     <Compile Include="CirculationACC\Classes\Department.cs" />
     <Compile Include="CirculationACC\Classes\ReaderVO.cs" />
     <Compile Include="CirculationACC\Classes\XmlConnections.cs" />
+    <Compile Include="CirculationApp\Department.cs" />
     <Compile Include="CirculationFCC\Classes\BJRecord.cs" />
     <Compile Include="CirculationFCC\Classes\BookVO.cs" />
     <Compile Include="CirculationFCC\Classes\DataGridViewDisableButtonCell.cs" />

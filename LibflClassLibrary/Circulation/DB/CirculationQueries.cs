@@ -263,5 +263,15 @@ namespace LibflClassLibrary.Circulation.DB
             }
 
         }
+
+        public string IS_ISSUED_TO_READER
+        {
+            get
+            {
+                return " select top 1 ID from Circulation..Orders where ExemplarId = @idData and Fund = @fund " +
+                        " and StatusName in ('Выдано в зал','Выдано на дом','Выдано с чужой бронеполки') ";
+                        
+            }
+        }
     }
 }

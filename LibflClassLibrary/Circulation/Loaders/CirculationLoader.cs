@@ -145,6 +145,12 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
+        internal bool IsIssuedToReader(BJExemplarInfo exemplar)
+        {
+            DataTable table = dbWrapper.IsIssuedToReader(exemplar.IdData, exemplar.Fund);
+            return (table.Rows.Count != 0) ? true : false;
+        }
+
         internal string GetExemplarAvailabilityStatus(int idData, string fund)
         {
             DataTable table = dbWrapper.GetExemplarAvailabilityStatus(idData, fund);

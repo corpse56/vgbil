@@ -8,6 +8,7 @@ using LibflClassLibrary.Readers.DB;
 using LibflClassLibrary.Readers.ReadersRight;
 using Utilities;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
+using System.Drawing;
 
 namespace LibflClassLibrary.Readers.Loaders
 {
@@ -126,6 +127,29 @@ namespace LibflClassLibrary.Readers.Loaders
                     case "LiveFlat":
                         reader.LiveFlat = row[col].ToString();
                         break;
+                    case "Photo":
+                        if (row["photo"].GetType() != typeof(System.DBNull))
+                        {
+                            object o = row["photo"];
+                            byte[] data = (byte[])row["photo"];
+
+                            if (data != null)
+                            {
+                                using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+                                {
+                                    ms.Write(data, 0, data.Length);
+                                    ms.Position = 0L;
+
+                                    reader.Photo = new Bitmap(ms);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            reader.Photo = LibflClassLibrary.Properties.Resources.nofoto;
+                        }
+                        break;
+                        
                 }
             }
             reader.Rights = ReaderRightsInfo.GetReaderRights(reader.NumberReader);
@@ -142,6 +166,20 @@ namespace LibflClassLibrary.Readers.Loaders
                 result.Add((int)row["IDCountry"], row["NameCountry"].ToString());
             }
             return result;
+        }
+
+        internal ReaderInfo LoadReaderByBar(string data)
+        {
+            DataTable table = dbw.GetReaderByBar(data);
+            if (table.Rows.Count != 0)
+            {
+                return this.LoadReader(Convert.ToInt32(table.Rows[0][0]));
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
         internal void GiveFreeAbonementRight(int numberReader)

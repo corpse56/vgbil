@@ -1,4 +1,4 @@
-﻿namespace CirculationACC
+﻿namespace CirculationApp
 {
     partial class ViewFullSizePhoto
     {

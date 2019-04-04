@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using CirculationACC;
 
-namespace CirculationACC
+namespace CirculationApp
 {
     public partial class ChangeComment : Form
     {

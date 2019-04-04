@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
@@ -20,7 +21,8 @@ namespace LibflClassLibrary.Readers.DB
         {
             get
             {
-                return "select * from Readers..Main where NumberReader = @Id";
+                return "select * from Readers..Main A where A.NumberReader = @Id " +
+                       " left join Readers..Photo B on A.NumberReader = B.IDReader";
             }
         }
         public string IS_FIVE_ELBOOKS_ISSUED
@@ -129,6 +131,14 @@ namespace LibflClassLibrary.Readers.DB
             get
             {
                 return "update Readers..Main set Password = @Password where NumberReader = @NumberReader";
+            }
+        }
+
+        public string GET_READER_BY_BAR
+        {
+            get
+            {
+                return "select NumberReader from Readers..Main where BarCode = @bar";
             }
         }
     }

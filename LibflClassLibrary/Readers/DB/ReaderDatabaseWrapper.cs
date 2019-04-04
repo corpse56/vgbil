@@ -140,6 +140,20 @@ namespace LibflClassLibrary.Readers.DB
             }
         }
 
+        internal DataTable GetReaderByBar(string data)
+        {
+            //string connectionString = this.ConnectionString;
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ReaderQueries.GET_READER_BY_BAR, connection);
+                dataAdapter.SelectCommand.Parameters.Add("bar", SqlDbType.NVarChar).Value = data;
+                dataAdapter.Fill(table);
+                return table;
+            }
+
+        }
+
         internal void ChangePasswordLocalReader(int NumberReader, string NewPassword)
         {
             string connectionString = this.ConnectionString;

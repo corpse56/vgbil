@@ -8,6 +8,7 @@ using DataProviderAPI.Queries;
 using System.Configuration;
 using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.ExportToVufind;
+using LibflClassLibrary.Books.BJBooks;
 
 namespace DataProviderAPI.Loaders
 {
