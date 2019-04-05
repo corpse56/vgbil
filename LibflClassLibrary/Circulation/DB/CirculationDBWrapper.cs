@@ -185,6 +185,19 @@ namespace LibflClassLibrary.Circulation.DB
             this.ChangeOrderStatus(orderId, CirculationStatuses.Finished.Value, 1, 2033, null);
         }
 
+        internal DataTable FindOrderByExemplar(int idData, string fund)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.FIND_ORDER_BY_EXEMPLAR, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idData", SqlDbType.Int).Value = idData;
+                dataAdapter.SelectCommand.Parameters.Add("fund", SqlDbType.NVarChar).Value = fund;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal void DeleteFromBasket(int readerId, List<string> booksToDelete)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

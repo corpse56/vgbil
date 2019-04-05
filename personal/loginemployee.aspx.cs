@@ -171,11 +171,11 @@ public partial class loginemployee : System.Web.UI.Page
 
 
         //для входа под любым читателем. не забывать закомментироват
-        //CurReader.ID = "171887";
-        //ReaderInfo rrr = ReaderInfo.GetReader(171887);
-        //CurReader.ReaderType = 0;
-        //FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
-        //RedirectWithCookie("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + CurReader.ReaderType + "&litres=" + litres, CurReader);
+        CurReader.ID = "232014";
+        ReaderInfo rrr = ReaderInfo.GetReader(232014);
+        CurReader.ReaderType = 0;
+        FormsAuthentication.RedirectFromLoginPage(CurReader.ID, false);
+        RedirectWithCookie("persacc.aspx" + "?id=" + CurReader.idSession + "&type=" + CurReader.ReaderType + "&litres=" + litres, CurReader);
         //для входа под любым читателем. не забывать закомментироват
 
 

@@ -9,6 +9,7 @@ using LibflClassLibrary.Circulation.Loaders;
 using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.Litres;
 using LibflClassLibrary.Readers;
+using LibflClassLibrary.Readers.ReadersRights;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -56,7 +57,7 @@ namespace LibflClassLibrary.Circulation
                     result.Add(AcceptableOrderType);
                 }
             }
-            if (null != reader.Rights.RightsList.FirstOrDefault(x => x.ReaderRightValue == Readers.ReadersRights.ReaderRightsEnum.Employee))
+            if (null != reader.Rights.RightsList.FirstOrDefault(x => x.ReaderRightValue == ReaderRightsEnum.Employee))
             {
                 //кароче здесь надо написать логику, если это суотрудник или оплаченный абонемент, то в зал заменить на на дом
                 //но так как при выдаче всё равно всё встанет на свои места, то для экономи времени пропустим это.
@@ -105,9 +106,105 @@ namespace LibflClassLibrary.Circulation
             //{ 1999,   "Невозможно определить доступ"},
         }
 
+        private enum IssueType { AtHome, InHall }
+        private IssueType GetIssueType(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
+        {
+            if (scannedReader.Rights[ReaderRightsEnum.Employee] != null)
+            {
+                return IssueType.AtHome;
+            }
+            else
+            {
+                if (scannedExemplar.ExemplarAccess.Access.In(new[] { 1000, 1006 }))
+                {
+                    if (scannedReader.Rights[ReaderRightsEnum.FreeAbonement] == null)
+                    {
+                        throw new Exception("У читателя нет прав бесплатного абонемента! Выдача на дом невозможна.");
+                    }
+                    else
+                    {
+                        if (scannedReader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight <= DateTime.Now)
+                        {
+                            throw new Exception("У читателя закончился срок прав бесплатного абонемента. Выдача на дом невозможна.");
+                        }
+                        else
+                        {
+                            return IssueType.AtHome;
+                        }
+                    }
+                }
+                else
+                {
+                    return IssueType.InHall;
+                }
+            }
+
+        }
+
         internal void IssueBookToReader(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
         {
             //если попали сюда, то книга не свободна, права абонемента есть. нужно проверить если сотрудник
+
+            OrderInfo order = this.FindOrderByExemplar(scannedExemplar);
+            IssueType issueType = GetIssueType(scannedExemplar, scannedReader);
+
+
+            if (order == null)//если заказа нет, то просто выдать. создать заказ со статусом выдано.
+            {
+                if (issueType == IssueType.AtHome)
+                {
+                    loader.IssueBookToReader(scannedExemplar, scannedReader, issueType);
+                }
+                else
+                {
+                    loader.IssueBookToReader(scannedExemplar, scannedReader, issueType);
+                }
+                return;
+            }
+
+            if (order.ReaderId != scannedReader.NumberReader)//заказ делал не этот читатель. завершить текущий заказ и выдать этому читателю
+            {
+                this.FinishOrder(order);
+                this.IssueBookToReader(scannedExemplar, scannedReader);
+                return;
+            }
+            switch (order.StatusName)
+            {
+                case CirculationStatuses.ElectronicIssue.Value:
+                    //сотрудник на кафедре не может считать штрихкод электронной копии. пропускаем
+                    break;
+                case CirculationStatuses.EmployeeLookingForBook.Value:
+                    //книга в руках у сотрудника, значит надо принять на кафедру. можно автоматически
+                    loader.IssueBookToReader(order, issueType);
+                    break;
+                case CirculationStatuses.ForReturnToBookStorage.Value:
+                    //читатель тот же. можно просто снова выдать
+                    loader.IssueBookToReader(order, issueType);
+                    break;
+                case CirculationStatuses.InReserve.Value:
+                    loader.IssueBookToReader(order, issueType);
+                    break;
+                case CirculationStatuses.IssuedAtHome.Value:
+                    //такого быть не может
+                    break;
+                case CirculationStatuses.IssuedFromAnotherReserve.Value:
+                    //выдача с чужой бронеполки - это зло неимоверное...
+                    break;
+                case CirculationStatuses.IssuedInHall.Value:
+                    //такого быть не может
+                    break;
+                case CirculationStatuses.OrderIsFormed.Value:
+                    // такого по идее не может быть
+                    break;
+                case CirculationStatuses.SelfOrder.Value:
+                    loader.IssueBookToReader(order, issueType);
+                    break;
+                case CirculationStatuses.WaitingFirstIssue.Value:
+                    loader.IssueBookToReader(order, issueType);
+                    break;
+            }
+
+
 
             switch (scannedExemplar.ExemplarAccess.Access)
             {
@@ -150,6 +247,11 @@ namespace LibflClassLibrary.Circulation
                 case 1999://Уточнить доступ    Проследовать в { { location_2007} }. Возможность доступа уточните у сотрудника.
                     break;
             }
+        }
+
+        private OrderInfo FindOrderByExemplar(BJExemplarInfo scannedExemplar)
+        {
+            return loader.FindOrderByExemplar(scannedExemplar);
         }
 
         internal bool IsIssuedToReader(BJExemplarInfo exemplar)

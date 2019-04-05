@@ -53,7 +53,7 @@ namespace LibflClassLibrary.Books.BJBooks
         public static BJBookInfo GetBookInfoByPIN(int pin, string fund)
         {
             BJBookLoader loader = new BJBookLoader(fund);
-            loader.GetBookInfoByPIN(pin);
+            return loader.GetBookInfoByPIN(pin);
 
         }
         public static BJBookInfo GetBookInfoByPIN(string FullPin)

@@ -91,8 +91,8 @@ namespace CirculationApp
         public void RecieveBook(BJUserInfo bjUser)
         {
 
-            DBGeneral dbg = new DBGeneral();
-            dbg.Recieve(ScannedBook, ScannedReader, IDEMP);
+            //DBGeneral dbg = new DBGeneral();
+            //dbg.Recieve(ScannedBook, ScannedReader, IDEMP);
 
         }
 
@@ -104,26 +104,35 @@ namespace CirculationApp
 
         //0 - успех
         //1 - нет или закончились права для выдачи на дом
-        public int IssueBookToReader()
+        public void IssueBookToReader()
         {
+            try
+            {
+                ci.IssueBookToReader(ScannedExemplar, ScannedReader);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return;
+            }
             
             //проверить права абонемента на дом
-            if (ScannedReader.Rights[ReaderRightsEnum.FreeAbonement] != null)
-            {
-                if (ScannedReader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight < DateTime.Now)
-                {
-                    return 1;
-                }
-                else
-                {
-                    ci.IssueBookToReader(ScannedExemplar, ScannedReader);
-                    return 0;
-                }
-            }
-            else
-            {
-                return 1;
-            }
+            //if (ScannedReader.Rights[ReaderRightsEnum.FreeAbonement] != null)
+            //{
+            //    if (ScannedReader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight < DateTime.Now)
+            //    {
+            //        return 1;
+            //    }
+            //    else
+            //    {
+            //        ci.IssueBookToReader(ScannedExemplar, ScannedReader);
+            //        return 0;
+            //    }
+            //}
+            //else
+            //{
+            //    return 1;
+            //}
 
 
             //DBGeneral dbg = new DBGeneral();
@@ -176,7 +185,7 @@ namespace CirculationApp
         }
         private bool CheckFreeAbonementRights()
         {
-            ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(ScannedReader.ID);
+            ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(ScannedReader.NumberReader);
             if (rights[ReaderRightsEnum.FreeAbonement] == null)
             {
                 return false;
@@ -185,7 +194,7 @@ namespace CirculationApp
         }
         private bool CheckEmployeeRights()
         {
-            ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(ScannedReader.ID);
+            ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(ScannedReader.NumberReader);
             if (rights[ReaderRightsEnum.Employee] == null)
             {
                 return false;
@@ -194,8 +203,8 @@ namespace CirculationApp
         }
         public void Prolong(int idiss, int days, int idemp)
         {
-            DBReader dbr = new DBReader();
-            dbr.ProlongByIDISS(idiss,days,idemp);
+            //DBReader dbr = new DBReader();
+            //dbr.ProlongByIDISS(idiss,days,idemp);
 
         }
 
@@ -203,27 +212,27 @@ namespace CirculationApp
 
         public void RemoveResponsibility(int idiss, int EmpID)
         {
-            DBGeneral dbg = new DBGeneral();
-            dbg.RemoveResposibility(idiss, EmpID);
+           // DBGeneral dbg = new DBGeneral();
+            //dbg.RemoveResposibility(idiss, EmpID);
             return;
         }
 
-        public int GetAttendance()
-        {
-            DBGeneral dbg = new DBGeneral();
-            return dbg.GetAttendance();
-        }
+        //public int GetAttendance()
+       // {
+       //    // DBGeneral dbg = new DBGeneral();
+       //     //return dbg.GetAttendance();
+       // }
 
-        public void AddAttendance(ReaderVO reader)
-        {
-            DBGeneral dbg = new DBGeneral();
-            dbg.AddAttendance(reader);
-        }
+       // //public void AddAttendance(ReaderVO reader)
+       // {
+       //    // DBGeneral dbg = new DBGeneral();
+       //    // dbg.AddAttendance(reader);
+       // }
 
-        public int GetCountOfPrologedTimes(int value)
-        {
-            DBGeneral dbg = new DBGeneral();
-            return dbg.GetCountOfPrologedTimes(value);
-        }
+       //// public int GetCountOfPrologedTimes(int value)
+       // {
+       //     //DBGeneral dbg = new DBGeneral();
+       //     //return dbg.GetCountOfPrologedTimes(value);
+       // }
     }
 }

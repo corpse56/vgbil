@@ -21,8 +21,9 @@ namespace LibflClassLibrary.Readers.DB
         {
             get
             {
-                return "select * from Readers..Main A where A.NumberReader = @Id " +
-                       " left join Readers..Photo B on A.NumberReader = B.IDReader";
+                return "select * from Readers..Main A  " +
+                       " left join Readers..Photo B on A.NumberReader = B.IDReader " +
+                       " where A.NumberReader = @Id";
             }
         }
         public string IS_FIVE_ELBOOKS_ISSUED

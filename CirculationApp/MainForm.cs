@@ -49,7 +49,6 @@ namespace CirculationApp
             if (au.User != null)
             {
                 bjUser = au.User;
-                this.EmpID = bjUser.Id; 
                 this.tbCurrentEmployee.Text = bjUser.FIO;
             }
             //Form1.Scanned += new ScannedEventHandler(Form1_Scanned);
@@ -171,8 +170,8 @@ namespace CirculationApp
 
             if (!reader.IsAlreadyMarked())
             {
-                department.AddAttendance(reader);
-                lAttendance.Text = "На сегодня посещаемость составляет: " + department.GetAttendance() + " человек(а)";
+                //department.AddAttendance(reader);
+                //lAttendance.Text = "На сегодня посещаемость составляет: " + department.GetAttendance() + " человек(а)";
             }
             else
             {
@@ -244,23 +243,24 @@ namespace CirculationApp
             //        return;
             //    }
             //}
-            switch (department.IssueBookToReader())
-            {
-                case 0://успех
-                    bConfirm.Enabled = false;
-                    bCancel.Enabled = false;
-                    CancelIssue();
-                    Log();
-                    department = new Department();
-                    break;
-                case 1://у читателя нет прав для выдачи на дом
-                    bConfirm.Enabled = false;
-                    bCancel.Enabled = false;
-                    CancelIssue();
-                    department = new Department();
-                    MessageBox.Show("Выдача на дом невозможна так как у читателя отсутствуют права бесплатного абонемента! Перейдите в формуляр читателя, чтобы выдать права.");
-                    break;
-            }
+            department.IssueBookToReader();
+            //switch (department.IssueBookToReader())
+            //{
+            //    case 0://успех
+            //        bConfirm.Enabled = false;
+            //        bCancel.Enabled = false;
+            //        CancelIssue();
+            //        Log();
+            //        department = new Department();
+            //        break;
+            //    case 1://у читателя нет прав для выдачи на дом
+            //        bConfirm.Enabled = false;
+            //        bCancel.Enabled = false;
+            //        CancelIssue();
+            //        department = new Department();
+            //        MessageBox.Show("Выдача на дом невозможна так как у читателя отсутствуют права бесплатного абонемента! Перейдите в формуляр читателя, чтобы выдать права.");
+            //        break;
+            //}
 
         }
         private void bCancel_Click(object sender, EventArgs e)
@@ -325,20 +325,20 @@ namespace CirculationApp
                 return;
             }
 
-            if (department.GetCountOfPrologedTimes((int)Formular.SelectedRows[0].Cells["idiss"].Value) > 0)
-            {
-                MessageBox.Show("Нельзя продлить книгу более одного раза!");
-                return;
-            }
+            //if (department.GetCountOfPrologedTimes((int)Formular.SelectedRows[0].Cells["idiss"].Value) > 0)
+            //{
+            //    MessageBox.Show("Нельзя продлить книгу более одного раза!");
+            //    return;
+            //}
 
             BookVO book = new BookVO();
             if (Formular.SelectedRows[0].Cells["IsAtHome"].Value.ToString().ToLower().Contains("дом"))
             {
-                department.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 30, EmpID);
+                department.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 30, 1);
             }
             else
             {
-                department.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 10, EmpID);
+                department.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 10, 1);
             }
             ReaderVO reader = new ReaderVO((int)Formular.SelectedRows[0].Cells["idr"].Value);
             FillFormularGrid(reader);
@@ -360,7 +360,6 @@ namespace CirculationApp
             if (au.User != null)
             {
                 bjUser = au.User;
-                this.EmpID = bjUser.Id;
                 this.tbCurrentEmployee.Text = bjUser.FIO;
             }
 
@@ -398,7 +397,7 @@ namespace CirculationApp
                     readerRightsView1.Clear();
                     break;
                 case "Учёт посещаемости":
-                    lAttendance.Text = "На сегодня посещаемость составляет: " + department.GetAttendance() + " человек(а)";
+                    //lAttendance.Text = "На сегодня посещаемость составляет: " + department.GetAttendance() + " человек(а)";
                     break;
 
             }
@@ -830,7 +829,7 @@ namespace CirculationApp
             
             try
             {
-                Statistics.DataSource = dbg.GetOperatorActions(f3.StartDate, f3.EndDate, EmpID);
+                Statistics.DataSource = dbg.GetOperatorActions(f3.StartDate, f3.EndDate, bjUser.Id);
             }
             catch (Exception ex)
             {
@@ -885,7 +884,7 @@ namespace CirculationApp
 
             try
             {
-                Statistics.DataSource = dbg.GetOprReport(f3.StartDate, f3.EndDate, this.EmpID);
+                Statistics.DataSource = dbg.GetOprReport(f3.StartDate, f3.EndDate, bjUser.Id);
             }
             catch (Exception ex)
             {
@@ -987,7 +986,7 @@ namespace CirculationApp
             DialogResult dr = MessageBox.Show("Вы действительно хотите снять ответственность за выделенную книгу?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 
             if (dr == DialogResult.No) return;
-            department.RemoveResponsibility((int)Formular.SelectedRows[0].Cells["idiss"].Value, EmpID);
+            department.RemoveResponsibility((int)Formular.SelectedRows[0].Cells["idiss"].Value, bjUser.Id);
             ReaderVO reader = new ReaderVO((int)Formular.SelectedRows[0].Cells["idr"].Value);
             FillFormularGrid(reader);
         }

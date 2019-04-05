@@ -82,7 +82,7 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
                     if (CurrentIdData != (int)row["IDDATA"])
                     {
                         CurrentIdData = (int)row["IDDATA"];
-                        result.Exemplars.Add(BJExemplarInfo.GetExemplarByIdData(CurrentIdData, fund));
+                        result.Exemplars.Add(BJExemplarInfo.GetExemplarByIdData(CurrentIdData, Fund));
                         //exemplar = new BJExemplarInfo((int)row["IDDATA"]);
                         //exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
                     }

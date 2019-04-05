@@ -231,6 +231,14 @@ namespace LibflClassLibrary.Circulation.Loaders
             }
             return Orders;
         }
+
+        internal OrderInfo FindOrderByExemplar(BJExemplarInfo scannedExemplar)
+        {
+            DataTable table = dbWrapper.FindOrderByExemplar(scannedExemplar.IdData, scannedExemplar.Fund);
+            if (table.Rows.Count == 0) return null;
+            return FillOrderFromDataRow(table.Rows[0]);
+        }
+
         private OrderInfo FillOrderFromDataRow(DataRow row)
         {
             OrderInfo order = new OrderInfo();

@@ -273,5 +273,16 @@ namespace LibflClassLibrary.Circulation.DB
                         
             }
         }
+
+        public string FIND_ORDER_BY_EXEMPLAR
+        {
+            get
+            {
+                return " select * from Circulation..Orders where ExemplarId = @idData and Fund = @fund " +
+                        " and StatusName not in ('Завершено') ";
+
+            }
+        }
+
     }
 }

@@ -143,7 +143,7 @@ namespace CirculationApp
             message.Dispose();
             MessageBox.Show("Отправлено успешно!");
             DBGeneral dbg = new DBGeneral();
-            dbg.InsertSendEmailAction(f1.EmpID,reader.ID);
+            dbg.InsertSendEmailAction(1,reader.ID);
             Close();
         }
 
