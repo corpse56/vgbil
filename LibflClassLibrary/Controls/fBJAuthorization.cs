@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.BJUsers;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -69,6 +70,16 @@ namespace LibflClassLibrary.Controls
             {
                 User.SelectedUserStatus = (UserStatus)cbRoles.SelectedItem;
                 this.DialogResult = DialogResult.OK;
+                RegistryKey key;
+                if (Microsoft.Win32.Registry.CurrentUser.GetValue("Software\\LIBFL_Authorization") == null)
+                {
+                    key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("Software\\LIBFL_Authorization");
+                    //key.SetValue("Name", "Isabella");
+                    key.Close();
+                }
+                key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\\LIBFL_Authorization", true);
+                key.SetValue("LastUser", tbLogin.Text);
+
                 Close();
             }
             else
@@ -80,7 +91,22 @@ namespace LibflClassLibrary.Controls
 
         private void fBJAuthorization_Load(object sender, EventArgs e)
         {
+            RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\\LIBFL_Authorization");
+            if (key != null)
+            {
+                object o = key.GetValue("LastUser");
+                if (o == null)
+                {
+                    return;
+                }
+                string LastUser = o.ToString();
+                tbLogin.Text = LastUser;
+                this.ActiveControl = tbPassword;
+                key.Close();
+            }
+
             tbLogin_TextChanged(sender, e);
+
         }
 
         private void fBJAuthorization_FormClosing(object sender, FormClosingEventArgs e)

@@ -86,7 +86,7 @@ namespace BookkeepingForOrder
             this.printFont = new Font("Arial Unicode MS", 10f);
             //pd.PrinterSettings.PrinterName = "Zebra TLP2844";
             //pd.PrinterSettings.PrinterName = "HP LaserJet 5000 Series PCL 5";
-            pd.PrinterSettings.PrinterName = "HP LaserJet M1522 MFP Series PCL 6";
+            //pd.PrinterSettings.PrinterName = "HP LaserJet M1522 MFP Series PCL 6";
 
 
             //Reader = ReaderInfo.GetReader(Convert.ToInt32(dg.SelectedRows[0].Cells["readerid"].Value));

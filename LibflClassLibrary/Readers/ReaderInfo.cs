@@ -162,7 +162,7 @@ namespace LibflClassLibrary.Readers
             return "NotDefined";
         }
 
-        internal static ReaderInfo GetReaderByBar(string data)
+        public static ReaderInfo GetReaderByBar(string data)
         {
             ReaderLoader loader = new ReaderLoader();
             ReaderInfo result = loader.LoadReaderByBar(data);

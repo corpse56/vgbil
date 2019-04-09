@@ -1,4 +1,6 @@
-﻿using LibflClassLibrary.BJUsers;
+﻿using ALISAPI.Errors;
+using LibflClassLibrary.ALISAPI.Errors;
+using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation;
@@ -33,7 +35,7 @@ namespace CirculationApp
         public BJUserInfo bjUser;
         /// <summary>
         /// Возвращаемые значения:
-        /// 0 - Издание принято от читателя. Сдано/
+        /// 0 - Издание принято от читателя. Сдано.
         /// 1 - Штрихкод не найден ни в базе читателей ни в базе книг
         /// 2 - ожидался штрихкод читателя, а считан штрихкод издания
         /// 3 - ожидался штрихкод издания, а считан штрихкод читателя
@@ -88,12 +90,9 @@ namespace CirculationApp
         }
 
         //принять книгу от читателя
-        public void RecieveBook(BJUserInfo bjUser)
+        public void RecieveBook(string bar, BJUserInfo bjUser, string statusName)
         {
-
-            //DBGeneral dbg = new DBGeneral();
-            //dbg.Recieve(ScannedBook, ScannedReader, IDEMP);
-
+            ci.RecieveBookFromReader(bar, bjUser, statusName);
         }
 
         private BARType BookOrReader(string data) //false - книга, true - читатель
@@ -108,80 +107,15 @@ namespace CirculationApp
         {
             try
             {
-                ci.IssueBookToReader(ScannedExemplar, ScannedReader);
+                ci.IssueBookToReader(ScannedExemplar, ScannedReader, bjUser);
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                ALISError error = ALISErrorList._list.Find(x => x.Code == e.Message);
+                MessageBox.Show(error.Message);
                 return;
             }
             
-            //проверить права абонемента на дом
-            //if (ScannedReader.Rights[ReaderRightsEnum.FreeAbonement] != null)
-            //{
-            //    if (ScannedReader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight < DateTime.Now)
-            //    {
-            //        return 1;
-            //    }
-            //    else
-            //    {
-            //        ci.IssueBookToReader(ScannedExemplar, ScannedReader);
-            //        return 0;
-            //    }
-            //}
-            //else
-            //{
-            //    return 1;
-            //}
-
-
-            //DBGeneral dbg = new DBGeneral();
-
-            //if (ScannedBook.FUND == Bases.BJACC)
-            //{
-            //    if (CheckEmployeeRights())
-            //    {
-            //        dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
-            //        return 0;
-            //    }
-            //    else
-            //    {
-            //        if (!CheckFreeAbonementRights())
-            //        {
-            //            return 1;
-            //        }
-            //        else
-            //        {
-            //            dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
-            //            return 0;
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    if ((ScannedReader.ReaderRights & Rights.EMPL) == Rights.EMPL)//если сотрудник выдаем сразу на дом
-            //    {
-            //        dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
-            //    }
-            //    else
-            //    {
-            //        if (ScannedBook.F899b == "ВХ")
-            //        {
-            //            if (!CheckFreeAbonementRights())
-            //            {
-            //                return 1;
-            //            }
-            //            dbg.ISSUE(ScannedBook, ScannedReader, IDEMP);
-            //        }
-            //        else
-            //        {
-            //            dbg.IssueInHall(ScannedBook, ScannedReader, IDEMP);
-
-            //        }
-            //    }
-
-            //}
-            //return 0;
         }
         private bool CheckFreeAbonementRights()
         {

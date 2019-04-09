@@ -1,4 +1,5 @@
 ﻿using CirculationACC;
+using LibflClassLibrary.Readers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -63,7 +64,7 @@ namespace CirculationApp
                 MessageBox.Show("Читатель не выбран!");
                 return;
             }
-            ReaderVO reader = new ReaderVO((int)dataGridView1.SelectedRows[0].Cells[0].Value);
+            ReaderInfo reader = ReaderInfo.GetReader((int)dataGridView1.SelectedRows[0].Cells[0].Value);
             f1.FillFormular(reader);
             Close();
         }

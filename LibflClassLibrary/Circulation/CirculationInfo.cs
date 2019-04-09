@@ -106,7 +106,22 @@ namespace LibflClassLibrary.Circulation
             //{ 1999,   "Невозможно определить доступ"},
         }
 
-        private enum IssueType { AtHome, InHall }
+        public void RecieveBookInBookkeeping(OrderInfo order, BJUserInfo bjUser)
+        {
+            ChangeOrderStatus(bjUser, order.OrderId, CirculationStatuses.Finished.Value);
+        }
+
+        internal void RecieveBookFromReader(string bar, BJUserInfo bjUser, string statusName)
+        {
+            loader.RecieveBookFromReader(bar,bjUser,statusName);
+        }
+
+        public void RecieveBookFromBookkeeping(OrderInfo order, BJUserInfo bjUser)
+        {
+            ChangeOrderStatus(bjUser, order.OrderId, CirculationStatuses.WaitingFirstIssue.Value);
+        }
+
+        public enum IssueType { AtHome, InHall }
         private IssueType GetIssueType(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
         {
             if (scannedReader.Rights[ReaderRightsEnum.Employee] != null)
@@ -119,13 +134,13 @@ namespace LibflClassLibrary.Circulation
                 {
                     if (scannedReader.Rights[ReaderRightsEnum.FreeAbonement] == null)
                     {
-                        throw new Exception("У читателя нет прав бесплатного абонемента! Выдача на дом невозможна.");
+                        throw new Exception("C019");
                     }
                     else
                     {
                         if (scannedReader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight <= DateTime.Now)
                         {
-                            throw new Exception("У читателя закончился срок прав бесплатного абонемента. Выдача на дом невозможна.");
+                            throw new Exception("C020");
                         }
                         else
                         {
@@ -141,31 +156,28 @@ namespace LibflClassLibrary.Circulation
 
         }
 
-        internal void IssueBookToReader(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
+        internal void IssueBookToReader(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader, BJUserInfo bjUser)
         {
-            //если попали сюда, то книга не свободна, права абонемента есть. нужно проверить если сотрудник
+            //метод выдаёт книгу, либо возвращает исключения
 
+
+            //ищем заказ с таким экземпляром.
             OrderInfo order = this.FindOrderByExemplar(scannedExemplar);
+
+            //получаем способ выдачи для этого экземпляра. на дом или в зал. зависит от книги и от читателя.
             IssueType issueType = GetIssueType(scannedExemplar, scannedReader);
 
 
             if (order == null)//если заказа нет, то просто выдать. создать заказ со статусом выдано.
             {
-                if (issueType == IssueType.AtHome)
-                {
-                    loader.IssueBookToReader(scannedExemplar, scannedReader, issueType);
-                }
-                else
-                {
-                    loader.IssueBookToReader(scannedExemplar, scannedReader, issueType);
-                }
+                loader.IssueBookToReader(scannedExemplar, scannedReader, issueType, bjUser);
                 return;
             }
 
             if (order.ReaderId != scannedReader.NumberReader)//заказ делал не этот читатель. завершить текущий заказ и выдать этому читателю
             {
-                this.FinishOrder(order);
-                this.IssueBookToReader(scannedExemplar, scannedReader);
+                this.FinishOrder(order, bjUser);
+                this.IssueBookToReader(scannedExemplar, scannedReader, bjUser);
                 return;
             }
             switch (order.StatusName)
@@ -175,20 +187,22 @@ namespace LibflClassLibrary.Circulation
                     break;
                 case CirculationStatuses.EmployeeLookingForBook.Value:
                     //книга в руках у сотрудника, значит надо принять на кафедру. можно автоматически
-                    loader.IssueBookToReader(order, issueType);
+                    loader.IssueBookToReader(order, issueType, bjUser);
                     break;
                 case CirculationStatuses.ForReturnToBookStorage.Value:
                     //читатель тот же. можно просто снова выдать
-                    loader.IssueBookToReader(order, issueType);
+                    loader.IssueBookToReader(order, issueType, bjUser);
                     break;
                 case CirculationStatuses.InReserve.Value:
-                    loader.IssueBookToReader(order, issueType);
+                    //книга на бронеполке. читатель тот же. выдаём.
+                    loader.IssueBookToReader(order, issueType, bjUser);
                     break;
                 case CirculationStatuses.IssuedAtHome.Value:
                     //такого быть не может
                     break;
                 case CirculationStatuses.IssuedFromAnotherReserve.Value:
                     //выдача с чужой бронеполки - это зло неимоверное...
+                    //пока выдача с чужой бронеполки будет так: завершаем заказ хозяина бронеполки и выдаём другому читателю.
                     break;
                 case CirculationStatuses.IssuedInHall.Value:
                     //такого быть не может
@@ -197,59 +211,69 @@ namespace LibflClassLibrary.Circulation
                     // такого по идее не может быть
                     break;
                 case CirculationStatuses.SelfOrder.Value:
-                    loader.IssueBookToReader(order, issueType);
+                    loader.IssueBookToReader(order, issueType, bjUser);
                     break;
                 case CirculationStatuses.WaitingFirstIssue.Value:
-                    loader.IssueBookToReader(order, issueType);
+                    loader.IssueBookToReader(order, issueType, bjUser);
                     break;
             }
 
 
 
-            switch (scannedExemplar.ExemplarAccess.Access)
-            {
-                case 1000://Взять на дом Заказать через личный кабинет, для получения на дом пройти в { { location_2006} }
-                    break;
-                case 1001://Свободый электронный доступ
-                    break;
-                case 1002://Электронный доступ через авторизацию читателя(удаленного читателя)
-                    break;
-                case 1003://Электронный доступ в электронном зале НЭБ, читальные зал(3 этаж)
-                    break;
-                case 1004://ЛитРес: Иностранка
-                    break;
-                case 1005://В помещении бибилотеки Заказать через личный кабинет, для получения заказа пройти в { { location_2007} }
-                    break;
-                case 1006://Взять на дом Проследовать в { { exemplar_location} } для получения книги на дом
-                    break;
-                case 1007://В помещении бибилотеки Проследовать в { { exemplar_location} }, взять самостоятельно для чтения книги в помещении
-                    break;
-                case 1008://Удалённый доступ   Pearson: Иностранка
-                    break;
-                case 1009:// Печать по требованию Печать по требованию
-                    break;
-                case 1010://Уточнить доступ    Проследовать в { { exemplar_location} }. Возможность выдачи уточните у сотрудника
-                    break;
-                case 1011://В помещении бибилотеки Книга находится на выставке в { { exemplar_location} }
-                    break;
-                case 1012://В помещении бибилотеки СПВ. Заказать через личный кабинет, проследовать в { { location_2007} }. Сотрудник поможет Вам с дополнительным оборудованием для просмотра.
-                    break;
-                case 1013://Уточнить доступ    Книга находится в обработке
-                    break;
-                case 1014://В помещении бибилотеки Редкая книга.Проследовать в { { location_2009} }
-                    break;
-                case 1016://Уточнить доступ    Проследовать в { { location_2009} }. Возможность доступа уточните у сотрудника.
-                    break;
-                case 1017://Уточнить доступ    Проследовать в { { location_2007} }. Возможность доступа уточните у сотрудника.
-                    break;
-                case 1020://Уточнить доступ    Экстремистская литература. Не попадает в индекс. Обрабатывать не нужно.
-                    break;
-                case 1999://Уточнить доступ    Проследовать в { { location_2007} }. Возможность доступа уточните у сотрудника.
-                    break;
-            }
+            //switch (scannedExemplar.ExemplarAccess.Access)
+            //{
+            //    case 1000://Взять на дом Заказать через личный кабинет, для получения на дом пройти в { { location_2006} }
+            //        break;
+            //    case 1001://Свободый электронный доступ
+            //        break;
+            //    case 1002://Электронный доступ через авторизацию читателя(удаленного читателя)
+            //        break;
+            //    case 1003://Электронный доступ в электронном зале НЭБ, читальные зал(3 этаж)
+            //        break;
+            //    case 1004://ЛитРес: Иностранка
+            //        break;
+            //    case 1005://В помещении бибилотеки Заказать через личный кабинет, для получения заказа пройти в { { location_2007} }
+            //        break;
+            //    case 1006://Взять на дом Проследовать в { { exemplar_location} } для получения книги на дом
+            //        break;
+            //    case 1007://В помещении бибилотеки Проследовать в { { exemplar_location} }, взять самостоятельно для чтения книги в помещении
+            //        break;
+            //    case 1008://Удалённый доступ   Pearson: Иностранка
+            //        break;
+            //    case 1009:// Печать по требованию Печать по требованию
+            //        break;
+            //    case 1010://Уточнить доступ    Проследовать в { { exemplar_location} }. Возможность выдачи уточните у сотрудника
+            //        break;
+            //    case 1011://В помещении бибилотеки Книга находится на выставке в { { exemplar_location} }
+            //        break;
+            //    case 1012://В помещении бибилотеки СПВ. Заказать через личный кабинет, проследовать в { { location_2007} }. Сотрудник поможет Вам с дополнительным оборудованием для просмотра.
+            //        break;
+            //    case 1013://Уточнить доступ    Книга находится в обработке
+            //        break;
+            //    case 1014://В помещении бибилотеки Редкая книга.Проследовать в { { location_2009} }
+            //        break;
+            //    case 1016://Уточнить доступ    Проследовать в { { location_2009} }. Возможность доступа уточните у сотрудника.
+            //        break;
+            //    case 1017://Уточнить доступ    Проследовать в { { location_2007} }. Возможность доступа уточните у сотрудника.
+            //        break;
+            //    case 1020://Уточнить доступ    Экстремистская литература. Не попадает в индекс. Обрабатывать не нужно.
+            //        break;
+            //    case 1999://Уточнить доступ    Проследовать в { { location_2007} }. Возможность доступа уточните у сотрудника.
+            //        break;
+            //}
         }
 
-        private OrderInfo FindOrderByExemplar(BJExemplarInfo scannedExemplar)
+        public List<OrderFlowInfo> GetOrdersFlow(int unifiedLocationCode)
+        {
+            return loader.GetOrdersFlow(unifiedLocationCode);
+        }
+
+        private void FinishOrder(OrderInfo order, BJUserInfo bjUser)//этот метод ставит заказу статус завершено.
+        {
+            loader.FinishOrder(order, bjUser);
+        }
+
+        public OrderInfo FindOrderByExemplar(BJExemplarInfo scannedExemplar)
         {
             return loader.FindOrderByExemplar(scannedExemplar);
         }
@@ -526,13 +550,13 @@ namespace LibflClassLibrary.Circulation
                     )
             {
                 int TimesProlonged = loader.GetOrderTimesProlonged(OrderId);
-                if (TimesProlonged > 10)
+                if (TimesProlonged > 3)
                 {
                     throw new Exception("C017");
                 }
                 else
                 {
-                    loader.ProlongOrder(OrderId, 3);
+                    loader.ProlongOrder(OrderId, 10);
                 }
             }
             else
@@ -572,6 +596,7 @@ namespace LibflClassLibrary.Circulation
             int IssuingDepartmentId = KeyValueMapping.AccessCodeToIssuingDeparmentId[e.ExemplarAccess.Access];
             if (IssuingDepartmentId == 0)
             {
+                //тут вопросики возникают.
                 ExemplarSimpleView es = ViewFactory.GetExemplarSimpleView(e);
                 if (es == null)
                 {
@@ -635,9 +660,9 @@ namespace LibflClassLibrary.Circulation
             return result;
         }
 
-        public void ChangeOrderStatus(ReaderInfo reader, BJUserInfo user, int OrderId, string status)
+        public void ChangeOrderStatus(BJUserInfo user, int OrderId, string status)
         {
-            loader.ChangeOrderStatus(reader, user, OrderId, status);
+            loader.ChangeOrderStatus(user, OrderId, status);
         }
 
         public void RefuseOrder(int OrderId, string Cause, BJUserInfo user)

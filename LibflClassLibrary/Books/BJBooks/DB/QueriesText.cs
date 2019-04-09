@@ -448,15 +448,15 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         {
             get
             {
-                return " select *, 'BJVVV' fund from BJVVV..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
+                return " select IDMAIN, 'BJVVV' fund from BJVVV..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
                         " union all " +
-                        " select *, 'REDKOSTJ' fund from REDKOSTJ..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
+                        " select IDMAIN, 'REDKOSTJ' fund from REDKOSTJ..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
                         " union all " +
-                        " select *'BJACC' fund from BJACC..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
+                        " select IDMAIN,'BJACC' fund from BJACC..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
                         " union all " +
-                        " select *'BJFCC' fund from BJFCC..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
+                        " select IDMAIN,'BJFCC' fund from BJFCC..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar " +
                         " union all " +
-                        " select *,'BJSCC' fund from BJSCC..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar ";
+                        " select IDMAIN,'BJSCC' fund from BJSCC..DATAEXT where MNFIELD = 899 and MSFIELD = '$w' and SORT = @bar ";
             }
         }
 

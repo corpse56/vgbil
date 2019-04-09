@@ -21,7 +21,7 @@ namespace LibflClassLibrary.Readers.DB
         {
             get
             {
-                return "select * from Readers..Main A  " +
+                return "select *, B.Photo fotka from Readers..Main A  " +
                        " left join Readers..Photo B on A.NumberReader = B.IDReader " +
                        " where A.NumberReader = @Id";
             }

@@ -283,7 +283,7 @@ namespace LibflClassLibrary.ALISAPI.Errors
             new ALISError()
             {
                 Code = "C017",
-                Message = "Бронеполку можно продлить только 10 раз.",
+                Message = "Бронеполку можно продлить только 3 раза.",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
             new ALISError()
@@ -292,7 +292,19 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Неизвестная ошибка при продлении",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
-
+            new ALISError()
+            {
+                Code = "C019",
+                Message = "У читателя нет прав бесплатного абонемента! Выдача на дом невозможна.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            
+            new ALISError()
+            {
+                Code = "C020",
+                Message = "У читателя закончился срок прав бесплатного абонемента. Выдача на дом невозможна.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
 
         };
     }

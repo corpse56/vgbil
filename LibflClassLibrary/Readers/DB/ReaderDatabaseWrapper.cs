@@ -147,7 +147,7 @@ namespace LibflClassLibrary.Readers.DB
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(ReaderQueries.GET_READER_BY_BAR, connection);
-                dataAdapter.SelectCommand.Parameters.Add("bar", SqlDbType.NVarChar).Value = data;
+                dataAdapter.SelectCommand.Parameters.Add("bar", SqlDbType.Int).Value = data.Substring(1);
                 dataAdapter.Fill(table);
                 return table;
             }

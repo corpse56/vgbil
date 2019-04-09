@@ -168,6 +168,7 @@
     <Compile Include="Circulation\DB\CirculationDBWrapper.cs" />
     <Compile Include="Circulation\DB\CirculationQueries.cs" />
     <Compile Include="Circulation\Loaders\CirculationLoader.cs" />
+    <Compile Include="Circulation\OrderFlowInfo.cs" />
     <Compile Include="Circulation\OrderHistoryInfo.cs" />
     <Compile Include="Circulation\OrderInfo.cs" />
     <Compile Include="Circulation\OrderTypes.cs" />

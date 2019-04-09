@@ -36,8 +36,8 @@ namespace ALISAPI_TEST
         };
 
 
-        readonly string ALIS_ADDRESS = "https://opac.libfl.ru/ALISAPI/";
-        //readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
+        //readonly string ALIS_ADDRESS = "https://opac.libfl.ru/ALISAPI/";
+        readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
         //readonly string ALIS_ADDRESS = "http://localhost:27873/";
         public Form1()
         {
@@ -398,28 +398,36 @@ namespace ALISAPI_TEST
         {
             CirculationInfo ci = new CirculationInfo();
             MakeOrder mo = new MakeOrder();
-            //mo.BookId = "BJVVV_1007658";
-            //mo.ReaderId = 100000;
-            //mo.OrderType = "Электронная выдача";
-            //ci.MakeOrder(mo);
-
-            //mo.BookId = "BJVVV_1310093";
-            //mo.ReaderId = 100000;
-            //mo.OrderType = "На дом";
-            //ci.MakeOrder(mo);
-
-            mo.BookId = "BJVVV_193768";
-            mo.ReaderId = 10000;
+            mo.BookId = "REDKOSTJ_1151";
+            mo.ReaderId = 15;
             mo.OrderTypeId = 2;
-            //ci.MakeOrder(mo);
+            ci.MakeOrder(mo);
 
-            string jsonData = JsonConvert.SerializeObject(mo, ALISDateFormatJSONSettings);
 
-            using (HttpClient client = new HttpClient())
-            {
-                var response = client.PostAsync(ALIS_ADDRESS + "Circulation/Order", new StringContent(jsonData, Encoding.UTF8, "application/json"));
-                tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result + " " + response.Result.StatusCode; ;
-            }
+            //CirculationInfo ci = new CirculationInfo();
+            //MakeOrder mo = new MakeOrder();
+            ////mo.BookId = "BJVVV_1007658";
+            ////mo.ReaderId = 100000;
+            ////mo.OrderType = "Электронная выдача";
+            ////ci.MakeOrder(mo);
+
+            ////mo.BookId = "BJVVV_1310093";
+            ////mo.ReaderId = 100000;
+            ////mo.OrderType = "На дом";
+            ////ci.MakeOrder(mo);
+
+            //mo.BookId = "BJVVV_193768";
+            //mo.ReaderId = 10000;
+            //mo.OrderTypeId = 2;
+            ////ci.MakeOrder(mo);
+
+            //string jsonData = JsonConvert.SerializeObject(mo, ALISDateFormatJSONSettings);
+
+            //using (HttpClient client = new HttpClient())
+            //{
+            //    var response = client.PostAsync(ALIS_ADDRESS + "Circulation/Order", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+            //    tbResponse.Text = response.Result.Content.ReadAsStringAsync().Result + " " + response.Result.StatusCode; ;
+            //}
 
 
         }

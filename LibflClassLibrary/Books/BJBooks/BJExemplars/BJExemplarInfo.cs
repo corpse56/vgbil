@@ -58,6 +58,13 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData((int)table.Rows[0]["IDDATA"], fund);
             return exemplar;
         }
+        public static BJExemplarInfo GetExemplarByBar(string bar)
+        {
+            BJBookInfo book = BJBookInfo.GetBookInfoByBAR(bar);
+            BJExemplarInfo exemplar = (BJExemplarInfo)book.Exemplars.Find(x => ((BJExemplarInfo)x).Fields["899$w"].ToString() == bar);
+            return exemplar;
+        }
+
         public static BJExemplarInfo GetExemplarByIdData(int iddata, string fund)
         {
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);

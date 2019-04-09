@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>Вход в личный кабинет</title>
+    <title>Вход в личный кабинет сотрудника</title>
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="jquery.keyboardLayout.js"></script>
     <link rel="stylesheet" type="text/css" href="jquery.keyboardLayout.css" />
@@ -12,12 +12,12 @@
 <body>
 
     <form id="form1" runat="server">
-            <asp:LinkButton ID="LinkButton1" runat="server" PostBackUrl ="~/help.aspx" >Помощь</asp:LinkButton>
+            <!--<asp:LinkButton ID="LinkButton1" runat="server" PostBackUrl ="~/help.aspx" >Помощь</asp:LinkButton>-->
 
         <center>
             <br />
-            <!--<asp:Label ID="Label1" runat="server" ForeColor ="Red" Font-Size ="XX-Large" Text="Уважаемые читатели! По техническим причинам Библиотека временно приостановит обслуживание читателей с 26 декабря 2018 года и до 26 марта 2019 года." >
-                </asp:Label>-->
+            <asp:Label ID="Label1" runat="server" ForeColor ="Red" Font-Size ="XX-Large" Text="Уважаемые читатели! Мы обновили личный кабинет читателя! Теперь личный кабинет доступен по адресу <a href = 'https://lk.libfl.ru'>https://lk.libfl.ru</a>. Эта страница только для служебного плоьзования" >
+                </asp:Label>
                 <br />
             
             
@@ -28,10 +28,10 @@
             <tr>
             <td>
             <asp:Login ID="Login1" runat="server" ForeColor="Black" LoginButtonText="Войти" 
-                PasswordLabelText="Пароль:" TitleText="Авторизация" UserNameLabelText="Номер читательского билета или email:" 
+                PasswordLabelText="Пароль:" TitleText="Авторизация" UserNameLabelText="Логин АБИС BiblioJet::" 
                 DestinationPageUrl="~/Default.aspx" DisplayRememberMe="False" 
                 OnAuthenticate="Login1_Authenticate" RememberMeText="" Height="110px" 
-                PasswordRecoveryText="Забыли пароль?" PasswordRecoveryUrl="~/PassRec.aspx" >
+                 >
             </asp:Login>     
             </td>
             <td> &nbsp
@@ -46,20 +46,20 @@
         </table>
             <br  />
             <br  />
-            <asp:RadioButton ID="RadioButton1" runat="server"  AutoPostBack ="true"
+            <!-- <asp:RadioButton ID="RadioButton1" runat="server"  AutoPostBack ="true"
                 Text="Читатель или сотрудник-читатель *"  
                 Checked ="true" GroupName = "112" 
                 oncheckedchanged="RadioButton1_CheckedChanged" /> <br />
-            <!--<asp:RadioButton ID="RadioButton3" runat="server" text="Удалённый читатель **"  AutoPostBack ="true"
-                GroupName = "112" oncheckedchanged="RadioButton3_CheckedChanged"/>    <br />-->
+           <asp:RadioButton ID="RadioButton3" runat="server" text="Удалённый читатель **"  AutoPostBack ="true"
+                GroupName = "112" oncheckedchanged="RadioButton3_CheckedChanged"/>    <br />
             
             <asp:RadioButton ID="RadioButton2" runat="server" text="Сотрудник **"  AutoPostBack ="true"
-                GroupName = "112" oncheckedchanged="RadioButton2_CheckedChanged"/>
+                GroupName = "112" oncheckedchanged="RadioButton2_CheckedChanged" Checked ="true"/>-->
         </center>
           
-    <!--<div style="vertical-align:middle; margin-top:15%">-->
+    <!--<div style="vertical-align:middle; margin-top:15%">
     <p>
-        * - Необходимо указать либо номер читательского билета либо email.</p>
+      <!--  * - Необходимо указать либо номер читательского билета либо email.</p>-->
     <!--<asp:Panel ID="Panel1" runat="server" Visible ="false" >
     Если Вы не зарегистрированы в библиотеке, то Вам необходимо:
     <br />
@@ -73,12 +73,12 @@
     <br />
     <p >
         
-        Если Вы хотите стать удалённым читателем, то Вам необходимо пройти процедуру
+    <!--    Если Вы хотите стать удалённым читателем, то Вам необходимо пройти процедуру
         <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl ="http://80.250.173.145/WebRemoteReg/Default.aspx">регистрации</asp:HyperLink>.<br />
-        Удалённый читатель - это читатель, который имеет право пользоваться только электронными копиями документов и которому не требуется физическое присутствие для регистрации.
+        Удалённый читатель - это читатель, который имеет право пользоваться только электронными копиями документов и которому не требуется физическое присутствие для регистрации.-->
     </p>
     <p >
-        ** - Выдача литературы на длительное пользование в отделы
+       <!-- ** - Выдача литературы на длительное пользование в отделы-->
     </p>
     <br />
     <br />

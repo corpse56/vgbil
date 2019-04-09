@@ -194,5 +194,14 @@
   <ItemGroup>
     <None Include="Resources\nofoto.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ArtboardLIBFL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Artboard-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CirculationIco.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

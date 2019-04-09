@@ -14,8 +14,8 @@ namespace LibflClassLibrary.Circulation.DB
             {
                 return  " select A.*, B.Refusual " +
                         " from Circulation..Orders A " +
-                        " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
-                        " where A.StatusName in ('Заказ сформирован','Сотрудник хранения подбирает книгу')";
+                        " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                        " where A.StatusName in ('Заказ сформирован')";
             }
         }
         internal string GET_ORDERS_HISTORY_FOR_STORAGE
@@ -23,8 +23,8 @@ namespace LibflClassLibrary.Circulation.DB
             get
             {
                 return " select top 300 A.*,B.Refusual from Circulation..Orders A " +
-                       " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName " +
-                       " where A.StatusName not in ('Заказ сформирован','Сотрудник хранения подбирает книгу', 'Электронная выдача' )";
+                       " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName " +
+                       " where A.StatusName not in ('Заказ сформирован', 'Электронная выдача' )";
             }
         }
 
@@ -33,7 +33,7 @@ namespace LibflClassLibrary.Circulation.DB
             get
             {
                 return " select A.*,B.Refusual from Circulation..Orders A " +
-                        " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                        " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
                         " where A.ID = @OrderId";
             }
         }
@@ -74,7 +74,7 @@ namespace LibflClassLibrary.Circulation.DB
             get
             {
                 return " select A.*,B.Refusual from Circulation..Orders A " +
-                       " left join OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                       " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
                        " where ReaderId = @ReaderId and A.StatusName not in ('Завершено', 'Для возврата в хранение')";
             }
         }
@@ -241,7 +241,7 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
-        public string REFUSE_ORDER
+        public string REFUSE_ORDER//этот запрос сам вставляет действие оператора. Остальные используют метод ChangeStatus. не знаю зачем. можно переделать для однообразия.
         {
             get
             {
@@ -278,9 +278,32 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return " select * from Circulation..Orders where ExemplarId = @idData and Fund = @fund " +
-                        " and StatusName not in ('Завершено') ";
+                return  " select * from Circulation..Orders A" +
+                        " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                        " where ExemplarId = @idData and Fund = @fund " +
+                        " and A.StatusName not in ('Завершено') ";
 
+            }
+        }
+
+        public string NEW_ORDER_ISSUE_BOOK
+        {
+            get
+            {
+                return "insert into Circulation..Orders ( BookId,  ExemplarId,  ReaderId,  StatusName,    StartDate,        ReturnDate,                        Barcode,   Fund,      IssuingDepId, IssueDepId, IssueDate)" +
+                       " values                         (@BookId,  @ExemplarId, @ReaderId, @StatusName,   getdate(), DATEADD(day , @ReturnInDays , getdate()), @Barcode, @Fund,    @IssuingDepId,  @IssueDepId, getdate() ); " +
+                       " select SCOPE_IDENTITY() ";
+            }
+        }
+
+        public string GET_ORDERS_FLOW
+        {
+            get
+            {
+                return  " select * from Circulation..OrdersFlow F " +
+                        " left join Circulation..Orders O on F.OrderId = O.ID " +
+                        " where DepartmentId = @depId and cast(cast(Changed as varchar(11)) as datetime) = cast(cast(GETDATE() as varchar(11)) as datetime) and O.ExemplarId != 0 " +
+                        " order by Changed desc" ;
             }
         }
 

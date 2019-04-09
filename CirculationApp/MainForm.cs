@@ -23,6 +23,12 @@ using LibflClassLibrary.Controls;
 using LibflClassLibrary.BJUsers;
 using CirculationACC;
 using LibflClassLibrary.Circulation;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using LibflClassLibrary.Books.BJBooks;
+using Utilities;
+using LibflClassLibrary.Readers;
+using ALISAPI.Errors;
+using LibflClassLibrary.ALISAPI.Errors;
 
 namespace CirculationApp
 {
@@ -50,6 +56,7 @@ namespace CirculationApp
             {
                 bjUser = au.User;
                 this.tbCurrentEmployee.Text = bjUser.FIO;
+                ShowLog();
             }
             //Form1.Scanned += new ScannedEventHandler(Form1_Scanned);
             this.bConfirm.Enabled = false;
@@ -69,7 +76,6 @@ namespace CirculationApp
             {
                 MessageBox.Show(ex.Message);
             }
-            Log();
 
         }
         public delegate void ScanFuncDelegate(string data);
@@ -83,7 +89,7 @@ namespace CirculationApp
             FromPort = FromPort.Trim();
             port.DiscardInBuffer();
 
-            //вводим прослойку-делегата, чтобы иметь возможность эмулировать штрихкоды
+            //вводим прослойку-делегата, чтобы иметь возможность эмулировать ввод штрихкодов
             ScanFuncDelegate ScanDelegate;
             ScanDelegate = new ScanFuncDelegate(Form1_Scanned);
             this.Invoke(ScanDelegate, new object[] { FromPort });
@@ -97,7 +103,7 @@ namespace CirculationApp
             {
                 case "Формуляр читателя":
                     #region formular
-                    ReaderVO reader = new ReaderVO(fromport);
+                    ReaderInfo reader = ReaderInfo.GetReaderByBar(fromport);
                     FillFormular(reader);
 
                     #endregion
@@ -115,20 +121,90 @@ namespace CirculationApp
                 case "Учёт посещаемости":
                 #region Учёт посещаемости
                     AttendanceScan(fromport);
+                    break;
 
+                case "Приём книг на кафедру из хранения/в хранение с кафедры":
+                    RecieveBookFromInBookKeeping(fromport);
                     break;
                 #endregion
 
             }
         }
 
-        private void Circulate(string fromport)
+        private void RecieveBookFromInBookKeeping(string fromport)
+        {
+            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromport);
+            if (exemplar == null)
+            {
+                MessageBox.Show("Книга не найдена.");
+                return;
+            }
+            OrderInfo order = ci.FindOrderByExemplar(exemplar);
+
+            try
+            { 
+                if (bjUser.SelectedUserStatus.DepName.ToLower().Contains("книгохранен"))
+                {
+                    ci.RecieveBookInBookkeeping(order, bjUser);
+                    MessageBox.Show("Книга успешно принята в хранение!");
+                    return;
+                }
+                else
+                {
+                    if (order == null)
+                    {
+                        MessageBox.Show("Заказ на такую книгу не сформирован. Принимать такую книгу на кафедру не нужно.");
+                        return;
+                    }
+                    if (!order.StatusName.In(new[] { CirculationStatuses.EmployeeLookingForBook.Value }))
+                    {
+                        MessageBox.Show("Заказ с таким статусом не нужно принимать на кафедру.");
+                        return;
+                    }
+                    ci.RecieveBookFromBookkeeping(order, bjUser);
+                    MessageBox.Show("Книга успешно принята на кафедру!");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                MessageBox.Show(error.Message);
+                return;
+            }
+        }
+
+        private void Circulate(string fromPort)
         {
 
-            switch (department.Circulate(fromport, bjUser))
+            switch (department.Circulate(fromPort, bjUser))
             {
                 case 0://книга была выдана. нужно принять её в отдел
-                    department.RecieveBook(bjUser);
+                    BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromPort);
+                    OrderInfo oi = ci.FindOrderByExemplar(exemplar);
+                    if (oi.StatusCode == CirculationStatuses.IssuedInHall.Id)
+                    {
+                        DialogResult dr = MessageBox.Show("Читатель сдаёт книгу на бронеполку?", "Внимание!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                        if (dr == DialogResult.Yes)
+                        {
+                            department.RecieveBook(fromPort, bjUser, CirculationStatuses.InReserve.Value);
+                        }
+                        else if (dr == DialogResult.No)
+                        {
+                            department.RecieveBook(fromPort, bjUser, CirculationStatuses.ForReturnToBookStorage.Value);
+                        }
+                    }
+                    else
+                    {
+                        if (exemplar.Fields["899$a"].ToString().ToLower().Contains("книгохранен"))
+                        {
+                            department.RecieveBook(fromPort, bjUser, CirculationStatuses.ForReturnToBookStorage.Value);
+                        }
+                        else
+                        {
+                            department.RecieveBook(fromPort, bjUser, CirculationStatuses.Finished.Value);
+                        }
+                    }
                     CancelIssue();
                     break;
                 case 1:
@@ -156,7 +232,7 @@ namespace CirculationApp
                     break;
 
             }
-            Log();
+            ShowLog();
         }
 
         private void AttendanceScan(string fromport)
@@ -180,52 +256,116 @@ namespace CirculationApp
             }
         }
 
-        public void FillFormular(ReaderVO reader)
+        public void FillFormular(ReaderInfo reader)
         {
-            if (reader.ID == 0)
+            if (reader == null)
             {
                 MessageBox.Show("Читатель не найден!");
                 return;
             }
             FillFormularGrid(reader);
 
-            readerRightsView1.Init(reader.ID);
+            readerRightsView1.Init(reader.NumberReader);
 
         }
-        public void FillFormularGrid(ReaderVO reader)
+        public void FillFormularGrid(ReaderInfo reader)
         {
-            lFormularName.Text = reader.Family + " " + reader.Name + " " + reader.Father;
-            lFromularNumber.Text = reader.ID.ToString();
-            Formular.DataSource = reader.GetFormular();
-            Formular.Columns["num"].HeaderText = "№№";
-            Formular.Columns["num"].Width = 40;
-            Formular.Columns["bar"].HeaderText = "Штрихкод";
-            Formular.Columns["bar"].Width = 80;
-            Formular.Columns["avt"].HeaderText = "Автор";
-            Formular.Columns["avt"].Width = 200;
-            Formular.Columns["tit"].HeaderText = "Заглавие";
-            Formular.Columns["tit"].Width = 400;
-            Formular.Columns["iss"].HeaderText = "Дата выдачи";
-            Formular.Columns["iss"].Width = 80;
-            Formular.Columns["ret"].HeaderText = "Предполагаемая дата возврата";
-            Formular.Columns["ret"].Width = 110;
-            Formular.Columns["shifr"].HeaderText = "Расстановочный шифр";
-            Formular.Columns["shifr"].Width = 90;
-            Formular.Columns["idiss"].Visible = false;
-            Formular.Columns["idr"].Visible = false;
-            Formular.Columns["DATE_ISSUE"].Visible = false;
-            Formular.Columns["fund"].HeaderText = "Фонд";
-            Formular.Columns["fund"].Width = 50;
-            Formular.Columns["prolonged"].HeaderText = "Продлено, раз";
-            Formular.Columns["prolonged"].Width = 80;
-            Formular.Columns["IsAtHome"].HeaderText = "Тип выдачи";
-            Formular.Columns["IsAtHome"].Width = 80;
-            Formular.Columns["rack"].HeaderText = "Стеллаж";
-            Formular.Columns["rack"].Width = 80;
-            pbFormular.Image = reader.Photo;
-            foreach (DataGridViewRow r in Formular.Rows)
+            lFormularName.Text = reader.FamilyName + " " + reader.Name + " " + reader.FatherName;
+            lFromularNumber.Text = reader.NumberReader.ToString();
+            List<OrderInfo> formular = ci.GetOrders(reader.NumberReader);
+            formular = formular.FindAll(x => x.StatusName.In(new[] {    CirculationStatuses.InReserve.Value,
+                                                                        CirculationStatuses.IssuedAtHome.Value,
+                                                                        CirculationStatuses.IssuedInHall.Value,
+                                                                        }));
+
+            KeyValuePair<string, string>[] columns =
+{
+                    new KeyValuePair<string, string> ( "id", "id"),
+                    new KeyValuePair<string, string> ( "bar", "Штрихкод"),
+                    new KeyValuePair<string, string> ( "inv", "Инв. номер"),
+                    new KeyValuePair<string, string> ( "author", "Автор"),
+                    new KeyValuePair<string, string> ( "title", "Заглавие"),
+                    new KeyValuePair<string, string> ( "issueDate", "Дата выдачи"),
+                    new KeyValuePair<string, string> ( "returnDate", "Предполагаемая дата возврата"),
+                    new KeyValuePair<string, string> ( "cipher", "Расстановочный шифр"),
+                    new KeyValuePair<string, string> ( "baseName", "Фонд"),
+                    //new KeyValuePair<string, string> ( "prolongedTimes", "Продлено раз"),
+                    new KeyValuePair<string, string> ( "status", "Статус"),
+                    new KeyValuePair<string, string> ( "rack", "Стеллаж"),
+                    //new KeyValuePair<string, string> ( "issueType", "Тип выдачи"),
+                };
+            dgvFormular.Columns.Clear();
+            foreach (var c in columns)
+                dgvFormular.Columns.Add(c.Key, c.Value);
+
+            dgvFormular.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvFormular.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+
+            dgvFormular.Columns["id"].Visible = false;
+
+            dgvFormular.Columns["bar"].Width = 100;
+            dgvFormular.Columns["inv"].Width = 100;
+            dgvFormular.Columns["author"].Width = 150;
+            dgvFormular.Columns["title"].Width = 250;
+            dgvFormular.Columns["issueDate"].DefaultCellStyle.Format = "dd.MM.yyyy";
+            dgvFormular.Columns["issueDate"].Width = 80;
+            dgvFormular.Columns["returnDate"].DefaultCellStyle.Format = "dd.MM.yyyy";
+            dgvFormular.Columns["returnDate"].Width = 80;
+            dgvFormular.Columns["cipher"].Width = 70;
+            dgvFormular.Columns["baseName"].Width = 70;
+            dgvFormular.Columns["status"].Width = 100;
+            dgvFormular.Columns["rack"].Width = 100;
+
+            foreach(OrderInfo order in formular)
             {
-                DateTime ret = (DateTime)r.Cells["ret"].Value;
+                dgvFormular.Rows.Add();
+                var row = dgvFormular.Rows[dgvFormular.Rows.Count - 1];
+                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
+                row.Cells["id"].Value = order.OrderId;
+                row.Cells["bar"].Value = exemplar.Fields["899$w"].ToString();
+                row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
+                row.Cells["author"].Value = book.Fields["700$a"].ToString();
+                row.Cells["title"].Value = book.Fields["200$a"].ToString();
+                row.Cells["issueDate"].Value = order.IssueDate;
+                row.Cells["returnDate"].Value = order.ReturnDate;
+                row.Cells["cipher"].Value = exemplar.Cipher;
+                row.Cells["baseName"].Value = GetRusFundName(exemplar.Fund);
+                row.Cells["status"].Value = order.StatusName;
+                row.Cells["rack"].Value = exemplar.Fields["899$c"].ToString();
+            }
+
+            //Formular.DataSource = reader.GetFormular();
+
+            //dgvFormular.Columns["num"].HeaderText = "№№";
+            //dgvFormular.Columns["num"].Width = 40;
+            //dgvFormular.Columns["bar"].HeaderText = "Штрихкод";
+            //dgvFormular.Columns["bar"].Width = 80;
+            //dgvFormular.Columns["avt"].HeaderText = "Автор";
+            //dgvFormular.Columns["avt"].Width = 200;
+            //dgvFormular.Columns["tit"].HeaderText = "Заглавие";
+            //dgvFormular.Columns["tit"].Width = 400;
+            //dgvFormular.Columns["iss"].HeaderText = "Дата выдачи";
+            //dgvFormular.Columns["iss"].Width = 80;
+            //dgvFormular.Columns["ret"].HeaderText = "Предполагаемая дата возврата";
+            //dgvFormular.Columns["ret"].Width = 110;
+            //dgvFormular.Columns["shifr"].HeaderText = "Расстановочный шифр";
+            //dgvFormular.Columns["shifr"].Width = 90;
+            //dgvFormular.Columns["idiss"].Visible = false;
+            //dgvFormular.Columns["idr"].Visible = false;
+            //dgvFormular.Columns["DATE_ISSUE"].Visible = false;
+            //dgvFormular.Columns["fund"].HeaderText = "Фонд";
+            //dgvFormular.Columns["fund"].Width = 50;
+            //dgvFormular.Columns["prolonged"].HeaderText = "Продлено, раз";
+            //dgvFormular.Columns["prolonged"].Width = 80;
+            //dgvFormular.Columns["IsAtHome"].HeaderText = "Тип выдачи";
+            //dgvFormular.Columns["IsAtHome"].Width = 80;
+            //dgvFormular.Columns["rack"].HeaderText = "Стеллаж";
+            //dgvFormular.Columns["rack"].Width = 80;
+            pbFormular.Image = reader.Photo;
+            foreach (DataGridViewRow r in dgvFormular.Rows)
+            {
+                DateTime ret = (DateTime)r.Cells["returnDate"].Value;
                 if (ret < DateTime.Now)
                 {
                     r.DefaultCellStyle.BackColor = Color.Tomato;
@@ -234,34 +374,14 @@ namespace CirculationApp
         }
         private void bConfirm_Click(object sender, EventArgs e)
         {
-            //if (DEPARTMENT.ScannedReader.IsAlreadyIssuedMoreThanFourBooks())
-            //{
-            //    DialogResult res =  MessageBox.Show("Читателю уже выдано более 4 наименований! Всё равно хотите выдать?","Внимание", MessageBoxButtons.YesNo,MessageBoxIcon.Exclamation);
-            //    if (res == DialogResult.No)
-            //    {
-            //        CancelIssue();
-            //        return;
-            //    }
-            //}
-            department.IssueBookToReader();
-            //switch (department.IssueBookToReader())
-            //{
-            //    case 0://успех
-            //        bConfirm.Enabled = false;
-            //        bCancel.Enabled = false;
-            //        CancelIssue();
-            //        Log();
-            //        department = new Department();
-            //        break;
-            //    case 1://у читателя нет прав для выдачи на дом
-            //        bConfirm.Enabled = false;
-            //        bCancel.Enabled = false;
-            //        CancelIssue();
-            //        department = new Department();
-            //        MessageBox.Show("Выдача на дом невозможна так как у читателя отсутствуют права бесплатного абонемента! Перейдите в формуляр читателя, чтобы выдать права.");
-            //        break;
-            //}
 
+            //здесь вставить проверку, что более 10 книг уже на дом берёт. выдавать или нет?
+            //и ещё проверку, чтоб не более ста книг в зал.
+
+
+            department.IssueBookToReader();
+            CancelIssue();
+            ShowLog();
         }
         private void bCancel_Click(object sender, EventArgs e)
         {
@@ -278,38 +398,112 @@ namespace CirculationApp
             bCancel.Enabled = false;
             RPhoto.Image = null;
         }
-        private void Log()
+        private void ShowLog()
         {
-            DBGeneral dbg = new DBGeneral();
+            List<OrderFlowInfo> flow = ci.GetOrdersFlow(bjUser.SelectedUserStatus.UnifiedLocationCode);
 
-            dgvLOG.Columns.Clear();
-            dgvLOG.AutoGenerateColumns = true;
-            dgvLOG.DataSource = dbg.GetLog();
-            dgvLOG.Columns["time"].HeaderText = "Время";
-            dgvLOG.Columns["time"].Width = 80;
-            dgvLOG.Columns["bar"].HeaderText = "Штрихкод";
-            dgvLOG.Columns["bar"].Width = 80;
-            dgvLOG.Columns["tit"].HeaderText = "Издание";
-            dgvLOG.Columns["tit"].Width = 600;
-            dgvLOG.Columns["idr"].HeaderText = "Читатель";
-            dgvLOG.Columns["idr"].Width = 80;
-            dgvLOG.Columns["st"].HeaderText = "Действие";
-            dgvLOG.Columns["st"].Width = 100;
-            dgvLOG.Columns["fund"].HeaderText = "Фонд";
-            dgvLOG.Columns["fund"].Width = 80;
-            dgvLOG.Columns["IsAtHome"].HeaderText = "Тип выдачи";
-            dgvLOG.Columns["IsAtHome"].Width = 80;
-            foreach (DataGridViewColumn c in dgvLOG.Columns)
+            KeyValuePair<string, string>[] columns =
+            {
+                new KeyValuePair<string, string> ( "time", "Время"),
+                new KeyValuePair<string, string> ( "bar", "Штрихкод"),
+                new KeyValuePair<string, string> ( "title", "Издание"),
+                new KeyValuePair<string, string> ( "reader", "Читатель"),
+                new KeyValuePair<string, string> ( "status", "Действие"),
+                new KeyValuePair<string, string> ( "baseName", "Фонд"),
+                //new KeyValuePair<string, string> ( "issueType", "Тип выдачи"),
+            };
+            dgvLog.Columns.Clear();
+            foreach (var c in columns)
+                dgvLog.Columns.Add(c.Key, c.Value);
+
+            dgvLog.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvLog.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+
+            dgvLog.Columns["time"].DefaultCellStyle.Format = "HH:mm";
+            dgvLog.Columns["bar"].Width = 100;
+            dgvLog.Columns["title"].Width = 250;
+            dgvLog.Columns["reader"].Width = 100;
+            dgvLog.Columns["status"].Width = 80;
+            dgvLog.Columns["baseName"].Width = 70;
+            //dgvLog.Columns["issueType"].Width = 80;
+
+            foreach(OrderFlowInfo fi in flow)
+            {
+                dgvLog.Rows.Add();
+                var row = dgvLog.Rows[dgvLog.Rows.Count - 1];
+                OrderInfo oi = ci.GetOrder(fi.OrderId);
+                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(oi.ExemplarId, oi.Fund);
+                BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+
+                row.Cells["time"].Value = fi.Changed;
+                row.Cells["bar"].Value = exemplar.Bar;
+                string title = string.IsNullOrEmpty(book.Fields["700$a"].ToString()) ? "<нет>" : book.Fields["700$a"].ToString();
+                row.Cells["title"].Value = $"{title}; {book.Fields["200$a"].ToString()}";
+                row.Cells["reader"].Value = oi.ReaderId;
+                row.Cells["status"].Value = fi.StatusName;
+                row.Cells["baseName"].Value = GetRusFundName(oi.Fund);
+                //row.Cells["issueType"].Value = exemplar.ExemplarAccess.Access.In(new [] {1000,1006}) ? "на дом" : "в зал";
+
+            }
+
+
+            //DBGeneral dbg = new DBGeneral();
+
+            //dgvLog.Columns.Clear();
+            //dgvLog.AutoGenerateColumns = true;
+            //dgvLog.DataSource = dbg.GetLog();
+            //dgvLog.Columns["time"].HeaderText = "Время";
+            //dgvLog.Columns["time"].Width = 80;
+            //dgvLog.Columns["bar"].HeaderText = "Штрихкод";
+            //dgvLog.Columns["bar"].Width = 80;
+            //dgvLog.Columns["tit"].HeaderText = "Издание";
+            //dgvLog.Columns["tit"].Width = 600;
+            //dgvLog.Columns["idr"].HeaderText = "Читатель";
+            //dgvLog.Columns["idr"].Width = 80;
+            //dgvLog.Columns["st"].HeaderText = "Действие";
+            //dgvLog.Columns["st"].Width = 100;
+            //dgvLog.Columns["fund"].HeaderText = "Фонд";
+            //dgvLog.Columns["fund"].Width = 80;
+            //dgvLog.Columns["IsAtHome"].HeaderText = "Тип выдачи";
+            //dgvLog.Columns["IsAtHome"].Width = 80;
+            foreach (DataGridViewColumn c in dgvLog.Columns)
             {
                 c.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
             
         }
 
+        private string GetRusFundName(string fund)
+        {
+            switch (fund)
+            {
+                case "BJVVV":
+                    return "ОФ";
+                case "REDKOSTJ":
+                    return "Редкая книга";
+                case "BJACC":
+                    return "АКЦ";
+                case "BJFCC":
+                    return "ФКЦ";
+                case "BJSCC":
+                    return "СКЦ";
+            }
+            return "<неизвестно>";
+        }
+
         private void bFormularFindById_Click(object sender, EventArgs e)
         {
-            ReaderVO reader = new ReaderVO((int)numericUpDown3.Value);
-            if (reader.ID == 0)
+            ReaderInfo reader;
+            try
+            {
+                reader = ReaderInfo.GetReader((int)numericUpDown3.Value);//new ReaderVO((int)numericUpDown3.Value);
+            }
+            catch
+            {
+                MessageBox.Show("Читатель не найден");
+                return;
+            }
+            if (reader == null)
             {
                 MessageBox.Show("Читатель не найден!");
                 return;
@@ -319,11 +513,22 @@ namespace CirculationApp
         }
         private void bProlong_Click(object sender, EventArgs e)
         {
-            if (Formular.SelectedRows.Count == 0)
+            if (dgvFormular.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Выделите строку!");
                 return;
             }
+            try
+            {
+                ci.ProlongOrder((int)dgvFormular.SelectedRows[0].Cells["id"].Value);
+            }
+            catch (Exception ex)
+            {
+                ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                MessageBox.Show(error.Message);
+                return;
+            }
+            FillFormular(ReaderInfo.GetReader(int.Parse(lFromularNumber.Text)));
 
             //if (department.GetCountOfPrologedTimes((int)Formular.SelectedRows[0].Cells["idiss"].Value) > 0)
             //{
@@ -331,26 +536,20 @@ namespace CirculationApp
             //    return;
             //}
 
-            BookVO book = new BookVO();
-            if (Formular.SelectedRows[0].Cells["IsAtHome"].Value.ToString().ToLower().Contains("дом"))
-            {
-                department.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 30, 1);
-            }
-            else
-            {
-                department.Prolong((int)Formular.SelectedRows[0].Cells["idiss"].Value, 10, 1);
-            }
-            ReaderVO reader = new ReaderVO((int)Formular.SelectedRows[0].Cells["idr"].Value);
-            FillFormularGrid(reader);
-
-        }
+            //BookVO book = new BookVO();
+            //if (dgvFormular.SelectedRows[0].Cells["IsAtHome"].Value.ToString().ToLower().Contains("дом"))
+            //{
+            //    department.Prolong((int)dgvFormular.SelectedRows[0].Cells["idiss"].Value, 30, 1);
+            //}
+            //else
+            //{
+            //    department.Prolong((int)dgvFormular.SelectedRows[0].Cells["idiss"].Value, 10, 1);
+            //}
+            //ReaderVO reader = new ReaderVO((int)dgvFormular.SelectedRows[0].Cells["idr"].Value);
+            //FillFormularGrid(reader);
 
 
 
-       
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Close();
         }
 
         private void bChangeAuthorization_Click(object sender, EventArgs e)
@@ -365,21 +564,12 @@ namespace CirculationApp
 
         }
 
-
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            label1.Visible = !label1.Visible;
-        }
-
-       
-
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (MainTabContainer.SelectedTab.Text)
             {
                 case "Приём/выдача изданий":
-                    Log();
+                    ShowLog();
                     //CancelIssue();
                     label1.Enabled = true;
                     
@@ -391,7 +581,7 @@ namespace CirculationApp
                 case "Формуляр читателя":
                     lFromularNumber.Text = "";
                     lFormularName.Text = "";
-                    Formular.Columns.Clear();
+                    dgvFormular.Columns.Clear();
                     AcceptButton = this.bFormularFindById;
                     pbFormular.Image = null;
                     readerRightsView1.Clear();
@@ -546,52 +736,6 @@ namespace CirculationApp
             {
                 System.IO.File.WriteAllText(sd.FileName, fileContent.ToString(), Encoding.UTF8);
             }
-
-            //if (Statistics.Rows.Count == 0)
-            //{
-            //    MessageBox.Show("Нечего экспортировать!");
-            //    return;
-            //}
-            //string strExport = "";
-            ////Loop through all the columns in DataGridView to Set the 
-            ////Column Heading
-            //foreach (DataGridViewColumn dc in Statistics.Columns)
-            //{
-            //    strExport += dc.HeaderText.Replace(";", " ") + "  ; ";
-            //}
-            //strExport = strExport.Substring(0, strExport.Length - 3) + Environment.NewLine.ToString();
-            ////Loop through all the row and append the value with 3 spaces
-            //foreach (DataGridViewRow dr in Statistics.Rows)
-            //{
-            //    foreach (DataGridViewCell dc in dr.Cells)
-            //    {
-            //        if (dc.Value != null)
-            //        {
-            //            strExport += dc.FormattedValue.ToString().Replace(";", " ") + " ;  ";
-            //        }
-            //    }
-            //    strExport += Environment.NewLine.ToString();
-            //}
-            //strExport = strExport.Substring(0, strExport.Length - 3) + Environment.NewLine.ToString() + Environment.NewLine.ToString() + DateTime.Now.ToString("dd.MM.yyyy") + "  номер сотрудника " + this.EmpID + " - " + this.textBox1.Text;
-            ////Create a TextWrite object to write to file, select a file name with .csv extention
-            //string tmp = label19.Text + "_" + DateTime.Now.ToString("hh:mm:ss.nnn") + ".csv";
-            //tmp = label19.Text + "_" + DateTime.Now.Ticks.ToString() + ".csv";
-            //SaveFileDialog sd = new SaveFileDialog();
-            //sd.Title = "Сохранить в файл";
-            //sd.Filter = "csv files (*.csv)|*.csv";
-            //sd.FilterIndex = 1;
-            //TextWriter tw;
-            //sd.FileName = tmp;
-            //if (sd.ShowDialog() == DialogResult.OK)
-            //{
-            //    tmp = sd.FileName;
-            //    tw = new System.IO.StreamWriter(tmp, false, Encoding.UTF8);
-            //    //Write the Text to file
-            //    //tw.Encoding = Encoding.Unicode;
-            //    tw.Write(strExport);
-            //    //Close the Textwrite
-            //    tw.Close();
-            //}
         }
 
         public string emul;
@@ -661,12 +805,6 @@ namespace CirculationApp
             }
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            DBReader dbr = new DBReader();
-            byte[] fotka = File.ReadAllBytes("f://41_1.jpg");
-            dbr.AddPhoto(fotka);
-        }
 
         private void RPhoto_Click(object sender, EventArgs e)
         {
@@ -978,17 +1116,17 @@ namespace CirculationApp
 
         private void bRemoveResponsibility_Click(object sender, EventArgs e)
         {
-            if (Formular.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("Выделите строку!");
-                return;
-            }
-            DialogResult dr = MessageBox.Show("Вы действительно хотите снять ответственность за выделенную книгу?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            //if (dgvFormular.SelectedRows.Count == 0)
+            //{
+            //    MessageBox.Show("Выделите строку!");
+            //    return;
+            //}
+            //DialogResult dr = MessageBox.Show("Вы действительно хотите снять ответственность за выделенную книгу?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 
-            if (dr == DialogResult.No) return;
-            department.RemoveResponsibility((int)Formular.SelectedRows[0].Cells["idiss"].Value, bjUser.Id);
-            ReaderVO reader = new ReaderVO((int)Formular.SelectedRows[0].Cells["idr"].Value);
-            FillFormularGrid(reader);
+            //if (dr == DialogResult.No) return;
+            //department.RemoveResponsibility((int)dgvFormular.SelectedRows[0].Cells["idiss"].Value, bjUser.Id);
+            //ReaderVO reader = new ReaderVO((int)dgvFormular.SelectedRows[0].Cells["idr"].Value);
+            //FillFormularGrid(reader);
         }
 
         private void списокКнигСКоторыхСнятаОтветственностьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1127,16 +1265,21 @@ namespace CirculationApp
                 MessageBox.Show("Введите номер или считайте штрихкод читателя!");
                 return;
             }
-            ReaderVO reader = new ReaderVO(int.Parse(lFromularNumber.Text));
+            ReaderInfo reader = ReaderInfo.GetReader(int.Parse(lFromularNumber.Text));
 
             fReaderRegistrationAndRights frr = new fReaderRegistrationAndRights();
-            frr.Init(reader.ID);
+            frr.Init(reader.NumberReader);
             frr.ShowDialog();
 
             FillFormular(reader);
         }
 
         private void bEmulation_Click(object sender, EventArgs e)
+        {
+            bMainEmulation_Click(sender, e);
+        }
+
+        private void bEmulationTransfer_Click(object sender, EventArgs e)
         {
             bMainEmulation_Click(sender, e);
         }

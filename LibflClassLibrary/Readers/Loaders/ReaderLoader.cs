@@ -127,11 +127,11 @@ namespace LibflClassLibrary.Readers.Loaders
                     case "LiveFlat":
                         reader.LiveFlat = row[col].ToString();
                         break;
-                    case "Photo":
-                        if (row["photo"].GetType() != typeof(System.DBNull))
+                    case "fotka":
+                        if (row["fotka"].GetType() != typeof(System.DBNull))
                         {
-                            object o = row["photo"];
-                            byte[] data = (byte[])row["photo"];
+                            object o = row["fotka"];
+                            byte[] data = (byte[])o;//row["Photo"];
 
                             if (data != null)
                             {

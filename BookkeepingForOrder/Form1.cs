@@ -870,7 +870,7 @@ namespace BookkeepingForOrder
             if (dgwReaders.SelectedRows[0].Cells["status"].Value.ToString() == CirculationStatuses.OrderIsFormed.Value)
             {
                 CirculationInfo circulation = new CirculationInfo();
-                circulation.ChangeOrderStatus(reader, user, Convert.ToInt32(dgwReaders.SelectedRows[0].Cells["orderid"].Value), CirculationStatuses.EmployeeLookingForBook.Value);
+                circulation.ChangeOrderStatus(user, Convert.ToInt32(dgwReaders.SelectedRows[0].Cells["orderid"].Value), CirculationStatuses.EmployeeLookingForBook.Value);
             }
             //dgwReaders.Rows.Remove(dgwReaders.SelectedRows[0]);
 

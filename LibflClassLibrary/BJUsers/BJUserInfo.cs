@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibflClassLibrary.ExportToVufind;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -19,6 +20,13 @@ namespace LibflClassLibrary.BJUsers
         public override string ToString()
         {
             return $"[{RoleName}] {DepName}";
+        }
+        public int UnifiedLocationCode
+        {
+            get
+            {
+                return KeyValueMapping.BJDepartmentIdToUnifiedLocationId[this.DepId];
+            }
         }
     }
     public class BJUserInfo

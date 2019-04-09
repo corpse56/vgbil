@@ -13,6 +13,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using static LibflClassLibrary.Circulation.CirculationInfo;
 
 namespace LibflClassLibrary.Circulation.Loaders
 {
@@ -66,16 +67,6 @@ namespace LibflClassLibrary.Circulation.Loaders
             {
                 case OrderTypes.ElectronicVersion.Id:
                     BJElectronicExemplarInfo ElectronicCopy = ((BJElectronicExemplarInfo)exemplar);
-
-                    //try
-                    //{
-                    //    ElectronicCopy.FillFileFields();
-                    //}
-                    //catch
-                    //{
-                    //    //throw new Exception("C014");
-                    //}
-
                     dbWrapper.NewElectronicOrder(exemplar as BJElectronicExemplarInfo, reader);
                     break;
                 case OrderTypes.PaperVersion.Id:
@@ -145,10 +136,19 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
+
         internal bool IsIssuedToReader(BJExemplarInfo exemplar)
         {
             DataTable table = dbWrapper.IsIssuedToReader(exemplar.IdData, exemplar.Fund);
             return (table.Rows.Count != 0) ? true : false;
+        }
+
+        internal void RecieveBookFromReader(string bar, BJUserInfo bjUser, string statusName)
+        {
+            BJBookInfo book = BJBookInfo.GetBookInfoByBAR(bar);
+            BJExemplarInfo exemplar = (BJExemplarInfo)book.Exemplars.Find(x => ((BJExemplarInfo)x).Bar == bar);
+            OrderInfo order = FindOrderByExemplar(exemplar);
+            dbWrapper.ChangeOrderStatus(order.OrderId, statusName, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
         }
 
         internal string GetExemplarAvailabilityStatus(int idData, string fund)
@@ -216,6 +216,25 @@ namespace LibflClassLibrary.Circulation.Loaders
 
             return Orders;
 
+        }
+
+
+        //прямая выдача книги. заказ ещё не создан
+        internal void IssueBookToReader(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader, IssueType issueType, BJUserInfo bjUser)
+        {
+            int ReturnInDays = (issueType == IssueType.AtHome) ? 30 : 10;//30 дней на дом. 10 дней бронеполка.
+            string statusName = (issueType == IssueType.AtHome) ? CirculationStatuses.IssuedAtHome.Value : CirculationStatuses.IssuedInHall.Value;
+            int deptId = KeyValueMapping.BJDepartmentIdToUnifiedLocationId[bjUser.SelectedUserStatus.DepId];
+            dbWrapper.IssueBookToReader(scannedExemplar, scannedReader.NumberReader, ReturnInDays, bjUser.Id,
+                                        deptId, statusName);
+        }
+
+
+        //выдача книги. заказ уже есть. Нужно поменять статус заказу.
+        internal void IssueBookToReader(OrderInfo order, IssueType issueType, BJUserInfo bjUser)
+        {
+            string statusName = (issueType == IssueType.AtHome) ? CirculationStatuses.IssuedAtHome.Value : CirculationStatuses.IssuedInHall.Value;
+            ChangeOrderStatus(bjUser, order.OrderId, statusName);
         }
 
         internal List<OrderInfo> GetOrders(int idReader)
@@ -287,6 +306,24 @@ namespace LibflClassLibrary.Circulation.Loaders
             return OrdersHistory;
         }
 
+        internal List<OrderFlowInfo> GetOrdersFlow(int unifiedLocationCode)
+        {
+            DataTable table = dbWrapper.GetOrdersFlow(unifiedLocationCode);
+            List<OrderFlowInfo> result = new List<OrderFlowInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                OrderFlowInfo fi = new OrderFlowInfo();
+                fi.Changed = (DateTime)row["Changed"];
+                fi.Changer = (int)row["Changer"];
+                fi.DepartmentId = unifiedLocationCode;
+                fi.Id = (int)row["Id"];
+                fi.OrderId = (int)row["OrderId"];
+                fi.Refusual = row["Refusual"].ToString();
+                fi.StatusName = row["StatusName"].ToString();
+                result.Add(fi);
+            }
+            return result;
+        }
 
         internal void InsertIntoUserBasket(List<BasketInfo> request)
         {
@@ -317,6 +354,11 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
+        internal void FinishOrder(OrderInfo order, BJUserInfo bjUser)
+        {
+            dbWrapper.FinishOrder(order.OrderId, bjUser.Id, KeyValueMapping.BJDepartmentIdToUnifiedLocationId[bjUser.SelectedUserStatus.DepId]);
+        }
+
         internal LitresInfo GetLitresAccount(int readerId)
         {
             DataTable table = dbWrapper.GetLitresAccount(readerId);
@@ -336,7 +378,7 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
-        internal void ChangeOrderStatus(ReaderInfo reader, BJUserInfo user, int orderId, string status)
+        internal void ChangeOrderStatus(BJUserInfo user, int orderId, string status)
         {
             dbWrapper.ChangeOrderStatus(orderId, status, user.Id, KeyValueMapping.BJDepartmentIdToUnifiedLocationId[user.SelectedUserStatus.DepId], null);
         }

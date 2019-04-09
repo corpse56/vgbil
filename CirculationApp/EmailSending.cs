@@ -54,7 +54,7 @@ namespace CirculationApp
             this.canshow = true;
             richTextBox1.Text = "Уважаемый(ая) " + reader.Name + " " + reader.Father + "!" + rn +
                 "Вы задерживаете книги:" + rn + rn;
-            foreach (DataGridViewRow r in f1.Formular.Rows)
+            foreach (DataGridViewRow r in f1.dgvFormular.Rows)
             {
                 if (r.DefaultCellStyle.BackColor == Color.Tomato)
                 {

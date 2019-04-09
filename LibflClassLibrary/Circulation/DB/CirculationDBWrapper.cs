@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.Readers;
 
 namespace LibflClassLibrary.Circulation.DB
@@ -19,8 +20,9 @@ namespace LibflClassLibrary.Circulation.DB
         public CirculationDBWrapper()
         {
             //connectionString = "Data Source=80.250.173.142;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
-            connectionString = "Data Source=192.168.1.165;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
+            //connectionString = "Data Source=192.168.1.165;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
             //connectionString = "Data Source=127.0.0.1;Initial Catalog=Circulation;Integrated Security=True;Connect Timeout=1200";
+            connectionString = AppSettings.ConnectionString;
             Queries = new CirculationQueries();
         }
 
@@ -185,6 +187,30 @@ namespace LibflClassLibrary.Circulation.DB
             this.ChangeOrderStatus(orderId, CirculationStatuses.Finished.Value, 1, 2033, null);
         }
 
+        internal void IssueBookToReader(BJExemplarInfo scannedExemplar, int numberReader, int returnInDays, int userId, int deptId, string statusName)
+        {
+            int OrderId;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.NEW_ORDER_ISSUE_BOOK;
+                command.Parameters.Clear();
+                command.Parameters.Add("ReaderId", SqlDbType.Int).Value = numberReader;
+                command.Parameters.Add("IssueDepId", SqlDbType.Int).Value = deptId;
+                command.Parameters.Add("BookId", SqlDbType.NVarChar).Value = scannedExemplar.BookId;
+                command.Parameters.Add("IssuingDepId", SqlDbType.Int).Value = deptId;
+                command.Parameters.Add("ExemplarId", SqlDbType.Int).Value = scannedExemplar.IdData;
+                command.Parameters.Add("ReturnInDays", SqlDbType.Int).Value = returnInDays;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = statusName;
+                command.Parameters.Add("Fund", SqlDbType.NVarChar).Value = scannedExemplar.Fund;
+                command.Parameters.Add("Barcode", SqlDbType.NVarChar).Value = scannedExemplar.Fields["899$w"].ToString();
+                OrderId = Convert.ToInt32(command.ExecuteScalar());
+            }
+            this.ChangeOrderStatus(OrderId, statusName, userId, deptId, null);
+        }
+
         internal DataTable FindOrderByExemplar(int idData, string fund)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -192,6 +218,7 @@ namespace LibflClassLibrary.Circulation.DB
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.FIND_ORDER_BY_EXEMPLAR, connection);
                 dataAdapter.SelectCommand.Parameters.Add("idData", SqlDbType.Int).Value = idData;
                 dataAdapter.SelectCommand.Parameters.Add("fund", SqlDbType.NVarChar).Value = fund;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
                 DataTable table = new DataTable();
                 int cnt = dataAdapter.Fill(table);
                 return table;
@@ -249,6 +276,17 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        internal DataTable GetOrdersFlow(int unifiedLocationCode)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_FLOW, connection);
+                dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = unifiedLocationCode;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
 
         internal DataTable IsExemplarIssued(BJExemplarInfo bJExemplarInfo)
         {
@@ -261,6 +299,11 @@ namespace LibflClassLibrary.Circulation.DB
                 int cnt = dataAdapter.Fill(table);
                 return table;
             }
+        }
+
+        internal void FinishOrder(int orderId, int userId, int deptId)
+        {
+            ChangeOrderStatus(orderId, CirculationStatuses.Finished.Value, userId, deptId, null);
         }
 
         internal DataTable GetLitresAccount(int readerId)

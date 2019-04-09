@@ -216,7 +216,7 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_BOOK_BY_BAR, connection);
-                dataAdapter.SelectCommand.Parameters.Add("bar", SqlDbType.Int).Value = data;
+                dataAdapter.SelectCommand.Parameters.Add("bar", SqlDbType.NVarChar).Value = data;
                 dataAdapter.Fill(table);
                 return table;
             }
