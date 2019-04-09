@@ -115,7 +115,19 @@ namespace BookkeepingForOrder
             }
             CirculationInfo circulation = new CirculationInfo();
             List<OrderInfo> orders = circulation.GetOrdersForStorage(user.SelectedUserStatus.DepId, user.SelectedUserStatus.DepName);
-            foreach(var order in orders)
+            if (user.SelectedUserStatus.DepId == 8)//0 и 4 этаж должны получать заказы в одну точку
+            {
+                List<OrderInfo> orders1 = circulation.GetOrdersForStorage(15, "…Хран… Сектор книгохранения - 0 этаж");
+                foreach (OrderInfo o in orders1)
+                    orders.Add(o);
+            }
+            if (user.SelectedUserStatus.DepId == 15)
+            {
+                List<OrderInfo> orders1 = circulation.GetOrdersForStorage(8, "…Хран… Сектор книгохранения - 4 этаж");
+                foreach (OrderInfo o in orders1)
+                    orders.Add(o);
+            }
+            foreach (var order in orders)
             {
                 BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
                 ReaderInfo reader = ReaderInfo.GetReader(order.ReaderId);
@@ -212,11 +224,11 @@ namespace BookkeepingForOrder
 
         private void FormMainTable()
         {
-            //MainTable = db.GetTable(this.ForSQL);
+            MainTable = db.GetTable(this.ForSQL);
         }
         private void FormHisTable()
         {
-            //HisTable = db.GetHistory(this.ForSQL);
+            HisTable = db.GetHistory(this.ForSQL);
         }
         private void FormReadersTable()
         {
@@ -699,13 +711,13 @@ namespace BookkeepingForOrder
             {
                 case "tpEmployeeOrders":
                     {
-                        //FormMainTable();
-                        //FormMainTable_Interface();
+                        FormMainTable();
+                        FormMainTable_Interface();
 
-                        //if (MainTable.Rows.Count == 0)
-                        //    bEmployeeOrder.Enabled = false;
-                        //else
-                        //    bEmployeeOrder.Enabled = true;
+                        if (MainTable.Rows.Count == 0)
+                            bEmployeeOrder.Enabled = false;
+                        else
+                            bEmployeeOrder.Enabled = true;
 
                         tabControl1.TabPages.RemoveByKey("tab2");
                         break;
@@ -738,8 +750,8 @@ namespace BookkeepingForOrder
                     }
                 case "tabHis":
                     {
-                        //FormHisTable();
-                        //FormHisTable_Interface();
+                        FormHisTable();
+                        FormHisTable_Interface();
                         break;
                     }
             }

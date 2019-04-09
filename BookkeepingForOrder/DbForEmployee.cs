@@ -51,7 +51,7 @@ namespace BookkeepingForOrder
               " left JOIN BJVVV..DATAEXTPLAIN MHRANshort on dmhran.ID = MHRANshort.IDDATAEXT" +
                 " left join BJVVV..LIST_8 mhran on dmhran.IDINLIST = mhran.ID   " +
               " left join BJVVV..USERS fio on O.ID_Reader = fio.ID " +
-              " left join BJVVV..LIST_8 dep on fio.DEPT = dep.ID " +
+              " left join BJVVV..LIST_8 dep on dep.ID = O.DepId " +
                 //" where O.Start_Date >= '" + DateTime.Now.ToString("yyyyMMdd") +"'"
                " where O.Status != 10 " + name + " order by idm ";
             SqlDA.SelectCommand.CommandTimeout = 1200;
@@ -99,11 +99,11 @@ namespace BookkeepingForOrder
         }
         public DataTable GetHistory(string name)
         {
-            
-            SqlDA.SelectCommand.CommandText = "select  O.ID oid, O.ID_Book_EC as idm,  avt.PLAIN avt, "+
+
+            SqlDA.SelectCommand.CommandText = "select  O.ID oid, O.ID_Book_EC as idm,  avt.PLAIN avt, " +
               " zag.PLAIN zag, O.InvNumber as inv, Reservation_R.dbo.GetSHIFRBJVVVINVIDDATA(O.InvNumber,inv.IDDATA) shifr" +
-              " , O.ID_Reader as idr, dep.[NAME] as dp,fio.NAME fio,  "+
-              " O.Start_Date startd,O.REFUSUAL refusual, yaz.PLAIN yaz, ntp.PLAIN note,izd.PLAIN izd , gizd.PLAIN gizd " +    
+              " , O.ID_Reader as idr, dep.[NAME] as dp,fio.NAME fio,  " +
+              " O.Start_Date startd,O.REFUSUAL refusual, yaz.PLAIN yaz, ntp.PLAIN note,izd.PLAIN izd , gizd.PLAIN gizd " +
               " from Reservation_E..OrdHis O  " +
                 " left join BJVVV..DATAEXT invd on O.IDDATA = invd.IDDATA and invd.MNFIELD = 899 and invd.MSFIELD = '$p' " +
                 " left join BJVVV..DATAEXTPLAIN inv on inv.IDDATAEXT = invd.ID " +
@@ -123,16 +123,17 @@ namespace BookkeepingForOrder
               " left JOIN BJVVV..DATAEXTPLAIN MHRANshort on dmhran.ID = MHRANshort.IDDATAEXT" +
                 " left join BJVVV..LIST_8 mhran on dmhran.IDINLIST = mhran.ID   " +
               " left join BJVVV..USERS fio on O.ID_Reader = fio.ID " +
-              " left join BJVVV..LIST_8 dep on fio.DEPT = dep.ID " +//and dep.ID  = " + F1.FloorID+
-              " left join BJVVV..USERS who on O.Who = who.ID " +
-              " left join BJVVV..LIST_8 whod on who.DEPT = whod.ID " +
-              " where O.Start_Date <= '" + DateTime.Now.ToString("yyyyMMdd HH:mm") + "' and O.Start_Date >=  '" + DateTime.Now.AddDays(-10).ToString("yyyyMMdd HH:mm") +                                                         
-              "' and O.Who = "+F1.EmpID+
-              " union all " +
-              "select O.ID oid, O.ID_Book_EC as idm,  avt.PLAIN avt, "+
+              " left join BJVVV..LIST_8 dep on O.DepId = dep.ID " +//and dep.ID  = " + F1.FloorID+
+                                                                   //" left join BJVVV..USERS who on O.Who = who.ID " +
+                                                                   //" left join BJVVV..LIST_8 whod on who.DEPT = " + F1.user.SelectedUserStatus.DepId+
+              " where O.Start_Date <= '" + DateTime.Now.ToString("yyyyMMdd HH:mm") + "' and O.Start_Date >=  '" + DateTime.Now.AddDays(-10).ToString("yyyyMMdd HH:mm") + "'" +
+              "  and dmhran.IDINLIST = " + F1.user.SelectedUserStatus.DepId +
+             // "' and O.Who = "+F1.user.Id+
+             " union all " +
+              "select O.ID oid, O.ID_Book_EC as idm,  avt.PLAIN avt, " +
               " zag.PLAIN zag, O.InvNumber as inv, Reservation_R.dbo.GetSHIFRBJVVVINVIDDATA(O.InvNumber,inv.IDDATA) shifr" +
-              " ,O.ID_Reader as idr, dep.[NAME] as dp,fio.NAME fio,  "+
-              " O.Start_Date startd,O.REFUSUAL refusual, yaz.PLAIN yaz, ntp.PLAIN note,izd.PLAIN izd, gizd.PLAIN gizd " +    
+              " ,O.ID_Reader as idr, dep.[NAME] as dp,fio.NAME fio,  " +
+              " O.Start_Date startd,O.REFUSUAL refusual, yaz.PLAIN yaz, ntp.PLAIN note,izd.PLAIN izd, gizd.PLAIN gizd " +
               " from Reservation_E..Orders O  " +
                 " left join BJVVV..DATAEXT invd on O.IDDATA = invd.IDDATA and invd.MNFIELD = 899 and invd.MSFIELD = '$p' " +
                 " left join BJVVV..DATAEXTPLAIN inv on inv.IDDATAEXT = invd.ID " +
@@ -152,13 +153,13 @@ namespace BookkeepingForOrder
               " left JOIN BJVVV..DATAEXTPLAIN MHRANshort on dmhran.ID = MHRANshort.IDDATAEXT" +
                 "  left join BJVVV..LIST_8 mhran on dmhran.IDINLIST = mhran.ID   " +
               " left join BJVVV..USERS fio on O.ID_Reader = fio.ID " +
-              " left join BJVVV..LIST_8 dep on fio.DEPT = dep.ID "+//and dep.ID  = " + F1.FloorID+
-              " left join BJVVV..USERS who on O.Who = who.ID " +
-              " left join BJVVV..LIST_8 whod on who.DEPT = whod.ID " +
-              " where O.Start_Date <= '" + DateTime.Now.ToString("yyyyMMdd HH:mm") + "' and O.Start_Date >=  '" + DateTime.Now.AddDays(-10).ToString("yyyyMMdd HH:mm") +                                                         
-              //"'" + name + " order by idm ";
-              //"' and dmhran.IDINLIST = "+F1.FloorID
-                            "' and O.Who = "+F1.EmpID
+              " left join BJVVV..LIST_8 dep on dep.ID  = O.DepId" +//and dep.ID  = " + F1.FloorID+
+                                                                   //" left join BJVVV..USERS who on O.Who = who.ID " +
+                                                                   //" left join BJVVV..LIST_8 whod on who.DEPT  " + F1.user.SelectedUserStatus.DepId +
+             " where O.Start_Date <= '" + DateTime.Now.ToString("yyyyMMdd HH:mm") + "' and O.Start_Date >=  '" + DateTime.Now.AddDays(-10).ToString("yyyyMMdd HH:mm") +
+                            //"'" + name + " order by idm ";
+                            "' and dmhran.IDINLIST = "+ F1.user.SelectedUserStatus.DepId
+              //"' ";// + F1.user.SelectedUserStatus.DepId
               ;
             SqlDA.SelectCommand.CommandTimeout = 1200;
             DataSet ds = new DataSet();

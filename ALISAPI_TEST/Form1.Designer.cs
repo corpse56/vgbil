@@ -44,6 +44,7 @@
             this.bCirculationMakeOrder = new System.Windows.Forms.Button();
             this.bFindAllAccessCodes = new System.Windows.Forms.Button();
             this.bCirculationGetOrders = new System.Windows.Forms.Button();
+            this.BookWithAvailability = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReadersGet
@@ -207,11 +208,22 @@
             this.bCirculationGetOrders.UseVisualStyleBackColor = true;
             this.bCirculationGetOrders.Click += new System.EventHandler(this.bCirculationGetOrders_Click);
             // 
+            // BookWithAvailability
+            // 
+            this.BookWithAvailability.Location = new System.Drawing.Point(239, 225);
+            this.BookWithAvailability.Name = "BookWithAvailability";
+            this.BookWithAvailability.Size = new System.Drawing.Size(188, 35);
+            this.BookWithAvailability.TabIndex = 18;
+            this.BookWithAvailability.Text = "BookWithAvailability";
+            this.BookWithAvailability.UseVisualStyleBackColor = true;
+            this.BookWithAvailability.Click += new System.EventHandler(this.BookWithAvailability_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1153, 620);
+            this.Controls.Add(this.BookWithAvailability);
             this.Controls.Add(this.bCirculationGetOrders);
             this.Controls.Add(this.bFindAllAccessCodes);
             this.Controls.Add(this.bCirculationMakeOrder);
@@ -255,6 +267,7 @@
         private System.Windows.Forms.Button bCirculationMakeOrder;
         private System.Windows.Forms.Button bFindAllAccessCodes;
         private System.Windows.Forms.Button bCirculationGetOrders;
+        private System.Windows.Forms.Button BookWithAvailability;
     }
 }
 

@@ -398,9 +398,9 @@ namespace ALISAPI_TEST
         {
             CirculationInfo ci = new CirculationInfo();
             MakeOrder mo = new MakeOrder();
-            mo.BookId = "REDKOSTJ_1151";
+            mo.BookId = "BJACC_4381";
             mo.ReaderId = 15;
-            mo.OrderTypeId = 2;
+            mo.OrderTypeId = 1;
             ci.MakeOrder(mo);
 
 
@@ -618,6 +618,12 @@ namespace ALISAPI_TEST
             List<OrderInfo> list = ci.GetOrders(333);
             string json = JsonConvert.SerializeObject(list);
             tbResponse.Text = json;
+        }
+
+        private void BookWithAvailability_Click(object sender, EventArgs e)
+        {
+            //REDKOSTJ_20541
+            BookSimpleView book = ViewFactory.GetBookSimpleViewWithAvailabilityStatus("REDKOSTJ_20541");
         }
     }
 

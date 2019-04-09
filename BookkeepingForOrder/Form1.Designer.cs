@@ -83,12 +83,12 @@ namespace BookkeepingForOrder
             this.tabControl1.Controls.Add(this.tabHis);
             this.tabControl1.Controls.Add(this.tpReaderHistoryOrders);
             this.tabControl1.ItemSize = new System.Drawing.Size(150, 21);
-            this.tabControl1.Location = new System.Drawing.Point(1, 47);
+            this.tabControl1.Location = new System.Drawing.Point(1, 42);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1205, 550);
+            this.tabControl1.Size = new System.Drawing.Size(1205, 646);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -101,7 +101,7 @@ namespace BookkeepingForOrder
             this.tpEmployeeOrders.Margin = new System.Windows.Forms.Padding(4);
             this.tpEmployeeOrders.Name = "tpEmployeeOrders";
             this.tpEmployeeOrders.Padding = new System.Windows.Forms.Padding(4);
-            this.tpEmployeeOrders.Size = new System.Drawing.Size(1197, 521);
+            this.tpEmployeeOrders.Size = new System.Drawing.Size(1197, 617);
             this.tpEmployeeOrders.TabIndex = 0;
             this.tpEmployeeOrders.Text = "Заказы сотрудников на сегодня";
             this.tpEmployeeOrders.UseVisualStyleBackColor = true;
@@ -109,10 +109,10 @@ namespace BookkeepingForOrder
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(1015, 489);
+            this.button2.Location = new System.Drawing.Point(1075, 578);
             this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 28);
+            this.button2.Size = new System.Drawing.Size(100, 35);
             this.button2.TabIndex = 2;
             this.button2.Text = "Выход";
             this.button2.UseVisualStyleBackColor = true;
@@ -121,10 +121,10 @@ namespace BookkeepingForOrder
             // bEmployeeOrder
             // 
             this.bEmployeeOrder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bEmployeeOrder.Location = new System.Drawing.Point(782, 489);
+            this.bEmployeeOrder.Location = new System.Drawing.Point(842, 578);
             this.bEmployeeOrder.Margin = new System.Windows.Forms.Padding(4);
             this.bEmployeeOrder.Name = "bEmployeeOrder";
-            this.bEmployeeOrder.Size = new System.Drawing.Size(225, 28);
+            this.bEmployeeOrder.Size = new System.Drawing.Size(225, 31);
             this.bEmployeeOrder.TabIndex = 1;
             this.bEmployeeOrder.Text = "Распечатать заказ";
             this.bEmployeeOrder.UseVisualStyleBackColor = true;
@@ -155,14 +155,14 @@ namespace BookkeepingForOrder
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgwEmp.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgwEmp.EnableHeadersVisualStyles = false;
-            this.dgwEmp.Location = new System.Drawing.Point(2, 7);
+            this.dgwEmp.Location = new System.Drawing.Point(2, 8);
             this.dgwEmp.Margin = new System.Windows.Forms.Padding(4);
             this.dgwEmp.MultiSelect = false;
             this.dgwEmp.Name = "dgwEmp";
             this.dgwEmp.ReadOnly = true;
             this.dgwEmp.RowHeadersVisible = false;
             this.dgwEmp.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgwEmp.Size = new System.Drawing.Size(1112, 478);
+            this.dgwEmp.Size = new System.Drawing.Size(1187, 562);
             this.dgwEmp.TabIndex = 0;
             // 
             // tpReaderOrders
@@ -174,7 +174,7 @@ namespace BookkeepingForOrder
             this.tpReaderOrders.Location = new System.Drawing.Point(4, 25);
             this.tpReaderOrders.Name = "tpReaderOrders";
             this.tpReaderOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.tpReaderOrders.Size = new System.Drawing.Size(1197, 521);
+            this.tpReaderOrders.Size = new System.Drawing.Size(1197, 617);
             this.tpReaderOrders.TabIndex = 2;
             this.tpReaderOrders.Text = "Заказы читателей на неделю";
             this.tpReaderOrders.UseVisualStyleBackColor = true;
@@ -182,9 +182,9 @@ namespace BookkeepingForOrder
             // bRefusual
             // 
             this.bRefusual.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bRefusual.Location = new System.Drawing.Point(690, 484);
+            this.bRefusual.Location = new System.Drawing.Point(690, 581);
             this.bRefusual.Name = "bRefusual";
-            this.bRefusual.Size = new System.Drawing.Size(160, 28);
+            this.bRefusual.Size = new System.Drawing.Size(160, 27);
             this.bRefusual.TabIndex = 5;
             this.bRefusual.Text = "Дать отказ";
             this.bRefusual.UseVisualStyleBackColor = true;
@@ -193,10 +193,10 @@ namespace BookkeepingForOrder
             // button7
             // 
             this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button7.Location = new System.Drawing.Point(1090, 484);
+            this.button7.Location = new System.Drawing.Point(1090, 581);
             this.button7.Margin = new System.Windows.Forms.Padding(4);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(100, 28);
+            this.button7.Size = new System.Drawing.Size(100, 27);
             this.button7.TabIndex = 4;
             this.button7.Text = "Выход";
             this.button7.UseVisualStyleBackColor = true;
@@ -205,10 +205,10 @@ namespace BookkeepingForOrder
             // bPrintReaderOrder
             // 
             this.bPrintReaderOrder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bPrintReaderOrder.Location = new System.Drawing.Point(857, 484);
+            this.bPrintReaderOrder.Location = new System.Drawing.Point(857, 581);
             this.bPrintReaderOrder.Margin = new System.Windows.Forms.Padding(4);
             this.bPrintReaderOrder.Name = "bPrintReaderOrder";
-            this.bPrintReaderOrder.Size = new System.Drawing.Size(225, 28);
+            this.bPrintReaderOrder.Size = new System.Drawing.Size(225, 27);
             this.bPrintReaderOrder.TabIndex = 3;
             this.bPrintReaderOrder.Text = "Распечатать заказ";
             this.bPrintReaderOrder.UseVisualStyleBackColor = true;
@@ -254,11 +254,13 @@ namespace BookkeepingForOrder
             this.dgwReaders.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgwReaders.RowHeadersVisible = false;
             this.dgwReaders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgwReaders.Size = new System.Drawing.Size(1188, 471);
+            this.dgwReaders.Size = new System.Drawing.Size(1188, 567);
             this.dgwReaders.TabIndex = 1;
             // 
             // tabHis
             // 
+            this.tabHis.Controls.Add(this.button5);
+            this.tabHis.Controls.Add(this.button6);
             this.tabHis.Controls.Add(this.button12);
             this.tabHis.Controls.Add(this.button4);
             this.tabHis.Controls.Add(this.button3);
@@ -266,7 +268,7 @@ namespace BookkeepingForOrder
             this.tabHis.Location = new System.Drawing.Point(4, 25);
             this.tabHis.Name = "tabHis";
             this.tabHis.Padding = new System.Windows.Forms.Padding(3);
-            this.tabHis.Size = new System.Drawing.Size(1197, 521);
+            this.tabHis.Size = new System.Drawing.Size(1197, 617);
             this.tabHis.TabIndex = 1;
             this.tabHis.Text = "История заказов сотрудников за 10 дней";
             this.tabHis.UseVisualStyleBackColor = true;
@@ -274,9 +276,9 @@ namespace BookkeepingForOrder
             // button12
             // 
             this.button12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button12.Location = new System.Drawing.Point(636, 567);
+            this.button12.Location = new System.Drawing.Point(636, 574);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(141, 28);
+            this.button12.Size = new System.Drawing.Size(141, 40);
             this.button12.TabIndex = 7;
             this.button12.Text = "Отказ";
             this.button12.UseVisualStyleBackColor = true;
@@ -285,9 +287,9 @@ namespace BookkeepingForOrder
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(783, 567);
+            this.button4.Location = new System.Drawing.Point(785, 574);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(225, 28);
+            this.button4.Size = new System.Drawing.Size(225, 40);
             this.button4.TabIndex = 2;
             this.button4.Text = "Распечатать заказ";
             this.button4.UseVisualStyleBackColor = true;
@@ -296,9 +298,9 @@ namespace BookkeepingForOrder
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(1016, 567);
+            this.button3.Location = new System.Drawing.Point(1081, 571);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 28);
+            this.button3.Size = new System.Drawing.Size(100, 43);
             this.button3.TabIndex = 1;
             this.button3.Text = "Выход";
             this.button3.UseVisualStyleBackColor = true;
@@ -320,13 +322,13 @@ namespace BookkeepingForOrder
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgwHis.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgwHis.Location = new System.Drawing.Point(2, 7);
+            this.dgwHis.Location = new System.Drawing.Point(-4, 4);
             this.dgwHis.Margin = new System.Windows.Forms.Padding(4);
             this.dgwHis.Name = "dgwHis";
             this.dgwHis.ReadOnly = true;
             this.dgwHis.RowHeadersVisible = false;
             this.dgwHis.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgwHis.Size = new System.Drawing.Size(1113, 555);
+            this.dgwHis.Size = new System.Drawing.Size(1191, 563);
             this.dgwHis.TabIndex = 0;
             // 
             // tpReaderHistoryOrders
@@ -339,7 +341,7 @@ namespace BookkeepingForOrder
             this.tpReaderHistoryOrders.Location = new System.Drawing.Point(4, 25);
             this.tpReaderHistoryOrders.Name = "tpReaderHistoryOrders";
             this.tpReaderHistoryOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.tpReaderHistoryOrders.Size = new System.Drawing.Size(1197, 521);
+            this.tpReaderHistoryOrders.Size = new System.Drawing.Size(1197, 617);
             this.tpReaderHistoryOrders.TabIndex = 3;
             this.tpReaderHistoryOrders.Text = "История заказов читателей за 10 дней";
             this.tpReaderHistoryOrders.UseVisualStyleBackColor = true;
@@ -347,9 +349,9 @@ namespace BookkeepingForOrder
             // button14
             // 
             this.button14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button14.Location = new System.Drawing.Point(31, 428);
+            this.button14.Location = new System.Drawing.Point(31, 473);
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(227, 28);
+            this.button14.Size = new System.Drawing.Size(227, 79);
             this.button14.TabIndex = 7;
             this.button14.Text = "Список подбираемых книг";
             this.button14.UseVisualStyleBackColor = true;
@@ -359,9 +361,9 @@ namespace BookkeepingForOrder
             // button11
             // 
             this.button11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button11.Location = new System.Drawing.Point(339, 428);
+            this.button11.Location = new System.Drawing.Point(339, 473);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(141, 28);
+            this.button11.Size = new System.Drawing.Size(141, 79);
             this.button11.TabIndex = 6;
             this.button11.Text = "Отказ";
             this.button11.UseVisualStyleBackColor = true;
@@ -371,7 +373,7 @@ namespace BookkeepingForOrder
             // bReadersHistory
             // 
             this.bReadersHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bReadersHistory.Location = new System.Drawing.Point(858, 490);
+            this.bReadersHistory.Location = new System.Drawing.Point(858, 586);
             this.bReadersHistory.Name = "bReadersHistory";
             this.bReadersHistory.Size = new System.Drawing.Size(225, 28);
             this.bReadersHistory.TabIndex = 4;
@@ -382,7 +384,7 @@ namespace BookkeepingForOrder
             // button10
             // 
             this.button10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button10.Location = new System.Drawing.Point(1091, 490);
+            this.button10.Location = new System.Drawing.Point(1091, 586);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(100, 28);
             this.button10.TabIndex = 3;
@@ -412,7 +414,7 @@ namespace BookkeepingForOrder
             this.dgwRHis.ReadOnly = true;
             this.dgwRHis.RowHeadersVisible = false;
             this.dgwRHis.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgwRHis.Size = new System.Drawing.Size(1188, 476);
+            this.dgwRHis.Size = new System.Drawing.Size(1188, 572);
             this.dgwRHis.TabIndex = 1;
             // 
             // label1
@@ -433,9 +435,9 @@ namespace BookkeepingForOrder
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(1041, 9);
+            this.button5.Location = new System.Drawing.Point(1081, 6);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(90, 23);
+            this.button5.Size = new System.Drawing.Size(90, 28);
             this.button5.TabIndex = 2;
             this.button5.Text = "button5";
             this.button5.UseVisualStyleBackColor = true;
@@ -449,9 +451,9 @@ namespace BookkeepingForOrder
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(25, 9);
+            this.button6.Location = new System.Drawing.Point(172, 87);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.Size = new System.Drawing.Size(75, 25);
             this.button6.TabIndex = 4;
             this.button6.Text = "button6";
             this.button6.UseVisualStyleBackColor = true;
@@ -462,9 +464,7 @@ namespace BookkeepingForOrder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1213, 597);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
+            this.ClientSize = new System.Drawing.Size(1213, 701);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
