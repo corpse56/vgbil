@@ -17,6 +17,8 @@ namespace BookkeepingForOrder
         public DbForEmployee(string OrdTableType_,string BASE_, Form1 f1)
         {
             SqlCon = new SqlConnection(XmlConnections.GetConnection("/Connections/Zakaz"));
+            //SqlCon = new SqlConnection("Data Source = 127.0.0.1; Initial Catalog = Circulation; Integrated Security = True; Connect Timeout = 1200");
+
             SqlDA = new SqlDataAdapter();
             SqlDA.SelectCommand = new SqlCommand();
             SqlDA.SelectCommand.Connection = SqlCon;
@@ -270,6 +272,7 @@ namespace BookkeepingForOrder
             r["REFUSUAL"] = DS.Tables["ord"].Rows[0]["REFUSUAL"];//отказ
             r["IDDATA"] = DS.Tables["ord"].Rows[0]["IDDATA"];
             r["ALGIDM"] = DS.Tables["ord"].Rows[0]["ALGIDM"];
+            r["DepId"] = DS.Tables["ord"].Rows[0]["DepId"];
             DS.Tables["ordhis"].Rows.Add(r);
 
             //SqlTransaction tract = new SqlTransaction();

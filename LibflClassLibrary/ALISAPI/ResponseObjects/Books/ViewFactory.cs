@@ -47,14 +47,25 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             bool IsAvailable = false;
             foreach (ExemplarSimpleView e in result.Exemplars)
             {
-                if (e.CarrierCode == 3011)
+                //здесь прямо если открытый доступ, то эвэлибл
+                if (e.AccessCode == 1001)
                 {
-                    BJBookInfo book = BJBookInfo.GetBookInfoByPIN(ID);
-                    e.AvailabilityStatus = (result.Exemplars.Count - 1 - ci.GetBusyExemplarsCount(book) <= 0) ? "Unavailable" : "Available";
+                    e.AvailabilityStatus = "Available";
+                    IsAvailable = true;
                 }
                 else
                 {
-                    e.AvailabilityStatus = ci.GetExemplarAvailabilityStatus(e.ID, BJBookInfo.GetFund(ID));
+                    if (e.CarrierCode == 3011)
+                    {
+                        BJBookInfo book = BJBookInfo.GetBookInfoByPIN(ID);
+                        int formula = (result.Exemplars.Count == 1) ? result.Exemplars.Count - ci.GetBusyExemplarsCount(book) : result.Exemplars.Count - ci.GetBusyExemplarsCount(book) - 1;
+
+                        e.AvailabilityStatus = (formula <= 0) ? "Unavailable" : "Available";
+                    }
+                    else
+                    {
+                        e.AvailabilityStatus = ci.GetExemplarAvailabilityStatus(e.ID, BJBookInfo.GetFund(ID));
+                    }
                 }
                 if (e.AvailabilityStatus == "Available")
                 {

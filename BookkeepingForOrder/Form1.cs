@@ -22,7 +22,6 @@ namespace BookkeepingForOrder
 {
     public partial class Form1 : Form
     {
-        authorization auth;
         public string EmpID;
         public string FIO;
         public string Floor;
@@ -769,10 +768,8 @@ namespace BookkeepingForOrder
         private void timer1_Tick(object sender, EventArgs e)
         {
 
-            //int rc = dgwEmp.Rows.Count;
-            //FormMainTable();
-            //FormMainTable_Interface();
-            //int rc1 = dgwReaders.Rows.Count;
+            FormMainTable();
+            FormMainTable_Interface();
             //FormReadersTable();
             //FormReaderTable_Interface();
             ShowReaderOrders();
@@ -826,9 +823,9 @@ namespace BookkeepingForOrder
                 MessageBox.Show("Ќе выбрана ни одна строка!");
                 return;
             }
-            PrintBlank pb = new PrintBlank(db, dgwEmp, this.Floor); //когда принтер заработаетвключить это
+            PrintBlank pb = new PrintBlank(db, dgwEmp, this.user.SelectedUserStatus.DepName); //когда принтер заработаетвключить это
             pb.Print();
-            db.OrdHis(dgwEmp.SelectedRows[0].Cells["oid"].Value.ToString(), this.EmpID);
+            db.OrdHis(dgwEmp.SelectedRows[0].Cells["oid"].Value.ToString(), this.user.Id.ToString());
             db.delFromOrders(dgwEmp.SelectedRows[0].Cells["oid"].Value.ToString());
             dgwEmp.Rows.Remove(dgwEmp.SelectedRows[0]);
             if (dgwEmp.Rows.Count == 0)
@@ -851,7 +848,7 @@ namespace BookkeepingForOrder
         }
         private void button4_Click(object sender, EventArgs e)//истори€ сотрудников 
         {
-            PrintBlank pb = new PrintBlank(db, dgwHis, this.Floor); //когда принтер заработаетвключить это
+            PrintBlank pb = new PrintBlank(db, dgwHis, this.user.SelectedUserStatus.DepName); //когда принтер заработаетвключить это
             pb.Print();
             //db.delFromOrders(dgwHis.SelectedRows[0].Cells["oid"].Value.ToString());
             //dgwHis.Rows.Remove(dgwHis.SelectedRows[0]);
@@ -919,7 +916,7 @@ namespace BookkeepingForOrder
                 MessageBox.Show("Ќе выбрана ни одна строка!");
                 return;
             }
-            PrintBlankReaders pb = new PrintBlankReaders(db, dgwRHis, this.Floor, this); //когда принтер заработаетвключить это
+            PrintBlankReaders pb = new PrintBlankReaders(db, dgwRHis, this.user.SelectedUserStatus.DepName, this); //когда принтер заработаетвключить это
             pb.Print();
             if (dgwRHis.Rows.Count == 0)
                 bPrintReaderOrder.Enabled = false;
@@ -1191,15 +1188,15 @@ namespace BookkeepingForOrder
             if (rf.Cause == "")
                 return;
             db.RefusualReader(rf.Cause, dgwRHis.SelectedRows[0].Cells["oid"].Value.ToString());
-            FormReadersHisTable();
-            FormReaderHisTable_Interface();
+            //FormReadersHisTable();
+            //FormReaderHisTable_Interface();
 
         }
 
 
         private void button14_Click(object sender, EventArgs e)
         {
-            Form3 f3 = new Form3(this,this.db,this.Floor);
+            Form3 f3 = new Form3(this,this.db,this.user.SelectedUserStatus.DepName);
             f3.InitForm();
             f3.ShowDialog();
 

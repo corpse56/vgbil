@@ -47,21 +47,20 @@ namespace BookkeepingForOrder
             this.bPrintReaderOrder = new System.Windows.Forms.Button();
             this.dgwReaders = new System.Windows.Forms.DataGridView();
             this.tabHis = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.dgwHis = new System.Windows.Forms.DataGridView();
             this.tpReaderHistoryOrders = new System.Windows.Forms.TabPage();
             this.button14 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
             this.bReadersHistory = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.dgwRHis = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button5 = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.button6 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tpEmployeeOrders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgwEmp)).BeginInit();
@@ -273,6 +272,28 @@ namespace BookkeepingForOrder
             this.tabHis.Text = "История заказов сотрудников за 10 дней";
             this.tabHis.UseVisualStyleBackColor = true;
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(1081, 6);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(90, 28);
+            this.button5.TabIndex = 2;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(172, 87);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 25);
+            this.button6.TabIndex = 4;
+            this.button6.Text = "button6";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Visible = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // button12
             // 
             this.button12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -334,7 +355,6 @@ namespace BookkeepingForOrder
             // tpReaderHistoryOrders
             // 
             this.tpReaderHistoryOrders.Controls.Add(this.button14);
-            this.tpReaderHistoryOrders.Controls.Add(this.button11);
             this.tpReaderHistoryOrders.Controls.Add(this.bReadersHistory);
             this.tpReaderHistoryOrders.Controls.Add(this.button10);
             this.tpReaderHistoryOrders.Controls.Add(this.dgwRHis);
@@ -357,18 +377,6 @@ namespace BookkeepingForOrder
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Visible = false;
             this.button14.Click += new System.EventHandler(this.button14_Click);
-            // 
-            // button11
-            // 
-            this.button11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button11.Location = new System.Drawing.Point(339, 473);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(141, 79);
-            this.button11.TabIndex = 6;
-            this.button11.Text = "Отказ";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Visible = false;
-            this.button11.Click += new System.EventHandler(this.button11_Click_1);
             // 
             // bReadersHistory
             // 
@@ -430,35 +438,13 @@ namespace BookkeepingForOrder
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 300000;
+            this.timer1.Interval = 150000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(1081, 6);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(90, 28);
-            this.button5.TabIndex = 2;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Visible = false;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // timer2
             // 
             this.timer2.Interval = 3000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(172, 87);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 25);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "button6";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Visible = false;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form1
             // 
@@ -514,7 +500,6 @@ namespace BookkeepingForOrder
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.DataGridView dgwRHis;
         private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Button bRefusual;
     }
