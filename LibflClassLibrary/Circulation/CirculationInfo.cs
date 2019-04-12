@@ -108,13 +108,57 @@ namespace LibflClassLibrary.Circulation
 
         public void RecieveBookInBookkeeping(OrderInfo order, BJUserInfo bjUser)
         {
-            ChangeOrderStatus(bjUser, order.OrderId, CirculationStatuses.Finished.Value);
+            //проверка ДП
+            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+            if (exemplar.Fields["921$c"].ToString() == "Для выдачи")
+            {
+                ChangeOrderStatus(bjUser, order.OrderId, CirculationStatuses.Finished.Value);
+            }
+            else
+            {
+                throw new Exception("C021");
+            }
         }
 
-        internal void RecieveBookFromReader(string bar, BJUserInfo bjUser, string statusName)
+
+        // 0 - ok
+        // 1 - нужно спросить на бронеполку возвращают или нет
+        internal int RecieveBookFromReader(BJExemplarInfo exemplar, OrderInfo oi, BJUserInfo bjUser)
         {
-            loader.RecieveBookFromReader(bar,bjUser,statusName);
+            if (oi.StatusCode == CirculationStatuses.IssuedInHall.Id)
+            {
+                if (exemplar.Fields["921$c"].ToString() == "ДП")
+                {
+                    if (exemplar.Fields["899$a"].ToString() != bjUser.SelectedUserStatus.DepName)
+                    {
+                        throw new Exception("C022");
+                    }
+                    this.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.Finished.Value);
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            else
+            {
+                if (exemplar.Fields["899$a"].ToString().ToLower().Contains("книгохранен"))
+                {
+                    this.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.ForReturnToBookStorage.Value);
+                }
+                else
+                {
+                    this.ChangeOrderStatusReturn(bjUser, oi.OrderId,  CirculationStatuses.Finished.Value);
+                }
+            }
+            return 0;
+
+
+
+
+            //loader.RecieveBookFromReader(bar,bjUser,statusName);
         }
+
 
         public void RecieveBookFromBookkeeping(OrderInfo order, BJUserInfo bjUser)
         {
@@ -126,7 +170,14 @@ namespace LibflClassLibrary.Circulation
         {
             if (scannedReader.Rights[ReaderRightsEnum.Employee] != null)
             {
-                return IssueType.AtHome;
+                if (scannedExemplar.Fields["921$c"].ToString() == "ДП")
+                {
+                    return IssueType.InHall;
+                }
+                else
+                {
+                    return IssueType.AtHome;
+                }
             }
             else
             {
@@ -266,6 +317,10 @@ namespace LibflClassLibrary.Circulation
         public List<OrderFlowInfo> GetOrdersFlow(int unifiedLocationCode)
         {
             return loader.GetOrdersFlow(unifiedLocationCode);
+        }
+        public List<OrderFlowInfo> GetOrdersFlowByOrderId(int orderId)
+        {
+            return loader.GetOrdersFlowByOrderId(orderId);
         }
 
         private void FinishOrder(OrderInfo order, BJUserInfo bjUser)//этот метод ставит заказу статус завершено.
@@ -427,11 +482,12 @@ namespace LibflClassLibrary.Circulation
                         //приоритет для книг, которые в хранении, чтобы их принесли на кафедру для читателя
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
+                            if (e.Fields["899$a"].MNFIELD == 0) continue;
                             if (e.ExemplarAccess.Access == 1000)
                             {
                                 if (!this.IsExemplarIssued(e))
                                 {
-                                    this.NewOrder(e, reader, OrderTypes.PaperVersion.Id, 30);
+                                    this.NewOrder(e, reader, OrderTypes.PaperVersion.Id, 4);
                                     IsOrderedSuccessfully = true;
                                     break;
                                 }
@@ -444,11 +500,12 @@ namespace LibflClassLibrary.Circulation
                         //если свободных книг в хранении не осталось, то ищем те, которые в отрытом доступе. это будет самостоятельный заказ
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
+                            if (e.Fields["899$a"].MNFIELD == 0) continue;
                             if ((e.ExemplarAccess.Access == 1006))
                             {
                                 if (!this.IsExemplarIssued(e))
                                 {
-                                    this.NewOrder(e, reader, OrderTypes.SelfOrder.Id, 30);
+                                    this.NewOrder(e, reader, OrderTypes.SelfOrder.Id, 4);
                                     IsOrderedSuccessfully = true;
                                     break;
                                 }
@@ -467,6 +524,7 @@ namespace LibflClassLibrary.Circulation
                         //тут опять приоритет у тех, которые надо заказать из книгохранения перед самостоятельным заказом
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
+                            if (e.Fields["899$a"].MNFIELD == 0) continue;
                             if ((e.ExemplarAccess.Access == 1005) || (e.ExemplarAccess.Access == 1012))
                             {
                                 if (!this.IsExemplarIssued(e))
@@ -484,6 +542,7 @@ namespace LibflClassLibrary.Circulation
                         //если свободных книг в хранении не осталось, то ищем те, которые в отрытом доступе. это будет самостоятельный заказ
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
+                            if (e.Fields["899$a"].MNFIELD == 0) continue;
                             if ((e.ExemplarAccess.Access == 1007) || (e.ExemplarAccess.Access == 1014))
                             {
                                 if (!this.IsExemplarIssued(e))
@@ -565,6 +624,11 @@ namespace LibflClassLibrary.Circulation
             }
 
             
+        }
+
+        public List<OrderInfo> GetOrders(string circulationStatus)
+        {
+            return loader.GetOrders(circulationStatus);
         }
 
         private bool IsBookAlreadyIssuedToReader(BJBookInfo book, ReaderInfo reader)
@@ -663,6 +727,10 @@ namespace LibflClassLibrary.Circulation
         public void ChangeOrderStatus(BJUserInfo user, int OrderId, string status)
         {
             loader.ChangeOrderStatus(user, OrderId, status);
+        }
+        public void ChangeOrderStatusReturn(BJUserInfo bjUser, int orderId, string status)
+        {
+            loader.ChangeOrderStatusReturn(bjUser, orderId, status);
         }
 
         public void RefuseOrder(int OrderId, string Cause, BJUserInfo user)

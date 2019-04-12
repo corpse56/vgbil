@@ -250,6 +250,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalkThroughAllCovers", "Wal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CirculationApp", "CirculationApp\CirculationApp.csproj", "{10420E1E-22F9-4F1B-B904-26C08DC79E26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CirculationAppAdmin", "CirculationAppAdmin\CirculationAppAdmin.csproj", "{4682660C-7350-4888-9E0C-813AB9B9875A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CA4020F7-B048-4DFA-9E13-3E04DB83B093} = {CA4020F7-B048-4DFA-9E13-3E04DB83B093}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -408,6 +413,10 @@ Global
 		{10420E1E-22F9-4F1B-B904-26C08DC79E26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10420E1E-22F9-4F1B-B904-26C08DC79E26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10420E1E-22F9-4F1B-B904-26C08DC79E26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4682660C-7350-4888-9E0C-813AB9B9875A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4682660C-7350-4888-9E0C-813AB9B9875A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4682660C-7350-4888-9E0C-813AB9B9875A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4682660C-7350-4888-9E0C-813AB9B9875A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

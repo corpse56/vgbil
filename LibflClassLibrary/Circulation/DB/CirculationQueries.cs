@@ -78,6 +78,17 @@ namespace LibflClassLibrary.Circulation.DB
                        " where ReaderId = @ReaderId and A.StatusName not in ('Завершено', 'Для возврата в хранение')";
             }
         }
+        public string GET_ORDERS_BY_STATUS
+        {
+            get
+            {
+                return " select A.*,B.Refusual from Circulation..Orders A " +
+                       " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                       " where A.StatusName in (@circulationStatus)";
+                       
+            }
+        }
+
         public string GET_ORDERS_HISTORY
         {
             get
@@ -173,12 +184,35 @@ namespace LibflClassLibrary.Circulation.DB
                        " COMMIT; ";
             }
         }
+        public string CHANGE_ORDER_STATUS_ISSUE
+        {
+            get
+            {
+                return " BEGIN TRANSACTION; " +
+                       " insert into Circulation..OrdersFlow (OrderId, StatusName, Changed,  Changer,    DepartmentId, Refusual, IssueDate ) " +
+                       " values                            (@OrderId, @StatusName,getdate(), @Changer, @DepartmentId, @Refusual, getdate() );" +
+                       " update Circulation..Orders set StatusName = @StatusName, IssueDate = getdate()  where ID = @OrderId;" +
+                       " COMMIT; ";
+            }
+        }
+        public string CHANGE_ORDER_STATUS_RETURN
+        {
+            get
+            {
+                return " BEGIN TRANSACTION; " +
+                       " insert into Circulation..OrdersFlow (OrderId, StatusName, Changed,  Changer,    DepartmentId, Refusual  ) " +
+                       " values                            (@OrderId, @StatusName,getdate(), @Changer, @DepartmentId, @Refusual  );" +
+                       " update Circulation..Orders set StatusName = @StatusName, FactReturnDate = getdate() where ID = @OrderId;" +
+                       " COMMIT; ";
+            }
+        }
 
-        //здесь не вставляем статус 'Для возврата в хранение', потому что книга может быть на самом деле на месте, просто её не приняли.
-        //но тогда надо не забывать для книг с таким статусом закрывать заказ и открывать новый.
-        //и в программе хранения надо дать возможность проверить такие заказы.
-        //НУ НАХЕР. Просто не будем давать заказывать.
-        public string IS_ALREADY_ISSUED
+
+    //здесь не вставляем статус 'Для возврата в хранение', потому что книга может быть на самом деле на месте, просто её не приняли.
+    //но тогда надо не забывать для книг с таким статусом закрывать заказ и открывать новый.
+    //и в программе хранения надо дать возможность проверить такие заказы.
+    //НУ НАХЕР. Просто не будем давать заказывать.
+    public string IS_ALREADY_ISSUED
         {
             get
             {
@@ -306,6 +340,16 @@ namespace LibflClassLibrary.Circulation.DB
                         " order by Changed desc" ;
             }
         }
+        public string GET_ORDERS_FLOW_BY_ORDER_ID
+        {
+            get
+            {
+                return " select * from Circulation..OrdersFlow  " +
+                        " where OrderId  = @orderId" +
+                        " order by Changed asc";
+            }
+        }
+
 
     }
 }

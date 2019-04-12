@@ -69,6 +69,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         {
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetExemplar(iddata);
+            if (table.Rows.Count == 0) return null;
             BJExemplarInfo exemplar = new BJExemplarInfo((int)table.Rows[0]["IDDATA"]);
             exemplar.IDMAIN = (int)table.Rows[0]["IDMAIN"];
             exemplar.Fund = fund;

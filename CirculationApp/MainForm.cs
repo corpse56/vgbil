@@ -29,6 +29,7 @@ using Utilities;
 using LibflClassLibrary.Readers;
 using ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.Errors;
+using LibflClassLibrary.ExportToVufind;
 
 namespace CirculationApp
 {
@@ -125,6 +126,7 @@ namespace CirculationApp
 
                 case "Приём книг на кафедру из хранения/в хранение с кафедры":
                     RecieveBookFromInBookKeeping(fromport);
+                    ShowBookTransfer(bjUser);
                     break;
                 #endregion
 
@@ -180,30 +182,15 @@ namespace CirculationApp
             switch (department.Circulate(fromPort, bjUser))
             {
                 case 0://книга была выдана. нужно принять её в отдел
-                    BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromPort);
-                    OrderInfo oi = ci.FindOrderByExemplar(exemplar);
-                    if (oi.StatusCode == CirculationStatuses.IssuedInHall.Id)
+                    try
                     {
-                        DialogResult dr = MessageBox.Show("Читатель сдаёт книгу на бронеполку?", "Внимание!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                        if (dr == DialogResult.Yes)
-                        {
-                            department.RecieveBook(fromPort, bjUser, CirculationStatuses.InReserve.Value);
-                        }
-                        else if (dr == DialogResult.No)
-                        {
-                            department.RecieveBook(fromPort, bjUser, CirculationStatuses.ForReturnToBookStorage.Value);
-                        }
+                        department.RecieveBook(fromPort, bjUser);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        if (exemplar.Fields["899$a"].ToString().ToLower().Contains("книгохранен"))
-                        {
-                            department.RecieveBook(fromPort, bjUser, CirculationStatuses.ForReturnToBookStorage.Value);
-                        }
-                        else
-                        {
-                            department.RecieveBook(fromPort, bjUser, CirculationStatuses.Finished.Value);
-                        }
+                        ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                        MessageBox.Show(error.Message);
+                        return;
                     }
                     CancelIssue();
                     break;
@@ -287,6 +274,8 @@ namespace CirculationApp
                     new KeyValuePair<string, string> ( "title", "Заглавие"),
                     new KeyValuePair<string, string> ( "issueDate", "Дата выдачи"),
                     new KeyValuePair<string, string> ( "returnDate", "Предполагаемая дата возврата"),
+                    new KeyValuePair<string, string> ( "issDep", "Зал выдачи"),
+                    new KeyValuePair<string, string> ( "retDep", "Зал возврата"),
                     new KeyValuePair<string, string> ( "cipher", "Расстановочный шифр"),
                     new KeyValuePair<string, string> ( "baseName", "Фонд"),
                     //new KeyValuePair<string, string> ( "prolongedTimes", "Продлено раз"),
@@ -315,8 +304,10 @@ namespace CirculationApp
             dgvFormular.Columns["baseName"].Width = 70;
             dgvFormular.Columns["status"].Width = 100;
             dgvFormular.Columns["rack"].Width = 100;
+            dgvFormular.Columns["issDep"].Width = 100;
+            dgvFormular.Columns["retDep"].Width = 100;
 
-            foreach(OrderInfo order in formular)
+            foreach (OrderInfo order in formular)
             {
                 dgvFormular.Rows.Add();
                 var row = dgvFormular.Rows[dgvFormular.Rows.Count - 1];
@@ -333,6 +324,8 @@ namespace CirculationApp
                 row.Cells["baseName"].Value = GetRusFundName(exemplar.Fund);
                 row.Cells["status"].Value = order.StatusName;
                 row.Cells["rack"].Value = exemplar.Fields["899$c"].ToString();
+                row.Cells["issDep"].Value = string.IsNullOrEmpty(order.IssueDep) ?  "" : KeyValueMapping.LocationCodeToName[int.Parse(order.IssueDep)];
+                row.Cells["retDep"].Value = string.IsNullOrEmpty(order.ReturnDep) ? "" : KeyValueMapping.LocationCodeToName[int.Parse(order.ReturnDep)];
             }
 
             //Formular.DataSource = reader.GetFormular();
@@ -446,26 +439,6 @@ namespace CirculationApp
 
             }
 
-
-            //DBGeneral dbg = new DBGeneral();
-
-            //dgvLog.Columns.Clear();
-            //dgvLog.AutoGenerateColumns = true;
-            //dgvLog.DataSource = dbg.GetLog();
-            //dgvLog.Columns["time"].HeaderText = "Время";
-            //dgvLog.Columns["time"].Width = 80;
-            //dgvLog.Columns["bar"].HeaderText = "Штрихкод";
-            //dgvLog.Columns["bar"].Width = 80;
-            //dgvLog.Columns["tit"].HeaderText = "Издание";
-            //dgvLog.Columns["tit"].Width = 600;
-            //dgvLog.Columns["idr"].HeaderText = "Читатель";
-            //dgvLog.Columns["idr"].Width = 80;
-            //dgvLog.Columns["st"].HeaderText = "Действие";
-            //dgvLog.Columns["st"].Width = 100;
-            //dgvLog.Columns["fund"].HeaderText = "Фонд";
-            //dgvLog.Columns["fund"].Width = 80;
-            //dgvLog.Columns["IsAtHome"].HeaderText = "Тип выдачи";
-            //dgvLog.Columns["IsAtHome"].Width = 80;
             foreach (DataGridViewColumn c in dgvLog.Columns)
             {
                 c.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -529,27 +502,6 @@ namespace CirculationApp
                 return;
             }
             FillFormular(ReaderInfo.GetReader(int.Parse(lFromularNumber.Text)));
-
-            //if (department.GetCountOfPrologedTimes((int)Formular.SelectedRows[0].Cells["idiss"].Value) > 0)
-            //{
-            //    MessageBox.Show("Нельзя продлить книгу более одного раза!");
-            //    return;
-            //}
-
-            //BookVO book = new BookVO();
-            //if (dgvFormular.SelectedRows[0].Cells["IsAtHome"].Value.ToString().ToLower().Contains("дом"))
-            //{
-            //    department.Prolong((int)dgvFormular.SelectedRows[0].Cells["idiss"].Value, 30, 1);
-            //}
-            //else
-            //{
-            //    department.Prolong((int)dgvFormular.SelectedRows[0].Cells["idiss"].Value, 10, 1);
-            //}
-            //ReaderVO reader = new ReaderVO((int)dgvFormular.SelectedRows[0].Cells["idr"].Value);
-            //FillFormularGrid(reader);
-
-
-
         }
 
         private void bChangeAuthorization_Click(object sender, EventArgs e)
@@ -589,22 +541,87 @@ namespace CirculationApp
                 case "Учёт посещаемости":
                     //lAttendance.Text = "На сегодня посещаемость составляет: " + department.GetAttendance() + " человек(а)";
                     break;
+                case "Приём книг на кафедру из хранения/в хранение с кафедры":
+                    ShowBookTransfer(bjUser);
+                    break;
 
             }
         }
 
+        private void ShowBookTransfer(BJUserInfo bjUser)
+        {
+            List<OrderInfo> transferOrders;// = ci.GetOrders(bjUser.SelectedUserStatus.UnifiedLocationCode);
+
+            if (bjUser.SelectedUserStatus.DepName.ToLower().Contains("книгохранен"))
+            {
+                transferOrders = ci.GetOrders(CirculationStatuses.ForReturnToBookStorage.Value);
+                label2.Text = "Считайте штрихкод, чтобы принять книгу в книгохранение";
+            }   
+            else
+            {
+                transferOrders = ci.GetOrders(CirculationStatuses.EmployeeLookingForBook.Value);
+                label2.Text = "Считайте штрихкод, чтобы принять книгу на кафедру";
+            }
+
+            KeyValuePair<string, string>[] columns =
+            {
+                new KeyValuePair<string, string> ( "pin", "Пин"),
+                new KeyValuePair<string, string> ( "title", "Издание"),
+                new KeyValuePair<string, string> ( "bar", "Штрихкод"),
+                new KeyValuePair<string, string> ( "reader", "Читатель"),
+                new KeyValuePair<string, string> ( "location", "Местонахождение"),
+                new KeyValuePair<string, string> ( "issDep", "Отдел выдачи"),
+                //new KeyValuePair<string, string> ( "issueType", "Тип выдачи"),
+            };
+            dgvTransfer.Columns.Clear();
+            foreach (var c in columns)
+                dgvTransfer.Columns.Add(c.Key, c.Value);
+
+            dgvTransfer.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvTransfer.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+
+            dgvTransfer.Columns["pin"].Width = 120;
+            dgvTransfer.Columns["title"].Width = 250;
+            dgvTransfer.Columns["bar"].Width = 100;
+            dgvTransfer.Columns["reader"].Width = 80;
+            dgvTransfer.Columns["location"].Width = 200;
+            dgvTransfer.Columns["issDep"].Width = 200;
+
+            foreach (OrderInfo oi in transferOrders)
+            {
+                dgvTransfer.Rows.Add();
+                var row = dgvTransfer.Rows[dgvTransfer.Rows.Count - 1];
+                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(oi.ExemplarId, oi.Fund);
+                if (exemplar == null)
+                {
+                    row.Cells["pin"].Value = oi.BookId;
+                    row.Cells["title"].Value = "Экземпляр отсутствует в базе";
+                    row.Cells["reader"].Value = oi.ReaderId;
+                    continue;
+                }
+
+                BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+
+                row.Cells["pin"].Value = oi.BookId;
+                row.Cells["bar"].Value = exemplar.Bar;
+                string title = string.IsNullOrEmpty(book.Fields["700$a"].ToString()) ? "<нет>" : book.Fields["700$a"].ToString();
+                row.Cells["title"].Value = $"{title}; {book.Fields["200$a"].ToString()}";
+                row.Cells["reader"].Value = oi.ReaderId;
+                row.Cells["location"].Value = exemplar.Fields["899$a"].ToString();
+                row.Cells["issDep"].Value = KeyValueMapping.LocationCodeToName[oi.IssuingDepartmentId];
+                //row.Cells["issueType"].Value = exemplar.ExemplarAccess.Access.In(new [] {1000,1006}) ? "на дом" : "в зал";
+            }
+
+
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
-            // TODO: данная строка кода позволяет загрузить данные в таблицу "bRIT_SOVETDataSet.ZAKAZ". При необходимости она может быть перемещена или удалена.
-            //this.zAKAZTableAdapter.Fill(this.bRIT_SOVETDataSet.ZAKAZ);
-            //this.EmpID = "1";
             if (this.bjUser == null)//это не забывать исправлять
             {
                 MessageBox.Show("Вы не авторизованы! Программа заканчивает свою работу", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
             }
-            //this.reportViewer1.RefreshReport();
-            //this.reportViewer2.RefreshReport();
         }
 
 

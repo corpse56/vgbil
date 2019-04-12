@@ -13,7 +13,7 @@ using LibflClassLibrary.Readers;
 namespace LibflClassLibrary.Circulation.DB
 {
 
-    class CirculationDBWrapper
+    public class CirculationDBWrapper
     {
         private CirculationQueries Queries;
         private string connectionString;
@@ -55,6 +55,19 @@ namespace LibflClassLibrary.Circulation.DB
             w.Stop();
             return table;
         }
+        internal DataTable GetOrders(string circulationStatus)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_BY_STATUS, connection);
+                dataAdapter.SelectCommand.Parameters.Add("circulationStatus", SqlDbType.NVarChar).Value = circulationStatus;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
         internal DataTable GetOrdersHistory(int idReader)
         {
             DataTable table = new DataTable();
@@ -211,6 +224,7 @@ namespace LibflClassLibrary.Circulation.DB
             this.ChangeOrderStatus(OrderId, statusName, userId, deptId, null);
         }
 
+
         internal DataTable FindOrderByExemplar(int idData, string fund)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -276,6 +290,18 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        internal DataTable GetOrdersFlowByOrderId(int orderId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_FLOW_BY_ORDER_ID, connection);
+                dataAdapter.SelectCommand.Parameters.Add("orderId", SqlDbType.Int).Value = orderId;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal DataTable GetOrdersFlow(int unifiedLocationCode)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -333,6 +359,7 @@ namespace LibflClassLibrary.Circulation.DB
             }
 
         }
+
 
         internal void RefuseOrder(int orderId, string cause, string value, int UserId, int DepId)
         {
@@ -459,6 +486,44 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Connection = connection;
                 command.Connection.Open();
                 command.CommandText = Queries.CHANGE_ORDER_STATUS;
+                command.Parameters.Clear();
+                //(@OrderId, @StatusName, @Changer, @DepartmentId, @Refusual
+                command.Parameters.Add("OrderId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = StatusName;
+                command.Parameters.Add("Changer", SqlDbType.Int).Value = ChangerId;
+                command.Parameters.Add("DepartmentId", SqlDbType.Int).Value = DepartmentId;
+                command.Parameters.Add("Refusual", SqlDbType.NVarChar).Value = Refusual ?? (object)DBNull.Value;
+
+                Convert.ToInt32(command.ExecuteNonQuery());
+            }
+        }
+        public void ChangeOrderStatusIssue(int orderId, string StatusName, int ChangerId, int DepartmentId, string Refusual)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.CHANGE_ORDER_STATUS_ISSUE;
+                command.Parameters.Clear();
+                //(@OrderId, @StatusName, @Changer, @DepartmentId, @Refusual
+                command.Parameters.Add("OrderId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = StatusName;
+                command.Parameters.Add("Changer", SqlDbType.Int).Value = ChangerId;
+                command.Parameters.Add("DepartmentId", SqlDbType.Int).Value = DepartmentId;
+                command.Parameters.Add("Refusual", SqlDbType.NVarChar).Value = Refusual ?? (object)DBNull.Value;
+
+                Convert.ToInt32(command.ExecuteNonQuery());
+            }
+        }
+        internal void ChangeOrderStatusReturn(int orderId, string StatusName, int ChangerId, int DepartmentId, string Refusual)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.CHANGE_ORDER_STATUS_RETURN;
                 command.Parameters.Clear();
                 //(@OrderId, @StatusName, @Changer, @DepartmentId, @Refusual
                 command.Parameters.Add("OrderId", SqlDbType.Int).Value = orderId;

@@ -234,7 +234,20 @@ namespace LibflClassLibrary.Circulation.Loaders
         internal void IssueBookToReader(OrderInfo order, IssueType issueType, BJUserInfo bjUser)
         {
             string statusName = (issueType == IssueType.AtHome) ? CirculationStatuses.IssuedAtHome.Value : CirculationStatuses.IssuedInHall.Value;
-            ChangeOrderStatus(bjUser, order.OrderId, statusName);
+            ChangeOrderStatusIssue(bjUser, order.OrderId, statusName);
+        }
+        internal void ChangeOrderStatus(BJUserInfo bjUser, int orderId, string status)
+        {
+            dbWrapper.ChangeOrderStatus(orderId, status, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
+        }
+
+        private void ChangeOrderStatusIssue(BJUserInfo bjUser, int orderId, string statusName)
+        {
+            dbWrapper.ChangeOrderStatusIssue(orderId, statusName, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
+        }
+        internal void ChangeOrderStatusReturn(BJUserInfo bjUser, int orderId, string statusName)
+        {
+            dbWrapper.ChangeOrderStatusReturn(orderId, statusName, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
         }
 
         internal List<OrderInfo> GetOrders(int idReader)
@@ -324,6 +337,24 @@ namespace LibflClassLibrary.Circulation.Loaders
             }
             return result;
         }
+        internal List<OrderFlowInfo> GetOrdersFlowByOrderId(int orderId)
+        {
+            DataTable table = dbWrapper.GetOrdersFlowByOrderId(orderId);
+            List<OrderFlowInfo> result = new List<OrderFlowInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                OrderFlowInfo fi = new OrderFlowInfo();
+                fi.Changed = (DateTime)row["Changed"];
+                fi.Changer = (int)row["Changer"];
+                fi.DepartmentId = (int)row["DepartmentId"]; ;
+                fi.Id = (int)row["Id"];
+                fi.OrderId = (int)row["OrderId"];
+                fi.Refusual = row["Refusual"].ToString();
+                fi.StatusName = row["StatusName"].ToString();
+                result.Add(fi);
+            }
+            return result;
+        }
 
         internal void InsertIntoUserBasket(List<BasketInfo> request)
         {
@@ -335,6 +366,7 @@ namespace LibflClassLibrary.Circulation.Loaders
                 }
             }
         }
+
 
         internal bool IsExistsInBasket(int readerId, string BookId)
         {
@@ -378,10 +410,6 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
-        internal void ChangeOrderStatus(BJUserInfo user, int orderId, string status)
-        {
-            dbWrapper.ChangeOrderStatus(orderId, status, user.Id, KeyValueMapping.BJDepartmentIdToUnifiedLocationId[user.SelectedUserStatus.DepId], null);
-        }
 
         internal void RefuseOrder(int orderId, string cause, BJUserInfo user)
         {
@@ -389,5 +417,21 @@ namespace LibflClassLibrary.Circulation.Loaders
             dbWrapper.RefuseOrder(orderId, cause, CirculationStatuses.Refusual.Value,user.Id, KeyValueMapping.BJDepartmentIdToUnifiedLocationId[user.SelectedUserStatus.DepId]);
 
         }
+
+        internal List<OrderInfo> GetOrders(string circulationStatus)
+        {
+            DataTable table = dbWrapper.GetOrders(circulationStatus);
+            List<OrderInfo> Orders = new List<OrderInfo>();
+            int i = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                i++;
+                OrderInfo order = FillOrderFromDataRow(row);
+                Orders.Add(order);
+            }
+            return Orders;
+
+        }
+
     }
 }

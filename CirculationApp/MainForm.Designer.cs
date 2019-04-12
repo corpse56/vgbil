@@ -40,6 +40,7 @@ namespace CirculationApp
             this.bConfirm = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.RPhoto = new System.Windows.Forms.PictureBox();
             this.lReader = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -72,6 +73,7 @@ namespace CirculationApp
             this.DateIssue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pbFormular = new System.Windows.Forms.PictureBox();
             this.ReferenceTab = new System.Windows.Forms.TabPage();
             this.bSaveReferenceToFile = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -83,6 +85,9 @@ namespace CirculationApp
             this.lInfoAttendance = new System.Windows.Forms.Label();
             this.lAttendance = new System.Windows.Forms.Label();
             this.AcceptBooksTab = new System.Windows.Forms.TabPage();
+            this.dgvTransfer = new System.Windows.Forms.DataGridView();
+            this.label2 = new System.Windows.Forms.Label();
+            this.bEmulationTransfer = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.выданные нигиЌа“екущийћоментToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,30 +100,27 @@ namespace CirculationApp
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbLogo = new System.Windows.Forms.PictureBox();
-            this.RPhoto = new System.Windows.Forms.PictureBox();
-            this.pbFormular = new System.Windows.Forms.PictureBox();
-            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.bEmulationTransfer = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.MainTabContainer.SuspendLayout();
             this.MainTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
             this.FormularTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFormular)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).BeginInit();
             this.ReferenceTab.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Statistics)).BeginInit();
             this.AttendanceTab.SuspendLayout();
             this.AcceptBooksTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTransfer)).BeginInit();
             this.contextMenuStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).BeginInit();
             this.SuspendLayout();
             // 
             // label3
@@ -251,6 +253,20 @@ namespace CirculationApp
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "„итатель";
             // 
+            // RPhoto
+            // 
+            this.RPhoto.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RPhoto.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.RPhoto.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.RPhoto.Location = new System.Drawing.Point(589, 16);
+            this.RPhoto.Name = "RPhoto";
+            this.RPhoto.Size = new System.Drawing.Size(93, 101);
+            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.RPhoto.TabIndex = 6;
+            this.RPhoto.TabStop = false;
+            this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
+            // 
             // lReader
             // 
             this.lReader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -367,7 +383,7 @@ namespace CirculationApp
             // bReaderRegistration
             // 
             this.bReaderRegistration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bReaderRegistration.Location = new System.Drawing.Point(687, 102);
+            this.bReaderRegistration.Location = new System.Drawing.Point(725, 102);
             this.bReaderRegistration.Name = "bReaderRegistration";
             this.bReaderRegistration.Size = new System.Drawing.Size(174, 64);
             this.bReaderRegistration.TabIndex = 25;
@@ -379,7 +395,7 @@ namespace CirculationApp
             // 
             this.bComment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bComment.Enabled = false;
-            this.bComment.Location = new System.Drawing.Point(867, 102);
+            this.bComment.Location = new System.Drawing.Point(905, 102);
             this.bComment.Name = "bComment";
             this.bComment.Size = new System.Drawing.Size(225, 31);
             this.bComment.TabIndex = 23;
@@ -391,7 +407,7 @@ namespace CirculationApp
             // 
             this.bRemoveResponsibility.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bRemoveResponsibility.Enabled = false;
-            this.bRemoveResponsibility.Location = new System.Drawing.Point(687, 69);
+            this.bRemoveResponsibility.Location = new System.Drawing.Point(725, 69);
             this.bRemoveResponsibility.Name = "bRemoveResponsibility";
             this.bRemoveResponsibility.Size = new System.Drawing.Size(175, 27);
             this.bRemoveResponsibility.TabIndex = 22;
@@ -403,7 +419,7 @@ namespace CirculationApp
             // 
             this.bFormularSendEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bFormularSendEmail.Enabled = false;
-            this.bFormularSendEmail.Location = new System.Drawing.Point(688, 41);
+            this.bFormularSendEmail.Location = new System.Drawing.Point(726, 41);
             this.bFormularSendEmail.Name = "bFormularSendEmail";
             this.bFormularSendEmail.Size = new System.Drawing.Size(174, 26);
             this.bFormularSendEmail.TabIndex = 21;
@@ -414,7 +430,7 @@ namespace CirculationApp
             // bProlong
             // 
             this.bProlong.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bProlong.Location = new System.Drawing.Point(867, 69);
+            this.bProlong.Location = new System.Drawing.Point(905, 69);
             this.bProlong.Name = "bProlong";
             this.bProlong.Size = new System.Drawing.Size(228, 27);
             this.bProlong.TabIndex = 19;
@@ -425,7 +441,7 @@ namespace CirculationApp
             // bSearchReaderByFIO
             // 
             this.bSearchReaderByFIO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bSearchReaderByFIO.Location = new System.Drawing.Point(867, 6);
+            this.bSearchReaderByFIO.Location = new System.Drawing.Point(905, 6);
             this.bSearchReaderByFIO.Name = "bSearchReaderByFIO";
             this.bSearchReaderByFIO.Size = new System.Drawing.Size(228, 33);
             this.bSearchReaderByFIO.TabIndex = 18;
@@ -436,7 +452,7 @@ namespace CirculationApp
             // bReaderView
             // 
             this.bReaderView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bReaderView.Location = new System.Drawing.Point(867, 40);
+            this.bReaderView.Location = new System.Drawing.Point(905, 40);
             this.bReaderView.Name = "bReaderView";
             this.bReaderView.Size = new System.Drawing.Size(228, 27);
             this.bReaderView.TabIndex = 16;
@@ -448,7 +464,7 @@ namespace CirculationApp
             // 
             this.bOrdersHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bOrdersHistory.Enabled = false;
-            this.bOrdersHistory.Location = new System.Drawing.Point(687, 6);
+            this.bOrdersHistory.Location = new System.Drawing.Point(725, 6);
             this.bOrdersHistory.Name = "bOrdersHistory";
             this.bOrdersHistory.Size = new System.Drawing.Size(175, 33);
             this.bOrdersHistory.TabIndex = 15;
@@ -459,7 +475,7 @@ namespace CirculationApp
             // bFormularFindById
             // 
             this.bFormularFindById.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bFormularFindById.Location = new System.Drawing.Point(749, 463);
+            this.bFormularFindById.Location = new System.Drawing.Point(749, 477);
             this.bFormularFindById.Name = "bFormularFindById";
             this.bFormularFindById.Size = new System.Drawing.Size(230, 23);
             this.bFormularFindById.TabIndex = 9;
@@ -470,7 +486,7 @@ namespace CirculationApp
             // numericUpDown3
             // 
             this.numericUpDown3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.numericUpDown3.Location = new System.Drawing.Point(593, 464);
+            this.numericUpDown3.Location = new System.Drawing.Point(593, 478);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -485,7 +501,7 @@ namespace CirculationApp
             this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label22.Location = new System.Drawing.Point(6, 463);
+            this.label22.Location = new System.Drawing.Point(6, 477);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(581, 24);
             this.label22.TabIndex = 5;
@@ -546,7 +562,7 @@ namespace CirculationApp
             this.DateVozv,
             this.DateVozvFact,
             this.Penalt});
-            this.dgvFormular.Location = new System.Drawing.Point(0, 185);
+            this.dgvFormular.Location = new System.Drawing.Point(6, 173);
             this.dgvFormular.MultiSelect = false;
             this.dgvFormular.Name = "dgvFormular";
             this.dgvFormular.ReadOnly = true;
@@ -554,7 +570,7 @@ namespace CirculationApp
             this.dgvFormular.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvFormular.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvFormular.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFormular.Size = new System.Drawing.Size(1086, 257);
+            this.dgvFormular.Size = new System.Drawing.Size(1128, 298);
             this.dgvFormular.TabIndex = 2;
             // 
             // N
@@ -605,6 +621,20 @@ namespace CirculationApp
             this.DateVozvFact.Name = "DateVozvFact";
             this.DateVozvFact.ReadOnly = true;
             this.DateVozvFact.Width = 80;
+            // 
+            // pbFormular
+            // 
+            this.pbFormular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbFormular.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbFormular.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.pbFormular.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.pbFormular.Location = new System.Drawing.Point(564, 6);
+            this.pbFormular.Name = "pbFormular";
+            this.pbFormular.Size = new System.Drawing.Size(146, 160);
+            this.pbFormular.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbFormular.TabIndex = 20;
+            this.pbFormular.TabStop = false;
+            this.pbFormular.Click += new System.EventHandler(this.pbFormular_Click);
             // 
             // ReferenceTab
             // 
@@ -729,6 +759,7 @@ namespace CirculationApp
             // 
             // AcceptBooksTab
             // 
+            this.AcceptBooksTab.Controls.Add(this.dgvTransfer);
             this.AcceptBooksTab.Controls.Add(this.label2);
             this.AcceptBooksTab.Controls.Add(this.bEmulationTransfer);
             this.AcceptBooksTab.Location = new System.Drawing.Point(4, 25);
@@ -738,6 +769,37 @@ namespace CirculationApp
             this.AcceptBooksTab.TabIndex = 5;
             this.AcceptBooksTab.Text = "ѕриЄм книг на кафедру из хранени€/в хранение с кафедры";
             this.AcceptBooksTab.UseVisualStyleBackColor = true;
+            // 
+            // dgvTransfer
+            // 
+            this.dgvTransfer.AllowUserToAddRows = false;
+            this.dgvTransfer.AllowUserToDeleteRows = false;
+            this.dgvTransfer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTransfer.Location = new System.Drawing.Point(6, 37);
+            this.dgvTransfer.Name = "dgvTransfer";
+            this.dgvTransfer.RowHeadersVisible = false;
+            this.dgvTransfer.Size = new System.Drawing.Size(1128, 428);
+            this.dgvTransfer.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(202, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(689, 31);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "—читайте штрихкод, чтобы прин€ть книгу на кафедру";
+            // 
+            // bEmulationTransfer
+            // 
+            this.bEmulationTransfer.Location = new System.Drawing.Point(1031, 471);
+            this.bEmulationTransfer.Name = "bEmulationTransfer";
+            this.bEmulationTransfer.Size = new System.Drawing.Size(103, 23);
+            this.bEmulationTransfer.TabIndex = 1;
+            this.bEmulationTransfer.Text = "Ёмул€ци€";
+            this.bEmulationTransfer.UseVisualStyleBackColor = true;
+            this.bEmulationTransfer.Click += new System.EventHandler(this.bEmulationTransfer_Click);
             // 
             // label10
             // 
@@ -837,42 +899,6 @@ namespace CirculationApp
             this.pbLogo.TabIndex = 10;
             this.pbLogo.TabStop = false;
             // 
-            // RPhoto
-            // 
-            this.RPhoto.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RPhoto.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.RPhoto.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.RPhoto.Location = new System.Drawing.Point(589, 16);
-            this.RPhoto.Name = "RPhoto";
-            this.RPhoto.Size = new System.Drawing.Size(93, 101);
-            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.RPhoto.TabIndex = 6;
-            this.RPhoto.TabStop = false;
-            this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
-            // 
-            // pbFormular
-            // 
-            this.pbFormular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbFormular.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbFormular.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.pbFormular.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.pbFormular.Location = new System.Drawing.Point(581, 6);
-            this.pbFormular.Name = "pbFormular";
-            this.pbFormular.Size = new System.Drawing.Size(100, 105);
-            this.pbFormular.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbFormular.TabIndex = 20;
-            this.pbFormular.TabStop = false;
-            this.pbFormular.Click += new System.EventHandler(this.pbFormular_Click);
-            // 
-            // readerRightsView1
-            // 
-            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
-            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
-            this.readerRightsView1.Name = "readerRightsView1";
-            this.readerRightsView1.Size = new System.Drawing.Size(460, 97);
-            this.readerRightsView1.TabIndex = 26;
-            // 
             // dataGridViewButtonColumn1
             // 
             this.dataGridViewButtonColumn1.HeaderText = "Ќарушение";
@@ -882,6 +908,14 @@ namespace CirculationApp
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
             // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(536, 97);
+            this.readerRightsView1.TabIndex = 26;
+            // 
             // Penalt
             // 
             this.Penalt.HeaderText = "Ќарушение";
@@ -890,26 +924,6 @@ namespace CirculationApp
             this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Penalt.Width = 85;
-            // 
-            // bEmulationTransfer
-            // 
-            this.bEmulationTransfer.Location = new System.Drawing.Point(1031, 471);
-            this.bEmulationTransfer.Name = "bEmulationTransfer";
-            this.bEmulationTransfer.Size = new System.Drawing.Size(103, 23);
-            this.bEmulationTransfer.TabIndex = 1;
-            this.bEmulationTransfer.Text = "Ёмул€ци€";
-            this.bEmulationTransfer.UseVisualStyleBackColor = true;
-            this.bEmulationTransfer.Click += new System.EventHandler(this.bEmulationTransfer_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(212, 166);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(689, 31);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "—читайте штрихкод, чтобы прин€ть книгу на кафедру";
             // 
             // MainForm
             // 
@@ -934,12 +948,14 @@ namespace CirculationApp
             this.MainTab.ResumeLayout(false);
             this.MainTab.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
             this.FormularTab.ResumeLayout(false);
             this.FormularTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFormular)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).EndInit();
             this.ReferenceTab.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
@@ -948,10 +964,9 @@ namespace CirculationApp
             this.AttendanceTab.PerformLayout();
             this.AcceptBooksTab.ResumeLayout(false);
             this.AcceptBooksTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTransfer)).EndInit();
             this.contextMenuStrip2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -965,7 +980,7 @@ namespace CirculationApp
         private System.Windows.Forms.TabControl MainTabContainer;
         private System.Windows.Forms.TabPage MainTab;
         private System.Windows.Forms.TabPage ReferenceTab;
-        private System.Windows.Forms.DataGridView dgvLog;
+        private System.Windows.Forms.DataGridView dgvTransfer;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -977,6 +992,7 @@ namespace CirculationApp
         private System.Windows.Forms.Label lTitle;
         private System.Windows.Forms.Label lAuthor;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DataGridView dgvLog;
         private System.Windows.Forms.PictureBox pbLogo;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button bShowReference;
@@ -1032,6 +1048,7 @@ namespace CirculationApp
         private System.Windows.Forms.TabPage AcceptBooksTab;
         private System.Windows.Forms.Button bEmulationTransfer;
         private System.Windows.Forms.Label label2;
+        //private System.Windows.Forms.DataGridView dgvTransfer;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         //private CrystalReport1 CrystalReport11;

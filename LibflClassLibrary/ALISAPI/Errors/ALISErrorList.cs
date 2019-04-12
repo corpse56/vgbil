@@ -298,11 +298,24 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "У читателя нет прав бесплатного абонемента! Выдача на дом невозможна.",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
-            
+
             new ALISError()
             {
                 Code = "C020",
                 Message = "У читателя закончился срок прав бесплатного абонемента. Выдача на дом невозможна.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+
+            new ALISError()
+            {
+                Code = "C021",
+                Message = "Эта книга на ДП. Её не нужно принимать в хранение.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "C022",
+                Message = "Книгу, взятую из открытого доступа, можно вернуть только в зале её местонахождения",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
 

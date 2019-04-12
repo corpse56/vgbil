@@ -89,11 +89,6 @@ namespace CirculationApp
             }
         }
 
-        //принять книгу от читателя
-        public void RecieveBook(string bar, BJUserInfo bjUser, string statusName)
-        {
-            ci.RecieveBookFromReader(bar, bjUser, statusName);
-        }
 
         private BARType BookOrReader(string data) //false - книга, true - читатель
         {
@@ -151,22 +146,47 @@ namespace CirculationApp
             return;
         }
 
+        public void RecieveBook(string fromPort, BJUserInfo bjUser)
+        {
+            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromPort);
+            OrderInfo oi = ci.FindOrderByExemplar(exemplar);
+
+            if (ci.RecieveBookFromReader(exemplar, oi, bjUser) == 1)
+            {
+                DialogResult dr = MessageBox.Show("Читатель сдаёт книгу на бронеполку?", "Внимание!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (dr == DialogResult.Yes)
+                {
+                    ci.ChangeOrderStatus(bjUser, oi.OrderId, CirculationStatuses.InReserve.Value); 
+                }
+                else if (dr == DialogResult.No)
+                {
+                    ci.ChangeOrderStatus(bjUser, oi.OrderId, CirculationStatuses.ForReturnToBookStorage.Value); 
+                }
+
+            }
+        }
+        //принять книгу от читателя
+        public void RecieveBook(string bar, BJUserInfo bjUser, string statusName)
+        {
+
+        }
+
         //public int GetAttendance()
-       // {
-       //    // DBGeneral dbg = new DBGeneral();
-       //     //return dbg.GetAttendance();
-       // }
+        // {
+        //    // DBGeneral dbg = new DBGeneral();
+        //     //return dbg.GetAttendance();
+        // }
 
-       // //public void AddAttendance(ReaderVO reader)
-       // {
-       //    // DBGeneral dbg = new DBGeneral();
-       //    // dbg.AddAttendance(reader);
-       // }
+        // //public void AddAttendance(ReaderVO reader)
+        // {
+        //    // DBGeneral dbg = new DBGeneral();
+        //    // dbg.AddAttendance(reader);
+        // }
 
-       //// public int GetCountOfPrologedTimes(int value)
-       // {
-       //     //DBGeneral dbg = new DBGeneral();
-       //     //return dbg.GetCountOfPrologedTimes(value);
-       // }
+        //// public int GetCountOfPrologedTimes(int value)
+        // {
+        //     //DBGeneral dbg = new DBGeneral();
+        //     //return dbg.GetCountOfPrologedTimes(value);
+        // }
     }
 }
