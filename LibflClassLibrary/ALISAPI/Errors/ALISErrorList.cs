@@ -318,6 +318,36 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Книгу, взятую из открытого доступа, можно вернуть только в зале её местонахождения",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
+            new ALISError()
+            {
+                Code = "C023",
+                Message = "Неверный штрихкод читателя",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "C024",
+                Message = "Читатель уже посетил этот зал сегодня",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "C025",
+                Message = "Все заказы на эту книгу завершены. Её не нужно принимать. Можно поставить книгу на место.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "C026",
+                Message = "Заказ на такую книгу не сформирован. Принимать такую книгу на кафедру не нужно.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "C027",
+                Message = "Заказ с таким статусом не нужно принимать на кафедру.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
 
         };
     }

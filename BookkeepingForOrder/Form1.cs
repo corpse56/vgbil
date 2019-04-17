@@ -17,6 +17,7 @@ using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Books.BJBooks;
+using ExtGui;
 
 namespace BookkeepingForOrder
 {
@@ -140,7 +141,9 @@ namespace BookkeepingForOrder
                 row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
                 row.Cells["cipher"].Value = exemplar.Cipher;
                 row.Cells["readerid"].Value = order.ReaderId;
-                row.Cells["fio"].Value = $"{reader.FamilyName} {reader.Name.Substring(0,1)}. {reader.FatherName.Substring(0, 1)}.";
+                
+                row.Cells["fio"].Value = (string.IsNullOrEmpty(reader.FatherName)) ?    $"{reader.FamilyName} {reader.Name.Substring(0, 1)}." :
+                                                                                        $"{reader.FamilyName} {reader.Name.Substring(0,1)}. { reader.FatherName.Substring(0, 1)}.";
                 row.Cells["orderid"].Value = order.OrderId;
                 row.Cells["status"].Value = order.StatusName;
                 row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
@@ -149,6 +152,8 @@ namespace BookkeepingForOrder
             }
         }
         bool InitReloadReaderHistoryOrders = true;
+
+        public RoundProgress RndPrg1 { get => RndPrg; set => RndPrg = value; }
 
         private void ShowReaderHistoryOrders()
         {
@@ -228,198 +233,6 @@ namespace BookkeepingForOrder
         private void FormHisTable()
         {
             HisTable = db.GetHistory(this.ForSQL);
-        }
-        private void FormReadersTable()
-        {
-            ReadersTable = db.GetReaders(this.ForSQL);
-        }
-        private void FormReadersHisTable()
-        {
-            ReadersHisTable = db.GetReadersHistory(this.ForSQL);
-        }
-        private void FormReaderTable_Interface()
-        {
-            dgwReaders.Columns.Clear();
-            dgwReaders.AutoGenerateColumns = false;
-            dgwReaders.DataSource = ReadersTable;
-
-            dgwReaders.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgwReaders.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            //dgwEmp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgwReaders.Columns.Add("NN", "ПИН");
-            dgwReaders.Columns.Add("NN1", "Автор");
-            dgwReaders.Columns.Add("NN2", "Заглавие");
-            dgwReaders.Columns.Add("NN3", "Инв. номер");
-            dgwReaders.Columns.Add("NN4", "Расст. шифр");
-            dgwReaders.Columns.Add("NN5", "Дата издания");
-            dgwReaders.Columns.Add("NN6", "id берущего отдела");
-            dgwReaders.Columns.Add("NN7", "id заказа");
-            dgwReaders.Columns.Add("NN8", "от кого");
-            dgwReaders.Columns.Add("NN9", "fio");
-            dgwReaders.Columns.Add("NN10", "gizd");
-            dgwReaders.Columns.Add("startd", "startd");
-            dgwReaders.Columns.Add("note", "Инв. метка");
-            dgwReaders.Columns.Add("yaz", "yaz");
-            dgwReaders.Columns["yaz"].Name = "yaz";
-            dgwReaders.Columns["yaz"].Visible = false;
-            dgwReaders.Columns["yaz"].DataPropertyName = "yaz";
-
-            dgwReaders.ReadOnly = true;
-
-            dgwReaders.Columns[0].HeaderText = "ПИН";
-            dgwReaders.Columns[0].Width = 74;
-            dgwReaders.Columns[0].DataPropertyName = "idm";
-            dgwReaders.Columns[0].Name = "idm";
-            dgwReaders.Columns[1].HeaderText = "Автор";
-            dgwReaders.Columns[1].Width = 125;
-            dgwReaders.Columns[1].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgwReaders.Columns[1].DataPropertyName = "avt";
-            dgwReaders.Columns[1].Name = "avt";
-            dgwReaders.Columns[2].HeaderText = "Заглавие";
-            dgwReaders.Columns[2].Width = 265;
-            dgwReaders.Columns[2].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgwReaders.Columns[2].DataPropertyName = "zag";
-            dgwReaders.Columns[2].Name = "zag";
-            dgwReaders.Columns[3].HeaderText = "Инвентар ный номер";
-            dgwReaders.Columns[3].Width = 80;
-            dgwReaders.Columns[3].Name = "inv";
-            dgwReaders.Columns[3].DataPropertyName = "inv";
-            //string d = ((DataTable)dgwReaders.DataSource).Rows[0][7].ToString();
-
-
-            dgwReaders.Columns[4].HeaderText = "Расст. шифр";
-            dgwReaders.Columns[4].Width = 100;
-            dgwReaders.Columns[4].Name = "shifr";
-            dgwReaders.Columns[4].DataPropertyName = "shifr";
-            dgwReaders.Columns[5].Visible = false;
-            dgwReaders.Columns[5].Name = "izd";
-            dgwReaders.Columns[5].DataPropertyName = "izd";
-            dgwReaders.Columns[6].Visible = false;
-            dgwReaders.Columns[6].Name = "idr";
-            dgwReaders.Columns[6].DataPropertyName = "idr";
-            dgwReaders.Columns[7].Visible = false;
-            dgwReaders.Columns[7].Name = "oid";
-            dgwReaders.Columns[7].DataPropertyName = "oid";
-            dgwReaders.Columns[8].HeaderText = "От кого";
-            dgwReaders.Columns[8].Width = 130;
-            dgwReaders.Columns[8].Name = "dp";
-            //dgwReaders.Columns[8].CellTemplate.Style.WrapMode = DataGridViewTriState.True;
-            dgwReaders.Columns[8].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgwReaders.Columns[8].DataPropertyName = "dp";
-            dgwReaders.Columns[9].Visible = false;
-            dgwReaders.Columns[9].Name = "fio";
-            dgwReaders.Columns[9].DataPropertyName = "fio";
-            dgwReaders.Columns[10].Visible = false;
-            dgwReaders.Columns[10].Name = "gizd";
-            dgwReaders.Columns[10].DataPropertyName = "gizd";
-            dgwReaders.Columns[11].ValueType = typeof(DateTime);
-            dgwReaders.Columns[11].DefaultCellStyle.Format = "dd.MM.yyyy";
-            dgwReaders.Columns[11].HeaderText = "Дата заказа";
-            dgwReaders.Columns[11].Width = 80;
-            dgwReaders.Columns[11].DataPropertyName = "startd";
-            dgwReaders.Columns["note"].Name = "note";
-            dgwReaders.Columns["note"].DataPropertyName = "note";
-
-            dgwReaders.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
-            //dgwReaders.Columns[5].Visible = false;
-            //dgwEmp.Columns[6].Visible = false;
-        }
-        private void FormReaderHisTable_Interface()
-        {
-            dgwRHis.Columns.Clear();
-            dgwRHis.AutoGenerateColumns = false;
-            dgwRHis.DataSource = ReadersHisTable;
-
-            dgwRHis.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgwRHis.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            //dgwEmp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgwRHis.Columns.Add("NN", "ПИН");
-            dgwRHis.Columns.Add("NN1", "Автор");
-            dgwRHis.Columns.Add("NN2", "Заглавие");
-            dgwRHis.Columns.Add("NN3", "Инв. номер");
-            dgwRHis.Columns.Add("NN4", "Расст. шифр");
-            dgwRHis.Columns.Add("NN5", "Дата издания");
-            dgwRHis.Columns.Add("NN6", "id берущего отдела");
-            dgwRHis.Columns.Add("NN7", "id заказа");
-            dgwRHis.Columns.Add("NN8", "от кого");
-            dgwRHis.Columns.Add("NN9", "fio");
-            dgwRHis.Columns.Add("NN10", "gizd");
-            dgwRHis.Columns.Add("startd", "startd");
-            dgwRHis.Columns.Add("NN12", "refusual");
-            dgwRHis.Columns.Add("NN13", "sts");
-            dgwRHis.Columns.Add("note", "Инв. метка");
-            dgwRHis.Columns.Add("yaz", "yaz");
-            dgwRHis.Columns["yaz"].Name = "yaz";
-            dgwRHis.Columns["yaz"].Visible = false;
-            dgwRHis.Columns["yaz"].DataPropertyName = "yaz";
-
-            dgwRHis.ReadOnly = true;
-
-            dgwRHis.Columns[0].HeaderText = "ПИН";
-            dgwRHis.Columns[0].Width = 74;
-            dgwRHis.Columns[0].DataPropertyName = "idm";
-            dgwRHis.Columns[0].Name = "idm";
-            dgwRHis.Columns[1].HeaderText = "Автор";
-            dgwRHis.Columns[1].Width = 125;
-            dgwRHis.Columns[1].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgwRHis.Columns[1].DataPropertyName = "avt";
-            dgwRHis.Columns[1].Name = "avt";
-            dgwRHis.Columns[2].HeaderText = "Заглавие";
-            dgwRHis.Columns[2].Width = 230;
-            dgwRHis.Columns[2].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgwRHis.Columns[2].DataPropertyName = "zag";
-            dgwRHis.Columns[2].Name = "zag";
-            dgwRHis.Columns[3].HeaderText = "Инвентар ный номер";
-            dgwRHis.Columns[3].Width = 80;
-            dgwRHis.Columns[3].Name = "inv";
-            dgwRHis.Columns[3].DataPropertyName = "inv";
-            dgwRHis.Columns[4].HeaderText = "Расст. шифр";
-            dgwRHis.Columns[4].Width = 100;
-            dgwRHis.Columns[4].Name = "shifr";
-            dgwRHis.Columns[4].DataPropertyName = "shifr";
-            dgwRHis.Columns[5].Visible = false;
-            dgwRHis.Columns[5].Name = "izd";
-            dgwRHis.Columns[5].DataPropertyName = "izd";
-            dgwRHis.Columns[6].Visible = false;
-            dgwRHis.Columns[6].Name = "idr";
-            dgwRHis.Columns[6].DataPropertyName = "idr";
-            dgwRHis.Columns[7].Visible = false;
-            dgwRHis.Columns[7].Name = "oid";
-            dgwRHis.Columns[7].DataPropertyName = "oid";
-            dgwRHis.Columns[8].HeaderText = "От кого";
-            dgwRHis.Columns[8].Width = 100;
-            dgwRHis.Columns[8].Name = "dp";
-            //dgwRHis.Columns[8].CellTemplate.Style.WrapMode = DataGridViewTriState.True;
-            dgwRHis.Columns[8].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgwRHis.Columns[8].DataPropertyName = "dp";
-            dgwRHis.Columns[9].Visible = false;
-            dgwRHis.Columns[9].Name = "fio";
-            dgwRHis.Columns[9].DataPropertyName = "fio";
-            dgwRHis.Columns[10].Visible = false;
-            dgwRHis.Columns[10].Name = "gizd";
-            dgwRHis.Columns[10].DataPropertyName = "gizd";
-            //dgwRHis.Columns[11].Name = "startd";
-            dgwRHis.Columns[11].ValueType = typeof(DateTime);
-            dgwRHis.Columns[11].DefaultCellStyle.Format = "dd.MM.yyyy";
-            dgwRHis.Columns[11].HeaderText = "Дата заказа";
-            dgwRHis.Columns[11].Width = 80;
-            dgwRHis.Columns[11].DataPropertyName = "startd";
-
-            //dgwRHis.Columns[12].Name = "refusual";
-            dgwRHis.Columns[12].DataPropertyName = "refusual";
-            dgwRHis.Columns[12].HeaderText = "Отказ";
-            dgwRHis.Columns[12].Width = 70;
-
-            dgwRHis.Columns[13].DataPropertyName = "sts";
-            dgwRHis.Columns[13].HeaderText = "Статус";
-            dgwRHis.Columns[12].Width = 70;
-
-            dgwRHis.Columns["note"].Name = "note";
-            dgwRHis.Columns["note"].DataPropertyName = "note";
-
-            dgwRHis.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
-            //dgwRHis.Columns[5].Visible = false;
-            //dgwEmp.Columns[6].Visible = false;
         }
 
         private void FormMainTable_Interface()
@@ -1194,19 +1007,6 @@ namespace BookkeepingForOrder
         }
 
 
-        private void button14_Click(object sender, EventArgs e)
-        {
-            Form3 f3 = new Form3(this,this.db,this.user.SelectedUserStatus.DepName);
-            f3.InitForm();
-            f3.ShowDialog();
-
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-            button14_Click(sender, e);
-        }
-
         private void bRefusual_Click(object sender, EventArgs e)
         {
             if (dgwReaders.SelectedRows.Count == 0)
@@ -1229,6 +1029,13 @@ namespace BookkeepingForOrder
             //FormReadersHisTable();
             //FormReaderHisTable_Interface();
             ShowReaderOrders();
+        }
+
+        private void bEmployeeLookingForBook_Click(object sender, EventArgs e)
+        {
+            Form3 f3 = new Form3(this, this.user);
+            f3.ShowReaderOrders();
+            f3.ShowDialog();
         }
     }
 }

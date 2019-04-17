@@ -162,6 +162,33 @@ namespace LibflClassLibrary.Readers
             return "NotDefined";
         }
 
+        internal static bool IsRightReaderBarcode(string barcode)
+        {
+            if (barcode.Length > 0)
+            {
+                if (barcode[0] != 'R' && barcode[0] != 'G')
+                {
+                    return false;
+                }
+                else
+                {
+                    if (barcode.Length == 8)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }                
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
         public static ReaderInfo GetReaderByBar(string data)
         {
             ReaderLoader loader = new ReaderLoader();

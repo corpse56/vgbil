@@ -136,6 +136,10 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
+        internal int GetAttendance(BJUserInfo bjUser)
+        {
+            return dbWrapper.GetAttendance(bjUser.SelectedUserStatus.UnifiedLocationCode).Rows.Count;
+        }
 
         internal bool IsIssuedToReader(BJExemplarInfo exemplar)
         {
@@ -143,18 +147,26 @@ namespace LibflClassLibrary.Circulation.Loaders
             return (table.Rows.Count != 0) ? true : false;
         }
 
-        internal void RecieveBookFromReader(string bar, BJUserInfo bjUser, string statusName)
+        internal void AddAttendance(string barcode, BJUserInfo bjUser)
         {
-            BJBookInfo book = BJBookInfo.GetBookInfoByBAR(bar);
-            BJExemplarInfo exemplar = (BJExemplarInfo)book.Exemplars.Find(x => ((BJExemplarInfo)x).Bar == bar);
-            OrderInfo order = FindOrderByExemplar(exemplar);
-            dbWrapper.ChangeOrderStatus(order.OrderId, statusName, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
+            ReaderInfo reader = ReaderInfo.GetReaderByBar(barcode);
+
+            int readerId = (reader == null) ? -1 : reader.NumberReader;
+
+            dbWrapper.AddAttendance(barcode, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, readerId);
         }
 
         internal string GetExemplarAvailabilityStatus(int idData, string fund)
         {
             DataTable table = dbWrapper.GetExemplarAvailabilityStatus(idData, fund);
             return (table.Rows.Count == 0) ? "Available" : "Unavailable";
+        }
+
+        internal bool IsAlreadyVisitedToday(string barcode, BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper.IsAlreadyVisitedToday(barcode, bjUser.SelectedUserStatus.UnifiedLocationCode);
+            return (table.Rows.Count == 0) ? false : true;
+
         }
 
         internal List<OrderInfo> GetOrdersHistoryForStorage(int depId, string depName)
@@ -200,7 +212,7 @@ namespace LibflClassLibrary.Circulation.Loaders
                 OrderInfo order = FillOrderFromDataRow(row);
                 Orders.Add(order);
             }
-            Predicate<OrderInfo> isWrongFloor = delegate (OrderInfo order) 
+            Predicate<OrderInfo> isWrongFloor = delegate (OrderInfo order)
             {
                 BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
                 if (exemplar.Fields["899$a"].ToString() == depName)
@@ -212,10 +224,39 @@ namespace LibflClassLibrary.Circulation.Loaders
                     return true;
                 }
             };
+
             Orders.RemoveAll(isWrongFloor);
 
             return Orders;
 
+        }
+        internal List<OrderInfo> GetOrdersForStorage(int depId, string depName, string statusName)
+        {
+            DataTable table = dbWrapper.GetOrdersForStorage(depId, statusName);
+            List<OrderInfo> Orders = new List<OrderInfo>();
+            int i = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                i++;
+                OrderInfo order = FillOrderFromDataRow(row);
+                Orders.Add(order);
+            }
+            Predicate<OrderInfo> isWrongFloor = delegate (OrderInfo order)
+            {
+                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                if (exemplar.Fields["899$a"].ToString() == depName)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            };
+
+            Orders.RemoveAll(isWrongFloor);
+
+            return Orders;
         }
 
 
@@ -234,16 +275,17 @@ namespace LibflClassLibrary.Circulation.Loaders
         internal void IssueBookToReader(OrderInfo order, IssueType issueType, BJUserInfo bjUser)
         {
             string statusName = (issueType == IssueType.AtHome) ? CirculationStatuses.IssuedAtHome.Value : CirculationStatuses.IssuedInHall.Value;
-            ChangeOrderStatusIssue(bjUser, order.OrderId, statusName);
+            int ReturnInDays = (issueType == IssueType.AtHome) ? 30 : 10;//30 дней на дом. 10 дней бронеполка.
+            ChangeOrderStatusIssue(bjUser, order.OrderId, statusName, ReturnInDays);
         }
         internal void ChangeOrderStatus(BJUserInfo bjUser, int orderId, string status)
         {
             dbWrapper.ChangeOrderStatus(orderId, status, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
         }
 
-        private void ChangeOrderStatusIssue(BJUserInfo bjUser, int orderId, string statusName)
+        private void ChangeOrderStatusIssue(BJUserInfo bjUser, int orderId, string statusName, int returnInDays)
         {
-            dbWrapper.ChangeOrderStatusIssue(orderId, statusName, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
+            dbWrapper.ChangeOrderStatusIssue(orderId, statusName, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null, returnInDays);
         }
         internal void ChangeOrderStatusReturn(BJUserInfo bjUser, int orderId, string statusName)
         {

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using InsertElectronicExemplarBJ;
+using LibflClassLibrary.Books.BJBooks;
 using Utilities;
 
 namespace InsertElectronicExemplarBJ
@@ -46,7 +48,7 @@ namespace InsertElectronicExemplarBJ
             }
 
 
-            ElectronicExemplarInserter ec = new ElectronicExemplarInserter(PIN, comboBox1.Text);
+            ElectronicExemplarInserter ec = new ElectronicExemplarInserter(PIN, comboBox1.Text, comboBox1.Text);
             Utilities.Log log = new Log();
             try
             {
@@ -73,7 +75,36 @@ namespace InsertElectronicExemplarBJ
             comboBox2.SelectedIndex = 0;
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string connectionString = "Data Source=192.168.4.25,1443;Initial Catalog=BJVVV_Test;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = new SqlCommand();
+            da.SelectCommand.Connection = connection;
+            da.SelectCommand.CommandText = "select * from BookAddInf..ScanInfo where IDBase = 1";
+            DataTable table = new DataTable();
+            da.Fill(table);
+            foreach(DataRow row in table.Rows)
+            {
+                BJBookInfo book = BJBookInfo.GetBookInfoByPIN((int)row["IDBook"], "BJVVV");
+                ElectronicExemplarInserter ec = new ElectronicExemplarInserter((int)row["IDBook"], "BJVVV_Test", "BJVVV");
+                ElectronicExemplarType AccessType = ElectronicExemplarType.Order;
+                if (book.DigitalCopy.ExemplarAccess.Access == 1001)
+                {
+                    AccessType = ElectronicExemplarType.Free;
+                }
+                if (book.DigitalCopy.ExemplarAccess.Access == 1002)
+                {
+                    AccessType = ElectronicExemplarType.Order;
+                }
+                if (book.DigitalCopy.ExemplarAccess.Access == 1003)
+                {
+                    AccessType = ElectronicExemplarType.Indoor;
+                }
+                ec.InsertElectronicExemplar(AccessType);
+            }
 
-
+        }
     }
 }

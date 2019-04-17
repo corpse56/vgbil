@@ -21,6 +21,7 @@ using Circulation.Classes;
 using LibflClassLibrary.Controls.Readers;
 using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Controls;
+using ExtGui;
 
 namespace Circulation
 {
@@ -38,7 +39,7 @@ namespace Circulation
         SerialPort port;
         private BJUserInfo bjUser;
 
-        public ExtGui.RoundProgress RndPrg;
+        private ExtGui.RoundProgress rndPrg;
         public Form1()
         {
 
@@ -563,6 +564,8 @@ namespace Circulation
 
         public string emul;
         public string pass;
+
+
         private void button14_Click(object sender, EventArgs e)
         {
             ParolEmulation f20 = new ParolEmulation(this);

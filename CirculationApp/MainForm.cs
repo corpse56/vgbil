@@ -37,7 +37,7 @@ namespace CirculationApp
 
     public partial class MainForm : Form
     {
-        Department department = new Department();
+        Department department;
         CirculationInfo ci = new CirculationInfo();
 
         //public int EmpID;
@@ -56,9 +56,10 @@ namespace CirculationApp
             if (au.User != null)
             {
                 bjUser = au.User;
-                this.tbCurrentEmployee.Text = bjUser.FIO;
+                this.tbCurrentEmployee.Text = $"{bjUser.FIO}; {bjUser.SelectedUserStatus.DepName}";
                 ShowLog();
             }
+            department = new Department(bjUser);
             //Form1.Scanned += new ScannedEventHandler(Form1_Scanned);
             this.bConfirm.Enabled = false;
             this.bCancel.Enabled = false;
@@ -81,7 +82,6 @@ namespace CirculationApp
         }
         public delegate void ScanFuncDelegate(string data);
         
-        //public static event ScannedEventHandler Scanned;
 
         void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -120,10 +120,19 @@ namespace CirculationApp
                 
 
                 case "Учёт посещаемости":
-                #region Учёт посещаемости
-                    AttendanceScan(fromport);
+                    #region Учёт посещаемости
+                    try
+                    {
+                        department.AttendanceScan(fromport);
+                    }
+                    catch (Exception ex)
+                    {
+                        ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                        MessageBox.Show(error.Message);
+                        return;
+                    }
+                    ShowAttendance();
                     break;
-
                 case "Приём книг на кафедру из хранения/в хранение с кафедры":
                     RecieveBookFromInBookKeeping(fromport);
                     ShowBookTransfer(bjUser);
@@ -131,6 +140,11 @@ namespace CirculationApp
                 #endregion
 
             }
+        }
+
+        private void ShowAttendance()
+        {
+            lAttendance.Text = "На сегодня посещаемость составляет: " + department.GetAttendance() + " человек(а)";
         }
 
         private void RecieveBookFromInBookKeeping(string fromport)
@@ -142,7 +156,6 @@ namespace CirculationApp
                 return;
             }
             OrderInfo order = ci.FindOrderByExemplar(exemplar);
-
             try
             { 
                 if (bjUser.SelectedUserStatus.DepName.ToLower().Contains("книгохранен"))
@@ -153,16 +166,6 @@ namespace CirculationApp
                 }
                 else
                 {
-                    if (order == null)
-                    {
-                        MessageBox.Show("Заказ на такую книгу не сформирован. Принимать такую книгу на кафедру не нужно.");
-                        return;
-                    }
-                    if (!order.StatusName.In(new[] { CirculationStatuses.EmployeeLookingForBook.Value }))
-                    {
-                        MessageBox.Show("Заказ с таким статусом не нужно принимать на кафедру.");
-                        return;
-                    }
                     ci.RecieveBookFromBookkeeping(order, bjUser);
                     MessageBox.Show("Книга успешно принята на кафедру!");
                     return;
@@ -179,12 +182,12 @@ namespace CirculationApp
         private void Circulate(string fromPort)
         {
 
-            switch (department.Circulate(fromPort, bjUser))
+            switch (department.Circulate(fromPort))
             {
                 case 0://книга была выдана. нужно принять её в отдел
                     try
                     {
-                        department.RecieveBook(fromPort, bjUser);
+                        department.RecieveBook(fromPort);
                     }
                     catch (Exception ex)
                     {
@@ -385,7 +388,6 @@ namespace CirculationApp
             this.lAuthor.Text = "";
             this.lTitle.Text = "";
             this.lReader.Text = "";
-            department = new Department();
             label1.Text = "Считайте штрихкод издания";
             bConfirm.Enabled = false;
             bCancel.Enabled = false;
@@ -511,9 +513,10 @@ namespace CirculationApp
             if (au.User != null)
             {
                 bjUser = au.User;
-                this.tbCurrentEmployee.Text = bjUser.FIO;
+                this.tbCurrentEmployee.Text = $"{bjUser.FIO}; {bjUser.SelectedUserStatus.DepName}";
             }
-
+            department = new Department(bjUser);
+            tabControl1_SelectedIndexChanged(sender, e);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -539,7 +542,7 @@ namespace CirculationApp
                     readerRightsView1.Clear();
                     break;
                 case "Учёт посещаемости":
-                    //lAttendance.Text = "На сегодня посещаемость составляет: " + department.GetAttendance() + " человек(а)";
+                    ShowAttendance();
                     break;
                 case "Приём книг на кафедру из хранения/в хранение с кафедры":
                     ShowBookTransfer(bjUser);
@@ -571,7 +574,9 @@ namespace CirculationApp
                 new KeyValuePair<string, string> ( "reader", "Читатель"),
                 new KeyValuePair<string, string> ( "location", "Местонахождение"),
                 new KeyValuePair<string, string> ( "issDep", "Отдел выдачи"),
-                //new KeyValuePair<string, string> ( "issueType", "Тип выдачи"),
+                new KeyValuePair<string, string> ( "retDep", "Отдел возврата"),
+                new KeyValuePair<string, string> ( "inv", "Инв. номер"),
+                new KeyValuePair<string, string> ( "status", "Статус заказа"),
             };
             dgvTransfer.Columns.Clear();
             foreach (var c in columns)
@@ -581,11 +586,14 @@ namespace CirculationApp
             dgvTransfer.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
 
             dgvTransfer.Columns["pin"].Width = 120;
-            dgvTransfer.Columns["title"].Width = 250;
+            dgvTransfer.Columns["title"].Width = 200;
             dgvTransfer.Columns["bar"].Width = 100;
             dgvTransfer.Columns["reader"].Width = 80;
-            dgvTransfer.Columns["location"].Width = 200;
-            dgvTransfer.Columns["issDep"].Width = 200;
+            dgvTransfer.Columns["location"].Width = 150;
+            dgvTransfer.Columns["issDep"].Width = 150;
+            dgvTransfer.Columns["retDep"].Width = 150;
+            dgvTransfer.Columns["inv"].Width = 80;
+            dgvTransfer.Columns["status"].Width = 80;
 
             foreach (OrderInfo oi in transferOrders)
             {
@@ -597,6 +605,7 @@ namespace CirculationApp
                     row.Cells["pin"].Value = oi.BookId;
                     row.Cells["title"].Value = "Экземпляр отсутствует в базе";
                     row.Cells["reader"].Value = oi.ReaderId;
+                    row.Cells["status"].Value = oi.StatusName;
                     continue;
                 }
 
@@ -609,9 +618,21 @@ namespace CirculationApp
                 row.Cells["reader"].Value = oi.ReaderId;
                 row.Cells["location"].Value = exemplar.Fields["899$a"].ToString();
                 row.Cells["issDep"].Value = KeyValueMapping.LocationCodeToName[oi.IssuingDepartmentId];
+                row.Cells["retDep"].Value = string.IsNullOrEmpty(oi.ReturnDep) ? "" : KeyValueMapping.LocationCodeToName[int.Parse(oi.ReturnDep)];
+                row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
+                row.Cells["status"].Value = oi.StatusName;
                 //row.Cells["issueType"].Value = exemplar.ExemplarAccess.Access.In(new [] {1000,1006}) ? "на дом" : "в зал";
             }
 
+            if (bjUser.SelectedUserStatus.DepName.ToLower().Contains("книгохранен"))
+            {
+                dgvTransfer.Columns["issDep"].Visible = false;
+            }
+            else
+            {
+                dgvTransfer.Columns["retDep"].Visible = false;
+
+            }
 
         }
 

@@ -22,9 +22,10 @@ namespace CirculationApp
     {
         public ExpectingAction ExpectedBar = ExpectingAction.WaitingBook;
 
-        public Department() 
+        public Department(BJUserInfo bjUser) 
         {
             ExpectedBar = 0;
+            this.bjUser = bjUser;
         }
 
 
@@ -44,9 +45,8 @@ namespace CirculationApp
         /// 
         /// </summary>
         /// <param name="PortData"></param>
-        public int Circulate(string PortData, BJUserInfo bjUser)
+        public int Circulate(string PortData)
         {
-            this.bjUser = bjUser;
             BARType ScannedType;
             if (ExpectedBar == ExpectingAction.WaitingConfimation)//если ожидается подтверждение выдачи
             {
@@ -112,6 +112,12 @@ namespace CirculationApp
             }
             
         }
+
+        public void AttendanceScan(string barcode)
+        {
+            ci.AttendanceScan(barcode, bjUser);
+        }
+
         private bool CheckFreeAbonementRights()
         {
             ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(ScannedReader.NumberReader);
@@ -130,13 +136,11 @@ namespace CirculationApp
             }
             return true;
         }
-        public void Prolong(int idiss, int days, int idemp)
+
+        public int GetAttendance()
         {
-            //DBReader dbr = new DBReader();
-            //dbr.ProlongByIDISS(idiss,days,idemp);
-
+            return ci.GetAttendance(bjUser);
         }
-
 
 
         public void RemoveResponsibility(int idiss, int EmpID)
@@ -146,7 +150,7 @@ namespace CirculationApp
             return;
         }
 
-        public void RecieveBook(string fromPort, BJUserInfo bjUser)
+        public void RecieveBook(string fromPort)
         {
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromPort);
             OrderInfo oi = ci.FindOrderByExemplar(exemplar);
@@ -156,32 +160,15 @@ namespace CirculationApp
                 DialogResult dr = MessageBox.Show("Читатель сдаёт книгу на бронеполку?", "Внимание!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 if (dr == DialogResult.Yes)
                 {
-                    ci.ChangeOrderStatus(bjUser, oi.OrderId, CirculationStatuses.InReserve.Value); 
+                    ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.InReserve.Value); 
                 }
                 else if (dr == DialogResult.No)
                 {
-                    ci.ChangeOrderStatus(bjUser, oi.OrderId, CirculationStatuses.ForReturnToBookStorage.Value); 
+                    ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.ForReturnToBookStorage.Value); 
                 }
 
             }
         }
-        //принять книгу от читателя
-        public void RecieveBook(string bar, BJUserInfo bjUser, string statusName)
-        {
-
-        }
-
-        //public int GetAttendance()
-        // {
-        //    // DBGeneral dbg = new DBGeneral();
-        //     //return dbg.GetAttendance();
-        // }
-
-        // //public void AddAttendance(ReaderVO reader)
-        // {
-        //    // DBGeneral dbg = new DBGeneral();
-        //    // dbg.AddAttendance(reader);
-        // }
 
         //// public int GetCountOfPrologedTimes(int value)
         // {

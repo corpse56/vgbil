@@ -7,6 +7,7 @@ using System.Data;
 using Newtonsoft.Json.Linq;
 using InsertElectronicExemplarBJ.LIBFL_API;
 using Newtonsoft.Json;
+using LibflClassLibrary.Books.BJBooks;
 
 namespace InsertElectronicExemplarBJ
 {
@@ -20,6 +21,7 @@ namespace InsertElectronicExemplarBJ
     {
         private int _pin;
         private string _baseName;
+        private string _fund;
         private const int BJVVV_IDDATA_FREE = 17183938;
         private const int BJVVV_IDDATA_INDOOR = 17183940;
         private const int BJVVV_IDDATA_ORDER = 17183941;
@@ -31,13 +33,19 @@ namespace InsertElectronicExemplarBJ
         private int IDDATA_INDOOR;
         private int IDDATA_ORDER;
         
-        public ElectronicExemplarInserter(int pin, string baseName)
+        public ElectronicExemplarInserter(int pin, string baseName, string fund)
         {
             this._pin = pin;
             this._baseName = baseName;
+            this._fund = fund;
             switch (this._baseName)//вставлять пока что можем только в эти фонды
             {
                 case "BJVVV":
+                    IDDATA_FREE = BJVVV_IDDATA_FREE;
+                    IDDATA_INDOOR = BJVVV_IDDATA_INDOOR;
+                    IDDATA_ORDER = BJVVV_IDDATA_ORDER;
+                    break;
+                case "BJVVV_Test":
                     IDDATA_FREE = BJVVV_IDDATA_FREE;
                     IDDATA_INDOOR = BJVVV_IDDATA_INDOOR;
                     IDDATA_ORDER = BJVVV_IDDATA_ORDER;
@@ -58,13 +66,15 @@ namespace InsertElectronicExemplarBJ
             switch (this._baseName)//вставлять пока что можем только в эти фонды
             {
                 case "BJVVV":
+                case "BJVVV_Test":
                 case "REDKOSTJ":
                     break;
                 default:
                     throw new Exception("В этот фонд " + this._baseName + " временно не добавляются инвентари электронных копий.");
             }
 
-            string connectionString = "Data Source=127.0.0.1\\SQL2008R2;Initial Catalog=BJVVV;Persist Security Info=True;User ID=test;Password=test";
+            //string connectionString = "Data Source=127.0.0.1\\SQL2008R2;Initial Catalog=BJVVV;Persist Security Info=True;User ID=test;Password=test";
+            string connectionString = "Data Source=192.168.4.25,1443;Initial Catalog=BJVVV_Test;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
             this.connection = new SqlConnection(connectionString);
             connection.Open();
             this.transaction = connection.BeginTransaction();
@@ -241,23 +251,28 @@ namespace InsertElectronicExemplarBJ
             
             //узнаем цену. Для этого восопльзуемся функцией из API, которая вернёт всю информацию о заданном пине + сведения об файлах электронной копии
             //API возвращает информацию в виде JSON, поэтому нам нужно подключить ещё библиотеку для работы с этим форматом данных. Newtonsoft.JSON.dll
-            string bookId = this._baseName+"_"+this._pin;//приведём пин к такому виду, который воспринимает API
+            //string bookId = this._baseName+"_"+this._pin;//приведём пин к такому виду, который воспринимает API
 
-            //создадим клиента API
-            LIBFL_API.ServiceSoapClient api = new ServiceSoapClient();
+            ////создадим клиента API
+            //LIBFL_API.ServiceSoapClient api = new ServiceSoapClient();
             
-            string book = api.GetBookInfoByID(bookId);//Вызовем функцию из API
-            JToken jsonBook = (JToken)JsonConvert.DeserializeObject(book);
-            JToken exemplars = jsonBook["Exemplars"];//получим все экземпляры
-            int PageCount = 0;
-            foreach (JToken token in exemplars)
-            {
-                if (token["IsElectronicCopy"].ToString().ToLower() == "true")
-                {
-                    PageCount = int.Parse(token["CountJPG"].ToString());
-                    break;
-                }
-            }
+            //string book = api.GetBookInfoByID(bookId);//Вызовем функцию из API
+            //JToken jsonBook = (JToken)JsonConvert.DeserializeObject(book);
+            //JToken exemplars = jsonBook["Exemplars"];//получим все экземпляры
+            //int PageCount = 0;
+            //foreach (JToken token in exemplars)
+            //{
+            //    if (token["IsElectronicCopy"].ToString().ToLower() == "true")
+            //    {
+            //        PageCount = int.Parse(token["CountJPG"].ToString());
+            //        break;
+            //    }
+            //}
+
+            BJBookInfo b = BJBookInfo.GetBookInfoByPIN(_pin,_fund);
+            int PageCount = b.DigitalCopy.CountJPG;
+
+
             const double PricePerPage = 8.27;
             double Cost = Math.Round(PricePerPage * PageCount, 2);
             command.CommandText = "select max(COLOR) from " + this._baseName + "..DATAEXT where IDMAIN = @pin";
@@ -355,7 +370,15 @@ namespace InsertElectronicExemplarBJ
                 foreach (DataRow row in invsText.Rows)
                 {
                     string textNum = row["SORT"].ToString();
-                    int num = int.Parse(textNum.Remove(textNum.Length - 1));
+                    int num = 0;
+                    try
+                    {
+                        num = int.Parse(textNum.Remove(textNum.Length - 1));
+                    }
+                    catch
+                    {
+                        continue;
+                    }
                     invNumbers.Add(num);
                 }
                 int lastInv = invNumbers.Max();
@@ -469,7 +492,11 @@ namespace InsertElectronicExemplarBJ
                                   " union all " +
                                   " select A.SORT from REDKOSTJ..DATAEXT A " +
                                   " left join REDKOSTJ..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 921 and B.MSFIELD = '$a' " +
-                                  " where A.MNFIELD = 899 and A.MSFIELD = '$w' and B.IDINLIST = 13 ";  //носитель электронная копия;
+                                  " where A.MNFIELD = 899 and A.MSFIELD = '$w' and B.IDINLIST = 13 " +  //носитель электронная копия;
+                                    " union all " +
+                                    " select A.SORT from BJVVV_Test..DATAEXT A " +
+                                    " left join BJVVV_Test..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 921 and B.MSFIELD = '$a' " +
+                                    " where A.MNFIELD = 899 and A.MSFIELD = '$w' and B.IDINLIST = 13 ";  //носитель электронная копия;
             DataTable BarText = new DataTable();
             da = new SqlDataAdapter(command);
             cnt = da.Fill(BarText);

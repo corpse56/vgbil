@@ -67,13 +67,16 @@ namespace CirculationAppAdmin
             //bjUser.SelectedUserStatus = new UserStatus();
             //bjUser.SelectedUserStatus.DepId = 
             CirculationDBWrapper cdb = new CirculationDBWrapper();
-            cdb.ChangeOrderStatus(587, "Завершено", 1, 2033, null);
-            cdb.ChangeOrderStatus(3300, "Завершено", 1, 2033, null);
-            cdb.ChangeOrderStatus(3697, "Завершено", 1, 2033, null);
-            cdb.ChangeOrderStatus(6040, "Завершено", 1, 2033, null);
-            cdb.ChangeOrderStatus(6048, "Завершено", 1, 2033, null);
-            cdb.ChangeOrderStatus(6434, "Завершено", 1, 2033, null);
-            cdb.ChangeOrderStatus(6435, "Завершено", 1, 2033, null);
+            //cdb.ChangeOrderStatus(587, "Завершено", 1, 2033, null);
+            //cdb.ChangeOrderStatus(3300, "Завершено", 1, 2033, null);
+            //cdb.ChangeOrderStatus(3697, "Завершено", 1, 2033, null);
+            //cdb.ChangeOrderStatus(6040, "Завершено", 1, 2033, null);
+            //cdb.ChangeOrderStatus(6048, "Завершено", 1, 2033, null);
+            //cdb.ChangeOrderStatus(6434, "Завершено", 1, 2033, null);
+            //cdb.ChangeOrderStatus(6435, "Завершено", 1, 2033, null);
+            cdb.ChangeOrderStatus(5871, "Завершено", 1, 2033, null);
+            
+
         }
     }
 }

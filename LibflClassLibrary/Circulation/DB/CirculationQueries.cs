@@ -18,13 +18,26 @@ namespace LibflClassLibrary.Circulation.DB
                         " where A.StatusName in ('Заказ сформирован')";
             }
         }
+        internal string GET_ORDERS_FOR_STORAGE_BY_STATUS
+        {
+            get
+            {
+                return " select A.*, B.Refusual " +
+                        " from Circulation..Orders A " +
+                        " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                        " where A.StatusName in (@statusName)";
+            }
+        }
+
         internal string GET_ORDERS_HISTORY_FOR_STORAGE
         {
             get
             {
-                return " select top 300 A.*,B.Refusual from Circulation..Orders A " +
+                return " select top 1000 A.*,B.Refusual from Circulation..Orders A " +
                        " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName " +
-                       " where A.StatusName not in ('Заказ сформирован', 'Электронная выдача' )";
+                       " where A.StatusName not in ('Заказ сформирован', 'Электронная выдача' ) " +
+                       " and A.StartDate >= dateadd(day, -10, getdate())  " +
+                       " order by A.Id desc";
             }
         }
 
@@ -189,9 +202,10 @@ namespace LibflClassLibrary.Circulation.DB
             get
             {
                 return " BEGIN TRANSACTION; " +
-                       " insert into Circulation..OrdersFlow (OrderId, StatusName, Changed,  Changer,    DepartmentId, Refusual, IssueDate ) " +
-                       " values                            (@OrderId, @StatusName,getdate(), @Changer, @DepartmentId, @Refusual, getdate() );" +
-                       " update Circulation..Orders set StatusName = @StatusName, IssueDate = getdate()  where ID = @OrderId;" +
+                       " insert into Circulation..OrdersFlow (OrderId, StatusName, Changed,  Changer,    DepartmentId, Refusual ) " +
+                       " values                            (@OrderId, @StatusName,getdate(), @Changer, @DepartmentId, @Refusual );" +
+                       " update Circulation..Orders set StatusName = @StatusName, IssueDate = getdate(), IssueDepId = @DepartmentId,  ReturnDate = DATEADD(day , @ReturnInDays , getdate()) " +
+                       " where ID = @OrderId;" +
                        " COMMIT; ";
             }
         }
@@ -202,7 +216,7 @@ namespace LibflClassLibrary.Circulation.DB
                 return " BEGIN TRANSACTION; " +
                        " insert into Circulation..OrdersFlow (OrderId, StatusName, Changed,  Changer,    DepartmentId, Refusual  ) " +
                        " values                            (@OrderId, @StatusName,getdate(), @Changer, @DepartmentId, @Refusual  );" +
-                       " update Circulation..Orders set StatusName = @StatusName, FactReturnDate = getdate() where ID = @OrderId;" +
+                       " update Circulation..Orders set StatusName = @StatusName, FactReturnDate = getdate(), ReturnDepId = @DepartmentId where ID = @OrderId;" +
                        " COMMIT; ";
             }
         }
@@ -350,6 +364,32 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        public string IS_ALREADY_VISITED_TODAY
+        {
+            get
+            {
+                return  " select * from Circulation..Attendance where Barcode = @barcode and DepId = @depId " +
+                        " and cast(cast(AttendanceDate as varchar(11)) as datetime) = cast(cast(getdate() as varchar(11)) as datetime)";
+            }
+        }
+
+        public string ADD_ATTENDANCE
+        {
+            get
+            {
+                return  " insert into Circulation..Attendance (ReaderId, EmployeeId, DepId, AttendanceDate, Barcode) " +
+                        " values                              (@readerId, @empId,    @depId, getdate(),     @barcode)";
+            }
+        }
+
+        public string GET_TODAY_ATTENDANCE_BY_DEP
+        {
+            get
+            {
+                return  "select * from Circulation..Attendance where cast(cast(AttendanceDate as varchar(11)) as datetime) = cast(cast(getdate() as varchar(11)) as datetime) " +
+                        " and DepId = @depId";
+            }
+        }
 
     }
 }

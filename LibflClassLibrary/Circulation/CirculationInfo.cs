@@ -106,8 +106,43 @@ namespace LibflClassLibrary.Circulation
             //{ 1999,   "Невозможно определить доступ"},
         }
 
+
+        internal int GetAttendance(BJUserInfo bjUser)
+        {
+            return loader.GetAttendance(bjUser);
+        }
+
+        internal void AttendanceScan(string barcode, BJUserInfo bjUser)
+        {
+            if (ReaderInfo.IsRightReaderBarcode(barcode))
+            {
+                if (this.IsAlreadyVisitedToday(barcode, bjUser))
+                {
+                    throw new Exception("C024");
+                }
+                else
+                {
+                    loader.AddAttendance(barcode, bjUser);
+                }
+            }
+            else
+            {
+                throw new Exception("C023");
+            }
+        }
+
+        private bool IsAlreadyVisitedToday(string barcode, BJUserInfo bjUser)
+        {
+            return loader.IsAlreadyVisitedToday(barcode, bjUser);
+        }
+
         public void RecieveBookInBookkeeping(OrderInfo order, BJUserInfo bjUser)
         {
+            if (order == null)
+            {
+                throw new Exception("C025");
+            }
+
             //проверка ДП
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
             if (exemplar.Fields["921$c"].ToString() == "Для выдачи")
@@ -162,6 +197,15 @@ namespace LibflClassLibrary.Circulation
 
         public void RecieveBookFromBookkeeping(OrderInfo order, BJUserInfo bjUser)
         {
+            if (order == null)
+            {
+                throw new Exception("C026");
+            }
+            if (!order.StatusName.In(new[] { CirculationStatuses.EmployeeLookingForBook.Value }))
+            {
+                throw new Exception("C027");
+            }
+
             ChangeOrderStatus(bjUser, order.OrderId, CirculationStatuses.WaitingFirstIssue.Value);
         }
 
@@ -179,32 +223,55 @@ namespace LibflClassLibrary.Circulation
                     return IssueType.AtHome;
                 }
             }
-            else
+            else if (scannedReader.Rights[ReaderRightsEnum.PaidAbonement] != null)
             {
-                if (scannedExemplar.ExemplarAccess.Access.In(new[] { 1000, 1006 }))
+                if (scannedReader.Rights[ReaderRightsEnum.PaidAbonement].DateEndReaderRight > DateTime.Now)
                 {
-                    if (scannedReader.Rights[ReaderRightsEnum.FreeAbonement] == null)
+                    if (scannedExemplar.Fields["921$c"].ToString() == "ДП")
                     {
-                        throw new Exception("C019");
+                        return IssueType.InHall;
                     }
                     else
                     {
-                        if (scannedReader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight <= DateTime.Now)
-                        {
-                            throw new Exception("C020");
-                        }
-                        else
-                        {
-                            return IssueType.AtHome;
-                        }
+                        return IssueType.AtHome;
                     }
                 }
                 else
                 {
-                    return IssueType.InHall;
+                    return CheckFreeAbonementRights(scannedExemplar, scannedReader);
                 }
             }
+            else
+            {
+                return CheckFreeAbonementRights(scannedExemplar, scannedReader);
+            }
+            
+        }
 
+        private IssueType CheckFreeAbonementRights(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
+        {
+            if (scannedExemplar.ExemplarAccess.Access.In(new[] { 1000, 1006 }))
+            {
+                if (scannedReader.Rights[ReaderRightsEnum.FreeAbonement] == null)
+                {
+                    throw new Exception("C019");
+                }
+                else
+                {
+                    if (scannedReader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight <= DateTime.Now)
+                    {
+                        throw new Exception("C020");
+                    }
+                    else
+                    {
+                        return IssueType.AtHome;
+                    }
+                }
+            }
+            else
+            {
+                return IssueType.InHall;
+            }
         }
 
         internal void IssueBookToReader(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader, BJUserInfo bjUser)
@@ -362,6 +429,11 @@ namespace LibflClassLibrary.Circulation
         {
             return loader.GetOrdersForStorage(depId, depName);
         }
+        public List<OrderInfo> GetOrdersForStorage(int depId, string depName, string statusName)
+        {
+            return loader.GetOrdersForStorage(depId, depName, statusName);
+        }
+
         public List<OrderInfo> GetOrdersHistoryForStorage(int depId, string depName)
         {
             return loader.GetOrdersHistoryForStorage(depId, depName);

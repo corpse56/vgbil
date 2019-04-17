@@ -1,4 +1,8 @@
-﻿using System;
+﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using LibflClassLibrary.Circulation;
+using LibflClassLibrary.Readers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,120 +18,92 @@ namespace BookkeepingForOrder
         DataTable ReadersTable;
         DbForEmployee db;
         string Floor;
+        BJUserInfo bjUser;
         public Form3()
         {
             InitializeComponent();
         }
-        public Form3(Form1 f1_,DbForEmployee db_,string Floor_)
+        public Form3(Form1 f1_,BJUserInfo bjUser)
         {
             InitializeComponent();
             F1 = f1_;
-            db = db_;
-            Floor = Floor_;
+            this.bjUser = bjUser;
         }
-        public void InitForm()
+        public  void ShowReaderOrders()
         {
-            ReadersTable = F1.db.GetReadersChoosing(F1.ForSQL);
-            dgw.Columns.Clear();
-            dgw.AutoGenerateColumns = false;
-            dgw.DataSource = ReadersTable;
-
-            dgw.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgw.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            //dgwEmp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgw.Columns.Add("NN", "ПИН");
-            dgw.Columns.Add("NN1", "Автор");
-            dgw.Columns.Add("NN2", "Заглавие");
-            dgw.Columns.Add("NN3", "Инв. номер");
-            dgw.Columns.Add("NN4", "Расст. шифр");
-            dgw.Columns.Add("NN5", "Дата издания");
-            dgw.Columns.Add("NN6", "id берущего отдела");
-            dgw.Columns.Add("NN7", "id заказа");
-            dgw.Columns.Add("NN8", "от кого");
-            dgw.Columns.Add("NN9", "fio");
-            dgw.Columns.Add("NN10", "gizd");
-            dgw.Columns.Add("startd", "startd");
-            dgw.Columns.Add("note", "Прим. инв. н.");
-            dgw.Columns.Add("yaz", "yaz");
-
-            dgw.ReadOnly = true;
-
-            dgw.Columns[0].HeaderText = "ПИН";
-            dgw.Columns[0].Width = 74;
-            dgw.Columns[0].DataPropertyName = "idm";
-            dgw.Columns[0].Name = "idm";
-            dgw.Columns[1].HeaderText = "Автор";
-            dgw.Columns[1].Width = 125;
-            dgw.Columns[1].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgw.Columns[1].DataPropertyName = "avt";
-            dgw.Columns[1].Name = "avt";
-            dgw.Columns[2].HeaderText = "Заглавие";
-            dgw.Columns[2].Width = 265;
-            dgw.Columns[2].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgw.Columns[2].DataPropertyName = "zag";
-            dgw.Columns[2].Name = "zag";
-            dgw.Columns[3].HeaderText = "Инвентар ный номер";
-            dgw.Columns[3].Width = 80;
-            dgw.Columns[3].Name = "inv";
-            dgw.Columns[3].DataPropertyName = "inv";
-            //string d = ((DataTable)dgw.DataSource).Rows[0][7].ToString();
-
-
-            dgw.Columns[4].HeaderText = "Расст. шифр";
-            dgw.Columns[4].Width = 100;
-            dgw.Columns[4].Name = "shifr";
-            dgw.Columns[4].DataPropertyName = "shifr";
-            dgw.Columns[5].Visible = false;
-            dgw.Columns[5].Name = "izd";
-            dgw.Columns[5].DataPropertyName = "izd";
-            dgw.Columns[6].Visible = false;
-            dgw.Columns[6].Name = "idr";
-            dgw.Columns[6].DataPropertyName = "idr";
-            dgw.Columns[7].Visible = false;
-            dgw.Columns[7].Name = "oid";
-            dgw.Columns[7].DataPropertyName = "oid";
-            dgw.Columns[8].HeaderText = "От кого";
-            dgw.Columns[8].Width = 130;
-            dgw.Columns[8].Name = "dp";
-            //dgw.Columns[8].CellTemplate.Style.WrapMode = DataGridViewTriState.True;
-            dgw.Columns[8].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgw.Columns[8].DataPropertyName = "dp";
-            dgw.Columns[9].Visible = false;
-            dgw.Columns[9].Name = "fio";
-            dgw.Columns[9].DataPropertyName = "fio";
-            dgw.Columns[10].Visible = false;
-            dgw.Columns[10].Name = "gizd";
-            dgw.Columns[10].DataPropertyName = "gizd";
-            dgw.Columns[11].ValueType = typeof(DateTime);
-            dgw.Columns[11].DefaultCellStyle.Format = "dd.MM.yyyy";
-            dgw.Columns[11].HeaderText = "Дата заказа";
-            dgw.Columns[11].Width = 80;
-            dgw.Columns[11].DataPropertyName = "startd";
-            dgw.Columns["note"].Name = "note";
-            dgw.Columns["note"].DataPropertyName = "note";
-            dgw.Columns["yaz"].Visible = false;
-
-            dgw.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
-            if (dgw.Rows.Count == 0)
+            dgwReaders.Rows.Clear();
+            dgwReaders.Columns.Clear();
+            KeyValuePair<string, string>[] columns =
             {
-                MessageBox.Show("Подбираемых заказов нет!(Заказы со статусом \"Сотрудник книгохранения обрабатывает заказ\" отсутствуют!)");
-            }
-        }
+                new KeyValuePair<string, string> ( "pin", "ПИН"),
+                new KeyValuePair<string, string> ( "author", "Автор"),
+                new KeyValuePair<string, string> ( "title", "Заглавие"),
+                new KeyValuePair<string, string> ( "inv", "Инв. номер"),
+                new KeyValuePair<string, string> ( "cipher", "Расст. шифр"),
+                new KeyValuePair<string, string> ( "readerid", "Номер читателя"),
+                new KeyValuePair<string, string> ( "fio", "ФИО читателя"),
+                new KeyValuePair<string, string> ( "startdate", "Дата формирования заказа"),
+                new KeyValuePair<string, string> ( "orderid", "orderid"),
+                new KeyValuePair<string, string> ( "status", "Статус заказа"),
+                new KeyValuePair<string, string> ( "note", "Инв. метка"),
+                new KeyValuePair<string, string> ( "pubdate", "Дата издания"),
+                new KeyValuePair<string, string> ( "refusual", "Причина отказа")
+            };
+            foreach (var c in columns)
+                dgwReaders.Columns.Add(c.Key, c.Value);
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if (dgw.SelectedRows.Count == 0)
+            dgwReaders.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgwReaders.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dgwReaders.Columns["startdate"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+            dgwReaders.Columns["pin"].Width = 74;
+            dgwReaders.Columns["author"].Width = 125;
+            dgwReaders.Columns["title"].Width = 265;
+            dgwReaders.Columns["inv"].Width = 80;
+            dgwReaders.Columns["cipher"].Width = 100;
+            dgwReaders.Columns["readerid"].Width = 80;
+            dgwReaders.Columns["fio"].Width = 120;
+            dgwReaders.Columns["startdate"].Width = 80;
+            dgwReaders.Columns["orderid"].Visible = false;
+            dgwReaders.Columns["status"].Width = 100;
+            dgwReaders.Columns["note"].Width = 60;
+            dgwReaders.Columns["pubdate"].Visible = false;
+            CirculationInfo circulation = new CirculationInfo();
+            List<OrderInfo> orders = circulation.GetOrdersForStorage(bjUser.SelectedUserStatus.DepId, bjUser.SelectedUserStatus.DepName, CirculationStatuses.EmployeeLookingForBook.Value);
+            if (bjUser.SelectedUserStatus.DepId == 8)//0 и 4 этаж должны получать заказы в одну точку
             {
-                MessageBox.Show("Не выбрана ни одна строка!");
-                return;
+                List<OrderInfo> orders1 = circulation.GetOrdersForStorage(15, "…Хран… Сектор книгохранения - 0 этаж");
+                foreach (OrderInfo o in orders1)
+                    orders.Add(o);
             }
-            Refusal rf = new Refusal(dgw.SelectedRows[0].Cells["oid"].Value.ToString());
-            rf.ShowDialog();
-            if (rf.Cause == "")
-                return;
-            F1.db.RefusualReader(rf.Cause, dgw.SelectedRows[0].Cells["oid"].Value.ToString());
-            this.InitForm();
+            if (bjUser.SelectedUserStatus.DepId == 15)
+            {
+                List<OrderInfo> orders1 = circulation.GetOrdersForStorage(8, "…Хран… Сектор книгохранения - 4 этаж");
+                foreach (OrderInfo o in orders1)
+                    orders.Add(o);
+            }
+            foreach (var order in orders)
+            {
+                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                ReaderInfo reader = ReaderInfo.GetReader(order.ReaderId);
+                dgwReaders.Rows.Add();
+                var row = dgwReaders.Rows[dgwReaders.Rows.Count - 1];
 
+                row.Cells["startdate"].Value = order.StartDate;
+                row.Cells["pin"].Value = order.BookId.Substring(order.BookId.IndexOf("_") + 1);
+                row.Cells["author"].Value = order.Book.Author;
+                row.Cells["title"].Value = order.Book.Title;
+                row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
+                row.Cells["cipher"].Value = exemplar.Cipher;
+                row.Cells["readerid"].Value = order.ReaderId;
+
+                row.Cells["fio"].Value = (string.IsNullOrEmpty(reader.FatherName)) ? $"{reader.FamilyName} {reader.Name.Substring(0, 1)}." :
+                                                                                        $"{reader.FamilyName} {reader.Name.Substring(0, 1)}. { reader.FatherName.Substring(0, 1)}.";
+                row.Cells["orderid"].Value = order.OrderId;
+                row.Cells["status"].Value = order.StatusName;
+                row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
+                row.Cells["pubdate"].Value = order.Book.PublishDate;
+                row.Cells["refusual"].Value = string.IsNullOrEmpty(order.Refusual) ? "<нет>" : order.Refusual;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -135,15 +111,40 @@ namespace BookkeepingForOrder
             Close();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void bPrintSelected_Click(object sender, EventArgs e)
         {
-            if (dgw.SelectedRows.Count == 0)
+            if (dgwReaders.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Не выбрана ни одна строка!");
                 return;
             }
-            PrintBlankReaders pb = new PrintBlankReaders(db, dgw, this.Floor, F1); //когда принтер заработаетвключить это
+            PrintBlankReaders pb = new PrintBlankReaders(db, dgwReaders, this.Floor, F1); //когда принтер заработаетвключить это
             pb.Print();
+        }
+
+        private void bRefuseSelected_Click(object sender, EventArgs e)
+        {
+            if (dgwReaders.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Не выбрана ни одна строка!");
+                return;
+            }
+            if (dgwReaders.SelectedRows[0].Cells["status"].Value.ToString() != CirculationStatuses.EmployeeLookingForBook.Value)
+            {
+                MessageBox.Show("Вы не можете дать отказ только на заказ со статусом \"Сотрудник подбирает книгу\"!");
+                return;
+            }
+            Refusal rf = new Refusal(dgwReaders.SelectedRows[0].Cells["orderid"].Value.ToString());
+            rf.ShowDialog();
+            if (rf.Cause == "")
+                return;
+            CirculationInfo circulation = new CirculationInfo();
+            circulation.RefuseOrder(Convert.ToInt32(dgwReaders.SelectedRows[0].Cells["orderid"].Value), rf.Cause, bjUser);
+            //db.RefusualReader(rf.Cause, dgwRHis.SelectedRows[0].Cells["oid"].Value.ToString());
+            //FormReadersHisTable();
+            //FormReaderHisTable_Interface();
+            ShowReaderOrders();
+
         }
     }
 }

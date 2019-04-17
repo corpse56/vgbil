@@ -96,7 +96,6 @@ namespace LibflClassLibrary.Circulation.DB
 
         internal void InsertIntoUserBasket(int iDReader, string bookId, string alligatBookId)
         {
-            DataSet ds = new DataSet();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(Queries.INSERT_INTO_USER_BASKET, connection);
@@ -120,6 +119,33 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        internal DataTable GetAttendance(int unifiedLocationCode)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_TODAY_ATTENDANCE_BY_DEP, connection);
+                dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = unifiedLocationCode;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
+        internal void AddAttendance(string barcode, int empId, int unifiedLocationCode, int readerId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(Queries.ADD_ATTENDANCE, connection);
+                command.Parameters.Add("readerId", SqlDbType.Int).Value = readerId;
+                command.Parameters.Add("barcode", SqlDbType.NVarChar).Value = barcode;
+                command.Parameters.Add("empId", SqlDbType.NVarChar).Value = empId;
+                command.Parameters.Add("depId", SqlDbType.NVarChar).Value = unifiedLocationCode;
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+
+        }
+
         internal DataTable GetOrder(int OrderId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -132,6 +158,19 @@ namespace LibflClassLibrary.Circulation.DB
                 return table;
             }
 
+        }
+
+        internal DataTable IsAlreadyVisitedToday(string barcode, int unifiedLocationCode)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.IS_ALREADY_VISITED_TODAY, connection);
+                dataAdapter.SelectCommand.Parameters.Add("barcode", SqlDbType.NVarChar).Value = barcode;
+                dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = unifiedLocationCode;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
         }
 
         internal DataTable IsIssuedToReader(int idData, string fund)
@@ -183,6 +222,19 @@ namespace LibflClassLibrary.Circulation.DB
                 return table;
             }
         }
+        internal DataTable GetOrdersForStorage(int depId, string statusName)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_FOR_STORAGE_BY_STATUS, connection);
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                dataAdapter.SelectCommand.Parameters.Add("statusName", SqlDbType.NVarChar).Value = CirculationStatuses.EmployeeLookingForBook.Value;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
 
         internal void DeleteOrder(int orderId)
         {
@@ -497,7 +549,7 @@ namespace LibflClassLibrary.Circulation.DB
                 Convert.ToInt32(command.ExecuteNonQuery());
             }
         }
-        public void ChangeOrderStatusIssue(int orderId, string StatusName, int ChangerId, int DepartmentId, string Refusual)
+        public void ChangeOrderStatusIssue(int orderId, string StatusName, int ChangerId, int DepartmentId, string Refusual, int returnInDays)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -512,6 +564,7 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Parameters.Add("Changer", SqlDbType.Int).Value = ChangerId;
                 command.Parameters.Add("DepartmentId", SqlDbType.Int).Value = DepartmentId;
                 command.Parameters.Add("Refusual", SqlDbType.NVarChar).Value = Refusual ?? (object)DBNull.Value;
+                command.Parameters.Add("ReturnInDays", SqlDbType.Int).Value = returnInDays;
 
                 Convert.ToInt32(command.ExecuteNonQuery());
             }
