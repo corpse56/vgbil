@@ -215,7 +215,8 @@ namespace BookkeepingForOrder
                 row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
                 row.Cells["cipher"].Value = exemplar.Cipher;
                 row.Cells["readerid"].Value = order.ReaderId;
-                row.Cells["fio"].Value = $"{reader.FamilyName} {reader.Name.Substring(0, 1)}. {reader.FatherName.Substring(0, 1)}.";
+                row.Cells["fio"].Value = (string.IsNullOrEmpty(reader.FatherName)) ? $"{reader.FamilyName} {reader.Name.Substring(0, 1)}." :
+                                                                                        $"{reader.FamilyName} {reader.Name.Substring(0, 1)}. { reader.FatherName.Substring(0, 1)}.";
                 row.Cells["orderid"].Value = order.OrderId;
                 row.Cells["status"].Value = order.StatusName;
                 row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
@@ -583,10 +584,9 @@ namespace BookkeepingForOrder
 
             FormMainTable();
             FormMainTable_Interface();
-            //FormReadersTable();
-            //FormReaderTable_Interface();
+
             ShowReaderOrders();
-            ShowReaderHistoryOrders();
+            //ShowReaderHistoryOrders();
             bool NeedFlash = false;
             foreach (DataGridViewRow row in dgwReaders.Rows)
             {

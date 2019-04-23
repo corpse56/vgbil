@@ -39,5 +39,12 @@ namespace LibflClassLibrary.BJUsers
             }
             return result;
         }
+
+        internal BJUserInfo GetUserById(int changer)
+        {
+            DataTable table = wrapper.GetUserById(changer);
+            if (table.Rows.Count == 0) return null;
+            return this.GetUserByLogin(table.Rows[0][0].ToString());
+        }
     }
 }

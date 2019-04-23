@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.IO;
 using System.Xml;
+using LibflClassLibrary.BJUsers;
 
 public partial class LogIn : System.Web.UI.Page
 {
@@ -18,25 +19,38 @@ public partial class LogIn : System.Web.UI.Page
     }
     protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
     {
-        SqlConnection.ClearAllPools();
+        //SqlConnection.ClearAllPools();
 
-        SqlDataAdapter DA = new SqlDataAdapter();
-        DA.SelectCommand = new SqlCommand();
-        DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/BJVVV"));
-        DA.SelectCommand.Parameters.AddWithValue("login", Login1.UserName.ToLower());
-        DA.SelectCommand.Parameters.AddWithValue("pass", Login1.Password.ToLower());
-        //DA.SelectCommand.CommandText = "select USERS.ID id,USERS.NAME uname,dpt.NAME dname from BJVVV..USERS join BJVVV..LIST_8 dpt on USERS.DEPT = dpt.ID where lower([LOGIN]) = '" + Login1.UserName.ToLower() + "' and lower(PASSWORD) = '" + Login1.Password.ToLower() + "'";
-        DA.SelectCommand.CommandText = "select USERS.ID id,USERS.NAME uname,dpt.NAME dname from BJVVV..USERS join BJVVV..LIST_8 dpt on USERS.DEPT = dpt.ID where lower([LOGIN]) = @login and lower(PASSWORD) = @pass";
+        //SqlDataAdapter DA = new SqlDataAdapter();
+        //DA.SelectCommand = new SqlCommand();
+        //DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/BJVVV"));
+        //DA.SelectCommand.Parameters.AddWithValue("login", Login1.UserName.ToLower());
+        //DA.SelectCommand.Parameters.AddWithValue("pass", Login1.Password.ToLower());
+        ////DA.SelectCommand.CommandText = "select USERS.ID id,USERS.NAME uname,dpt.NAME dname from BJVVV..USERS join BJVVV..LIST_8 dpt on USERS.DEPT = dpt.ID where lower([LOGIN]) = '" + Login1.UserName.ToLower() + "' and lower(PASSWORD) = '" + Login1.Password.ToLower() + "'";
+        //DA.SelectCommand.CommandText = "select USERS.ID id,USERS.NAME uname,dpt.NAME dname from BJVVV..USERS join BJVVV..LIST_8 dpt on USERS.DEPT = dpt.ID where lower([LOGIN]) = @login and lower(PASSWORD) = @pass";
 
-        DataSet usr = new DataSet();
-        int i = DA.Fill(usr);
+        //DataSet usr = new DataSet();
+        //int i = DA.Fill(usr);
 
-        if (i > 0)
+        //if (i > 0)
+        //{
+        //    string ID = usr.Tables[0].Rows[0]["ID"].ToString();
+        //    FormsAuthentication.RedirectFromLoginPage(Login1.UserName, false);
+        //    Response.Redirect("default.aspx?uid=" +ID);
+
+        //}
+        BJUserInfo bjUser = BJUserInfo.GetUserByLogin(Login1.UserName.ToLower(), "BJVVV");
+        if (bjUser.HashedPwd != BJUserInfo.HashPassword(Login1.Password))
         {
-            string ID = usr.Tables[0].Rows[0]["ID"].ToString();
-            FormsAuthentication.RedirectFromLoginPage(Login1.UserName, false);
-            Response.Redirect("default.aspx?uid=" +ID);
+            return;
+        }
 
+
+        if (bjUser != null)
+        {
+            Session.Add("bjUser", bjUser);
+            FormsAuthentication.RedirectFromLoginPage(Login1.UserName, false);
+            Response.Redirect("SelectRole.aspx?uid=" + bjUser.Id);
         }
     }
 

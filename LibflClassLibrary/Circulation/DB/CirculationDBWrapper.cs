@@ -55,6 +55,21 @@ namespace LibflClassLibrary.Circulation.DB
             w.Stop();
             return table;
         }
+        internal DataTable GetOrdersByExemplar(int idData, string fund)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_BY_EXEMPLAR, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idData", SqlDbType.Int).Value = idData;
+                dataAdapter.SelectCommand.Parameters.Add("fund", SqlDbType.NVarChar).Value = fund;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+
+        }
+
         internal DataTable GetOrders(string circulationStatus)
         {
             DataTable table = new DataTable();
@@ -63,6 +78,18 @@ namespace LibflClassLibrary.Circulation.DB
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_BY_STATUS, connection);
                 dataAdapter.SelectCommand.Parameters.Add("circulationStatus", SqlDbType.NVarChar).Value = circulationStatus;
                 dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+        internal DataTable GetOrders(string statusName, int unifiedLocationCode)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_BY_STATUS_AND_DEP, connection);
+                dataAdapter.SelectCommand.Parameters.Add("statusName", SqlDbType.NVarChar).Value = statusName;
+                dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = unifiedLocationCode;
                 int cnt = dataAdapter.Fill(table);
             }
             return table;
@@ -106,6 +133,8 @@ namespace LibflClassLibrary.Circulation.DB
                 command.ExecuteNonQuery();
             }
         }
+
+
         internal DataTable IsExistsInBasket(int iDReader, string bookId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -159,6 +188,7 @@ namespace LibflClassLibrary.Circulation.DB
             }
 
         }
+
 
         internal DataTable IsAlreadyVisitedToday(string barcode, int unifiedLocationCode)
         {

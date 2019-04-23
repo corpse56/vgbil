@@ -32,5 +32,17 @@ namespace LibflClassLibrary.BJUsers
             }
 
         }
+
+        internal DataTable GetUserById(int changer)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_BJVVV_USER_BY_ID, connection);
+                dataAdapter.SelectCommand.Parameters.Add("id", SqlDbType.Int).Value = changer;
+                dataAdapter.Fill(table);
+                return table;
+            }
+        }
     }
 }

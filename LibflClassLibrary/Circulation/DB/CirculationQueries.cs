@@ -91,6 +91,7 @@ namespace LibflClassLibrary.Circulation.DB
                        " where ReaderId = @ReaderId and A.StatusName not in ('Завершено', 'Для возврата в хранение')";
             }
         }
+
         public string GET_ORDERS_BY_STATUS
         {
             get
@@ -101,6 +102,16 @@ namespace LibflClassLibrary.Circulation.DB
                        
             }
         }
+        public string GET_ORDERS_BY_STATUS_AND_DEP
+        {
+            get
+            {
+                return " select A.* from Circulation..Orders A " +
+                       " where A.StatusName in (@statusName) and IssueDepId = @depId";
+
+            }
+        }
+
 
         public string GET_ORDERS_HISTORY
         {
@@ -388,6 +399,16 @@ namespace LibflClassLibrary.Circulation.DB
             {
                 return  "select * from Circulation..Attendance where cast(cast(AttendanceDate as varchar(11)) as datetime) = cast(cast(getdate() as varchar(11)) as datetime) " +
                         " and DepId = @depId";
+            }
+        }
+
+        public string GET_ORDERS_BY_EXEMPLAR
+        {
+            get
+            {
+                return  " select * from Circulation..Orders A " +
+                        " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                        " where ExemplarId = @idData and fund =@fund ";
             }
         }
 

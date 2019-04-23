@@ -460,6 +460,14 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        public string GET_BJVVV_USER_BY_ID
+        {
+            get
+            {
+                return " select A.LOGIN from BJVVV..USERS A where ID = @id";
+            }
+        }
+
     }
 
 

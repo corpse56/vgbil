@@ -79,6 +79,8 @@ namespace CirculationApp
                 MessageBox.Show(ex.Message);
             }
 
+            ShowIssuedInHallCount();
+
         }
         public delegate void ScanFuncDelegate(string data);
         
@@ -223,6 +225,12 @@ namespace CirculationApp
 
             }
             ShowLog();
+            ShowIssuedInHallCount();
+        }
+
+        private void ShowIssuedInHallCount()
+        {
+            lBooksCountInHall.Text = $"Выдано в зал: {department.GetIssuedInHallBooksCount()} книг";
         }
 
         private void AttendanceScan(string fromport)
@@ -392,6 +400,7 @@ namespace CirculationApp
             bConfirm.Enabled = false;
             bCancel.Enabled = false;
             RPhoto.Image = null;
+            department.ExpectedBar = ExpectingAction.WaitingBook;
         }
         private void ShowLog()
         {
@@ -412,13 +421,13 @@ namespace CirculationApp
                 dgvLog.Columns.Add(c.Key, c.Value);
 
             dgvLog.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgvLog.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dgvLog.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 
             dgvLog.Columns["time"].DefaultCellStyle.Format = "HH:mm";
             dgvLog.Columns["bar"].Width = 100;
-            dgvLog.Columns["title"].Width = 250;
-            dgvLog.Columns["reader"].Width = 100;
-            dgvLog.Columns["status"].Width = 80;
+            dgvLog.Columns["title"].Width = 300;
+            dgvLog.Columns["reader"].Width = 80;
+            dgvLog.Columns["status"].Width = 180;
             dgvLog.Columns["baseName"].Width = 70;
             //dgvLog.Columns["issueType"].Width = 80;
 
@@ -525,6 +534,7 @@ namespace CirculationApp
             {
                 case "Приём/выдача изданий":
                     ShowLog();
+                    ShowIssuedInHallCount();
                     //CancelIssue();
                     label1.Enabled = true;
                     
@@ -1320,6 +1330,17 @@ namespace CirculationApp
         private void bEmulationTransfer_Click(object sender, EventArgs e)
         {
             bMainEmulation_Click(sender, e);
+        }
+
+        private void InvNumberOrderHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fInvNumberOrdersHistory f = new fInvNumberOrdersHistory();
+            f.Show();
+        }
+
+        private void timerIssuedInHallCount_Tick(object sender, EventArgs e)
+        {
+            ShowIssuedInHallCount();
         }
     }
   

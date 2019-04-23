@@ -80,6 +80,15 @@ namespace LibflClassLibrary.BJUsers
                     return ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString();
                 });
         }
+
+        public static BJUserInfo GetUserById(int changer)
+        {
+            BJUserLoader loader = new BJUserLoader("BJVVV");
+            BJUserInfo result = loader.GetUserById(changer);
+            return result;
+
+        }
+
         private static int GetSecretChar(int X)
         {
                 int SEC = 21;

@@ -15,6 +15,7 @@ namespace LibflClassLibrary.Readers.ReadersJSONViewers
         public string MobilePhone { get; set; }
 
         public bool IsRemoteReader { get; set; }
+        public bool IsPasswordExists { get; set; }
 
     }
 }

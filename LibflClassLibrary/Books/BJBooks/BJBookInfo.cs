@@ -66,6 +66,7 @@ namespace LibflClassLibrary.Books.BJBooks
         {
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
             DataTable table = dbw.GetExemplar(inv);
+            if (table.Rows.Count == 0) return null;
             BJBookInfo result = BJBookInfo.GetBookInfoByPIN((int)table.Rows[0]["IDMAIN"], fund);
             return result;
         }

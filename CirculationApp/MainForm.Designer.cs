@@ -35,12 +35,12 @@ namespace CirculationApp
             this.tbCurrentEmployee = new System.Windows.Forms.TextBox();
             this.MainTabContainer = new System.Windows.Forms.TabControl();
             this.MainTab = new System.Windows.Forms.TabPage();
+            this.lBooksCountInHall = new System.Windows.Forms.Label();
             this.bMainEmulation = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
             this.bConfirm = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.RPhoto = new System.Windows.Forms.PictureBox();
             this.lReader = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -50,7 +50,6 @@ namespace CirculationApp
             this.dgvLog = new System.Windows.Forms.DataGridView();
             this.label4 = new System.Windows.Forms.Label();
             this.FormularTab = new System.Windows.Forms.TabPage();
-            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.bReaderRegistration = new System.Windows.Forms.Button();
             this.bComment = new System.Windows.Forms.Button();
             this.bRemoveResponsibility = new System.Windows.Forms.Button();
@@ -74,8 +73,6 @@ namespace CirculationApp
             this.DateIssue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.pbFormular = new System.Windows.Forms.PictureBox();
             this.ReferenceTab = new System.Windows.Forms.TabPage();
             this.bSaveReferenceToFile = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -101,18 +98,24 @@ namespace CirculationApp
             this.обращаемостьКнигToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокКнигСКоторыхСнятаОтветственностьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.списокНарушителейСроковПользованияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainMenu = new System.Windows.Forms.MenuStrip();
+            this.заказToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.историяЗаказовПоИнвентарномуНомеруToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbLogo = new System.Windows.Forms.PictureBox();
+            this.RPhoto = new System.Windows.Forms.PictureBox();
+            this.pbFormular = new System.Windows.Forms.PictureBox();
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
+            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.timerIssuedInHallCount = new System.Windows.Forms.Timer(this.components);
             this.MainTabContainer.SuspendLayout();
             this.MainTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
             this.FormularTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFormular)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).BeginInit();
             this.ReferenceTab.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Statistics)).BeginInit();
@@ -120,7 +123,10 @@ namespace CirculationApp
             this.AcceptBooksTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTransfer)).BeginInit();
             this.contextMenuStrip2.SuspendLayout();
+            this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).BeginInit();
             this.SuspendLayout();
             // 
             // label3
@@ -178,6 +184,7 @@ namespace CirculationApp
             // 
             // MainTab
             // 
+            this.MainTab.Controls.Add(this.lBooksCountInHall);
             this.MainTab.Controls.Add(this.bMainEmulation);
             this.MainTab.Controls.Add(this.bCancel);
             this.MainTab.Controls.Add(this.bConfirm);
@@ -195,6 +202,15 @@ namespace CirculationApp
             this.MainTab.TabIndex = 0;
             this.MainTab.Text = "Приём/выдача изданий";
             this.MainTab.UseVisualStyleBackColor = true;
+            // 
+            // lBooksCountInHall
+            // 
+            this.lBooksCountInHall.AutoSize = true;
+            this.lBooksCountInHall.Location = new System.Drawing.Point(703, 8);
+            this.lBooksCountInHall.Name = "lBooksCountInHall";
+            this.lBooksCountInHall.Size = new System.Drawing.Size(105, 17);
+            this.lBooksCountInHall.TabIndex = 8;
+            this.lBooksCountInHall.Text = "Выдано в зал: ";
             // 
             // bMainEmulation
             // 
@@ -231,6 +247,7 @@ namespace CirculationApp
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.Green;
@@ -242,7 +259,7 @@ namespace CirculationApp
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.RPhoto);
             this.groupBox2.Controls.Add(this.lReader);
@@ -252,20 +269,6 @@ namespace CirculationApp
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Читатель";
-            // 
-            // RPhoto
-            // 
-            this.RPhoto.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RPhoto.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.RPhoto.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.RPhoto.Location = new System.Drawing.Point(589, 16);
-            this.RPhoto.Name = "RPhoto";
-            this.RPhoto.Size = new System.Drawing.Size(93, 101);
-            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.RPhoto.TabIndex = 6;
-            this.RPhoto.TabStop = false;
-            this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
             // 
             // lReader
             // 
@@ -277,9 +280,7 @@ namespace CirculationApp
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.lTitle);
             this.groupBox1.Controls.Add(this.lAuthor);
@@ -329,7 +330,8 @@ namespace CirculationApp
             // 
             this.dgvLog.AllowUserToAddRows = false;
             this.dgvLog.AllowUserToDeleteRows = false;
-            this.dgvLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLog.Location = new System.Drawing.Point(12, 32);
@@ -379,14 +381,6 @@ namespace CirculationApp
             this.FormularTab.TabIndex = 3;
             this.FormularTab.Text = "Формуляр читателя";
             this.FormularTab.UseVisualStyleBackColor = true;
-            // 
-            // readerRightsView1
-            // 
-            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
-            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
-            this.readerRightsView1.Name = "readerRightsView1";
-            this.readerRightsView1.Size = new System.Drawing.Size(536, 97);
-            this.readerRightsView1.TabIndex = 26;
             // 
             // bReaderRegistration
             // 
@@ -630,29 +624,6 @@ namespace CirculationApp
             this.DateVozvFact.ReadOnly = true;
             this.DateVozvFact.Width = 80;
             // 
-            // Penalt
-            // 
-            this.Penalt.HeaderText = "Нарушение";
-            this.Penalt.Name = "Penalt";
-            this.Penalt.ReadOnly = true;
-            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Penalt.Width = 85;
-            // 
-            // pbFormular
-            // 
-            this.pbFormular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbFormular.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbFormular.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.pbFormular.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.pbFormular.Location = new System.Drawing.Point(564, 6);
-            this.pbFormular.Name = "pbFormular";
-            this.pbFormular.Size = new System.Drawing.Size(146, 160);
-            this.pbFormular.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbFormular.TabIndex = 20;
-            this.pbFormular.TabStop = false;
-            this.pbFormular.Click += new System.EventHandler(this.pbFormular_Click);
-            // 
             // ReferenceTab
             // 
             this.ReferenceTab.Controls.Add(this.bSaveReferenceToFile);
@@ -791,10 +762,16 @@ namespace CirculationApp
             // 
             this.dgvTransfer.AllowUserToAddRows = false;
             this.dgvTransfer.AllowUserToDeleteRows = false;
+            this.dgvTransfer.AllowUserToOrderColumns = true;
+            this.dgvTransfer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvTransfer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTransfer.Location = new System.Drawing.Point(6, 37);
+            this.dgvTransfer.MultiSelect = false;
             this.dgvTransfer.Name = "dgvTransfer";
             this.dgvTransfer.RowHeadersVisible = false;
+            this.dgvTransfer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTransfer.Size = new System.Drawing.Size(1128, 428);
             this.dgvTransfer.TabIndex = 3;
             // 
@@ -810,6 +787,7 @@ namespace CirculationApp
             // 
             // bEmulationTransfer
             // 
+            this.bEmulationTransfer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.bEmulationTransfer.Location = new System.Drawing.Point(1031, 471);
             this.bEmulationTransfer.Name = "bEmulationTransfer";
             this.bEmulationTransfer.Size = new System.Drawing.Size(103, 23);
@@ -906,15 +884,68 @@ namespace CirculationApp
             this.списокНарушителейСроковПользованияToolStripMenuItem.Text = "Список нарушителей сроков пользования";
             this.списокНарушителейСроковПользованияToolStripMenuItem.Click += new System.EventHandler(this.списокНарушителейСроковПользованияToolStripMenuItem_Click);
             // 
+            // MainMenu
+            // 
+            this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.заказToolStripMenuItem});
+            this.MainMenu.Location = new System.Drawing.Point(0, 0);
+            this.MainMenu.Name = "MainMenu";
+            this.MainMenu.Size = new System.Drawing.Size(1176, 24);
+            this.MainMenu.TabIndex = 12;
+            this.MainMenu.Text = "menuStrip1";
+            // 
+            // заказToolStripMenuItem
+            // 
+            this.заказToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.историяЗаказовПоИнвентарномуНомеруToolStripMenuItem});
+            this.заказToolStripMenuItem.Name = "заказToolStripMenuItem";
+            this.заказToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
+            this.заказToolStripMenuItem.Text = "Заказ";
+            // 
+            // историяЗаказовПоИнвентарномуНомеруToolStripMenuItem
+            // 
+            this.историяЗаказовПоИнвентарномуНомеруToolStripMenuItem.Name = "историяЗаказовПоИнвентарномуНомеруToolStripMenuItem";
+            this.историяЗаказовПоИнвентарномуНомеруToolStripMenuItem.Size = new System.Drawing.Size(310, 22);
+            this.историяЗаказовПоИнвентарномуНомеруToolStripMenuItem.Text = "История заказов по инвентарному номеру";
+            this.историяЗаказовПоИнвентарномуНомеруToolStripMenuItem.Click += new System.EventHandler(this.InvNumberOrderHistoryToolStripMenuItem_Click);
+            // 
             // pbLogo
             // 
             this.pbLogo.Image = global::CirculationApp.Properties.Resources.Artboard2;
-            this.pbLogo.Location = new System.Drawing.Point(15, 12);
+            this.pbLogo.Location = new System.Drawing.Point(15, 27);
             this.pbLogo.Name = "pbLogo";
-            this.pbLogo.Size = new System.Drawing.Size(203, 99);
+            this.pbLogo.Size = new System.Drawing.Size(203, 84);
             this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbLogo.TabIndex = 10;
             this.pbLogo.TabStop = false;
+            // 
+            // RPhoto
+            // 
+            this.RPhoto.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RPhoto.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.RPhoto.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.RPhoto.Location = new System.Drawing.Point(589, 16);
+            this.RPhoto.Name = "RPhoto";
+            this.RPhoto.Size = new System.Drawing.Size(93, 101);
+            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.RPhoto.TabIndex = 6;
+            this.RPhoto.TabStop = false;
+            this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
+            // 
+            // pbFormular
+            // 
+            this.pbFormular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbFormular.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbFormular.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.pbFormular.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.pbFormular.Location = new System.Drawing.Point(564, 6);
+            this.pbFormular.Name = "pbFormular";
+            this.pbFormular.Size = new System.Drawing.Size(146, 160);
+            this.pbFormular.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbFormular.TabIndex = 20;
+            this.pbFormular.TabStop = false;
+            this.pbFormular.Click += new System.EventHandler(this.pbFormular_Click);
             // 
             // dataGridViewButtonColumn1
             // 
@@ -925,12 +956,35 @@ namespace CirculationApp
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
             // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(536, 97);
+            this.readerRightsView1.TabIndex = 26;
+            // 
+            // Penalt
+            // 
+            this.Penalt.HeaderText = "Нарушение";
+            this.Penalt.Name = "Penalt";
+            this.Penalt.ReadOnly = true;
+            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Penalt.Width = 85;
+            // 
+            // timerIssuedInHallCount
+            // 
+            this.timerIssuedInHallCount.Interval = 20000;
+            this.timerIssuedInHallCount.Tick += new System.EventHandler(this.timerIssuedInHallCount_Tick);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.bConfirm;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1176, 684);
+            this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.pbLogo);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.MainTabContainer);
@@ -939,6 +993,7 @@ namespace CirculationApp
             this.Controls.Add(this.label3);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.MainMenu;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "Книговыдача ВГБИЛ";
@@ -947,14 +1002,12 @@ namespace CirculationApp
             this.MainTab.ResumeLayout(false);
             this.MainTab.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
             this.FormularTab.ResumeLayout(false);
             this.FormularTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFormular)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).EndInit();
             this.ReferenceTab.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
@@ -965,7 +1018,11 @@ namespace CirculationApp
             this.AcceptBooksTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTransfer)).EndInit();
             this.contextMenuStrip2.ResumeLayout(false);
+            this.MainMenu.ResumeLayout(false);
+            this.MainMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1047,6 +1104,11 @@ namespace CirculationApp
         private System.Windows.Forms.TabPage AcceptBooksTab;
         private System.Windows.Forms.Button bEmulationTransfer;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lBooksCountInHall;
+        private System.Windows.Forms.MenuStrip MainMenu;
+        private System.Windows.Forms.ToolStripMenuItem заказToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem историяЗаказовПоИнвентарномуНомеруToolStripMenuItem;
+        private System.Windows.Forms.Timer timerIssuedInHallCount;
         //private System.Windows.Forms.DataGridView dgvTransfer;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;

@@ -19,6 +19,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Readers
             result.MobilePhone = reader.MobileTelephone;
             result.Email = reader.Email;
             result.IsRemoteReader = reader.IsRemoteReader;
+            result.IsPasswordExists = !string.IsNullOrEmpty(reader.HashedPassword);
             return result;
         }
     }

@@ -187,7 +187,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TurnDigBooks", "TurnDigBook
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TurnDigBooksAdmin", "TurnDigBooksAdmin\", "{B29D62ED-10D1-43C2-A8B1-1D8442D668D7}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		ProjectReferences = "{ca4020f7-b048-4dfa-9e13-3e04db83b093}|LibflClassLibrary.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/TurnDigBooksAdmin"
 		Debug.AspNetCompiler.PhysicalPath = "TurnDigBooksAdmin\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\TurnDigBooksAdmin\"

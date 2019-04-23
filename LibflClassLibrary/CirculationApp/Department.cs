@@ -96,8 +96,6 @@ namespace CirculationApp
         }
 
 
-        //0 - успех
-        //1 - нет или закончились права для выдачи на дом
         public void IssueBookToReader()
         {
             try
@@ -168,6 +166,12 @@ namespace CirculationApp
                 }
 
             }
+        }
+
+        public int GetIssuedInHallBooksCount()
+        {
+            if (bjUser == null) return 0;
+            return ci.GetIssuedInHallBooksCount(bjUser);
         }
 
         //// public int GetCountOfPrologedTimes(int value)

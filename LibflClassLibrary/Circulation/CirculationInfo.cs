@@ -22,6 +22,8 @@ namespace LibflClassLibrary.Circulation
     public class CirculationInfo
     {
         CirculationLoader loader;
+
+
         public CirculationInfo()
         {
             loader = new CirculationLoader();
@@ -106,6 +108,10 @@ namespace LibflClassLibrary.Circulation
             //{ 1999,   "Невозможно определить доступ"},
         }
 
+        public List<OrderInfo> GetOrders(int idData, string fund)
+        {
+            return loader.GetOrders( idData,  fund);
+        }
 
         internal int GetAttendance(BJUserInfo bjUser)
         {
@@ -153,6 +159,11 @@ namespace LibflClassLibrary.Circulation
             {
                 throw new Exception("C021");
             }
+        }
+
+        internal int GetIssuedInHallBooksCount(BJUserInfo bjUser)
+        {
+            return loader.GetIssuedInHallBooksCount(bjUser);
         }
 
 

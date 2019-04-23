@@ -97,6 +97,12 @@
     <Compile Include="History.Designer.cs">
       <DependentUpon>History.cs</DependentUpon>
     </Compile>
+    <Compile Include="InvNumberOrdersHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InvNumberOrdersHistory.Designer.cs">
+      <DependentUpon>InvNumberOrdersHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,9 @@
     <EmbeddedResource Include="History.resx">
       <DependentUpon>History.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InvNumberOrdersHistory.resx">
+      <DependentUpon>InvNumberOrdersHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

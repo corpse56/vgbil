@@ -136,6 +136,20 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
+        internal List<OrderInfo> GetOrders(int idData, string fund)
+        {
+            DataTable table = dbWrapper.GetOrdersByExemplar(idData, fund);
+            List<OrderInfo> Orders = new List<OrderInfo>();
+            int i = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                i++;
+                OrderInfo order = FillOrderFromDataRow(row);
+                Orders.Add(order);
+            }
+            return Orders;
+        }
+
         internal int GetAttendance(BJUserInfo bjUser)
         {
             return dbWrapper.GetAttendance(bjUser.SelectedUserStatus.UnifiedLocationCode).Rows.Count;
@@ -169,36 +183,10 @@ namespace LibflClassLibrary.Circulation.Loaders
 
         }
 
-        internal List<OrderInfo> GetOrdersHistoryForStorage(int depId, string depName)
+        internal int GetIssuedInHallBooksCount(BJUserInfo bjUser)
         {
-            DataTable table = dbWrapper.GetOrdersHistoryForStorage(depId);
-            List<OrderInfo> Orders = new List<OrderInfo>();
-            int i = 0;
-            foreach (DataRow row in table.Rows)
-            {
-                i++;
-                OrderInfo order = FillOrderFromDataRow(row);
-                Orders.Add(order);
-            }
-            Predicate<OrderInfo> isWrongFloor = delegate (OrderInfo order)
-            {
-                if (order.ExemplarId == 0)
-                {
-                    return true;
-                }
-                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
-                if (exemplar.Fields["899$a"].ToString() == depName)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            };
-            Orders.RemoveAll(isWrongFloor);
-
-            return Orders;
+            DataTable table = dbWrapper.GetOrders(CirculationStatuses.IssuedInHall.Value, bjUser.SelectedUserStatus.UnifiedLocationCode);
+            return table.Rows.Count;
         }
 
         internal List<OrderInfo> GetOrdersForStorage(int depId, string depName)
@@ -212,23 +200,8 @@ namespace LibflClassLibrary.Circulation.Loaders
                 OrderInfo order = FillOrderFromDataRow(row);
                 Orders.Add(order);
             }
-            Predicate<OrderInfo> isWrongFloor = delegate (OrderInfo order)
-            {
-                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
-                if (exemplar.Fields["899$a"].ToString() == depName)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            };
-
-            Orders.RemoveAll(isWrongFloor);
-
+            Orders.RemoveAll(x => isWrongFloorPredicate(depName, x));
             return Orders;
-
         }
         internal List<OrderInfo> GetOrdersForStorage(int depId, string depName, string statusName)
         {
@@ -241,22 +214,41 @@ namespace LibflClassLibrary.Circulation.Loaders
                 OrderInfo order = FillOrderFromDataRow(row);
                 Orders.Add(order);
             }
-            Predicate<OrderInfo> isWrongFloor = delegate (OrderInfo order)
-            {
-                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
-                if (exemplar.Fields["899$a"].ToString() == depName)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            };
-
-            Orders.RemoveAll(isWrongFloor);
+            Orders.RemoveAll(x => isWrongFloorPredicate(depName, x));
 
             return Orders;
+        }
+        internal List<OrderInfo> GetOrdersHistoryForStorage(int depId, string depName)
+        {
+            DataTable table = dbWrapper.GetOrdersHistoryForStorage(depId);
+            List<OrderInfo> Orders = new List<OrderInfo>();
+            int i = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                i++;
+                OrderInfo order = FillOrderFromDataRow(row);
+                Orders.Add(order);
+            }
+            Orders.RemoveAll(x => isWrongFloorPredicate(depName, x));
+
+            return Orders;
+        }
+        private bool isWrongFloorPredicate(string depName, OrderInfo order)
+        {
+            if (order.ExemplarId == 0)
+            {
+                return true;
+            }
+            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+            if (exemplar == null) return true;
+            if (exemplar.Fields["899$a"].ToString() == depName)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
 
@@ -472,7 +464,6 @@ namespace LibflClassLibrary.Circulation.Loaders
                 Orders.Add(order);
             }
             return Orders;
-
         }
 
     }
