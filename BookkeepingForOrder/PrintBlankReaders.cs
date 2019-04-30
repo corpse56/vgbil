@@ -10,6 +10,8 @@ using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.ReadersRight;
 using LibflClassLibrary.Readers.ReadersRights;
+using System.Windows.Forms;
+using LibflClassLibrary.Circulation;
 
 namespace BookkeepingForOrder
 {
@@ -115,7 +117,14 @@ namespace BookkeepingForOrder
         }
         public void Print()
         {
-            pd.Print();
+            try
+            {
+                pd.Print();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         void pd_PrintPage(object sender, PrintPageEventArgs e)
         {
@@ -343,9 +352,20 @@ namespace BookkeepingForOrder
             else
             {
                 #region обычный читатель
-                BJBookInfo Book = BJBookInfo.GetBookInfoByInventoryNumber(dg.SelectedRows[0].Cells["inv"].Value.ToString(), "BJVVV");
-                BJExemplarInfo Exemplar = BJExemplarInfo.GetExemplarByInventoryNumber(dg.SelectedRows[0].Cells["inv"].Value.ToString(), "BJVVV");
+                //BJBookInfo Book = BJBookInfo.GetBookInfoByInventoryNumber(dg.SelectedRows[0].Cells["inv"].Value.ToString(), "BJVVV");
+                //BJExemplarInfo Exemplar = BJExemplarInfo.GetExemplarByInventoryNumber(dg.SelectedRows[0].Cells["inv"].Value.ToString(), "BJVVV");
+                CirculationInfo ci = new CirculationInfo();
+                
+                OrderInfo order = ci.GetOrder(Convert.ToInt32(dg.SelectedRows[0].Cells["orderid"].Value));
 
+                BJExemplarInfo Exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund );
+                //BJBookInfo Book = BJBookInfo.GetBookInfoByPIN(order.BookId);
+                if (Exemplar == null)
+                {
+                    throw new Exception("Ошибка при печати заказа. Обработайте этот заказ вручную, пока мы не устраним ошибку с печатью этого заказа.");
+                    //MessageBox.Show("Ошибка при печати заказа. Обработайте этот заказ вручную, пока мы не устраним ошибку с печатью этого заказа.");
+                    //return;
+                }
                 string abonement = GetAbonement(dg.SelectedRows[0].Cells["readerid"].Value.ToString());
                 string str = "Билет № " + dg.SelectedRows[0].Cells["readerid"].Value.ToString();
                 //string inv = DS.Tables["t"].Rows[0][1].ToString();

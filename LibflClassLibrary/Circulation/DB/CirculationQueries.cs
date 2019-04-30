@@ -33,10 +33,15 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return " select top 1000 A.*,B.Refusual from Circulation..Orders A " +
-                       " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName " +
-                       " where A.StatusName not in ('Заказ сформирован', 'Электронная выдача' ) " +
-                       " and A.StartDate >= dateadd(day, -10, getdate())  " +
+                //return " select top 1000 A.*,B.Refusual from Circulation..Orders A " +
+                //       " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName " +
+                //       " where A.StatusName not in ('Заказ сформирован', 'Электронная выдача' ) " +
+                //       " and A.StartDate >= dateadd(day, -10, getdate())  " +
+                //       " order by A.Id desc";
+                return " select top 1000 A.*,B.Refusual from Circulation..OrdersFlow B " +
+                       " left join Circulation..Orders A on A.ID = B.OrderId " +
+                       " where B.StatusName in ('Сотрудник хранения подбирает книгу', 'Отказ' ) " +
+                       " and A.StartDate >= dateadd(day, -10, getdate()) and B.DepartmentId = @depId " +
                        " order by A.Id desc";
             }
         }

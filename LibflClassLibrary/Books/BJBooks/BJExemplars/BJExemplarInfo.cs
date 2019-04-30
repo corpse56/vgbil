@@ -109,7 +109,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             if (exemplar.Fields["482$a"].MNFIELD != 0)//это приплётышь
             {
                 BJConvoluteInfo convolute = BJExemplarInfo.GetConvoluteInfo(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
-                BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
+                //BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
                 if (convolute != null)//нашёлся конволют
                 {
                     exemplar.ConvolutePin = $"{convolute.Fund}_{convolute.IDMAIN}";
@@ -183,6 +183,12 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                         }
                     } else
                     if ((exemplar.Fields["899$b"].ToLower() == "абонемент") && (!exemplar.Fields["899$a"].ToLower().Contains("книгохране")) && (exemplar.Fields["899$a"].ToLower().Contains("абонем")))
+                    {
+                        access.Access = 1006;
+                        access.MethodOfAccess = 4001;
+                        return access;
+                    }
+                    if ((exemplar.Fields["899$b"].ToLower() == "вх") && (!exemplar.Fields["899$a"].ToLower().Contains("книгохране")) && (exemplar.Fields["899$a"].ToLower().Contains("абонем")))
                     {
                         access.Access = 1006;
                         access.MethodOfAccess = 4001;

@@ -74,7 +74,7 @@ namespace CirculationAppAdmin
             //cdb.ChangeOrderStatus(6048, "Завершено", 1, 2033, null);
             //cdb.ChangeOrderStatus(6434, "Завершено", 1, 2033, null);
             //cdb.ChangeOrderStatus(6435, "Завершено", 1, 2033, null);
-            cdb.ChangeOrderStatus(5871, "Завершено", 1, 2033, null);
+            cdb.ChangeOrderStatus(1755, "Завершено", 1, 2033, null);
             
 
         }

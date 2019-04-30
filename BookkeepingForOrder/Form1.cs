@@ -65,7 +65,15 @@ namespace BookkeepingForOrder
             }
             user = fAuth.User;
             label1.Text = $"{user.SelectedUserStatus.DepName} {user.FIO}";
-            this.ForSQL = $" and mhran.ID =  {user.SelectedUserStatus.DepId}  ";
+            //для 0 и 4 этажа требования выводить в одну таблицу.
+            if (user.SelectedUserStatus.DepId == 8 || user.SelectedUserStatus.DepId == 15)
+            {
+                this.ForSQL = $" and mhran.ID in (8, 15) ";
+            }
+            else
+            {
+                this.ForSQL = $" and mhran.ID =  {user.SelectedUserStatus.DepId}  ";
+            }
             db = new DbForEmployee(this.OrderTableType, this.BASE, this);
         }
         bool InitReloadReaderOrders = true;
@@ -87,7 +95,8 @@ namespace BookkeepingForOrder
                     new KeyValuePair<string, string> ( "status", "Статус заказа"),
                     new KeyValuePair<string, string> ( "note", "Инв. метка"),
                     new KeyValuePair<string, string> ( "pubdate", "Дата издания"),
-                    new KeyValuePair<string, string> ( "refusual", "Причина отказа")
+                    new KeyValuePair<string, string> ( "refusual", "Причина отказа"),
+                    new KeyValuePair<string, string> ( "iddata", "iddata")
                 };
                 foreach (var c in columns)
                     dgwReaders.Columns.Add(c.Key, c.Value);
@@ -107,6 +116,7 @@ namespace BookkeepingForOrder
                 dgwReaders.Columns["status"].Width = 100;
                 dgwReaders.Columns["note"].Width = 60;
                 dgwReaders.Columns["pubdate"].Visible = false;
+                dgwReaders.Columns["iddata"].Visible = false;
                 InitReloadReaderOrders = false;
             }
             else
@@ -148,6 +158,7 @@ namespace BookkeepingForOrder
                 row.Cells["status"].Value = order.StatusName;
                 row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
                 row.Cells["pubdate"].Value = order.Book.PublishDate;
+                row.Cells["iddata"].Value = order.ExemplarId;
                 row.Cells["refusual"].Value = string.IsNullOrEmpty(order.Refusual) ? "<нет>" : order.Refusual;
             }
         }
@@ -173,7 +184,8 @@ namespace BookkeepingForOrder
                     new KeyValuePair<string, string> ( "status", "Статус заказа"),
                     new KeyValuePair<string, string> ( "note", "Инв. метка"),
                     new KeyValuePair<string, string> ( "pubdate", "Дата издания"),
-                    new KeyValuePair<string, string> ( "refusual", "Причина отказа")
+                    new KeyValuePair<string, string> ( "refusual", "Причина отказа"),
+                    new KeyValuePair<string, string> ( "iddata", "iddata")
                 };
                 foreach (var c in columns)
                     dgwRHis.Columns.Add(c.Key, c.Value);
@@ -193,6 +205,7 @@ namespace BookkeepingForOrder
                 dgwRHis.Columns["status"].Width = 100;
                 dgwRHis.Columns["note"].Width = 60;
                 dgwRHis.Columns["pubdate"].Visible = false;
+                dgwRHis.Columns["iddata"].Visible = false;
                 InitReloadReaderHistoryOrders = false;
             }
             else
@@ -221,6 +234,7 @@ namespace BookkeepingForOrder
                 row.Cells["status"].Value = order.StatusName;
                 row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
                 row.Cells["pubdate"].Value = order.Book.PublishDate;
+                row.Cells["iddata"].Value = order.ExemplarId;
                 row.Cells["refusual"].Value = string.IsNullOrEmpty(order.Refusual) ? "<нет>" : order.Refusual;
             }
         }
@@ -402,116 +416,6 @@ namespace BookkeepingForOrder
         }
 
 
-        public bool Login(string login, string pass)
-        {//                                    SELECT Employee.* FROM Employee WHERE (((Employee.Login)="1") AND ((Employee.Password)="1"));
-
-            //OleDA.SelectCommand.CommandText = "SELECT * FROM Employee WHERE (((Employee.Login)='" + login + "') AND ((Employee.Password)='" + pass + "'))";
-            SqlDA.SelectCommand.CommandText = "select USERS.ID id,USERS.NAME uname,dpt.NAME dname,USERS.DEPT iddp from BJVVV..USERS join BJVVV..LIST_8 dpt on USERS.DEPT = dpt.ID where lower([LOGIN]) = '" + login.ToLower() + "' and lower(PASSWORD) = '" + pass.ToLower() + "'";
-
-            //ReaderMain.Tables.Clear();
-            DataSet R = new DataSet();
-            if (SqlDA.Fill(R) != 0)
-            {
-                //F1.textBox1.Text = R.Tables[0].Rows[0]["FIO"].ToString();
-                this.EmpID = R.Tables[0].Rows[0]["ID"].ToString();
-                this.FIO = R.Tables[0].Rows[0]["uname"].ToString();
-                this.FloorID = R.Tables[0].Rows[0]["iddp"].ToString();
-                string tmp = R.Tables[0].Rows[0]["dname"].ToString();
-                switch (tmp)
-                {
-                    case "…Хран… Сектор книгохранения - 2 этаж":
-                        {
-                            this.Floor = "…Хран… Сектор книгохранения - 2 этаж";
-                            this.ForSQL = " and mhran.ID = " + this.FloorID + " ";
-                            this.BASE = "BJVVV";
-                            this.OrderTableType = "Orders";
-                            //this.ForSQL = "and mhran.NAME = 'Книгохранение - 2 этаж' ";
-                            break;
-                        }
-                    case "…Хран… Сектор книгохранения - 3 этаж":
-                        {
-                            this.Floor = "…Хран… Сектор книгохранения - 3 этаж";
-                            //this.ForSQL = "and mhran.NAME = 'Книгохранение - 3 этаж' ";
-                            this.ForSQL = " and mhran.ID = " + this.FloorID + " ";
-                            this.BASE = "BJVVV";
-                            this.OrderTableType = "Orders";
-                            break;
-                        }
-                    case "…Хран… Сектор книгохранения - 4 этаж":
-                        {
-                            this.Floor = "…Хран… Сектор книгохранения - 4 этаж";
-                            this.ForSQL = " and ( (mhran.ID = 8 ) or (mhran.ID = 15)) ";
-                            //this.ForSQL = "and ((mhran.NAME = 'Книгохранение - 4 этаж') or (mhran.NAME = 'Книгохранение - цоколь' )) ";
-                            this.BASE = "BJVVV";
-                            this.OrderTableType = "Orders";
-                            break;
-                        }
-                    case "…Хран… Сектор книгохранения - Новая периодика":
-                        {
-                            this.Floor = "…Хран… Сектор книгохранения - Новая периодика";
-                            this.ForSQL = " and mhran.ID = " + this.FloorID + " ";
-                            this.BASE = "BJVVV";
-                            this.OrderTableType = "Orders";
-                            break;
-                        }
-                    case "…Хран… Сектор книгохранения - 5 этаж":
-                        {
-                            this.Floor = "…Хран… Сектор книгохранения - 5 этаж";
-                            this.ForSQL = " and mhran.ID = " + this.FloorID + " ";
-                            //this.ForSQL = "and mhran.NAME = 'Книгохранение - 5 этаж' ";
-                            this.BASE = "BJVVV";
-                            this.OrderTableType = "Orders";
-                            break;
-                        }
-                    case "…Хран… Сектор книгохранения - 6 этаж":
-                        {
-                            this.Floor = "…Хран… Сектор книгохранения - 6 этаж";
-                            this.ForSQL = " and mhran.ID = " + this.FloorID + " ";
-                            //this.ForSQL = "and mhran.NAME = 'Книгохранение - 6 этаж' ";
-                            this.BASE = "BJVVV";
-                            this.OrderTableType = "Orders";
-                            break;
-                        }
-                    case "…Хран… Сектор книгохранения - 7 этаж":
-                        {
-                            this.Floor = "…Хран… Сектор книгохранения - 7 этаж";
-                            this.ForSQL = " and mhran.ID = " + this.FloorID + " ";
-                            //this.ForSQL = "and mhran.NAME = 'Книгохранение - 7 этаж' ";
-                            this.BASE = "BJVVV";
-                            this.OrderTableType = "Orders";
-                            break;
-                        }
-                    case "…Хран… Сектор книгохранения - 0 этаж":
-                        {
-                            this.Floor = "…Хран… Сектор книгохранения - 0 этаж";
-                            this.ForSQL = " and ( (mhran.ID = 8 ) or (mhran.ID = 15)) ";
-                            //this.ForSQL = "and ((mhran.NAME = 'Книгохранение - 4 этаж') or (mhran.NAME = 'Книгохранение - цоколь' ))";
-                            this.BASE = "BJVVV";
-                            this.OrderTableType = "Orders";
-                            break;
-                        }
-                    case "…Хран… Сектор книгохранения - Абонемент":
-                        {
-                            this.Floor = "…Хран… Сектор книгохранения - Абонемент";
-                            this.ForSQL = " and ( (mhran.ID = 47 ) or (mhran.ID = 37)) ";
-                            //this.ForSQL = "and ((mhran.NAME = 'Книгохранение - 4 этаж') or (mhran.NAME = 'Книгохранение - цоколь' ))";
-                            this.BASE = "BJVVV";
-                            this.OrderTableType = "Orders";
-                            break;
-                        }
-                    default:
-                        {
-                            MessageBox.Show("Вы не сотрудник книгохранения!");
-                            return false;
-                        }
-                }
-                return true;
-            }
-            else
-                return false;
-        }
-
-
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -538,26 +442,12 @@ namespace BookkeepingForOrder
                 case "tpReaderOrders":
                     {
                         ShowReaderOrders();
-                        //FormReadersTable();
-                        //FormReaderTable_Interface();
-                        //if (ReadersTable.Rows.Count == 0)
-                        //    button8.Enabled = false;
-                        //else
-                        //    button8.Enabled = true;
-
                         tabControl1.TabPages.RemoveByKey("tab2");
                         break;
                     }
                 case "tpReaderHistoryOrders":
                     {
                         ShowReaderHistoryOrders();
-                        //FormReadersHisTable();
-                        //FormReaderHisTable_Interface();
-                        //if (ReadersHisTable.Rows.Count == 0)
-                        //    bPrintReaderOrder.Enabled = false;
-                        //else
-                        //    bPrintReaderOrder.Enabled = true;
-
                         tabControl1.TabPages.RemoveByKey("tab2");
                         break;
                     }
@@ -945,12 +835,6 @@ namespace BookkeepingForOrder
         }
 
 
-        private void button6_Click(object sender, EventArgs e)
-        {
-            Form2 f2 = new Form2(dgwRHis, this);
-            f2.Show();
-        }
-
 
         private void button7_Click(object sender, EventArgs e)
         {
@@ -982,28 +866,6 @@ namespace BookkeepingForOrder
             db.RefusualEmployee(rf.Cause, dgwHis.SelectedRows[0].Cells["oid"].Value.ToString());
             FormHisTable();
             FormHisTable_Interface();
-        }
-
-        private void button11_Click_1(object sender, EventArgs e)//отказ для читателей
-        {
-            if (dgwRHis.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("Не выбрана ни одна строка!");
-                return;
-            }
-            if (dgwRHis.SelectedRows[0].Cells["NN13"].Value.ToString() != "Сотрудник книгохранения обрабатывает заказ")
-            {
-                MessageBox.Show("Вы не можете дать отказ на заказ с таким статусом!");
-                return;
-            }
-            Refusal rf = new Refusal(dgwRHis.SelectedRows[0].Cells["oid"].Value.ToString());
-            rf.ShowDialog();
-            if (rf.Cause == "")
-                return;
-            db.RefusualReader(rf.Cause, dgwRHis.SelectedRows[0].Cells["oid"].Value.ToString());
-            //FormReadersHisTable();
-            //FormReaderHisTable_Interface();
-
         }
 
 

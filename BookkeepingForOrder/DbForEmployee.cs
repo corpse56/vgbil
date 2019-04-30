@@ -65,40 +65,6 @@ namespace BookkeepingForOrder
             //return this.GetCorrectTable(ds.Tables["orders"]);
             return ds.Tables["orders"];
         }
-        internal DataTable GetReaders(string name)
-        {
-            SqlDA.SelectCommand.CommandText = "select O.ID oid, ISNULL(O.ALGIDM,O.ID_Book_EC) as idm,  avt.PLAIN avt,  " +
-                "(case when O.ALGIDM is null then zag.PLAIN else zag.PLAIN + ' [Сплетено]' end) zag, O.InvNumber as inv,  " +
-                "Reservation_R.dbo.GetSHIFRBJVVVINVIDDATA(O.InvNumber,inv.IDDATA) shifr , " +
-                " O.ID_Reader as idr,  " +
-                " cast(fio.NumberReader as nvarchar)+'; ' + fio.FamilyName +' '+ fio.[Name]+' ' + ISNULL(fio.FatherName,'')  dp, " +
-                " cast(fio.NumberReader as nvarchar) fio, O.Start_Date startd,ntp.PLAIN note,izd.PLAIN izd, gizd.PLAIN gizd  " +
-                "from Reservation_O.." + this.OrdTableType + " O  " +
-                "left join BJVVV..DATAEXT invd on O.IDDATA = invd.IDDATA and invd.MNFIELD = 899 and invd.MSFIELD = '$p' " +
-                "left join BJVVV..DATAEXTPLAIN inv on inv.IDDATAEXT = invd.ID " +
-                "left join BJVVV..DATAEXT nt on ISNULL(O.ALGIDM,O.ID_Book_EC) = nt.IDMAIN and nt.MNFIELD = 899 and nt.MSFIELD = '$x' and nt.IDDATA = O.IDDATA " +
-                "left join BJVVV..DATAEXTPLAIN ntp on nt.ID = ntp.IDDATAEXT  " +
-                "left join BJVVV..DATAEXT dzag on ISNULL(O.ALGIDM,O.ID_Book_EC) = dzag.IDMAIN and dzag.MNFIELD = 200 and dzag.MSFIELD = '$a'  " +
-                "left join BJVVV..DATAEXTPLAIN zag on dzag.ID = zag.IDDATAEXT  " +
-                " left join BJVVV..DATAEXT dizd on dizd.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 2100 and B.MSFIELD = '$d')" +
-                "left join BJVVV..DATAEXTPLAIN izd on dizd.ID = izd.IDDATAEXT  " +
-                " left join BJVVV..DATAEXT mizd on mizd.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 210 and B.MSFIELD = '$a')" +
-                "left join BJVVV..DATAEXTPLAIN gizd on mizd.ID = gizd.IDDATAEXT  " +
-                " left join BJVVV..DATAEXT davt on davt.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 700 and B.MSFIELD = '$a')" +
-                "left join BJVVV..DATAEXTPLAIN avt on davt.ID = avt.IDDATAEXT  " +
-                "left join BJVVV..DATAEXT dmhran on ISNULL(O.ALGIDM,O.ID_Book_EC) = dmhran.IDMAIN and dmhran.IDDATA = inv.IDDATA and dmhran.MNFIELD = 899 and dmhran.MSFIELD = '$a'  " +
-                "left JOIN BJVVV..DATAEXTPLAIN MHRANshort on dmhran.ID = MHRANshort.IDDATAEXT  " +
-                " left join BJVVV..LIST_8 mhran on dmhran.IDINLIST = mhran.ID   " +
-                " left join Readers..Main fio on O.ID_Reader = fio.NumberReader " +
-                "where O.Start_Date <= '" + DateTime.Now.AddDays(7).ToString("yyyyMMdd") +
-                "'" + name + " and O.Status = 0 order by idm ";
-            SqlDA.SelectCommand.CommandTimeout = 1200;
-            DataSet ds = new DataSet();
-            int count = SqlDA.Fill(ds, "orders");
-            //string s = ds.Tables["orders"].Rows[0]["dp"].ToString();
-            //return this.GetCorrectTable(ds.Tables["orders"]);
-            return (ds.Tables["orders"]);
-        }
         public DataTable GetHistory(string name)
         {
 
@@ -128,8 +94,9 @@ namespace BookkeepingForOrder
               " left join BJVVV..LIST_8 dep on O.DepId = dep.ID " +//and dep.ID  = " + F1.FloorID+
                                                                    //" left join BJVVV..USERS who on O.Who = who.ID " +
                                                                    //" left join BJVVV..LIST_8 whod on who.DEPT = " + F1.user.SelectedUserStatus.DepId+
-              " where O.Start_Date <= '" + DateTime.Now.ToString("yyyyMMdd HH:mm") + "' and O.Start_Date >=  '" + DateTime.Now.AddDays(-10).ToString("yyyyMMdd HH:mm") + "'" +
-              "  and dmhran.IDINLIST = " + F1.user.SelectedUserStatus.DepId +
+              " where O.Start_Date <= '" + DateTime.Now.ToString("yyyyMMdd HH:mm") + "' and O.Start_Date >=  '" + DateTime.Now.AddDays(-10).ToString("yyyyMMdd HH:mm") + "' " +
+              //"  and dmhran.IDINLIST = " + F1.user.SelectedUserStatus.DepId +
+              name +
              // "' and O.Who = "+F1.user.Id+
              " union all " +
               "select O.ID oid, O.ID_Book_EC as idm,  avt.PLAIN avt, " +
@@ -158,9 +125,10 @@ namespace BookkeepingForOrder
               " left join BJVVV..LIST_8 dep on dep.ID  = O.DepId" +//and dep.ID  = " + F1.FloorID+
                                                                    //" left join BJVVV..USERS who on O.Who = who.ID " +
                                                                    //" left join BJVVV..LIST_8 whod on who.DEPT  " + F1.user.SelectedUserStatus.DepId +
-             " where O.Start_Date <= '" + DateTime.Now.ToString("yyyyMMdd HH:mm") + "' and O.Start_Date >=  '" + DateTime.Now.AddDays(-10).ToString("yyyyMMdd HH:mm") +
+             " where O.Start_Date <= '" + DateTime.Now.ToString("yyyyMMdd HH:mm") + "' and O.Start_Date >=  '" + DateTime.Now.AddDays(-10).ToString("yyyyMMdd HH:mm") + "' "+
                             //"'" + name + " order by idm ";
-                            "' and dmhran.IDINLIST = "+ F1.user.SelectedUserStatus.DepId
+                            //"' and dmhran.IDINLIST = "+ F1.user.SelectedUserStatus.DepId
+                            name
               //"' ";// + F1.user.SelectedUserStatus.DepId
               ;
             SqlDA.SelectCommand.CommandTimeout = 1200;
@@ -168,73 +136,6 @@ namespace BookkeepingForOrder
             int count = SqlDA.Fill(ds,"ordhis");
             //string s = ds.Tables["orders"].Rows[0]["dp"].ToString();
             return ds.Tables["ordhis"];
-        }
-        internal DataTable GetReadersHistory(string name)
-        {
-            SqlDA.SelectCommand.CommandText = "select  O.ID oid, ISNULL(O.ALGIDM,O.ID_Book_EC) as idm,  avt.PLAIN avt,   " +
-                "zag.PLAIN zag, O.InvNumber as inv,  " +
-                "Reservation_R.dbo.GetSHIFRBJVVVINVIDDATA(O.InvNumber,inv.IDDATA) shifr , " +
-                " O.ID_Reader as idr,   " +
-                " cast(fio.NumberReader as nvarchar)+'; ' + fio.FamilyName +' '+ fio.[Name]+' ' + ISNULL(fio.FatherName,'')  dp, " +
-                " cast(fio.NumberReader as nvarchar) fio,O.Start_Date startd,O.REFUSUAL refusual,stus.Name sts, ntp.PLAIN note,izd.PLAIN izd, gizd.PLAIN gizd  " +
-                " from Reservation_O..OrdHis O  " +
-                " left join BJVVV..DATAEXT invd on O.IDDATA = invd.IDDATA and invd.MNFIELD = 899 and invd.MSFIELD = '$p' " +
-                " left join BJVVV..DATAEXTPLAIN inv on inv.IDDATAEXT = invd.ID " +
-                "left join BJVVV..DATAEXT nt on ISNULL(O.ALGIDM,O.ID_Book_EC) = nt.IDMAIN and nt.MNFIELD = 899 and nt.MSFIELD = '$x' and nt.IDDATA = O.IDDATA " +
-                "left join BJVVV..DATAEXTPLAIN ntp on nt.ID = ntp.IDDATAEXT  " +
-                "left join BJVVV..DATAEXT dzag on ISNULL(O.ALGIDM,O.ID_Book_EC) = dzag.IDMAIN and dzag.MNFIELD = 200 and dzag.MSFIELD = '$a'  " +
-                "left join BJVVV..DATAEXTPLAIN zag on dzag.ID = zag.IDDATAEXT  " +
-                " left join BJVVV..DATAEXT dizd on dizd.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 2100 and B.MSFIELD = '$d')" +
-                "left join BJVVV..DATAEXTPLAIN izd on dizd.ID = izd.IDDATAEXT  " +
-                " left join BJVVV..DATAEXT mizd on mizd.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 210 and B.MSFIELD = '$a')" +
-                "left join BJVVV..DATAEXTPLAIN gizd on mizd.ID = gizd.IDDATAEXT  " +
-                " left join BJVVV..DATAEXT davt on davt.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 700 and B.MSFIELD = '$a')" +
-                "left join BJVVV..DATAEXTPLAIN avt on davt.ID = avt.IDDATAEXT  " +
-                "left join BJVVV..DATAEXT dmhran on ISNULL(O.ALGIDM,O.ID_Book_EC) = dmhran.IDMAIN and dmhran.IDDATA = inv.IDDATA and dmhran.MNFIELD = 899 and dmhran.MSFIELD = '$a'  " +
-                "left JOIN BJVVV..DATAEXTPLAIN MHRANshort on dmhran.ID = MHRANshort.IDDATAEXT  " +
-                " left join BJVVV..LIST_8 mhran on dmhran.IDINLIST = mhran.ID   " +
-                " left join Readers..Main fio on O.ID_Reader = fio.NumberReader " +
-                "left join Reservation_O..Status stus on O.Status = stus.ID " +
-                " where O.Start_Date <= '" + DateTime.Now.ToString("yyyyMMdd HH:mm") + "' and O.Start_Date >=  '" + DateTime.Now.AddDays(-10).ToString("yyyyMMdd HH:mm") +
-                "'" + name + " and O.Status != 0 and dmhran.IDINLIST = " + F1.FloorID +
-
-                " union all " +
-
-                "select  O.ID oid, ISNULL(O.ALGIDM,O.ID_Book_EC) as idm,  avt.PLAIN avt,   " +
-                "zag.PLAIN zag, O.InvNumber as inv,  " +
-                "Reservation_R.dbo.GetSHIFRBJVVVINVIDDATA(O.InvNumber,inv.IDDATA) shifr , " +
-                " O.ID_Reader as idr,  " +
-                " cast(fio.NumberReader as nvarchar)+'; ' + fio.FamilyName +' '+ fio.[Name]+' ' + ISNULL(fio.FatherName,'')  dp, " +
-                " cast(fio.NumberReader as nvarchar) fio, O.Start_Date startd,O.REFUSUAL refusual,stus.Name sts, ntp.PLAIN note,izd.PLAIN izd, gizd.PLAIN gizd  " +
-                "from Reservation_O..Orders O  " +
-                "left join BJVVV..DATAEXT invd on O.IDDATA = invd.IDDATA and invd.MNFIELD = 899 and invd.MSFIELD = '$p' " +
-                "left join BJVVV..DATAEXTPLAIN inv on inv.IDDATAEXT = invd.ID " +
-                "left join BJVVV..DATAEXT nt on ISNULL(O.ALGIDM,O.ID_Book_EC) = nt.IDMAIN and nt.MNFIELD = 899 and nt.MSFIELD = '$x' and nt.IDDATA = O.IDDATA " +
-                "left join BJVVV..DATAEXTPLAIN ntp on nt.ID = ntp.IDDATAEXT  " +
-                "left join BJVVV..DATAEXT dzag on ISNULL(O.ALGIDM,O.ID_Book_EC) = dzag.IDMAIN and dzag.MNFIELD = 200 and dzag.MSFIELD = '$a'  " +
-                "left join BJVVV..DATAEXTPLAIN zag on dzag.ID = zag.IDDATAEXT  " +
-                " left join BJVVV..DATAEXT davt on davt.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 700 and B.MSFIELD = '$a')" +
-                "left join BJVVV..DATAEXTPLAIN avt on davt.ID = avt.IDDATAEXT  " +
-                " left join BJVVV..DATAEXT dizd on dizd.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 2100 and B.MSFIELD = '$d')" +
-                "left join BJVVV..DATAEXTPLAIN izd on dizd.ID = izd.IDDATAEXT  " +
-                " left join BJVVV..DATAEXT mizd on mizd.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 210 and B.MSFIELD = '$a')" +
-                "left join BJVVV..DATAEXTPLAIN gizd on mizd.ID = gizd.IDDATAEXT  " +
-                "left join BJVVV..DATAEXT dmhran on ISNULL(O.ALGIDM,O.ID_Book_EC) = dmhran.IDMAIN and dmhran.IDDATA = inv.IDDATA and dmhran.MNFIELD = 899 and dmhran.MSFIELD = '$a'  " +
-                "left JOIN BJVVV..DATAEXTPLAIN MHRANshort on dmhran.ID = MHRANshort.IDDATAEXT  " +
-                " left join BJVVV..LIST_8 mhran on dmhran.IDINLIST = mhran.ID   " +
-                " left join Readers..Main fio on O.ID_Reader = fio.NumberReader " +
-                "left join Reservation_O..Status stus on O.Status = stus.ID "+
-                //" where O.Start_Date <= '" + DateTime.Now.AddDays(8).ToString("yyyyMMdd HH:mm") + "' and O.Start_Date >=  '" + DateTime.Now.AddDays(-10).ToString("yyyyMMdd HH:mm") +
-                //"'" + name + " and O.Status in (1, 10,8,11) and dmhran.IDINLIST = " + F1.FloorID;
-                " where dmhran.IDINLIST = " + F1.FloorID + " " + name ;
-                
-               
-            SqlDA.SelectCommand.CommandTimeout = 1200;
-            DataSet ds = new DataSet();
-            int count = SqlDA.Fill(ds, "orders");
-            //string s = ds.Tables["orders"].Rows[0]["dp"].ToString();
-            return ds.Tables["orders"];
-            //return (ds.Tables["orders"]);
         }
         public void delFromOrders(string oid)
         {
@@ -284,24 +185,6 @@ namespace BookkeepingForOrder
         }
 
 
-
-
-        internal void ChangeStatus(string oid, string idemp,string Floor)
-        {
-            SqlDataAdapter sdvig = new SqlDataAdapter();
-            SqlCon.Open();
-            /*if (Floor.Contains("Абонемент"))//потому что у абонемента нет подразделения книгохранения.
-            {
-                sdvig.UpdateCommand = new SqlCommand("update Reservation_O..Orders  set Status = 2,Who = " + idemp + " where ID = " + oid, SqlCon);
-            }
-            else*/
-            {
-                sdvig.UpdateCommand = new SqlCommand("update Reservation_O..Orders  set Status = 1,Who = " + idemp + " where ID = " + oid, SqlCon);
-            }
-            sdvig.UpdateCommand.ExecuteNonQuery();
-            SqlCon.Close();
-        }
-
         internal void RefusualEmployee(string cause, string oid)//перемещаем заказ из истории обратно
         {
             SqlDataAdapter sdvig = new SqlDataAdapter();
@@ -309,82 +192,8 @@ namespace BookkeepingForOrder
             sdvig.UpdateCommand = new SqlCommand("update Reservation_E..OrdHis  set REFUSUAL = '" + cause + "',Status = 10 where ID = " + oid, SqlCon);
             sdvig.UpdateCommand.ExecuteNonQuery();
             SqlCon.Close();
-
-            /*sdvig.InsertCommand = new SqlCommand();
-            sdvig.InsertCommand.Connection = SqlCon;
-            sdvig.InsertCommand.Connection.Open();
-            sdvig.InsertCommand.CommandText = "insert into Reservation_E..Orders " +
-                            " select ID_Reader,ID_Book_EC,ID_Book_CC, 10,Start_Date, " +
-                            " Change_Date,InvNumber,Form_Date,Duration,Who,null,null,REFUSUAL " +
-                            " from Reservation_E..OrdHis where ID = " + oid;
-            sdvig.InsertCommand.ExecuteNonQuery();
-            sdvig.InsertCommand.Connection.Close();
-
-            sdvig.DeleteCommand = new SqlCommand();
-            sdvig.DeleteCommand.Connection = SqlCon;
-            sdvig.DeleteCommand.Connection.Open();
-            sdvig.DeleteCommand.CommandText = "delete from Reservation_E..OrdHis where ID = " + oid;
-            sdvig.DeleteCommand.ExecuteNonQuery();
-            sdvig.DeleteCommand.Connection.Close();*/
-        }
-
-        internal void RefusualReader(string cause, string oid)//здесь перемещать заказ из истории обратно не нужно.
-        {
-            SqlDataAdapter sdvig = new SqlDataAdapter();
-            SqlCon.Open();
-            sdvig.UpdateCommand = new SqlCommand("update Reservation_O..Orders  set REFUSUAL = '" + cause + "', Status = 10 where ID = " + oid, SqlCon);
-            sdvig.UpdateCommand.ExecuteNonQuery();
-            SqlCon.Close();
-
-            /*sdvig.InsertCommand = new SqlCommand();
-            sdvig.InsertCommand.Connection = SqlCon;
-            sdvig.InsertCommand.Connection.Open();
-            sdvig.InsertCommand.CommandText = "insert into Reservation_O..Orders " +
-                            " select ID_Reader,ID_Book_EC,ID_Book_CC, 10,Start_Date, " +
-                            " Change_Date,InvNumber,Form_Date,Duration,Who,ALGIDM,IDDATA,REFUSUAL " +
-                            " from Reservation_O..OrdHis where ID = " + oid;
-            sdvig.InsertCommand.ExecuteNonQuery();
-            sdvig.InsertCommand.Connection.Close();
-
-            sdvig.DeleteCommand = new SqlCommand();
-            sdvig.DeleteCommand.Connection = SqlCon;
-            sdvig.DeleteCommand.Connection.Open();
-            sdvig.DeleteCommand.CommandText = "delete from Reservation_O..OrdHis where ID = " + oid;
-            sdvig.DeleteCommand.ExecuteNonQuery();
-            sdvig.DeleteCommand.Connection.Close();*/
-            
         }
 
 
-        internal DataTable GetReadersChoosing(string name)
-        {
-            SqlDA.SelectCommand.CommandText = "select O.ID oid, ISNULL(O.ALGIDM,O.ID_Book_EC) as idm,  avt.PLAIN avt,   " +
-                " (case when O.ALGIDM is null then zag.PLAIN else zag.PLAIN + ' [Сплетено]' end) zag, O.InvNumber as inv,  " +
-                " Reservation_R.dbo.GetSHIFRBJVVVINVIDDATA(O.InvNumber,inv.IDDATA) shifr , " +
-                "  O.ID_Reader as idr,   " +
-                " cast(fio.NumberReader as nvarchar)+'; ' + fio.FamilyName +' '+ fio.[Name]+' ' + ISNULL(fio.FatherName,'')  dp, " +
-                " cast(fio.NumberReader as nvarchar) fio, O.Start_Date startd, O.INOTE note, yaz.PLAIN yaz, gizd.PLAIN gizd " +
-                " from Reservation_O.." + this.OrdTableType + " O  " +
-                " join BJVVV..DATAEXTPLAIN inv on O.InvNumber COLLATE Cyrillic_General_CI_AI = inv.PLAIN and inv.IDMAIN = ISNULL(O.ALGIDM,O.ID_Book_EC) " +
-                " left join BJVVV..DATAEXT dzag on ISNULL(O.ALGIDM,O.ID_Book_EC) = dzag.IDMAIN and dzag.MNFIELD = 200 and dzag.MSFIELD = '$a'  " +
-                " left join BJVVV..DATAEXTPLAIN zag on dzag.ID = zag.IDDATAEXT  " +
-              " left join BJVVV..DATAEXT dyaz on dyaz.ID = (select top 1 ID from BJVVV..DATAEXT B where B.IDMAIN = O.ID_Book_EC and B.MNFIELD = 101 and B.MSFIELD = '$a')" +
-                " left join BJVVV..DATAEXTPLAIN yaz on dyaz.ID = yaz.IDDATAEXT" +
-              " left join BJVVV..DATAEXT davt on davt.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 700 and B.MSFIELD = '$a')" +
-                " left join BJVVV..DATAEXTPLAIN avt on davt.ID = avt.IDDATAEXT  " +
-                " left join BJVVV..DATAEXT dmhran on ISNULL(O.ALGIDM,O.ID_Book_EC) = dmhran.IDMAIN and dmhran.IDDATA = inv.IDDATA and dmhran.MNFIELD = 899 and dmhran.MSFIELD = '$a'  " +
-                " left join BJVVV..DATAEXT mizd on mizd.ID = (select top 1 ID from BJVVV..DATAEXT B where O.ID_Book_EC = B.IDMAIN and B.MNFIELD = 210 and B.MSFIELD = '$a')" +
-                "left join BJVVV..DATAEXTPLAIN gizd on mizd.ID = gizd.IDDATAEXT  " +
-                " left JOIN BJVVV..DATAEXTPLAIN MHRANshort on dmhran.ID = MHRANshort.IDDATAEXT  " +
-                " left join BJVVV..LIST_8 mhran on dmhran.IDINLIST = mhran.ID   " +
-                " left join Readers..Main fio on O.ID_Reader = fio.NumberReader " +
-                " where O.Status = 1 " + name + " order by idm ";
-            SqlDA.SelectCommand.CommandTimeout = 1200;
-            DataSet ds = new DataSet();
-            int count = SqlDA.Fill(ds, "orders");
-            //string s = ds.Tables["orders"].Rows[0]["dp"].ToString();
-            return ds.Tables["orders"];
-            //return (ds.Tables["orders"]);       
-        }
     }
 }

@@ -235,6 +235,7 @@ namespace LibflClassLibrary.Circulation.DB
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS_HISTORY_FOR_STORAGE, connection);
                 dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
                 DataTable table = new DataTable();
                 int cnt = dataAdapter.Fill(table);
                 return table;

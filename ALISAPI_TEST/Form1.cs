@@ -36,8 +36,8 @@ namespace ALISAPI_TEST
         };
 
 
-        //readonly string ALIS_ADDRESS = "https://opac.libfl.ru/ALISAPI/";
-        readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
+        readonly string ALIS_ADDRESS = "https://opac.libfl.ru/ALISAPI/";
+        //readonly string ALIS_ADDRESS = "http://80.250.173.142/ALISAPI/";
         //readonly string ALIS_ADDRESS = "http://localhost:27873/";
         public Form1()
         {
@@ -304,11 +304,11 @@ namespace ALISAPI_TEST
             PreRegisterRemoteReader request = new PreRegisterRemoteReader();
             request.BirthDate = "1985-11-29";
             request.CountryId = 2;
-            request.Email = "maksim.kuleba@gmail.com";
-            request.FamilyName = "Kuleba1";
-            request.FatherName = "Aleksandrovich";
-            request.MobilePhone = "+7(986)9852171";
-            request.Name = "Maksim";
+            request.Email = "nomailbox@mail.ru";
+            request.FamilyName = "Kozhevnikov";
+            request.FatherName = "Grigorievich";
+            request.MobilePhone = "+7(999)9998877";
+            request.Name = "Alexander";
             request.Password = "passwd123";
             string jsonData = JsonConvert.SerializeObject(request, ALISDateFormatJSONSettings);
 

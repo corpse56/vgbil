@@ -47,7 +47,8 @@ namespace BookkeepingForOrder
                 new KeyValuePair<string, string> ( "status", "Статус заказа"),
                 new KeyValuePair<string, string> ( "note", "Инв. метка"),
                 new KeyValuePair<string, string> ( "pubdate", "Дата издания"),
-                new KeyValuePair<string, string> ( "refusual", "Причина отказа")
+                new KeyValuePair<string, string> ( "refusual", "Причина отказа"),
+                new KeyValuePair<string, string> ( "iddata", "iddata")
             };
             foreach (var c in columns)
                 dgwReaders.Columns.Add(c.Key, c.Value);
@@ -67,6 +68,7 @@ namespace BookkeepingForOrder
             dgwReaders.Columns["status"].Width = 100;
             dgwReaders.Columns["note"].Width = 60;
             dgwReaders.Columns["pubdate"].Visible = false;
+            dgwReaders.Columns["iddata"].Visible = false;
             CirculationInfo circulation = new CirculationInfo();
             List<OrderInfo> orders = circulation.GetOrdersForStorage(bjUser.SelectedUserStatus.DepId, bjUser.SelectedUserStatus.DepName, CirculationStatuses.EmployeeLookingForBook.Value);
             if (bjUser.SelectedUserStatus.DepId == 8)//0 и 4 этаж должны получать заказы в одну точку
@@ -102,6 +104,7 @@ namespace BookkeepingForOrder
                 row.Cells["status"].Value = order.StatusName;
                 row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
                 row.Cells["pubdate"].Value = order.Book.PublishDate;
+                row.Cells["iddata"].Value = order.ExemplarId;
                 row.Cells["refusual"].Value = string.IsNullOrEmpty(order.Refusual) ? "<нет>" : order.Refusual;
             }
         }
