@@ -1,0 +1,1 @@
+C:\Users\RDanilov\source\repos\LIBFL\SIPServer\obj\Debug\SIPServer.csproj.CoreCompileInputs.cache
