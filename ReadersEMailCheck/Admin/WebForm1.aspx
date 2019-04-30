@@ -23,19 +23,7 @@
                     <asp:TableCell runat="server">Значение</asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow runat="server">
-                    <asp:TableCell runat="server">Дата/время выдачи справки</asp:TableCell>
-                    <asp:TableCell runat="server"></asp:TableCell>
-                </asp:TableRow>
-                <asp:TableRow runat="server">
-                    <asp:TableCell runat="server">E-Mail</asp:TableCell>
-                    <asp:TableCell runat="server"></asp:TableCell>
-                </asp:TableRow>
-                <asp:TableRow runat="server">
-                    <asp:TableCell runat="server">ФИО Читателя</asp:TableCell>
-                    <asp:TableCell runat="server"></asp:TableCell>
-                </asp:TableRow>
-                <asp:TableRow runat="server">
-                    <asp:TableCell runat="server">Номер читательского билета</asp:TableCell>
+                    <asp:TableCell runat="server">Читатель с таким E-Mail существует?</asp:TableCell>
                     <asp:TableCell runat="server"></asp:TableCell>
                 </asp:TableRow>
             </asp:Table>
