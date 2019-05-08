@@ -49,12 +49,12 @@ namespace ReadersEMailCheck {
         protected global::System.Web.UI.WebControls.Label Label2;
         
         /// <summary>
-        /// Submit1 control.
+        /// Signout1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputButton Submit1;
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton Signout1;
     }
 }
