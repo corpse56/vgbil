@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -13,5 +14,12 @@ namespace ReadersEMailCheck
         {
             //string readersemail = Request.Form["Text1"];
         }
+        protected void SignOut_Click(object sender, EventArgs e)
+        {
+            FormsAuthentication.SignOut();
+            FormsAuthentication.RedirectToLoginPage();
+        }
     }
+
+
 }
