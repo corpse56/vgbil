@@ -33,7 +33,13 @@
             <br />
             <div style="margin-left: auto; margin-right: auto; text-align: center;"><input id="Text1" type="text" /></div><br />
             <div style="margin-left: auto; margin-right: auto; text-align: center;"><input id="Submit1" type="submit" value="Проверить" /></div><br /><br />
+            <div style="margin-left: auto; margin-right: auto; text-align: center;">
+        <input id="Logout" type="button" value="Выход" runat="server" onserverclick="SignOut_Click" />
+    </div>
         </div>
     </form>
+    <br />
+    <br />
+    <br />
 </body>
 </html>
