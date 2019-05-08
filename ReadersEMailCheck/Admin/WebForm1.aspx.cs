@@ -12,7 +12,7 @@ namespace ReadersEMailCheck
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            //string readersemail = Request.Form["Text1"];
         }
 
         protected void SignOut_Click(object sender, EventArgs e)
