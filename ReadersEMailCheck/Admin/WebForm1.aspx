@@ -13,8 +13,8 @@
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div style="height: 338px">
+    
+        <div style="height: 388px">
             <br /><asp:Label ID="Label1" runat="server" BorderStyle="None" Font-Bold="True" Font-Size="Larger" Font-Underline="True" Text="Справка по читателю с указанным адресом электронной почты" style="text-align:center;" Width="100%"></asp:Label>
             <br /><br />
             <asp:Table ID="Table1" runat="server" BorderStyle="Solid" GridLines="Both" Height="117px" HorizontalAlign="Center" Width="692px">
@@ -24,17 +24,24 @@
                 </asp:TableRow>
                 <asp:TableRow runat="server">
                     <asp:TableCell runat="server">Читатель с таким E-Mail существует?</asp:TableCell>
-                    <asp:TableCell runat="server"></asp:TableCell>
+                    <asp:TableCell runat="server" ID="answer01">-</asp:TableCell>
                 </asp:TableRow>
             </asp:Table>
             <br />
             <asp:Label ID="Label2" runat="server" Text="Введите адрес e-mail для проверки" style="text-align:center;" Width="100%" Font-Bold="False" Font-Underline="True"></asp:Label>
             <br />
             <br />
-            <div style="margin-left: auto; margin-right: auto; text-align: center;"><input id="Text1" type="text" /></div><br />
-            <div style="margin-left: auto; margin-right: auto; text-align: center;"><input id="Submit1" type="submit" value="Проверить" /></div><br /><br />
-            <div style="margin-left: auto; margin-right: auto; text-align: center;"><input id="Signout1" type="button" value="Выход" runat="server" onserverclick="SignOut_Click" /></div><br /><br />
+            <form id="form1" runat="server" onserversubmit="Page_Load" method="post">
+                <div style="margin-left: auto; margin-right: auto; text-align: center;">
+                    <input id="Text1" type="email"/>
+                </div>
+                <div style="margin-left: auto; margin-right: auto; text-align: center;">
+                    <button type="submit">Проверить</button>
+                </div>
+                <div style="margin-left: auto; margin-right: auto; text-align: center;">
+                    <input id="Signout1" type="button" value="Выход" runat="server" onserverclick="SignOut_Click" />
+                </div>
+            </form>
         </div>
-    </form>
 </body>
 </html>

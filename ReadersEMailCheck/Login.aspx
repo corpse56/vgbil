@@ -1,7 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="GameStore.Pages.Login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="ReadersEMailCheck.Login" %>
 
     <div>
-        <form runat="server" onsubmit="Page_Load" method="post">
+        <form runat="server" onserversubmit="Page_Load" method="post">
         <div>
             <label for="name">Имя:</label>
             <input name="name" />
