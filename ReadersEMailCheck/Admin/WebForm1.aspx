@@ -13,8 +13,8 @@
     </style>
 </head>
 <body>
-    <form id="form1" runat="server" onsubmit="Page_Load">
-        <div style="height: 388px">
+    <form id="form1" runat="server">
+        <div style="height: 338px">
             <br /><asp:Label ID="Label1" runat="server" BorderStyle="None" Font-Bold="True" Font-Size="Larger" Font-Underline="True" Text="Справка по читателю с указанным адресом электронной почты" style="text-align:center;" Width="100%"></asp:Label>
             <br /><br />
             <asp:Table ID="Table1" runat="server" BorderStyle="Solid" GridLines="Both" Height="117px" HorizontalAlign="Center" Width="692px">
@@ -33,13 +33,7 @@
             <br />
             <div style="margin-left: auto; margin-right: auto; text-align: center;"><input id="Text1" type="text" /></div><br />
             <div style="margin-left: auto; margin-right: auto; text-align: center;"><input id="Submit1" type="submit" value="Проверить" /></div><br /><br />
-            <div style="margin-left: auto; margin-right: auto; text-align: center;">
-                <input id="Logout" type="button" value="Выход" runat="server" onserverclick="SignOut_Click" />
-            </div>
         </div>
     </form>
-    <br />
-    <br />
-    <br />
 </body>
 </html>
