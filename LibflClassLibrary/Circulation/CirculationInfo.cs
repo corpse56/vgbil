@@ -538,7 +538,8 @@ namespace LibflClassLibrary.Circulation
                 {
                     throw new Exception("C002");
                 }
-                if (book.Exemplars.Count - this.GetBusyExemplarsCount(book) <= 0)
+                //в простой вид книги искусственно добавляется электронный экземпляр
+                if (bookSimpleView.Exemplars.Count - this.GetBusyExemplarsCount(book) <= 0)
                 {
                     throw new Exception("C003");
                 }

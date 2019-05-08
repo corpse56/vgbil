@@ -362,7 +362,7 @@ namespace WriteOff
             oTable.Cell(oTable.Rows.Count, 8).Range.Text = tmpNL;
             //oTable.Cell(oTable.Rows.Count, 8).Range.Text = refnum;
             oTable.Cell(oTable.Rows.Count, 7).Range.Text = b.InvsLeftInFund.ToString();
-            oTable.Cell(oTable.Rows.Count, 9).Range.Text = price.ToString().Remove(price.Length-1);
+            oTable.Cell(oTable.Rows.Count, 9).Range.Text = (price.Length == 0) ? price.ToString():price.ToString().Remove(price.Length-1);
             if (diffCurrency)
             {
                 oTable.Cell(oTable.Rows.Count, 11).Range.Text = "Невозможно подсчитать полную сумму.";

@@ -131,36 +131,17 @@ namespace LibflClassLibrary.Readers
                 return "NumberReader";
             }
             else
-            if (login.Length == 19)
+            //if (Regex.IsMatch(login,
+            //   @"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))" +
+            //   @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$"))//не номер, и не социалка, значит email. проверяем формат
+            if (Regex.IsMatch(login, @"^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$"))
             {
-                for (int i = 0; i < 19; i++)
-                {
-                    if (!int.TryParse(login[i].ToString(), out NumberReader))
-                    {
-                        Check = true;
-                        break;
-                    }
-                }
-                if (!Check)//значит 18 цифр. типа номер социалки вбил
-                {
-                    return "SocialCardNumber";
-                }
+                return "Email";
             }
             else
             {
-                //if (Regex.IsMatch(login,
-                //   @"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))" +
-                //   @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$"))//не номер, и не социалка, значит email. проверяем формат
-                if (Regex.IsMatch(login, @"^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$"))
-                {
-                    return "Email";
-                }
-                else
-                {
-                    return "NotDefined";
-                }
+                return "NotDefined";
             }
-            return "NotDefined";
         }
 
         internal static bool IsRightReaderBarcode(string barcode)

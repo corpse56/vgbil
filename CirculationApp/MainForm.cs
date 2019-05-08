@@ -430,9 +430,10 @@ namespace CirculationApp
             dgvLog.Columns["status"].Width = 180;
             dgvLog.Columns["baseName"].Width = 70;
             //dgvLog.Columns["issueType"].Width = 80;
-
+            int i = 0;
             foreach(OrderFlowInfo fi in flow)
             {
+
                 dgvLog.Rows.Add();
                 var row = dgvLog.Rows[dgvLog.Rows.Count - 1];
                 OrderInfo oi = ci.GetOrder(fi.OrderId);
@@ -447,7 +448,7 @@ namespace CirculationApp
                 row.Cells["status"].Value = fi.StatusName;
                 row.Cells["baseName"].Value = GetRusFundName(oi.Fund);
                 //row.Cells["issueType"].Value = exemplar.ExemplarAccess.Access.In(new [] {1000,1006}) ? "на дом" : "в зал";
-
+                if (i++ == 30) break;
             }
 
             foreach (DataGridViewColumn c in dgvLog.Columns)
