@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Optimization;
 using System.Web.UI;
 
-namespace ReadersEMailCheck
+namespace ReadersEMailCheck_2
 {
     public class BundleConfig
     {

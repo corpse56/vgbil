@@ -138,8 +138,8 @@ C:\Users\askin\source\repos\LIBFL\ReadersEMailCheck\bin\Microsoft.AspNet.Friendl
 C:\Users\askin\source\repos\LIBFL\ReadersEMailCheck\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\askin\source\repos\LIBFL\ReadersEMailCheck\bin\ru\System.Web.Optimization.resources.dll
 C:\Users\askin\source\repos\LIBFL\ReadersEMailCheck\bin\ru\Microsoft.AspNet.FriendlyUrls.resources.dll
-C:\Users\askin\source\repos\LIBFL\ReadersEMailCheck\obj\Debug\ReadersEMailCheck.csprojAssemblyReference.cache
 C:\Users\askin\source\repos\LIBFL\ReadersEMailCheck\obj\Debug\ReadersEMailCheck.csproj.CoreCompileInputs.cache
 C:\Users\askin\source\repos\LIBFL\ReadersEMailCheck\obj\Debug\ReadersEMailCheck.csproj.CopyComplete
 C:\Users\askin\source\repos\LIBFL\ReadersEMailCheck\obj\Debug\ReadersEMailCheck.dll
 C:\Users\askin\source\repos\LIBFL\ReadersEMailCheck\obj\Debug\ReadersEMailCheck.pdb
+C:\Users\askin\source\repos\LIBFL\ReadersEMailCheck\obj\Debug\ReadersEMailCheck.csprojAssemblyReference.cache

@@ -1,11 +1,11 @@
-﻿<%@ Page Trace="false" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="ReadersEMailCheck.WebForm1" %>
+﻿<%@ Page Trace="false" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="ReadersEMailCheck_2.WebForm1" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>WebForm1 - RD Test</title>
+    <title>Справка по читателю с указанным адресом электронной почты</title>
     <style type="text/css">
         #Text1 {
             width: 488px;

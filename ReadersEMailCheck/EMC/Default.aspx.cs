@@ -1,16 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Configuration;
 using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Net.Http;
 using System.Text;
 
-namespace ReadersEMailCheck
+namespace ReadersEMailCheck_2
 {
 
     public class ReaderSimpleView
@@ -23,7 +18,7 @@ namespace ReadersEMailCheck
         public string MobilePhone { get; set; }
         public bool IsRemoteReader { get; set; }
         public bool IsPasswordExists { get; set; }
-        public string R004 { get; set; }
+        //public string R004 { get; set; }
     }
 
     public partial class WebForm1 : System.Web.UI.Page
@@ -64,7 +59,7 @@ namespace ReadersEMailCheck
         protected void SignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            FormsAuthentication.RedirectToLoginPage(); // Александр сказал, что не работает
+            FormsAuthentication.RedirectToLoginPage(); // кто-то сказал, что не работает
             //Response.Redirect("~/Login.aspx");
         }
     }

@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="ReadersEMailCheck.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="ReadersEMailCheck_2.Global" Language="C#" %>

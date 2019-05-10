@@ -1,4 +1,4 @@
-﻿namespace ReadersEMailCheck
+﻿namespace ReadersEMailCheck_2
 {
     internal class UserEmail
     {

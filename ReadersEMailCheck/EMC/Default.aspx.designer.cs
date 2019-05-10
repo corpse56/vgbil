@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ReadersEMailCheck {
+namespace ReadersEMailCheck_2 {
     
     
     public partial class WebForm1 {

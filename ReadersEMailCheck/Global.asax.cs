@@ -7,7 +7,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 
-namespace ReadersEMailCheck
+namespace ReadersEMailCheck_2
 {
     public class Global : HttpApplication
     {
