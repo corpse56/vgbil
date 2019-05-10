@@ -11,7 +11,9 @@ namespace ReadersEMailCheck
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Response.StatusCode = 302;
+            Response.Redirect("~/EMC", true);
+            Response.End();
         }
     }
 }
