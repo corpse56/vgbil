@@ -7,27 +7,19 @@ using System.Text;
 
 namespace ReadersEMailCheck_2
 {
-
+    internal class UserEmail
+    {
+        public string Email { get; internal set; }
+    }
     public class ReaderSimpleView
     {
-        public string FamilyName { get; set; }
-        public string Name { get; set; }
-        public string FatherName { get; set; }
-        public int ReaderId { get; set; }
         public string Email { get; set; }
-        public string MobilePhone { get; set; }
-        public bool IsRemoteReader { get; set; }
-        public bool IsPasswordExists { get; set; }
-        //public string R004 { get; set; }
     }
-
     public partial class WebForm1 : System.Web.UI.Page
     {
         public Formatting ALISDateFormatJSONSettings { get; private set; }
         public ReaderSimpleView ReaderSimpleView2 { get; private set; }
-
         public JsonConverter ALISDateFormatJSONSettings2 { get; private set; }
-
         protected string EMC(string s)
         {
             string ALIS_ADDRESS = WebConfigurationManager.AppSettings["ALIS_ADDRESS"];
@@ -46,14 +38,13 @@ namespace ReadersEMailCheck_2
 
             return (ReaderSimpleView2.Email != null) ? "ЧИТАТЕЛЬ ЕСТЬ" : "ЧИТАТЕЛЯ НЕТ";
         }
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (IsPostBack)
             {
                 string email01 = Request["Text1"];
                 question01.InnerText = email01.ToUpper();
-                answer01.Text = EMC(email01);
+                answer01.InnerText = EMC(email01);
             }
         }
         protected void SignOut_Click(object sender, EventArgs e)
