@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ReadersEMailCheck_2 {
+namespace ReadersEMailCheck {
     
     
     public partial class Site_Mobile {
