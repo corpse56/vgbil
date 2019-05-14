@@ -58,7 +58,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "elcir", "elcir\", "{EB7743C
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "12729"
-		SlnRelativePath = "elcir\"
 	EndProjectSection
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "elcirp", "elcirp\", "{30A76BA6-A52B-429E-A852-F9EB1B362AE1}"
@@ -79,7 +78,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "elcirp", "elcirp\", "{30A76
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "12732"
-		SlnRelativePath = "elcirp\"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportFullDatabaseToExcel", "ExportFullDatabaseToExcel\ExportFullDatabaseToExcel.csproj", "{B9124E5A-C576-4578-9B8F-BDB087138157}"
@@ -112,7 +110,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "LIBFLDataProviderAPI", "LIB
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "13214"
-		SlnRelativePath = "LIBFLDataProviderAPI\"
 	EndProjectSection
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "LITRESADMIN", "LITRESADMIN\", "{B32AC8EB-5803-4825-A8FC-5885C15A5BCD}"
@@ -133,7 +130,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "LITRESADMIN", "LITRESADMIN\
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "13218"
-		SlnRelativePath = "LITRESADMIN\"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NEBSynchronization", "NEBSynchronization\NEBSynchronization.csproj", "{9F8AC989-2642-4C4A-AD95-9A73E92B12E2}"
@@ -157,7 +153,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "OAI-PMH", "OAI-PMH\", "{C25
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "13239"
-		SlnRelativePath = "OAI-PMH\"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrintRastShifr", "PrintRastShifr\PrintRastShifr.csproj", "{FFA0046A-15DE-400A-9993-7236B4904CC3}"
@@ -182,7 +177,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TurnDigBooks", "TurnDigBook
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "13374"
-		SlnRelativePath = "TurnDigBooks\"
 	EndProjectSection
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TurnDigBooksAdmin", "TurnDigBooksAdmin\", "{B29D62ED-10D1-43C2-A8B1-1D8442D668D7}"
@@ -260,6 +254,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CirculationAppAdmin", "Circ
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIPServer", "SIPServer\SIPServer.csproj", "{7417A1DF-3BFB-4960-8E1A-240F632F9414}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadersEMailCheck", "ReadersEMailCheck\ReadersEMailCheck.csproj", "{0B29AED3-BCB7-4701-B600-B7E27853909C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -427,6 +423,10 @@ Global
 		{7417A1DF-3BFB-4960-8E1A-240F632F9414}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7417A1DF-3BFB-4960-8E1A-240F632F9414}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7417A1DF-3BFB-4960-8E1A-240F632F9414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B29AED3-BCB7-4701-B600-B7E27853909C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B29AED3-BCB7-4701-B600-B7E27853909C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B29AED3-BCB7-4701-B600-B7E27853909C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B29AED3-BCB7-4701-B600-B7E27853909C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -447,6 +447,7 @@ Global
 		{A7B2D729-46D3-48C7-AE2E-417A19BDD42D} = {172B6033-F306-482B-B443-5D565ADCB12A}
 		{38DC5A17-DE18-4D50-ABB1-39562FEFFFBC} = {172B6033-F306-482B-B443-5D565ADCB12A}
 		{D3656821-75F7-4273-BF97-50066A35C808} = {172B6033-F306-482B-B443-5D565ADCB12A}
+		{0B29AED3-BCB7-4701-B600-B7E27853909C} = {43CBF2E9-8CE3-4AFF-9948-87AA9904013A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA724ECA-4FCD-4BF4-9553-7CA9DBF07D8D}
