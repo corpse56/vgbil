@@ -478,7 +478,7 @@ namespace CirculationApp
 
         private void bFormularFindById_Click(object sender, EventArgs e)
         {
-            ReaderInfo reader;
+            ReaderInfo reader = ReaderInfo.GetReader("a@a.a");
             try
             {
                 reader = ReaderInfo.GetReader((int)numericUpDown3.Value);//new ReaderVO((int)numericUpDown3.Value);

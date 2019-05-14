@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
+﻿using ALISAPI.Controllers;
+using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Books.BJBooks;
@@ -7,6 +8,7 @@ using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.Books.BookJSONViewers;
 using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Readers;
+using LibflClassLibrary.Readers.ReadersJSONViewers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -55,17 +57,18 @@ namespace ALISAPI_TEST
             //    ReaderInfo reader = JsonConvert.DeserializeObject<ReaderInfo>(result, ALISDateFormatJSONSettings);
             //    tbResponse.Text = result;
             //}
-            using (WebClient client = new WebClient())
+
+            UserEmail ue = new UserEmail();
+            ue.Email = "debarkader@gmail.com";
+            string jsonData = JsonConvert.SerializeObject(ue, ALISDateFormatJSONSettings);
+            string result;
+            using (HttpClient client = new HttpClient())
             {
-                client.Encoding = Encoding.UTF8;
-                HttpRequestHeader AcceptHeader = HttpRequestHeader.Accept;
-                client.Headers[AcceptHeader] = "application/json";
-                string result = client.DownloadString(ALIS_ADDRESS + "Readers/ByEmail/user201125@demotest.zz");
-                ReaderInfo reader = JsonConvert.DeserializeObject<ReaderInfo>(result, ALISDateFormatJSONSettings);
-                tbResponse.Text = result;
+                var response = client.PostAsync(ALIS_ADDRESS + "Readers/ByEmail/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
+                result = response.Result.Content.ReadAsStringAsync().Result;
             }
-
-
+            tbResponse.Text = result;
+            ReaderSimpleView readerSimpleView = JsonConvert.DeserializeObject<ReaderSimpleView>(result, ALISSettings.ALISDateFormatJSONSettings);
         }
 
         private void button1_Click(object sender, EventArgs e)

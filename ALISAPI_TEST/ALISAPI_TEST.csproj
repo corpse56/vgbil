@@ -90,6 +90,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ALISAPI\ALISAPI.csproj">
+      <Project>{342E9693-4E7F-45AF-B917-56F977BD7F9B}</Project>
+      <Name>ALISAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LibflClassLibrary\LibflClassLibrary.csproj">
       <Project>{ca4020f7-b048-4dfa-9e13-3e04db83b093}</Project>
       <Name>LibflClassLibrary</Name>

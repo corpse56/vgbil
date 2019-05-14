@@ -5,6 +5,8 @@ using BookClasses;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Data;
+using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 //using System.Xml.Linq;
 namespace WriteOff
 {
@@ -66,18 +68,62 @@ namespace WriteOff
         }
         public List<Book> GetBooksOnAct(string act)
         {
+            //this.da_.SelectCommand.CommandText = "select A.IDMAIN, A.IDDATA from " + this.Base + "..DATAEXT A " +
+            //                                     "join " + this.Base + "..DATAEXTPLAIN B on A.ID=B.IDDATAEXT " +
+            //                                     "where (A.MSFIELD = '$b' " +
+            //                                     "AND A.MNFIELD = 929 " +
+            //                                     "and B.PLAIN = '" + act + "')";
+            //DataTable table = new DataTable();
+            //int ccc = da_.Fill(table);
+            //List<Book> Rlist = new List<Book>();//список книг списанных по акту
+            //foreach (DataRow row in table.Rows)
+            //{
+            //    Book b = new Book();
+
+            //    BJBookInfo book = BJBookInfo.GetBookInfoByPIN(Convert.ToInt32(row[0]), this.Base);
+            //    b.Author = book.Fields["700$a"].ToString();
+            //    b.AuthorSrt = book.Fields["700$a"].ToString();
+            //    b.IDDATAACT = row[1].ToString();
+            //    b.Language = book.Fields["101$a"].ToString();
+            //    b.PlaceOfPublish = book.Fields["210$a"].ToString();
+            //    b.Title = book.Fields["200$a"].ToString();
+            //    b.TitleSrt = book.Fields["200$a"].ToString();
+            //    b.YearOfPublish = book.Fields["2100$d"].ToString();
+            //    foreach (BJExemplarInfo exemplar in book.Exemplars)
+            //    {
+            //        bool isWriteOff = false;
+
+            //        if (exemplar.Fields["921$c"].ToString() == "Списано" && exemplar.Fields["929$b"].ToString() == act)
+            //        {
+            //            AccessionNumber acc = new AccessionNumber(exemplar.Fields["899$p"].ToString(), exemplar.Fields["899$x"].ToString(), exemplar.IdData.ToString(), true, );
+            //        }
+            //        else
+            //        {
+
+            //        }
+
+            //    }
+            //}
+
+
+
+
             this.da_.SelectCommand.CommandText = "with f as (select A.IDMAIN,MNFIELD,MSFIELD from "+this.Base+"..DATAEXT A " +
                                                  "join " + this.Base + "..DATAEXTPLAIN B on A.ID=B.IDDATAEXT " +
                                                  "where (A.MSFIELD = '$b' " +
                                                  "AND A.MNFIELD = 929 " +
                                                  "and B.PLAIN = '" + act + "')) " +
-                                                 "SELECT distinct FF.IDMAIN,A.SORT,dtp.PLAIN,lang.NAME,A.MNFIELD,A.MSFIELD,A.IDDATA,B.SORT fnd,D.SORT mhr,E.SORT act FROM " + this.Base + "..DATAEXT A " +
+                                                 "SELECT distinct FF.IDMAIN,A.SORT,dtp.PLAIN,lang.NAME,A.MNFIELD,A.MSFIELD,A.IDDATA,B.SORT fnd,D.SORT mhr,E.SORT act, EE.PLAIN actp " +
+                                                 ",F.SORT klass " +
+                                                 "FROM " + this.Base + "..DATAEXT A " +
                                                  "JOIN f AS FF on A.IDMAIN = FF.IDMAIN " +
                                                  "JOIN " + this.Base + "..DATAEXTPLAIN dtp on dtp.IDDATAEXT = A.ID " +
                                                  "left join " + this.Base + "..LIST_1 as lang on dtp.PLAIN = lang.SHORTNAME " +
                                                  "left join " + this.Base + "..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 899 and B.MSFIELD = '$b' " +
                                                  "left join " + this.Base + "..DATAEXT D on D.IDDATA = A.IDDATA and D.MNFIELD = 899 and D.MSFIELD = '$a' " +
                                                  "left join " + this.Base + "..DATAEXT E on E.IDDATA = A.IDDATA and E.MNFIELD = 929 and E.MSFIELD = '$b' " +
+                                                 "left join " + this.Base + "..DATAEXT F on F.IDDATA = A.IDDATA and F.MNFIELD = 921 and F.MSFIELD = '$c' " +
+                                                 "left join " + this.Base + "..DATAEXTPLAIN EE on E.ID = EE.IDDATAEXT " +
                                                  "where 	(  (A.MSFIELD = '$p' " +
                                                  "         AND A.MNFIELD = 899) " +
                                                  "          OR  (A.MSFIELD = '$a' " +
@@ -109,7 +155,7 @@ namespace WriteOff
                                                  "         OR	(A.MSFIELD = '$b' " +
                                                  "             AND A.MNFIELD = 929)) ORDER BY FF.IDMAIN,A.MSFIELD";
             this.ds_.Tables.Clear();
-            da_.Fill(this.ds_);
+            int c = da_.Fill(this.ds_);
             this.book_ = new Book();//временный объект для накопления в цикле инфы о книге
             List<string> anotherActs = new List<string>();
             if (ds_.Tables[0].Rows.Count == 0)
@@ -131,7 +177,7 @@ namespace WriteOff
             idm = ds_.Tables[0].Rows[0]["IDMAIN"].ToString();
             foreach (DataRow r in ds_.Tables[0].Rows)
             {
-                if (r["IDMAIN"].ToString() == "1285608")
+                if (r["IDMAIN"].ToString() == "1001538")
                 {
                     int ff = 1;
                 }
@@ -164,23 +210,70 @@ namespace WriteOff
                 {
                     case "899$p": //КАК УЗНАТЬ, ЧТО ИНВЕНТАРЬ ОФ ИЛИ АБОНЕМЕНТ?
                         {
-                            if (!isExistIn(r["IDDATA"].ToString(), anotherActs))
+                            if (r["SORT"].ToString() == "2172329")
                             {
-                                if ((r["fnd"].ToString() == "Абонемент") || (r["mhr"].ToString() == "ЦДДАбонемент") || (r["act"].ToString().IndexOf("АБ") != -1))
+                                int fred = 1;
+                            }
+                            DataTable idData = new DataTable();
+                            this.da_.SelectCommand.CommandText = " select A.IDDATA,D.PLAIN from BJVVV..DATAEXT A " +
+                                                                    " left join BJVVV..DATAEXTPLAIN B on A.ID = B.IDDATAEXT " +
+                                                                    " left join BJVVV..DATAEXT C on A.IDDATA = C.IDDATA and C.MNFIELD = 899 and C.MSFIELD = '$p' " +
+                                                                    " left join BJVVV..DATAEXTPLAIN D on C.ID = D.IDDATAEXT " +
+                                                                    " where A.MNFIELD = 929 and A.MSFIELD = '$b' and B.PLAIN = '" + act + "'" +
+                                                                    " and D.PLAIN = '"+ r["PLAIN"].ToString() + "'";
+                            int cc = this.da_.Fill(idData);
+                            if (cc != 0)
+                            {
+                                string actIdData = idData.Rows[0][0].ToString();
+                                //if (!isExistIn(r["IDDATA"].ToString(), anotherActs))
+                                if (actIdData == r["IDDATA"].ToString() && act == r["actp"].ToString())
                                 {
-                                    this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), false, "A"));
-                                }
-                                else
-                                    if ((r["fnd"].ToString() == "Фондредкойкниги") || (r["mhr"].ToString() == "КнигохранениеФондредкойкниги") || (r["act"].ToString().IndexOf("R") != -1))
+                                    if ((r["fnd"].ToString() == "Абонемент") || (r["mhr"].ToString() == "ЦДДАбонемент") || (r["act"].ToString().IndexOf("АБ") != -1))
                                     {
-                                        this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), false, "R"));
+                                        this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), true, "A"));
                                     }
                                     else
                                     {
-                                        this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), false, "O"));
+                                        if ((r["fnd"].ToString() == "Фондредкойкниги") || (r["mhr"].ToString() == "КнигохранениеФондредкойкниги") || (r["act"].ToString().IndexOf("R") != -1))
+                                        {
+                                            this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), true, "R"));
+                                        }
+                                        else
+                                        {
+                                            this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), true, "O"));
+                                        }
                                     }
-                                this.book_.AddPrice(r["IDDATA"].ToString(), ds_.Tables[0]);
-                                
+                                    this.book_.AddPrice(r["IDDATA"].ToString(), ds_.Tables[0]);
+                                }
+                            }
+                            else
+                            {
+                                if (r["klass"].ToString() == "Списано")
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    if ((r["fnd"].ToString() == "Абонемент") || (r["mhr"].ToString() == "ЦДДАбонемент") || (r["act"].ToString().IndexOf("АБ") != -1))
+                                    {
+                                        this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), false, "A"));
+                                    }
+                                    else
+                                    {
+                                        if ((r["fnd"].ToString() == "Фондредкойкниги") || (r["mhr"].ToString() == "КнигохранениеФондредкойкниги") || (r["act"].ToString().IndexOf("R") != -1))
+                                        {
+                                            this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), false, "R"));
+                                        }
+                                        else
+                                        {
+                                            this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), false, "O"));
+                                        }
+                                    }
+                                    this.book_.AddPrice(r["IDDATA"].ToString(), ds_.Tables[0]);
+
+                                }
+
+
                             }
                             break;
                         }
@@ -193,22 +286,22 @@ namespace WriteOff
                         }
                     case "929$b":
                         {
-                            if (!isExistIn(r["IDDATA"].ToString(), anotherActs))
-                            {
-                                if ((r["fnd"].ToString() == "Абонемент") || (r["mhr"].ToString() == "ЦДДАбонемент") || (r["act"].ToString().IndexOf("АБ") != -1))
-                                {
-                                    this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), true, "A"));
-                                }
-                                else
-                                    if ((r["fnd"].ToString() == "Фондредкойкниги") || (r["mhr"].ToString() == "КнигохранениеФондредкойкниги") || (r["act"].ToString().IndexOf("R") != -1))
-                                    {
-                                        this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), true, "R"));
-                                    }
-                                    else
-                                    {
-                                        this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), true, "O"));
-                                    }
-                            }
+                            //if (!isExistIn(r["IDDATA"].ToString(), anotherActs))
+                            //{
+                            //    if ((r["fnd"].ToString() == "Абонемент") || (r["mhr"].ToString() == "ЦДДАбонемент") || (r["act"].ToString().IndexOf("АБ") != -1))
+                            //    {
+                            //        this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), true, "A"));
+                            //    }
+                            //    else
+                            //        if ((r["fnd"].ToString() == "Фондредкойкниги") || (r["mhr"].ToString() == "КнигохранениеФондредкойкниги") || (r["act"].ToString().IndexOf("R") != -1))
+                            //        {
+                            //            this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), true, "R"));
+                            //        }
+                            //        else
+                            //        {
+                            //            this.book_.AddAccessionNum(new AccessionNumber(r["PLAIN"].ToString(), string.Empty, r["IDDATA"].ToString(), true, "O"));
+                            //        }
+                            //}
                             break;
                         }
                     case "899$x":
@@ -388,6 +481,11 @@ namespace WriteOff
             Rlist.Add(this.book_);
             foreach (Book b in Rlist)
             {
+                if (b.Title == "Город чудес: Роман")
+                {
+                    int ff = 1;
+                }
+
                 if (b.Author != null)
                     b.Author = b.Author.Remove(b.Author.Length - 1);
                 if (b.ReferenceNumberOF != null)
@@ -404,17 +502,25 @@ namespace WriteOff
                 }
                 if ((b.accNums_.Count == 2) && ((b.accNums_[0].AccessionNum == "") || (b.accNums_[1].AccessionNum == "")))//это глюк базы. IDDATA могут не совпадать. такое возможно придется дописать и для тех книг у которых несколько инвентарей
                 {
-                    if (b.accNums_[0].IsWriteOff)
+                    if (b.accNums_[0].AccessionNum == "")
                     {
-                        b.accNums_[1].IsWriteOff = true;
                         b.accNums_.Remove(b.accNums_[0]);
                     }
-                    else
+                    else if (b.accNums_[1].AccessionNum == "")
                     {
-                        b.accNums_[0].IsWriteOff = true;
                         b.accNums_.Remove(b.accNums_[1]);
                     }
-                    MessageBox.Show("Ошибка bibliojet! перепишите инвентарный номер:  " +b.accNums_[0].AccessionNum+" и обратитесь в отдел автоматизации.");
+                    //if (b.accNums_[0].IsWriteOff)
+                    //{
+                    //    b.accNums_[1].IsWriteOff = true;
+                    //    b.accNums_.Remove(b.accNums_[0]);
+                    //}
+                    //else
+                    //{
+                    //    b.accNums_[0].IsWriteOff = true;
+                    //    b.accNums_.Remove(b.accNums_[1]);
+                    //}
+                    //MessageBox.Show("Ошибка bibliojet! перепишите инвентарный номер:  " +b.accNums_[0].AccessionNum+" и обратитесь в отдел автоматизации.");
                 }
                 foreach (AccessionNumber a in b.accNums_)
                 {
