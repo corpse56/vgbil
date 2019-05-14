@@ -2,18 +2,6 @@
 // package to your project.
 ////#define Handle_PageResultOfT
 
-using ALISAPI.Controllers;
-using DataProviderAPI.ValueObjects;
-using LibflClassLibrary.ALISAPI.RequestObjects.Circulation;
-using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
-using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
-using LibflClassLibrary.ALISAPI.ResponseObjects.General;
-using LibflClassLibrary.ALISAPI.ResponseObjects.Readers;
-using LibflClassLibrary.Circulation;
-using LibflClassLibrary.Litres;
-using LibflClassLibrary.Readers;
-using LibflClassLibrary.Readers.ReadersJSONViewers;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,7 +34,7 @@ namespace ALISAPI.Areas.HelpPage
         public static void Register(HttpConfiguration config)
         {
             //// Uncomment the following to use the documentation from XML documentation file.
-            config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/Documentation/documentation.xml")));
+            //config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));
 
             //// Uncomment the following to use "sample string" as the sample for all actions that have string as the body parameter or return type.
             //// Also, the string arrays will be used for IEnumerable<string>. The sample objects will be serialized into different media type 
@@ -90,190 +78,6 @@ namespace ALISAPI.Areas.HelpPage
             //// Uncomment the following to correct the sample response when the action returns an HttpResponseMessage with ObjectContent<string>.
             //// The sample will be generated as if the controller named "Values" and action named "Post" were returning a string.
             //config.SetActualResponseType(typeof(string), "Values", "Post");
-
-
-            ReaderInfo reader = ReaderInfo.GetReader(189245);
-            //Readers.Get
-            ReaderSimpleView rsv = ReaderViewFactory.GetReaderSimpleView(reader);
-            string json = JsonConvert.SerializeObject(rsv, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "Get");
-
-
-            //Readers.GetByOauthToken
-            AccessToken token = new AccessToken();
-            token.TokenValue = "jhgfjfg*%&$*FKGfkfKfI^(*&^5&^TGVfjtgfdtre$E65r86T87t)(*7goYGV986T98^&Go8yg";
-            json = JsonConvert.SerializeObject(token, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetByOauthToken");
-
-            json = JsonConvert.SerializeObject(rsv, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetByOauthToken");
-
-            ////Readers.ChangePasswordLocalReader
-            //ChangePasswordLocalReader password = new ChangePasswordLocalReader();
-            //password.DateBirth = "1984-02-14";// new DateTime(1984, 2, 14);
-            //password.NewPassword = "123";
-            //password.NumberReader = 189245;
-            //json = JsonConvert.SerializeObject(password, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            //config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ChangePasswordLocalReader");
-
-            //Readers.GetLoginType
-            LoginType ltype = new LoginType();
-            ltype.LoginTypeValue = "Email";
-            json = JsonConvert.SerializeObject(ltype, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetLoginType");
-            UserLogin ul = new UserLogin();
-            ul.Login = "email@email.com";
-            json = JsonConvert.SerializeObject(ul, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "GetLoginType");
-
-
-            //Readers.ByEmail
-            UserEmail ue = new UserEmail();
-            ue.Email = "email@email.com";
-            json = JsonConvert.SerializeObject(ue, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ByEmail");
-            json = JsonConvert.SerializeObject(rsv, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "ByEmail");
-
-
-
-            //Readers.Authorize
-            AuthorizeInfo aut = new AuthorizeInfo();
-            aut.login = "189245";
-            aut.password = "123";
-            json = JsonConvert.SerializeObject(aut, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
-            config.SetSampleForType(aut, new MediaTypeHeaderValue("application/json"), typeof(AuthorizeInfo));
-            config.SetActualRequestType(typeof(AuthorizeInfo), "Readers", "Authorize");
-            json = JsonConvert.SerializeObject(rsv, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "Authorize");
-
-            //Readers / IsBirthDateMatchReaderId
-            BirthDateMatchReaderId match = new BirthDateMatchReaderId();
-            match.DateBirth = "1984-02-14";
-            match.ReaderId = 189245;
-            BooleanResponse br = new BooleanResponse();
-            br.Result = true;
-            json = JsonConvert.SerializeObject(match, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "IsBirthDateMatchReaderId");
-            json = JsonConvert.SerializeObject(br, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Readers", "IsBirthDateMatchReaderId");
-
-            //Readers/SetPasswordLocalReader
-            SetPasswordLocalReader spwd = new SetPasswordLocalReader();
-            spwd.NewPassword = "@$(*&$^(@*#&!)#@$";
-            spwd.ReaderId = 189245;
-            json = JsonConvert.SerializeObject(spwd, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "SetPasswordLocalReader");
-
-
-            //Books.Get
-            BookSimpleView book;
-            book = ViewFactory.GetBookSimpleView("BJVVV_1411951");
-            json = JsonConvert.SerializeObject(book, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Books", "Get");
-
-            //Circulation.InsertIntoUserBasket
-            ImpersonalBasket basket = new ImpersonalBasket();
-            basket.BookIdArray = new List<string>();
-            basket.BookIdArray.AddRange(new string[] { "BJVVV_1299121", "BJVVV_1304618", "REDKOSTJ_31866", "REDKOSTJ_43090" });
-            basket.ReaderId = 189245;
-            json = JsonConvert.SerializeObject(basket, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "InsertIntoUserBasket");
-
-            //Circulation.Basket
-            CirculationInfo circ = new CirculationInfo();
-            List<BasketInfo> UserBasket = circ.GetBasket(888);
-            json = JsonConvert.SerializeObject(UserBasket, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Basket");
-
-            //Circulation.Order
-            circ = new CirculationInfo();
-            MakeOrder mo = new MakeOrder();
-            mo.BookId = "BJVVV_1078762";
-            mo.ReaderId = 100000;
-            mo.OrderTypeId = 2;
-            json = JsonConvert.SerializeObject(mo, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Order");
-
-
-            //Circulation.Orders
-            List<OrderInfo> UserOrders = circ.GetOrders(155);
-            json = JsonConvert.SerializeObject(UserOrders, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "Orders");
-            //Circulation.Basket    Delete
-            BasketDelete bd = new BasketDelete();
-            bd.BooksToDelete.Add("BJVVV_1299121");
-            bd.BooksToDelete.Add("BJVVV_1491232");
-            bd.ReaderId = 200500;
-            json = JsonConvert.SerializeObject(bd, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Circulation", "DeleteFromBasket");
-
-            //Circulation.OrdersHistory
-            List<OrderHistoryInfo> UserOrdersHistory = circ.GetOrdersHistory(100000);
-            json = JsonConvert.SerializeObject(UserOrdersHistory, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "OrdersHistory");
-
-
-            //Readers.PreRegisterRemoteReader
-            PreRegisterRemoteReader re = new PreRegisterRemoteReader();
-            re.BirthDate = "1975-05-05";//new DateTime(1975, 05, 05);
-            re.CountryId = 137;
-            re.Email = "mail@example.com";
-            re.FamilyName = "Иванов";
-            re.FatherName = "Иванович";
-            re.MobilePhone = "89551234567";
-            re.Name = "Иван";
-            re.Password = "!@#";
-            json = JsonConvert.SerializeObject(re, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "PreRegisterRemoteReader");
-
-            //Readers.ConfirmRegistrationRemoteReader
-            ConfirmRegistrationRemoteReader c = new ConfirmRegistrationRemoteReader();
-            c.Url = "https://oauth.libfl.ru/activate/<activation code>";
-            json = JsonConvert.SerializeObject(c, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ConfirmRegistrationRemoteReader");
-
-            //Readers.ChangePasswordByEmail
-            ChangePasswordByEmail em = new ChangePasswordByEmail();
-            em.Email = "sample@example.com";
-            json = JsonConvert.SerializeObject(em, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "ChangePasswordByEmail");
-
-            //Readers.SetPasswordRemoteReader
-            SetPasswordRemoteReader set = new SetPasswordRemoteReader();
-            set.Url = "https://oauth.libfl.ru/recovery/<recovery code>";
-            set.Password = "!@#";
-            json = JsonConvert.SerializeObject(set, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "SetPasswordRemoteReader");
-
-            //Readers.CheckPasswordUrl
-            CheckPasswordUrl check = new CheckPasswordUrl();
-            check.Url = "https://oauth.libfl.ru/recovery/<recovery code>";
-            json = JsonConvert.SerializeObject(check, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleRequest(json, new MediaTypeHeaderValue("application/json"), "Readers", "CheckPasswordUrl");
-
-            //GET Litres/Account/{ReaderId}
-            LitresInfo li = new LitresInfo();
-            li.Login = "34543655467";
-            li.Password = "123&123";
-            json = JsonConvert.SerializeObject(li, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Litres", "LitresAccount");
-            //POST Litres/AssignAccount/{ReaderId}
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Litres", "AssignLitresAccount");
-
-
-            //Circulation / Orders / ById /{ OrderId}
-            OrderInfo oi = circ.GetOrder(22);
-            json = JsonConvert.SerializeObject(oi, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Circulation", "OrdersById");
-
-            //Books/ElectronicCopy/{id}
-            ElectronicCopyFullView ec = ViewFactory.GetElectronicCopyFullView("BJVVV_138023");
-            json = JsonConvert.SerializeObject(ec, Formatting.Indented, ALISSettings.ALISDateFormatJSONSettings);
-            config.SetSampleResponse(json, new MediaTypeHeaderValue("application/json"), "Books", "GetElectronicCopyFullView");
-
-            
         }
 
 #if Handle_PageResultOfT

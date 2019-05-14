@@ -7,23 +7,15 @@ using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.Books.BookJSONViewers;
 using LibflClassLibrary.Circulation;
-using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.ReadersJSONViewers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ALISAPI_TEST

@@ -381,8 +381,7 @@ namespace ALISAPI.Areas.HelpPage
             Type responseType = response.ResponseType ?? response.DeclaredType;
             if (responseType != null && responseType != typeof(void))
             {
-                //убрал генерацию описания ResourceDescription
-                //apiModel.ResourceDescription = modelGenerator.GetOrCreateModelDescription(responseType);
+                apiModel.ResourceDescription = modelGenerator.GetOrCreateModelDescription(responseType);
             }
         }
 

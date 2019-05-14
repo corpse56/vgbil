@@ -60,6 +60,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bytescout.PDFExtractor, Version=10.1.0.3444, Culture=neutral, PublicKeyToken=f7dd1bd9d40a50eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bytescout.PDFExtractor.10.1.0.3444\lib\net40\Bytescout.PDFExtractor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Bytescout.PDFExtractor.OCRExtension, Version=10.1.0.3444, Culture=neutral, PublicKeyToken=f7dd1bd9d40a50eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bytescout.PDFExtractor.10.1.0.3444\lib\net40\Bytescout.PDFExtractor.OCRExtension.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Itenso.Rtf.Converter.Html">
       <HintPath>bin\Debug\Itenso.Rtf.Converter.Html.dll</HintPath>
     </Reference>
@@ -404,6 +412,11 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="CirculationOF_TemporaryKey.pfx" />
+    <None Include="ocrdata\deu.traineddata" />
+    <None Include="ocrdata\eng.traineddata" />
+    <None Include="ocrdata\fra.traineddata" />
+    <None Include="ocrdata\osd.traineddata" />
+    <None Include="ocrdata\spa.traineddata" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -455,10 +468,6 @@
     <Compile Include="ViewFullSizePhoto.designer.cs">
       <DependentUpon>ViewFullSizePhoto.cs</DependentUpon>
     </Compile>
-    <None Include="tessdata\deu.traineddata" />
-    <None Include="tessdata\eng.traineddata" />
-    <None Include="tessdata\fra.traineddata" />
-    <None Include="tessdata\spa.traineddata" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="nofoto.png" />
