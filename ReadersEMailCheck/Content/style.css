@@ -57,6 +57,7 @@
     width: 100%;
     min-height: 30px;
     box-sizing: border-box;
+    font-size: 20px;
 }
 
 .button {
