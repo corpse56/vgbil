@@ -33,9 +33,14 @@ namespace ReadersEMailCheck_2
                 var response = client.PostAsync(ALIS_ADDRESS + "Readers/ByEmail/", new StringContent(jsonData, Encoding.UTF8, "application/json"));
                 result = response.Result.Content.ReadAsStringAsync().Result;
             }
-
-            ReaderSimpleView2 = JsonConvert.DeserializeObject<ReaderSimpleView>(result);
-
+            try
+            {
+                ReaderSimpleView2 = JsonConvert.DeserializeObject<ReaderSimpleView>(result);
+            }
+            catch (JsonReaderException)
+            {
+                return "ОШИБКА ОТВЕТА СЕРВЕРА";
+            }
             return (ReaderSimpleView2.Email != null) ? "ЧИТАТЕЛЬ ЕСТЬ" : "ЧИТАТЕЛЯ НЕТ";
         }
         protected void Page_Load(object sender, EventArgs e)
