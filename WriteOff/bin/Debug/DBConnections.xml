@@ -2,6 +2,6 @@
     <BJVVV1>Data Source=192.168.3.63;Initial Catalog=BJVVV;Persist Security Info=True;User ID=BJ_R;Password=BJ_onlyRead</BJVVV1>
     <BRIT_SOVET>Data Source=192.168.3.63;Initial Catalog=BRIT_SOVETtest;Persist Security Info=True;User ID=Circulation;Password=circ</BRIT_SOVET>
 	<BJVVV>
-	Data Source=192.168.4.25,1443;Initial Catalog=BJVVV;Persist Security Info=True;User ID=BJ_R;Password=BJ_onlyRead
+	Data Source=192.168.4.25,1443;Initial Catalog=BJVVV;Persist Security Info=True;User ID=BJ_R;Password=BJ_onlyRead;Connection Timeout = 1200
     </BJVVV>
 </Connections>

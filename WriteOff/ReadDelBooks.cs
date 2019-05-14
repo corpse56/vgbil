@@ -107,7 +107,7 @@ namespace WriteOff
 
 
 
-
+            this.da_.SelectCommand.CommandTimeout = 0;
             this.da_.SelectCommand.CommandText = "with f as (select A.IDMAIN,MNFIELD,MSFIELD from "+this.Base+"..DATAEXT A " +
                                                  "join " + this.Base + "..DATAEXTPLAIN B on A.ID=B.IDDATAEXT " +
                                                  "where (A.MSFIELD = '$b' " +
