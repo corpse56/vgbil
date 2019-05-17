@@ -52,9 +52,16 @@
     <Compile Include="Dispatcher.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SipClientInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibflClassLibrary\LibflClassLibrary.csproj">
+      <Project>{CA4020F7-B048-4DFA-9E13-3E04DB83B093}</Project>
+      <Name>LibflClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

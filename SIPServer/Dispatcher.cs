@@ -1,4 +1,6 @@
-﻿using SipLibrary.Abstract;
+﻿using LibflClassLibrary.Circulation;
+using LibflClassLibrary.Readers;
+using SipLibrary.Abstract;
 using SipLibrary.Messages.Requests;
 using SipLibrary.Messages.Responses;
 using SipLibrary.Transport;
@@ -13,40 +15,112 @@ namespace SIPServer
 {
     public class Dispatcher : IDispatcher
     {
+
+        List<SipClientInfo> clients_ = new List<SipClientInfo>();
+
+
         
         public void OnConnected(Session session)
         {
-            Console.WriteLine("New Client Connected");
+            SipClientInfo client = new SipClientInfo();
+            client.session = session;
+            client = null;
+            client = clients_.Find(x => x.session.Ip == session.Ip);
+            if (client == null)
+            {
+                clients_.Add(client);
+                Console.WriteLine("New Client Connected");
+            }
+            else
+            {
+                Console.WriteLine("Client Has Already Connected");
+            }
         }
 
         public void OnDisconnected(Session session)
         {
-            Console.WriteLine("Client Disconnected");
+            SipClientInfo client = clients_.Find(x => x.session.Ip == session.Ip);
+            if (client == null)
+            {
+                Console.WriteLine("Client was not found in connected clients list.");
+            }
+            else
+            {
+                clients_.Remove(client);
+                Console.WriteLine("Client Disconnected");
+            }
         }
 
         public void OnLogin(Session session, LoginRequest request, LoginResponse response)
         {
-            Console.WriteLine("Login Message");
-
-            response.Ok = true;
+            SipClientInfo client = clients_.Find(x=> x.session.Ip == session.Ip);
+            if (client == null)
+            {
+                response.Ok = false;
+                Console.WriteLine("Client was not connected. Login impossible");
+                return;
+            }
+            else
+            {
+                if (request.LoginUserId.ToLower() == "station1" && request.LoginPassword == "123")
+                {
+                    client.login = "station1";
+                    client.password = "123";
+                    client.locationCode = "Hall 2nd floor";
+                    response.Ok = true;
+                    Console.WriteLine("Successful login.");
+                    return;
+                }
+                if (request.LoginUserId.ToLower() == "station2" && request.LoginPassword == "123")
+                {
+                    client.login = "station2";
+                    client.password = "123";
+                    client.locationCode = "Hall 3nd floor";
+                    response.Ok = true;
+                    Console.WriteLine("Successful login.");
+                    return;
+                }
+                Console.WriteLine("Login failed. Username or password is invalid.");
+                response.Ok = false;
+            }
         }
 
         public void OnPatronInformation(Session session, PatronInformationRequest request, PatronInformationResponse response)
         {
             Console.WriteLine("PatronInformation Message");
-
             response.PartonStatus = new PatronStatus();
-            response.Language = Language.Unknown;
+            response.PartonStatus.CardReportedLost = false;
+            response.PartonStatus.ChargePrivilegesDenied = false;
+            response.PartonStatus.ExcessiveOutstandingFees = false;
+            response.PartonStatus.ExcessiveOutstandingFines = false;
+            response.PartonStatus.HoldPrivilegesDenied = false;
+            response.PartonStatus.RecallOverdue = false;
+            response.PartonStatus.RecallPrivilegesDenied = false;
+            response.PartonStatus.RenewalPrivilegesDenied = false;
+            response.PartonStatus.TooManyClaimsOfItemsReturned = false;
+            response.PartonStatus.TooManyItemsBilled = false;
+            response.PartonStatus.TooManyItemsCharged = false;
+            response.PartonStatus.TooManyItemsLost = false;
+            response.PartonStatus.TooManyItemsOverdue = false;
+            response.PartonStatus.TooManyRenewals = false;
+
+            response.Language = Language.Russian;
             response.TransactionDate = DateTime.Now;
-            response.HoldItemsCount = 1;
-            response.OverdueItemsCount = 2;
-            response.ChargedItemsCount = 3;
-            response.FineItemsCount = 4;
-            response.RecallItemsCount = 5;
-            response.UnavailableHoldsCount = 6;
+
+            ReaderInfo reader = ReaderInfo.GetReader(int.Parse(request.PatronId));
+            CirculationInfo ci = new CirculationInfo();
+            List<OrderInfo> orders = ci.GetOrders(reader.NumberReader);
+            List<OrderInfo> holdOrders = orders.FindAll(x => x.StatusCode == CirculationStatuses.IssuedAtHome.Id || x.StatusCode == CirculationStatuses.IssuedInHall.Id);
+            List<OrderInfo> overdueOrders = holdOrders.FindAll(x => x.ReturnDate < DateTime.Now);
+            response.HoldItemsCount = holdOrders.Count;
+            response.OverdueItemsCount = overdueOrders.Count;
+            response.ChargedItemsCount = 0;
+            response.FineItemsCount = 0;
+            response.RecallItemsCount = 0;
+            response.UnavailableHoldsCount = 0;
             response.InstitutionId = request.InstitutionId;
-            response.PatronIdentifier = "The Patron";
-            response.PersonalName = "The Personal Name";
+            response.PatronIdentifier = reader.NumberReader.ToString();
+            response.PersonalName = reader.FamilyName;
 
             response.HoldItemsLimit = 666;
             response.OverdueItemsLimit = 667;
@@ -60,9 +134,9 @@ namespace SIPServer
             response.FeeAmount = 0;
             response.FeeLimit = 1000;
 
-            response.HomeAddress = "Москва";
-            response.EmailAddress = "TheEmail@address.com";
-            response.HomePhoneNumber = "1234567890";
+            response.HomeAddress = reader.RegistrationCity;
+            response.EmailAddress = reader.Email;
+            response.HomePhoneNumber = reader.MobileTelephone;
 
             response.ScreenMessage = "The Screen Message of Patron Information Response";
             response.PrintLine = "Print Line";

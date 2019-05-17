@@ -7401,3 +7401,11 @@
 /packages/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0/tools/net45/install.ps1
 /packages/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0/tools/net45/uninstall.ps1
 /packages/jQuery.3.3.1/.signature.p7s
+/SIPServer/bin/Debug/HtmlAgilityPack.dll
+/SIPServer/bin/Debug/HtmlAgilityPack.pdb
+/SIPServer/bin/Debug/HtmlAgilityPack.xml
+/SIPServer/bin/Debug/LibflClassLibrary.dll
+/SIPServer/bin/Debug/LibflClassLibrary.dll.config
+/SIPServer/bin/Debug/LibflClassLibrary.pdb
+/SIPServer/bin/Debug/MySql.Data.dll
+/SIPServer/bin/Debug/Newtonsoft.Json.dll
