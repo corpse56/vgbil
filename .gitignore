@@ -7402,3 +7402,4 @@
 /packages/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0/tools/net45/uninstall.ps1
 /packages/jQuery.3.3.1/.signature.p7s
 /packages
+/ReadersEMailCheck/bin/roslyn
