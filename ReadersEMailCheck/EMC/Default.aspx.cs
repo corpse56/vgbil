@@ -4,6 +4,7 @@ using System.Web.Configuration;
 using System.Web.Security;
 using System.Net.Http;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReadersEMailCheck_2
 {
@@ -22,6 +23,8 @@ namespace ReadersEMailCheck_2
         public JsonConverter ALISDateFormatJSONSettings2 { get; private set; }
         protected string EMC(string s)
         {
+            if (!(new EmailAddressAttribute().IsValid(s)))
+                return "ОШИБКА ВХОДНЫХ ДАННЫХ";
             string ALIS_ADDRESS = WebConfigurationManager.AppSettings["ALIS_ADDRESS"];
             UserEmail ue = new UserEmail();
             //ue.Email = "debarkader@gmail.com";
