@@ -192,7 +192,7 @@ public partial class loginemployee : System.Web.UI.Page
             CurReader.ID = bjUser.Id.ToString();
             CurReader.SetReaderType(2);
             FormsAuthentication.RedirectFromLoginPage(Login1.UserName, false);
-            MoveToHistory();
+            MoveToHistory(bjUser);
             Response.Redirect("SelectRole.aspx?EmpId=" + CurReader.ID + "&type=2&id=" + CurReader.idSession);
             //Response.Redirect("default.aspx" + "?id=" + CurReader.idSession + "&type=2");
         }
@@ -353,7 +353,7 @@ public partial class loginemployee : System.Web.UI.Page
             rng.GetBytes(random); // The array is now filled with cryptographically strong random bytes.
             return Convert.ToBase64String(random);
         }
-        void MoveToHistory()
+        void MoveToHistory(BJUserInfo bjUser)
         {
             SqlDataAdapter DA = new SqlDataAdapter();
             DA.SelectCommand = new SqlCommand();
@@ -384,12 +384,12 @@ public partial class loginemployee : System.Web.UI.Page
                             //DA.Update(DS.Tables["ordhis"]);//так тоже транзакция работает!
                             //DA.DeleteCommand.ExecuteNonQuery();
                             comm.CommandText = "insert into Reservation_E..OrdHis (ID_Reader, ID_Book_EC, ID_Book_CC, Status, Start_Date, "+
-                                                " Change_Date, InvNumber, Form_Date, Duration, Who, OID) " +
+                                                " Change_Date, InvNumber, Form_Date, Duration,  OID, DepId) " +
                                                "values (" + row["ID_Reader"].ToString() + "," + row["ID_Book_EC"].ToString() + "," +
                                                row["ID_Book_CC"].ToString() + ",1,'" + ((DateTime)row["Start_Date"]).ToString("yyyyMMdd") + "','" +
                                                DateTime.Now.ToString("yyyyMMdd") + "','" + row["InvNumber"].ToString() + "','" +
                                                ((DateTime)row["Form_Date"]).ToString("yyyyMMdd") + "'," + row["Duration"].ToString() + "," +
-                                               row["Who"].ToString() + "," + row["ID"].ToString() + ")";
+                                                row["ID"].ToString() + ",2033)";
                             comm.ExecuteNonQuery();
                             comm.CommandText = "delete from Reservation_E..Orders where ID = " + row["ID"].ToString();
                             comm.ExecuteNonQuery();

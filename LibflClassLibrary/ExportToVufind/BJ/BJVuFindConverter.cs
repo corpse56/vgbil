@@ -505,6 +505,18 @@ namespace LibflClassLibrary.ExportToVufind.BJ
 
         private void AddHierarchyFields(int ParentPIN, int CurrentPIN, VufindDoc vfDoc)
         {
+            if (ParentPIN == CurrentPIN)
+            {
+                vfDoc.hierarchy_top_id.ValueList.Add(this.Fund + "_" + CurrentPIN.ToString());
+                string hierarchy_top_title1 = BJLoader.GetTitle(CurrentPIN);
+                vfDoc.hierarchy_top_title.ValueList.Add(hierarchy_top_title1);
+                vfDoc.hierarchy_sequence.Add("1");
+                vfDoc.is_hierarchy_id.ValueList.Add(this.Fund + "_" + CurrentPIN);
+                string is_hierarchy_title1 = BJLoader.GetTitle(CurrentPIN);
+                vfDoc.is_hierarchy_title.ValueList.Add(is_hierarchy_title1);
+                return;
+            }
+
             DataTable table = BJLoader.GetBJRecord(ParentPIN);
             int TopHierarchyId = GetTopId(ParentPIN);
             
@@ -533,6 +545,15 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 }
 
             }
+            if (vfDoc.hierarchytype.ValueList.Count == 0)
+            {
+                vfDoc.hierarchytype.Add(string.Empty);
+            }
+            if (vfDoc.hierarchy_sequence.ValueList.Count == 0)
+            {
+                vfDoc.hierarchy_sequence.Add("1");
+            }
+            vfDoc.hierarchy_browse.Add($"{vfDoc.hierarchy_top_title}{{{{{{_ID_}}}}}}{vfDoc.hierarchy_top_id}");
         }
         private int GetTopId(int ParentPIN)
         {
@@ -564,16 +585,18 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             string level = record.Rows[0]["Level"].ToString();
             string level_id = record.Rows[0]["level_id"].ToString();
             int lev_id = int.Parse(level_id);
-            if (lev_id < 0) return null;
+            //if (lev_id < 0) return null;
             StringBuilder allFields = new StringBuilder();
             AuthoritativeFile AF_all = new AuthoritativeFile();
             bool wasTitle = false;//встречается ошибка: два заглавия в одном пине
             bool wasAuthor = false;//был ли автор. если был, то сортировочное поле уже заполнено
+            bool wasHierarchy = false;
             string description = "";//все 3хх поля
             string Annotation = "";
             int CarrierCode;
             VufindDoc result = new VufindDoc();
             string add = string.Empty;
+
             #region field analyse
             //BJBookInfo book = new BJBookInfo();
             foreach (DataRow r in record.Rows)
@@ -813,7 +836,8 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                     case "225$a":
                         if (r["PLAIN"].ToString() == "") break;
                         if (r["PLAIN"].ToString() == "-1") break;
-                        //AddHierarchyFields(Convert.ToInt32(r["PLAIN"]), Convert.ToInt32(r["IDMAIN"]), result);
+                        AddHierarchyFields(Convert.ToInt32(r["PLAIN"]), Convert.ToInt32(r["IDMAIN"]), result);
+                        wasHierarchy = true;
                         break;
                     case "225$h":
                         result.NumberInSeries.Add(r["PLAIN"].ToString());
@@ -891,6 +915,14 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             if (description != "")
             {
                 result.description.Add(description);
+            }
+            if (!wasHierarchy && int.Parse(result.Level_id) < 0)
+            {
+                AddHierarchyFields(currentIDMAIN, currentIDMAIN, result);
+                if (int.Parse(result.Level_id) == -4)
+                {
+                    AddExemplarFields(currentIDMAIN, result, this.Fund);
+                }
             }
             if (int.Parse(result.Level_id) < 0)
             {

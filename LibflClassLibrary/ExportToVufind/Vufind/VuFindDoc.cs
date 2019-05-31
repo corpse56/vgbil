@@ -115,8 +115,9 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
             this.hierarchy_parent_id = new VufindField();
             this.is_hierarchy_id = new VufindField();
             this.is_hierarchy_title = new VufindField();
-
-
+            this.hierarchytype = new VufindField();
+            this.hierarchy_sequence = new VufindField();
+            this.hierarchy_browse = new VufindField();
             //this.NewArrivals = "";
         }
 
@@ -224,6 +225,10 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
         public VufindField hierarchy_parent_id { get; set; }
         public VufindField is_hierarchy_id { get; set; }
         public VufindField is_hierarchy_title { get; set; }
+        public VufindField hierarchytype { get; set; }
+        public VufindField hierarchy_sequence { get; set; }
+        public VufindField hierarchy_browse { get; set; }
+        
         //специальная обработка 
         //перед записью в файл экспорта нужно вызвать этот метод
         //1. Фасетные поля. Если фасетное поле пустое, то вставлять <нет данных>

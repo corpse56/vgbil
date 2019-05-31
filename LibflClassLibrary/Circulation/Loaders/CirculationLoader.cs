@@ -270,9 +270,9 @@ namespace LibflClassLibrary.Circulation.Loaders
             int ReturnInDays = (issueType == IssueType.AtHome) ? 30 : 10;//30 дней на дом. 10 дней бронеполка.
             ChangeOrderStatusIssue(bjUser, order.OrderId, statusName, ReturnInDays);
         }
-        internal void ChangeOrderStatus(BJUserInfo bjUser, int orderId, string status)
+        internal void ChangeOrderStatus(BJUserInfo bjUser, int orderId, string statusName)
         {
-            dbWrapper.ChangeOrderStatus(orderId, status, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
+            dbWrapper.ChangeOrderStatus(orderId, statusName, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
         }
 
         private void ChangeOrderStatusIssue(BJUserInfo bjUser, int orderId, string statusName, int returnInDays)

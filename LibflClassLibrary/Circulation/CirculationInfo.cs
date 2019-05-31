@@ -285,7 +285,7 @@ namespace LibflClassLibrary.Circulation
             }
         }
 
-        internal void IssueBookToReader(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader, BJUserInfo bjUser)
+        public void IssueBookToReader(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader, BJUserInfo bjUser)
         {
             //метод выдаёт книгу, либо возвращает исключения
 
@@ -808,9 +808,9 @@ namespace LibflClassLibrary.Circulation
             return result;
         }
 
-        public void ChangeOrderStatus(BJUserInfo user, int OrderId, string status)
+        public void ChangeOrderStatus(BJUserInfo user, int OrderId, string statusName)
         {
-            loader.ChangeOrderStatus(user, OrderId, status);
+            loader.ChangeOrderStatus(user, OrderId, statusName);
         }
         public void ChangeOrderStatusReturn(BJUserInfo bjUser, int orderId, string status)
         {

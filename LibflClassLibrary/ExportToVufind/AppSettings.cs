@@ -14,8 +14,8 @@ namespace LibflClassLibrary.ExportToVufind
             {
                 //Initial Catolog всегда (!!!!) должен быть равен Readers, потому что внешняя дллка регистрации использует именно это имя для обращений к базе.
                 //зачем это было сделано, известно только тому, кто сделал.
-                string connectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Readers;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
-                //string connectionString = @"Data Source=127.0.0.1;Initial Catalog=Readers;Integrated Security=True;";
+                //string connectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Readers;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
+                string connectionString = @"Data Source=127.0.0.1;Initial Catalog=Readers;Integrated Security=True;";
 
                 return connectionString;
             }

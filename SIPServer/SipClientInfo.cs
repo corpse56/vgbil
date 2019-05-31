@@ -1,4 +1,5 @@
-﻿using SipLibrary.Transport;
+﻿using LibflClassLibrary.BJUsers;
+using SipLibrary.Transport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace SIPServer
         public string login { get; set; }
         public string password { get; set; }
         public string locationCode { get; set; }
+        public BJUserInfo bjUser { get; set; }
+
     }
 }

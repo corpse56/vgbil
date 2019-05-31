@@ -24,7 +24,7 @@ namespace SIPServer
 
             var ip = IPAddress.Loopback;
             var endpoint = new IPEndPoint(ip, 6001);
-            var encoding = new AsciiWindows1251Encoding();
+            var encoding =  new AsciiWindows1251Encoding();
 
             controller_ = new Controller(endpoint, disp_, encoding);
             while (true)

@@ -34,7 +34,6 @@ namespace LibflClassLibrary.BJUsers
         public int Id { get; set; }
         public string Login;
         public string FIO;
-        //public string Password;
         public string HashedPwd;
         public List<UserStatus> UserStatus = new List<UserStatus>();
         public UserStatus SelectedUserStatus { get; set; }

@@ -7409,3 +7409,5 @@
 /SIPServer/bin/Debug/LibflClassLibrary.pdb
 /SIPServer/bin/Debug/MySql.Data.dll
 /SIPServer/bin/Debug/Newtonsoft.Json.dll
+/SIPServer/bin/Debug/Newtonsoft.Json.xml
+/SIPServer/bin/Debug/sip.server.log
