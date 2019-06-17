@@ -101,8 +101,8 @@ namespace SIPServer
         public void OnPatronInformation(Session session, PatronInformationRequest request, PatronInformationResponse response)
         {
 
-            Stopwatch w = new Stopwatch();
-            w.Start();
+            //Stopwatch w = new Stopwatch();
+            //w.Start();
             Console.WriteLine("PatronInformation Message");
             response.PartonStatus = new PatronStatus();
             //response.PartonStatus.CardReportedLost = false;
@@ -123,12 +123,35 @@ namespace SIPServer
             response.Language = Language.Russian;
             response.TransactionDate = DateTime.Now;
 
-            ReaderInfo reader = ReaderInfo.GetReader(int.Parse(request.PatronId));
+            ReaderInfo reader;
+            try
+            {
+                if (request.PatronId[0] == 'R')
+                {
+                    reader = ReaderInfo.GetReaderByBar(request.PatronId);
+                }
+                else
+                {
+                    reader = ReaderInfo.GetReaderByUID(request.PatronId);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                //response.Ok = false;
+                return;
+            }
+            if (reader == null)
+            {
+                Console.WriteLine("Читатель не найден");
+                return;
+            }
+
             CirculationInfo ci = new CirculationInfo();
             List<OrderInfo> orders = ci.GetOrders(reader.NumberReader);
             List<OrderInfo> chargedOrders = orders.FindAll(x => x.StatusCode == CirculationStatuses.IssuedAtHome.Id || x.StatusCode == CirculationStatuses.IssuedInHall.Id);
             List<OrderInfo> holdOrders = orders.FindAll(x => x.StatusCode == CirculationStatuses.EmployeeLookingForBook.Id || x.StatusCode == CirculationStatuses.OrderIsFormed.Id
-                                                        || x.StatusCode == CirculationStatuses.WaitingFirstIssue.Id);
+                                                        || x.StatusCode == CirculationStatuses.WaitingFirstIssue.Id || x.StatusCode == CirculationStatuses.InReserve.Id);
             List<OrderInfo> overdueOrders = chargedOrders.FindAll(x => x.ReturnDate < DateTime.Now);
             response.HoldItemsCount = holdOrders.Count;
             response.OverdueItemsCount = overdueOrders.Count;
@@ -161,12 +184,18 @@ namespace SIPServer
 
             foreach (var order in chargedOrders)
             {
-                response.ChargedItems.Add(order.Book.Title);
+                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                response.ChargedItems.Add(exemplar.Bar);
             }
-            //response.ChargedItems.Add("Charged item 2");
-            w.Stop();
+            foreach (var order in holdOrders)
+            {
+                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                response.HoldItems.Add(exemplar.Bar);
+            }
+
+            //w.Stop();
             string sipMessage = response.ToString();
-            Console.WriteLine("Elapsed: "+ w.Elapsed.Milliseconds+" ms");
+            //Console.WriteLine("Elapsed: "+ w.Elapsed.Milliseconds+" ms");
         }
 
         public void OnScStatus(Session session, ScStatusRequest request, AcsStatusResponse response)
@@ -195,22 +224,81 @@ namespace SIPServer
             Console.WriteLine("Item Information Message");
 
             string bar = request.ItemIdentifier;
-            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(bar);
-            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
 
 
+            BJBookInfo book;
+            BJExemplarInfo exemplar;
+            CirculationInfo ci = new CirculationInfo();
+            OrderInfo order;
+            try
+            {
+                exemplar = BJExemplarInfo.GetExemplarByBar(bar);
+                book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+                order = ci.FindOrderByExemplar(exemplar);
+            }
+            catch (Exception ex)
+            {
 
-            response.CirculationStatus = CirculationStatus.AVAILABLE;
+                return;
+            }
+
+
+            if (order == null)
+            {
+                response.CirculationStatus = CirculationStatus.AVAILABLE;
+            }
+            else
+            {
+                switch (order.StatusName)
+                {
+                    case CirculationStatuses.ElectronicIssue.Value:
+                        response.CirculationStatus = CirculationStatus.AVAILABLE;
+                        break;
+                    case CirculationStatuses.EmployeeLookingForBook.Value:
+                        response.CirculationStatus = CirculationStatus.AVAILABLE;
+                        break;
+                    case CirculationStatuses.Finished.Value:
+                        response.CirculationStatus = CirculationStatus.AVAILABLE;
+                        break;
+                    case CirculationStatuses.ForReturnToBookStorage.Value:
+                        response.CirculationStatus = CirculationStatus.AVAILABLE;
+                        break;
+                    case CirculationStatuses.InReserve.Value:
+                        response.CirculationStatus = CirculationStatus.AVAILABLE;
+                        break;
+                    case CirculationStatuses.IssuedAtHome.Value:
+                        response.CirculationStatus = CirculationStatus.CHARGED;
+                        break;
+                    case CirculationStatuses.IssuedFromAnotherReserve.Value:
+                        response.CirculationStatus = CirculationStatus.CHARGED;
+                        break;
+                    case CirculationStatuses.IssuedInHall.Value:
+                        response.CirculationStatus = CirculationStatus.CHARGED;
+                        break;
+                    case CirculationStatuses.OrderIsFormed.Value:
+                        response.CirculationStatus = CirculationStatus.AVAILABLE;
+                        break;
+                    case CirculationStatuses.Prolonged.Value:
+                        response.CirculationStatus = CirculationStatus.AVAILABLE;
+                        break;
+                    case CirculationStatuses.SelfOrder.Value:
+                        response.CirculationStatus = CirculationStatus.AVAILABLE;
+                        break;
+                    case CirculationStatuses.WaitingFirstIssue.Value:
+                        response.CirculationStatus = CirculationStatus.AVAILABLE;
+                        break;
+                }
+            }
             response.SecurityMarker = SecurityMarker.NONE;
             response.FeeType = FeeType.ADMINISTRATIVE;
 
             response.TransactionDate = DateTime.Now;
             response.HoldQueueLength = 0;
-            response.DueDate = DateTime.Now;
-            response.RecallDate = DateTime.Now;
-            response.HoldPickupDate = DateTime.Now;
+            response.DueDate = (order == null) ? DateTime.Now : order.ReturnDate;
+            response.RecallDate = (order == null) ? DateTime.Now : order.IssueDate;
+            response.HoldPickupDate = (order == null) ? DateTime.Now : order.ReturnDate;
             response.ItemIdentifier = request.ItemIdentifier;
-            response.TitleIdentifier = book.Fields["200$a"].ToString();
+            response.TitleIdentifier = (book.Fields["200$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
             response.Owner = "ВГБИЛ";
             response.CurrencyType = Currency.RUB;
             response.FeeAmount = 0;
@@ -246,16 +334,24 @@ namespace SIPServer
                 ci = new CirculationInfo();
                 order = ci.FindOrderByExemplar(exemplar);
                 book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
-                reader = ReaderInfo.GetReader(int.Parse(request.PatronIdentifier));
+                reader = ReaderInfo.GetReaderByBar(request.PatronIdentifier);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 response.Ok = false;
+                response.MagneticMedia = false;
+                response.Desensitize = false; //снять бит или нет
+                response.TransactionDate = DateTime.Now;
+                response.InstitutionId = "ВГБИЛ";
+                response.PatronIdentifier = request.PatronIdentifier;// + " (took from request)";
+                response.ItemIdentifier = request.ItemIdentifier;// + " (also took from request)";
+                //response.TitleIdentifier = book.Fields["200$a"].ToString();
+                response.DueDate = DateTime.Now;
                 return;
             }
 
-
+            
             // обязательные поля
             response.Ok = true;
             if (order != null)
@@ -271,11 +367,20 @@ namespace SIPServer
                 try
                 {
                     ci.IssueBookToReader(exemplar, reader, client.bjUser);
+                    order = ci.FindOrderByExemplar(exemplar);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     response.Ok = false;
+                    response.MagneticMedia = false;
+                    response.Desensitize = false; //снять бит или нет
+                    response.TransactionDate = DateTime.Now;
+                    response.InstitutionId = "ВГБИЛ";
+                    response.PatronIdentifier = request.PatronIdentifier;// + " (took from request)";
+                    response.ItemIdentifier = request.ItemIdentifier;// + " (also took from request)";
+                    response.TitleIdentifier = book.Fields["200$a"].ToString();
+                    response.DueDate = DateTime.Now;
                     return;
                 }
             }
@@ -290,6 +395,14 @@ namespace SIPServer
                 {
                     Console.WriteLine(ex.Message);
                     response.Ok = false;
+                    response.MagneticMedia = false;
+                    response.Desensitize = false; //снять бит или нет
+                    response.TransactionDate = DateTime.Now;
+                    response.InstitutionId = "ВГБИЛ";
+                    response.PatronIdentifier = request.PatronIdentifier;// + " (took from request)";
+                    response.ItemIdentifier = request.ItemIdentifier;// + " (also took from request)";
+                    response.TitleIdentifier = book.Fields["200$a"].ToString();
+                    response.DueDate = DateTime.Now;
                     return;
                 }
             }
@@ -298,7 +411,6 @@ namespace SIPServer
             response.MagneticMedia = false;
             response.Desensitize = true; //снять бит или нет
             response.TransactionDate = DateTime.Now;
-
             response.InstitutionId = "ВГБИЛ";
             response.PatronIdentifier = request.PatronIdentifier;// + " (took from request)";
             response.ItemIdentifier = request.ItemIdentifier;// + " (also took from request)";
@@ -322,21 +434,69 @@ namespace SIPServer
         {
             Console.WriteLine("Checkin Message");
 
+            SipClientInfo client = clients_.Find(x => x.session.Ip == session.Ip);
+            if (client == null)
+            {
+                response.Ok = false;
+                Console.WriteLine("Client is not logged in. CheckOut operation impossible.");
+                return;
+            }
+
+
+
+            BJExemplarInfo exemplar;
+            CirculationInfo ci;
+            OrderInfo order;
+            BJBookInfo book;
+            ReaderInfo reader;
+            try
+            {
+                exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
+                ci = new CirculationInfo();
+                order = ci.FindOrderByExemplar(exemplar);
+                if (order == null)
+                {
+                    //никому не выдана
+                    response.Ok = false;
+                    response.Resensitize = true;
+                    return;
+                }
+                book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+                reader = ReaderInfo.GetReader(order.ReaderId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                response.Ok = false;
+                return;
+            }
+
+            try
+            {
+                ci.RecieveBookFromReader(exemplar,order,client.bjUser);
+            }
+            catch (Exception ex)
+            {
+                response.Ok = false;
+                return;
+            }
+
+
             response.Ok = true;
-            response.Resensitize = false;
+            response.Resensitize = true;
             response.MagneticMedia = null;
             response.Alert = false;
             response.TransactionDate = DateTime.Now;
-            response.InstitutionId = " -=xXx=- ";
-            response.ItemIdentifier = "Item Id";
-            response.PermanentLocation = "Permanent Location";
-            response.TitleIdentifier = "Title Id";
+            response.InstitutionId = "ВГБИЛ";
+            response.ItemIdentifier = request.ItemIdentifier;
+            response.PermanentLocation = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];//"Permanent Location";
+            response.TitleIdentifier = book.Fields["200$a"].ToString(); 
             response.SortBin = "Sort bin...";
-            response.PatronIdentifier = "Patron id";
-            response.MediaType = MediaType.BOOK_WITH_AUDIO_TAPE;
+            response.PatronIdentifier = reader.BarCode;//"Patron id";
+            response.MediaType = MediaType.BOOK;
             response.ItemProperties = "Propst";
 
-            response.MagneticMedia = true;
+            response.MagneticMedia = false;
 
             response.ScreenMessage = "Screen message";
             response.PrintLine = "Print Line";
@@ -345,31 +505,83 @@ namespace SIPServer
         public void OnRenew(Session session, RenewRequest request, RenewResponse response)
         {
             Console.WriteLine("Renew Message");
+            SipClientInfo client = clients_.Find(x => x.session.Ip == session.Ip);
+            if (client == null)
+            {
+                response.Ok = false;
+                Console.WriteLine("Client is not logged in. CheckOut operation impossible.");
+                return;
+            }
 
-            response.Ok = true;
-            response.RenewalOk = false;
-            response.MagneticMedia = ThreeStateBool.Unknown;
-            response.Desensitize = true;
+            bool result = false;
+            CirculationInfo ci = new CirculationInfo();
+            BJExemplarInfo exemplar = new BJExemplarInfo();
+            OrderInfo order = new OrderInfo();
+            BJBookInfo book = new BJBookInfo();
+            try
+            {
+                exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
+                order = ci.FindOrderByExemplar(exemplar);
+                book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            if (order == null)
+            {
+                result = false;
+                response.RenewalOk = false;
+            }
+            else
+            {
+                response.RenewalOk = true;
+            }
+
+            if (order != null)
+            {
+                try
+                {
+                    ci.ProlongOrder(order.OrderId);
+                    order = ci.FindOrderByExemplar(exemplar);
+                    response.RenewalOk = true;
+                    result = true;
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                }
+            }
+
+            order = ci.FindOrderByExemplar(exemplar);
+
+
+            response.Ok = result;
+            response.Desensitize = false;
+
+
+            response.MagneticMedia = ThreeStateBool.False;
 
             response.TransactionDate = DateTime.Now;
 
-            response.InstitutionId = "The Institiotion Id";
-            response.PatronIdentifier = request.PatronIdentifier + " (took from request)";
-            response.ItemIdentifier = request.ItemIdentifier + " (also took from request)";
-            response.TitleIdentifier = "The MEGA Title";
+            response.InstitutionId = "ВГБИЛ";
+            response.PatronIdentifier = request.PatronIdentifier;
+            response.ItemIdentifier = request.ItemIdentifier;
+            response.TitleIdentifier = book.Fields["200$a"].ToString(); 
 
-            response.DueDate = DateTime.Now;
+            response.DueDate = order.ReturnDate;
 
             response.FeeType = FeeType.OTHER_UNKNOWN;
-            response.SecurityInhibit = true;
-            response.CurrencyType = Currency.USD;
-            response.FeeAmount = 100;
-            response.MediaType = MediaType.BOOK_WITH_CD;
+            response.SecurityInhibit = false;
+            response.CurrencyType = Currency.RUB;
+            response.FeeAmount = 0;
+            response.MediaType = MediaType.BOOK;
 
-            response.ItemProperties = "The SUPA DUPA Properies";
-            response.TransactionId = "The Trans Id";
+            response.ItemProperties = "Properies";
+            response.TransactionId = order.OrderId.ToString();
 
-            response.ScreenMessage = "F**K The Police";
+            response.ScreenMessage = "User Screen Message";
             response.PrintLine = "The Print Line";
         }
 

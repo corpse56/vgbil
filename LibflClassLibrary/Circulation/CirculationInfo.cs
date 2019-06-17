@@ -169,7 +169,7 @@ namespace LibflClassLibrary.Circulation
 
         // 0 - ok
         // 1 - нужно спросить на бронеполку возвращают или нет
-        internal int RecieveBookFromReader(BJExemplarInfo exemplar, OrderInfo oi, BJUserInfo bjUser)
+        public int RecieveBookFromReader(BJExemplarInfo exemplar, OrderInfo oi, BJUserInfo bjUser)
         {
             if (oi.StatusCode == CirculationStatuses.IssuedInHall.Id)
             {
@@ -406,9 +406,9 @@ namespace LibflClassLibrary.Circulation
             loader.FinishOrder(order, bjUser);
         }
 
-        public OrderInfo FindOrderByExemplar(BJExemplarInfo scannedExemplar)
+        public OrderInfo FindOrderByExemplar(BJExemplarInfo exemplar)
         {
-            return loader.FindOrderByExemplar(scannedExemplar);
+            return loader.FindOrderByExemplar(exemplar);
         }
 
         internal bool IsIssuedToReader(BJExemplarInfo exemplar)

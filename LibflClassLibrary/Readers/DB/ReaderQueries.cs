@@ -142,6 +142,14 @@ namespace LibflClassLibrary.Readers.DB
                 return "select NumberReader from Readers..Main where BarCode = @bar";
             }
         }
+
+        public string GET_READER_BY_UID
+        {
+            get
+            {
+                return "select BarCodeBarCodeToUID from Readers..BarCodeToUID where UIDBarCodeToUID = @uid";
+            }
+        }
     }
 
 }

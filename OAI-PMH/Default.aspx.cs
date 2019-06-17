@@ -23,7 +23,7 @@ public partial class _Default : System.Web.UI.Page
     {
         //?verb=ListRecords&from=2018-11-14&metadataPrefix=marc21&until=2018-10-16
         //?verb=ListRecords&from=2018-01-01&metadataPrefix=marc21&until=2018-11-16
-        //Default.aspx?verb=getRecord&metadataPrefix=marc21&identifier=BJVVV1463555
+        //Default.aspx?verb=getRecord&metadataPrefix=marc21&identifier=BJVVV1465086
         string verb ="";
         if (Request["verb"] != null)
         {
@@ -1202,7 +1202,27 @@ public partial class _Default : System.Web.UI.Page
             }
         }
 
+        {
+            node = xmlDoc.CreateElement("marc", "datafield", "http://www.loc.gov/MARC21/slim");
+            attribute = xmlDoc.CreateAttribute("tag");
+            attribute.Value = "979";
+            node.Attributes.Append(attribute);
+            attribute = xmlDoc.CreateAttribute("ind1");
+            attribute.Value = " ";
+            node.Attributes.Append(attribute);
+            attribute = xmlDoc.CreateAttribute("ind2");
+            attribute.Value = " ";
+            node.Attributes.Append(attribute);
+            MarcRecord.AppendChild(node);
 
+            subpdf = xmlDoc.CreateElement("marc", "subfield", "http://www.loc.gov/MARC21/slim");
+            attribute = xmlDoc.CreateAttribute("code");
+            attribute.Value = "a";
+            subpdf.Attributes.Append(attribute);
+            subpdf.InnerText = Status.Code.ToString();
+            node.AppendChild(subpdf);
+
+        }
 
         if (Status.Code == BJElectronicExemplarAvailabilityCodes.dlopen || Status.Code == BJElectronicExemplarAvailabilityCodes.dlview)
         {

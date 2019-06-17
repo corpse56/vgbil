@@ -58,6 +58,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "elcir", "elcir\", "{EB7743C
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "12729"
+		SlnRelativePath = "elcir\"
 	EndProjectSection
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "elcirp", "elcirp\", "{30A76BA6-A52B-429E-A852-F9EB1B362AE1}"
@@ -78,6 +79,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "elcirp", "elcirp\", "{30A76
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "12732"
+		SlnRelativePath = "elcirp\"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportFullDatabaseToExcel", "ExportFullDatabaseToExcel\ExportFullDatabaseToExcel.csproj", "{B9124E5A-C576-4578-9B8F-BDB087138157}"
@@ -110,6 +112,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "LIBFLDataProviderAPI", "LIB
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "13214"
+		SlnRelativePath = "LIBFLDataProviderAPI\"
 	EndProjectSection
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "LITRESADMIN", "LITRESADMIN\", "{B32AC8EB-5803-4825-A8FC-5885C15A5BCD}"
@@ -130,13 +133,14 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "LITRESADMIN", "LITRESADMIN\
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "13218"
+		SlnRelativePath = "LITRESADMIN\"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NEBSynchronization", "NEBSynchronization\NEBSynchronization.csproj", "{9F8AC989-2642-4C4A-AD95-9A73E92B12E2}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "OAI-PMH", "OAI-PMH\", "{C25A9A8E-220A-40B2-A0A1-0DB19972C9E5}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
 		ProjectReferences = "{CA4020F7-B048-4DFA-9E13-3E04DB83B093}|LibflClassLibrary.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/OAI-PMH"
 		Debug.AspNetCompiler.PhysicalPath = "OAI-PMH\"
@@ -153,6 +157,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "OAI-PMH", "OAI-PMH\", "{C25
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "13239"
+		SlnRelativePath = "OAI-PMH\"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrintRastShifr", "PrintRastShifr\PrintRastShifr.csproj", "{FFA0046A-15DE-400A-9993-7236B4904CC3}"
@@ -177,6 +182,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TurnDigBooks", "TurnDigBook
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "13374"
+		SlnRelativePath = "TurnDigBooks\"
 	EndProjectSection
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TurnDigBooksAdmin", "TurnDigBooksAdmin\", "{B29D62ED-10D1-43C2-A8B1-1D8442D668D7}"

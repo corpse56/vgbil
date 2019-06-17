@@ -298,9 +298,9 @@ namespace LibflClassLibrary.Circulation.Loaders
             return Orders;
         }
 
-        internal OrderInfo FindOrderByExemplar(BJExemplarInfo scannedExemplar)
+        internal OrderInfo FindOrderByExemplar(BJExemplarInfo exemplar)
         {
-            DataTable table = dbWrapper.FindOrderByExemplar(scannedExemplar.IdData, scannedExemplar.Fund);
+            DataTable table = dbWrapper.FindOrderByExemplar(exemplar.IdData, exemplar.Fund);
             if (table.Rows.Count == 0) return null;
             return FillOrderFromDataRow(table.Rows[0]);
         }

@@ -22,9 +22,10 @@ namespace SIPServer
 
             disp_ = new Dispatcher();
 
-            var ip = IPAddress.Loopback;
+            var ip = IPAddress.Any;
+            //var ip = IPAddress.Loopback;
             var endpoint = new IPEndPoint(ip, 6001);
-            var encoding =  new AsciiWindows1251Encoding();
+            var encoding =  new AsciiUTF8Encoding();
 
             controller_ = new Controller(endpoint, disp_, encoding);
             while (true)

@@ -234,6 +234,12 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                         access.MethodOfAccess = 4001;
                         return access;
                     }
+                    else if ((exemplar.Fields["921$c"].ToString() == "Для выдачи") && (exemplar.Fields["899$a"].ToLower().Contains("абонемен")) && (!exemplar.Fields["899$a"].ToLower().Contains("книгохр")))
+                    {
+                        access.Access = 1006;
+                        access.MethodOfAccess = 4001;
+                        return access;
+                    }
                     else if ((exemplar.Fields["921$c"].ToString() == "ДП")
                             && (KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()] != "Служебные подразделения"))
                     {

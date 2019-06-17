@@ -144,6 +144,13 @@ namespace LibflClassLibrary.Readers
             }
         }
 
+        public static ReaderInfo GetReaderByUID(string UID)
+        {
+            ReaderLoader loader = new ReaderLoader();
+            ReaderInfo result = loader.LoadReaderByUID(UID);
+            return result;
+        }
+
         internal static bool IsRightReaderBarcode(string barcode)
         {
             if (barcode.Length > 0)

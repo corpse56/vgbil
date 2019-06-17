@@ -156,6 +156,19 @@ namespace LibflClassLibrary.Readers.Loaders
             return reader;
         }
 
+        internal ReaderInfo LoadReaderByUID(string uID)
+        {
+            DataTable table = dbw.GetReaderByUID(uID);
+            if (table.Rows.Count != 0)
+            {
+                return this.LoadReaderByBar(table.Rows[0][0].ToString());
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public Dictionary<int,string> GetReaderCountries()
         {
             ReaderDatabaseWrapper dbw = new ReaderDatabaseWrapper();

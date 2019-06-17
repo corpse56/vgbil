@@ -154,6 +154,18 @@ namespace LibflClassLibrary.Readers.DB
 
         }
 
+        internal DataTable GetReaderByUID(string uID)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ReaderQueries.GET_READER_BY_UID, connection);
+                dataAdapter.SelectCommand.Parameters.Add("uid", SqlDbType.NVarChar).Value = uID;
+                dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal void ChangePasswordLocalReader(int NumberReader, string NewPassword)
         {
             string connectionString = this.ConnectionString;

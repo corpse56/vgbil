@@ -7411,3 +7411,6 @@
 /SIPServer/bin/Debug/Newtonsoft.Json.dll
 /SIPServer/bin/Debug/Newtonsoft.Json.xml
 /SIPServer/bin/Debug/sip.server.log
+/SIPServer/bin/Debug/debug.txt
+/SIPServer/bin/Debug/errors.txt
+/SIPServer/bin/Debug/trace.txt
