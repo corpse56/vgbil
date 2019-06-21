@@ -22,7 +22,10 @@ namespace SIPServer
 
             disp_ = new Dispatcher();
 
-            var ip = IPAddress.Any;
+            //IPAddress ip = IPAddress.Any;
+            IPAddress ip = IPAddress.Parse("192.168.2.156"); //IPAddress.Any;
+            //IPAddress ip = IPAddress.Parse("192.168.1.66"); //IPAddress.Any;
+            //IPAddress ip = IPAddress.Parse("192.168.1.165"); //IPAddress.Any;
             //var ip = IPAddress.Loopback;
             var endpoint = new IPEndPoint(ip, 6001);
             var encoding =  new AsciiUTF8Encoding();

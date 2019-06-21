@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace CirculationApp
 {
-    public partial class DatePeriod : Form
+    public partial class fDatePeriod : Form
     {
         const int MF_BYPOSITION = 0x400;
         [DllImport("User32")]
@@ -19,19 +19,11 @@ namespace CirculationApp
         [DllImport("User32")]
 
         private static extern int GetMenuItemCount(IntPtr hWnd);
-        private DateTime startDate;
-        public DateTime StartDate
-        {
-            get { return startDate; }
-            set { startDate = value; }
-        }
-        private DateTime endDate;
-        public DateTime EndDate
-        {
-            get { return endDate; }
-            set { endDate = value; }
-        }
-        public DatePeriod()
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public bool Cancel { get; set; }
+        public fDatePeriod()
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -49,6 +41,14 @@ namespace CirculationApp
             IntPtr hMenu = GetSystemMenu(this.Handle, false);
             int menuItemCount = GetMenuItemCount(hMenu);
             RemoveMenu(hMenu, menuItemCount - 1, MF_BYPOSITION);
+        }
+
+        private void DatePeriod_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                this.Cancel = true;
+            }
         }
     }
 }

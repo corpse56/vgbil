@@ -67,12 +67,6 @@
     <Compile Include="ChangeComment.Designer.cs">
       <DependentUpon>ChangeComment.cs</DependentUpon>
     </Compile>
-    <Compile Include="DatePeriod.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DatePeriod.Designer.cs">
-      <DependentUpon>DatePeriod.cs</DependentUpon>
-    </Compile>
     <Compile Include="EmailSending.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +117,12 @@
     <Compile Include="ReaderInformation.Designer.cs">
       <DependentUpon>ReaderInformation.cs</DependentUpon>
     </Compile>
+    <Compile Include="TableDataVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TableDataVisualizer.Designer.cs">
+      <DependentUpon>TableDataVisualizer.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewFullSizePhoto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,10 +131,6 @@
     </Compile>
     <EmbeddedResource Include="ChangeComment.resx">
       <DependentUpon>ChangeComment.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DatePeriod.resx">
-      <DependentUpon>DatePeriod.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="EmailSending.resx">
@@ -177,6 +173,9 @@
     <EmbeddedResource Include="ReaderInformation.resx">
       <DependentUpon>ReaderInformation.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableDataVisualizer.resx">
+      <DependentUpon>TableDataVisualizer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ViewFullSizePhoto.resx">
       <DependentUpon>ViewFullSizePhoto.cs</DependentUpon>

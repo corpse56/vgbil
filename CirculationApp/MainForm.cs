@@ -1008,7 +1008,7 @@ namespace CirculationApp
         {
             if (Statistics.Columns != null)
                 Statistics.Columns.Clear();
-            DatePeriod f3 = new DatePeriod();
+            fDatePeriod f3 = new fDatePeriod();
             f3.ShowDialog();
             lReferenceName.Text = "";
             lReferenceName.Text = "Список действий оператора за период с " + f3.StartDate.ToString("dd.MM.yyyy") + " по " + f3.EndDate.ToString("dd.MM.yyyy") + ": ";
@@ -1037,7 +1037,7 @@ namespace CirculationApp
         {
             if (Statistics.Columns != null)
                 Statistics.Columns.Clear();
-            DatePeriod f3 = new DatePeriod();
+            fDatePeriod f3 = new fDatePeriod();
             f3.ShowDialog();
             lReferenceName.Text = "Отчёт отдела за период с " + f3.StartDate.ToString("dd.MM.yyyy") + " по " + f3.EndDate.ToString("dd.MM.yyyy") + ": ";
             DBGeneral dbg = new DBGeneral();
@@ -1064,7 +1064,7 @@ namespace CirculationApp
         {
             if (Statistics.Columns != null)
                 Statistics.Columns.Clear();
-            DatePeriod f3 = new DatePeriod();
+            fDatePeriod f3 = new fDatePeriod();
             f3.ShowDialog();
             lReferenceName.Text = "Отчёт текущего оператора за период с " + f3.StartDate.ToString("dd.MM.yyyy") + " по " + f3.EndDate.ToString("dd.MM.yyyy") + ": ";
             DBGeneral dbg = new DBGeneral();
@@ -1342,6 +1342,18 @@ namespace CirculationApp
         private void timerIssuedInHallCount_Tick(object sender, EventArgs e)
         {
             ShowIssuedInHallCount();
+        }
+
+        private void HallServiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fDatePeriod dp = new fDatePeriod();
+            dp.ShowDialog();
+            if (dp.Cancel == true)
+            {
+                //return;
+            }
+            TableDataVisualizer tbv = new TableDataVisualizer(dp, bjUser);
+            tbv.ShowDialog();
         }
     }
   

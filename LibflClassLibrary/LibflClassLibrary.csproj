@@ -165,15 +165,25 @@
     <Compile Include="CirculationFCC\Classes\XmlConnections.cs" />
     <Compile Include="Circulation\BasketInfo.cs" />
     <Compile Include="Circulation\CirculationInfo.cs" />
+    <Compile Include="Circulation\CirculationStatisticsLoader.cs" />
+    <Compile Include="Circulation\CirculationStatisticsManager.cs" />
     <Compile Include="Circulation\CirculationStatuses.cs" />
     <Compile Include="Circulation\DB\CirculationDBWrapper.cs" />
     <Compile Include="Circulation\DB\CirculationQueries.cs" />
+    <Compile Include="Circulation\DB\CirculationStatisticsDBWrapper.cs" />
+    <Compile Include="Circulation\DB\CirculationStatisticsQueries.cs" />
     <Compile Include="Circulation\Loaders\CirculationLoader.cs" />
     <Compile Include="Circulation\OrderFlowInfo.cs" />
     <Compile Include="Circulation\OrderHistoryInfo.cs" />
     <Compile Include="Circulation\OrderInfo.cs" />
     <Compile Include="Circulation\OrderTypes.cs" />
     <Compile Include="Controls\DataGridViewPrinter.cs" />
+    <Compile Include="Controls\fDatePeriod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\fDatePeriod.Designer.cs">
+      <DependentUpon>fDatePeriod.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\fBJAuthorization.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -220,6 +230,7 @@
     <Compile Include="Readers\ReadersRight\ReaderRight.cs" />
     <Compile Include="Readers\ReadersRight\ReaderRightsEnum.cs" />
     <Compile Include="Readers\ReadersRight\ReaderRightsInfo.cs" />
+    <Compile Include="SipServer\SipServerHandler.cs" />
     <Compile Include="Utilites\Log.cs" />
     <Compile Include="ExportToVufind\Litres\LitresVufindIndexUpdater.cs" />
     <Compile Include="ExportToVufind\Vufind\VufindIndexUpdater.cs" />
@@ -265,6 +276,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\fDatePeriod.resx">
+      <DependentUpon>fDatePeriod.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\fBJAuthorization.resx">
       <DependentUpon>fBJAuthorization.cs</DependentUpon>
     </EmbeddedResource>

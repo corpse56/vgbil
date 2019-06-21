@@ -1,6 +1,6 @@
 namespace CirculationApp
 {
-    partial class DatePeriod
+    partial class fDatePeriod
     {
         /// <summary>
         /// Required designer variable.
@@ -101,6 +101,7 @@ namespace CirculationApp
             this.Name = "DatePeriod";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "¬ведите период";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DatePeriod_FormClosing);
             this.Load += new System.EventHandler(this.Form3_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -41,6 +41,7 @@ namespace CirculationApp
             this.bConfirm = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.RPhoto = new System.Windows.Forms.PictureBox();
             this.lReader = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -73,6 +74,7 @@ namespace CirculationApp
             this.DateIssue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pbFormular = new System.Windows.Forms.PictureBox();
             this.ReferenceTab = new System.Windows.Forms.TabPage();
             this.bSaveReferenceToFile = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -102,20 +104,22 @@ namespace CirculationApp
             this.Á‡Í‡ÁToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ËÒÚÓËˇ«‡Í‡ÁÓ‚œÓ»Ì‚ÂÌÚ‡ÌÓÏÛÕÓÏÂÛToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbLogo = new System.Windows.Forms.PictureBox();
-            this.RPhoto = new System.Windows.Forms.PictureBox();
-            this.pbFormular = new System.Windows.Forms.PictureBox();
+            this.timerIssuedInHallCount = new System.Windows.Forms.Timer(this.components);
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.timerIssuedInHallCount = new System.Windows.Forms.Timer(this.components);
+            this.ÒÔ‡‚Í‡ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HallServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainTabContainer.SuspendLayout();
             this.MainTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
             this.FormularTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFormular)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).BeginInit();
             this.ReferenceTab.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Statistics)).BeginInit();
@@ -125,8 +129,6 @@ namespace CirculationApp
             this.contextMenuStrip2.SuspendLayout();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).BeginInit();
             this.SuspendLayout();
             // 
             // label3
@@ -269,6 +271,20 @@ namespace CirculationApp
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "◊ËÚ‡ÚÂÎ¸";
+            // 
+            // RPhoto
+            // 
+            this.RPhoto.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RPhoto.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.RPhoto.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.RPhoto.Location = new System.Drawing.Point(589, 16);
+            this.RPhoto.Name = "RPhoto";
+            this.RPhoto.Size = new System.Drawing.Size(93, 101);
+            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.RPhoto.TabIndex = 6;
+            this.RPhoto.TabStop = false;
+            this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
             // 
             // lReader
             // 
@@ -624,6 +640,20 @@ namespace CirculationApp
             this.DateVozvFact.ReadOnly = true;
             this.DateVozvFact.Width = 80;
             // 
+            // pbFormular
+            // 
+            this.pbFormular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbFormular.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbFormular.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.pbFormular.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
+            this.pbFormular.Location = new System.Drawing.Point(564, 6);
+            this.pbFormular.Name = "pbFormular";
+            this.pbFormular.Size = new System.Drawing.Size(146, 160);
+            this.pbFormular.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbFormular.TabIndex = 20;
+            this.pbFormular.TabStop = false;
+            this.pbFormular.Click += new System.EventHandler(this.pbFormular_Click);
+            // 
             // ReferenceTab
             // 
             this.ReferenceTab.Controls.Add(this.bSaveReferenceToFile);
@@ -887,7 +917,8 @@ namespace CirculationApp
             // MainMenu
             // 
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Á‡Í‡ÁToolStripMenuItem});
+            this.Á‡Í‡ÁToolStripMenuItem,
+            this.ÒÔ‡‚Í‡ToolStripMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Size = new System.Drawing.Size(1176, 24);
@@ -919,33 +950,10 @@ namespace CirculationApp
             this.pbLogo.TabIndex = 10;
             this.pbLogo.TabStop = false;
             // 
-            // RPhoto
+            // timerIssuedInHallCount
             // 
-            this.RPhoto.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RPhoto.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.RPhoto.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.RPhoto.Location = new System.Drawing.Point(589, 16);
-            this.RPhoto.Name = "RPhoto";
-            this.RPhoto.Size = new System.Drawing.Size(93, 101);
-            this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.RPhoto.TabIndex = 6;
-            this.RPhoto.TabStop = false;
-            this.RPhoto.Click += new System.EventHandler(this.RPhoto_Click);
-            // 
-            // pbFormular
-            // 
-            this.pbFormular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbFormular.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbFormular.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.pbFormular.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.pbFormular.Location = new System.Drawing.Point(564, 6);
-            this.pbFormular.Name = "pbFormular";
-            this.pbFormular.Size = new System.Drawing.Size(146, 160);
-            this.pbFormular.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbFormular.TabIndex = 20;
-            this.pbFormular.TabStop = false;
-            this.pbFormular.Click += new System.EventHandler(this.pbFormular_Click);
+            this.timerIssuedInHallCount.Interval = 20000;
+            this.timerIssuedInHallCount.Tick += new System.EventHandler(this.timerIssuedInHallCount_Tick);
             // 
             // dataGridViewButtonColumn1
             // 
@@ -973,10 +981,20 @@ namespace CirculationApp
             this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Penalt.Width = 85;
             // 
-            // timerIssuedInHallCount
+            // ÒÔ‡‚Í‡ToolStripMenuItem
             // 
-            this.timerIssuedInHallCount.Interval = 20000;
-            this.timerIssuedInHallCount.Tick += new System.EventHandler(this.timerIssuedInHallCount_Tick);
+            this.ÒÔ‡‚Í‡ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.HallServiceToolStripMenuItem});
+            this.ÒÔ‡‚Í‡ToolStripMenuItem.Name = "ÒÔ‡‚Í‡ToolStripMenuItem";
+            this.ÒÔ‡‚Í‡ToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.ÒÔ‡‚Í‡ToolStripMenuItem.Text = "—Ô‡‚Í‡";
+            // 
+            // HallServiceToolStripMenuItem
+            // 
+            this.HallServiceToolStripMenuItem.Name = "HallServiceToolStripMenuItem";
+            this.HallServiceToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.HallServiceToolStripMenuItem.Text = "Œ·ÒÎÛÊË‚‡ÌËÂ ‚ Á‡Î‡ı";
+            this.HallServiceToolStripMenuItem.Click += new System.EventHandler(this.HallServiceToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1002,12 +1020,14 @@ namespace CirculationApp
             this.MainTab.ResumeLayout(false);
             this.MainTab.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
             this.FormularTab.ResumeLayout(false);
             this.FormularTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFormular)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).EndInit();
             this.ReferenceTab.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
@@ -1021,8 +1041,6 @@ namespace CirculationApp
             this.MainMenu.ResumeLayout(false);
             this.MainMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RPhoto)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1109,6 +1127,8 @@ namespace CirculationApp
         private System.Windows.Forms.ToolStripMenuItem Á‡Í‡ÁToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ËÒÚÓËˇ«‡Í‡ÁÓ‚œÓ»Ì‚ÂÌÚ‡ÌÓÏÛÕÓÏÂÛToolStripMenuItem;
         private System.Windows.Forms.Timer timerIssuedInHallCount;
+        private System.Windows.Forms.ToolStripMenuItem ÒÔ‡‚Í‡ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem HallServiceToolStripMenuItem;
         //private System.Windows.Forms.DataGridView dgvTransfer;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
