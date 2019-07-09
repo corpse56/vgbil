@@ -236,13 +236,27 @@ namespace LibflClassLibrary.Circulation.DB
                        " COMMIT; ";
             }
         }
+        public string CHANGE_ORDER_STATUS_RETURN_AND_REMOVE_RESPONSIBILITY
+        {
+            get
+            {
+                return " BEGIN TRANSACTION; " +
+                       " insert into Circulation..OrdersFlow (OrderId, StatusName, Changed,  Changer,    DepartmentId, Refusual  ) " +
+                       " values                            (@OrderId, @StatusName,getdate(), @Changer, @DepartmentId, @Refusual  );" +
+                       " insert into Circulation..OrdersFlow (OrderId, StatusName, Changed,  Changer,    DepartmentId, Refusual  ) " +
+                       " values                            (@OrderId, @StatusNameRR,getdate(), @Changer, @DepartmentId, @Refusual  );" +
+                       " update Circulation..Orders set StatusName = @StatusName, FactReturnDate = getdate(), ReturnDepId = @DepartmentId where ID = @OrderId;" +
+                       " COMMIT; ";
+            }
+        }
 
 
-    //здесь не вставляем статус 'Для возврата в хранение', потому что книга может быть на самом деле на месте, просто её не приняли.
-    //но тогда надо не забывать для книг с таким статусом закрывать заказ и открывать новый.
-    //и в программе хранения надо дать возможность проверить такие заказы.
-    //НУ НАХЕР. Просто не будем давать заказывать.
-    public string IS_ALREADY_ISSUED
+
+        //здесь не вставляем статус 'Для возврата в хранение', потому что книга может быть на самом деле на месте, просто её не приняли.
+        //но тогда надо не забывать для книг с таким статусом закрывать заказ и открывать новый.
+        //и в программе хранения надо дать возможность проверить такие заказы.
+        //НУ НАХЕР. Просто не будем давать заказывать.
+        public string IS_ALREADY_ISSUED
         {
             get
             {

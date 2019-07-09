@@ -1,5 +1,6 @@
 ﻿using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Circulation.DB;
+using LibflClassLibrary.Circulation.Loaders;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,6 +24,38 @@ namespace LibflClassLibrary.Circulation
             DataTable table = dbWrapper_.GetBooksIssuedFromBookkeepingCount(startDate, endDate, bjUser.SelectedUserStatus.UnifiedLocationCode);
             return table.Rows.Count;
 
+        }
+
+        internal List<OrderInfo> GetActiveHallOrders(BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetActiveHallOrders(bjUser.SelectedUserStatus.UnifiedLocationCode);
+            List<OrderInfo> orders = new List<OrderInfo>();
+            CirculationLoader cl = new CirculationLoader();
+            foreach (DataRow row in table.Rows)
+            {
+                OrderInfo order = cl.FillOrderFromDataRow(row);
+                orders.Add(order);
+            }
+            return orders;
+        }
+
+        internal List<OrderInfo> GetFinishedHallOrders(BJUserInfo bjUser_)
+        {
+            DataTable table = dbWrapper_.GetFinishedHallOrders(bjUser_.SelectedUserStatus.UnifiedLocationCode);
+            List<OrderInfo> orders = new List<OrderInfo>();
+            CirculationLoader cl = new CirculationLoader();
+            foreach (DataRow row in table.Rows)
+            {
+                OrderInfo order = cl.FillOrderFromDataRow(row);
+                orders.Add(order);
+            }
+            return orders;
+        }
+
+        internal int GetAttendance(DateTime startDate, DateTime endDate, BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetAttendance(startDate, endDate, bjUser.SelectedUserStatus.UnifiedLocationCode);
+            return table.Rows.Count;
         }
     }
 }

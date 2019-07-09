@@ -310,7 +310,7 @@ namespace ExportBJ_XML
             string fund = txtSingleRecordId.Text.Substring(0,txtSingleRecordId.Text.LastIndexOf("_"));
             int id = int.Parse(txtSingleRecordId.Text.Substring(txtSingleRecordId.Text.LastIndexOf("_")+1));
 
-            switch (fund)
+            switch (fund.ToUpper())
             {
                 case "BJVVV":
                     bjvvv.ExportSingleRecord(id);

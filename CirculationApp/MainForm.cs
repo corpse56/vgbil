@@ -1165,17 +1165,28 @@ namespace CirculationApp
 
         private void bRemoveResponsibility_Click(object sender, EventArgs e)
         {
-            //if (dgvFormular.SelectedRows.Count == 0)
-            //{
-            //    MessageBox.Show("Выделите строку!");
-            //    return;
-            //}
-            //DialogResult dr = MessageBox.Show("Вы действительно хотите снять ответственность за выделенную книгу?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            if (dgvFormular.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выделите строку!");
+                return;
+            }
 
-            //if (dr == DialogResult.No) return;
-            //department.RemoveResponsibility((int)dgvFormular.SelectedRows[0].Cells["idiss"].Value, bjUser.Id);
-            //ReaderVO reader = new ReaderVO((int)dgvFormular.SelectedRows[0].Cells["idr"].Value);
-            //FillFormularGrid(reader);
+
+            DialogResult dr = MessageBox.Show("Вы действительно хотите снять ответственность за выделенную книгу?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+            if (dr == DialogResult.No) return;
+            try
+            {
+                ci.RemoveResponsibility(bjUser, (int)dgvFormular.SelectedRows[0].Cells["id"].Value, CirculationStatuses.Finished.Value);
+            }
+            catch (Exception ex)
+            {
+                ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                MessageBox.Show(error.Message);
+                return;
+            }
+            FillFormular(ReaderInfo.GetReader(int.Parse(lFromularNumber.Text)));
+
         }
 
         private void списокКнигСКоторыхСнятаОтветственностьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1352,8 +1363,22 @@ namespace CirculationApp
             {
                 //return;
             }
-            TableDataVisualizer tbv = new TableDataVisualizer(dp, bjUser);
+            TableDataVisualizer tbv = new TableDataVisualizer(dp, bjUser, ReferenceType.HallService);
             tbv.ShowDialog();
+        }
+
+        private void ActiveHallOrdersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TableDataVisualizer tbv = new TableDataVisualizer(null, bjUser, ReferenceType.ActiveHallOrders);
+            tbv.ShowDialog();
+
+        }
+
+        private void FinishedHallOrdersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TableDataVisualizer tbv = new TableDataVisualizer(null, bjUser, ReferenceType.FinishedHallOrders);
+            tbv.ShowDialog();
+
         }
     }
   

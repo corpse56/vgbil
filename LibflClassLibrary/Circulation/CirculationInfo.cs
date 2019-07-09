@@ -679,7 +679,7 @@ namespace LibflClassLibrary.Circulation
                       )
             {
                 int TimesProlonged = loader.GetOrderTimesProlonged(OrderId);
-                if (TimesProlonged > 0)
+                if (TimesProlonged >= 1)
                 {
                     throw new Exception("C016");
                 }
@@ -820,6 +820,11 @@ namespace LibflClassLibrary.Circulation
         public void RefuseOrder(int OrderId, string Cause, BJUserInfo user)
         {
             loader.RefuseOrder(OrderId, Cause, user);
+        }
+
+        public void RemoveResponsibility(BJUserInfo bjUser, int orderId, string status)
+        {
+            loader.ChangeOrderStatusReturnAndRemoveResponsibility(bjUser, orderId, status);
         }
     }
 }

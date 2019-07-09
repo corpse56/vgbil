@@ -21,5 +21,20 @@ namespace LibflClassLibrary.Circulation
             return csl_.GetBooksIssuedFromBookkeepingCount(startDate, endDate, bjUser);
 
         }
+
+        public int GetAttendance(DateTime startDate, DateTime endDate, BJUserInfo bjUser)
+        {
+            return csl_.GetAttendance(startDate, endDate, bjUser);
+        }
+
+        public List<OrderInfo> GetActiveHallOrders( BJUserInfo bjUser)
+        {
+            return csl_.GetActiveHallOrders( bjUser);
+        }
+
+        public List<OrderInfo> GetFinishedHallOrders(BJUserInfo bjUser_)
+        {
+            return csl_.GetFinishedHallOrders(bjUser_);
+        }
     }
 }

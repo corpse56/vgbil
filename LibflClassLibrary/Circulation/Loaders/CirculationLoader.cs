@@ -283,6 +283,10 @@ namespace LibflClassLibrary.Circulation.Loaders
         {
             dbWrapper.ChangeOrderStatusReturn(orderId, statusName, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
         }
+        internal void ChangeOrderStatusReturnAndRemoveResponsibility(BJUserInfo bjUser, int orderId, string statusName)
+        {
+            dbWrapper.ChangeOrderStatusReturnAndRemoveResponsibility(orderId, statusName, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
+        }
 
         internal List<OrderInfo> GetOrders(int idReader)
         {
@@ -305,7 +309,7 @@ namespace LibflClassLibrary.Circulation.Loaders
             return FillOrderFromDataRow(table.Rows[0]);
         }
 
-        private OrderInfo FillOrderFromDataRow(DataRow row)
+        public OrderInfo FillOrderFromDataRow(DataRow row)
         {
             OrderInfo order = new OrderInfo();
             order.AnotherReaderId = (row["AnotherReaderId"] == DBNull.Value) ? 0 : Convert.ToInt32(row["AnotherReaderId"]);

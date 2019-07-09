@@ -834,9 +834,9 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                         result.AccompayingMaterial.Add(r["PLAIN"].ToString());
                         break;
                     case "225$a":
-                        if (r["PLAIN"].ToString() == "") break;
-                        if (r["PLAIN"].ToString() == "-1") break;
-                        AddHierarchyFields(Convert.ToInt32(r["PLAIN"]), Convert.ToInt32(r["IDMAIN"]), result);
+                        if (r["SORT"].ToString() == "") break;
+                        if (r["SORT"].ToString() == "-1") break;
+                        AddHierarchyFields(Convert.ToInt32(r["SORT"]), Convert.ToInt32(r["IDMAIN"]), result);
                         wasHierarchy = true;
                         break;
                     case "225$h":

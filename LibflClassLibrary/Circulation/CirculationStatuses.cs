@@ -87,6 +87,11 @@ namespace LibflClassLibrary.Circulation
             public const int Id = 13;
             public const string Value = "Продлено";
         }
+        public static class RemovedResponsibility
+        {
+            public const int Id = 14;
+            public const string Value = "Снята ответственноть";
+        }
 
 
         public static Dictionary<int, string> ListView

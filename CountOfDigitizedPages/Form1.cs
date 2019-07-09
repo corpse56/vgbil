@@ -33,7 +33,7 @@ namespace WindowsFormsApplication2
             DA.SelectCommand.CommandText = "select row_number() over (order by A.IDBook) num,C.PLAIN tit,B.IDMAIN IDMAIN,C.ID kolvo from BookAddInf..ScanInfo A "+
                                            " left join BJVVV..DATAEXT B on A.IDBook = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a'"+
                                            " left join BJVVV..DATAEXTPLAIN C on C.IDDATAEXT = B.ID"+
-                                           " where A.IDBase = 1 and cast(cast(A.DateEBook as varchar(11)) as datetime) between '20160101' and '20161231'";
+                                           " where A.IDBase = 1 and cast(cast(A.DateEBook as varchar(11)) as datetime) between '20190401' and '20190630'";
             DA.Fill(DS, "t");
             foreach (DataRow row in DS.Tables["t"].Rows)
             {
@@ -43,11 +43,11 @@ namespace WindowsFormsApplication2
                 }
                 string outside_ip = @"\\192.168.4.30\BookAddInf\BJVVV\";
                 string PIN = PINFormat(row["IDMAIN"].ToString());
-                outside_ip += PIN.Substring(0, 1) + @"\" + PIN.Substring(1, 3) + @"\" + PIN.Substring(4, 3) + @"\";
+                outside_ip += PIN.Substring(0, 3) + @"\" + PIN.Substring(3, 3) + @"\" + PIN.Substring(6, 3) + @"\JPEG_HQ\";
 
                 DirectoryInfo Target = new DirectoryInfo(outside_ip);
                 //using (new NetworkConnection(outside_ip, new NetworkCredential("bj\\CopyPeriodAddInf", "Period_Copy")))
-                using (new NetworkConnection(outside_ip, new NetworkCredential("bj\\sasha", "Corpse536")))
+                using (new NetworkConnection(outside_ip, new NetworkCredential("BJStor01\\imgview", "Image_123Viewer")))
                 {
                     FileInfo[] fi = Target.GetFiles("*.jpg");
                     row["kolvo"] = fi.Length;
@@ -67,7 +67,7 @@ namespace WindowsFormsApplication2
             DA.SelectCommand.CommandText = "select row_number() over (order by A.IDBook) num,C.PLAIN tit,B.IDMAIN IDMAIN,C.ID kolvo from BookAddInf..ScanInfo A " +
                                            " left join REDKOSTJ..DATAEXT B on A.IDBook = B.IDMAIN and B.MNFIELD = 200 and B.MSFIELD = '$a'" +
                                            " left join REDKOSTJ..DATAEXTPLAIN C on C.IDDATAEXT = B.ID" +
-                                           " where A.IDBase = 2 and cast(cast(A.DateEBook as varchar(11)) as datetime) between '20160101' and '20161231'";
+                                           " where A.IDBase = 2 and cast(cast(A.DateEBook as varchar(11)) as datetime) between '20190401' and '20190630'";
             DA.Fill(DS, "t");
             foreach (DataRow row in DS.Tables["t"].Rows)
             {
@@ -77,11 +77,11 @@ namespace WindowsFormsApplication2
                 }
                 string outside_ip = @"\\192.168.4.30\BookAddInf\REDKOSTJ\";
                 string PIN = PINFormat(row["IDMAIN"].ToString());
-                outside_ip += PIN.Substring(0, 1) + @"\" + PIN.Substring(1, 3) + @"\" + PIN.Substring(4, 3) + @"\";
+                outside_ip += PIN.Substring(0, 3) + @"\" + PIN.Substring(3, 3) + @"\" + PIN.Substring(6, 3) + @"\";
 
                 DirectoryInfo Target = new DirectoryInfo(outside_ip);
                 //using (new NetworkConnection(outside_ip, new NetworkCredential("bj\\CopyPeriodAddInf", "Period_Copy")))
-                using (new NetworkConnection(outside_ip, new NetworkCredential("bj\\sasha", "Corpse536")))
+                using (new NetworkConnection(outside_ip, new NetworkCredential("BJStor01\\imgview", "Image_123Viewer")))
                 {
                     FileInfo[] fi = Target.GetFiles("*.jpg");
                     row["kolvo"] = fi.Length;
@@ -166,21 +166,27 @@ namespace WindowsFormsApplication2
             switch (pin.Length)
             {
                 case 1:
-                    pin = "000000" + pin;
+                    pin = "00000000" + pin;
                     break;
                 case 2:
-                    pin = "00000" + pin;
+                    pin = "0000000" + pin;
                     break;
                 case 3:
-                    pin = "0000" + pin;
+                    pin = "000000" + pin;
                     break;
                 case 4:
-                    pin = "000" + pin;
+                    pin = "00000" + pin;
                     break;
                 case 5:
-                    pin = "00" + pin;
+                    pin = "0000" + pin;
                     break;
                 case 6:
+                    pin = "000" + pin;
+                    break;
+                case 7:
+                    pin = "00" + pin;
+                    break;
+                case 8:
                     pin = "0" + pin;
                     break;
             }

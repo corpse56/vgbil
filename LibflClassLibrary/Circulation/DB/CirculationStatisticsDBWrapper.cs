@@ -32,6 +32,54 @@ namespace LibflClassLibrary.Circulation.DB
             return table;
         }
 
+        internal DataTable GetActiveHallOrders(int unifiedLocationCode)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_ACTIVE_HALL_ORDERS, connection);
+                dataAdapter.SelectCommand.Parameters.Add("unifiedLocationCode", SqlDbType.Int).Value = unifiedLocationCode;
+                //dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
+                dataAdapter.SelectCommand.Parameters.Add("statusRefusual", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                //dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
+
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+
+        }
+
+        internal DataTable GetFinishedHallOrders(int unifiedLocationCode)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_FINISHED_HALL_ORDERS, connection);
+                dataAdapter.SelectCommand.Parameters.Add("unifiedLocationCode", SqlDbType.Int).Value = unifiedLocationCode;
+                //dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
+                dataAdapter.SelectCommand.Parameters.Add("statusRefusual", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                //dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
+
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
+        internal DataTable GetAttendance(DateTime startDate, DateTime endDate, int unifiedLocationCode)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_HALL_ATTENDANCE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("startDate", SqlDbType.DateTime).Value = startDate;
+                dataAdapter.SelectCommand.Parameters.Add("endDate", SqlDbType.DateTime).Value = endDate;
+                dataAdapter.SelectCommand.Parameters.Add("unifiedLocationCode", SqlDbType.Int).Value = unifiedLocationCode;
+
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
         internal DataTable GetBooksIssuedFromBookkeepingCount(DateTime startDate, DateTime endDate, int unifiedLocationCode)
         {
             DataTable table = new DataTable();

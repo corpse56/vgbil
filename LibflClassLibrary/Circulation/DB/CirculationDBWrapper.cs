@@ -242,6 +242,7 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+
         internal DataTable GetOrdersForStorage(int depId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -612,6 +613,26 @@ namespace LibflClassLibrary.Circulation.DB
                 //(@OrderId, @StatusName, @Changer, @DepartmentId, @Refusual
                 command.Parameters.Add("OrderId", SqlDbType.Int).Value = orderId;
                 command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = StatusName;
+                command.Parameters.Add("Changer", SqlDbType.Int).Value = ChangerId;
+                command.Parameters.Add("DepartmentId", SqlDbType.Int).Value = DepartmentId;
+                command.Parameters.Add("Refusual", SqlDbType.NVarChar).Value = Refusual ?? (object)DBNull.Value;
+
+                Convert.ToInt32(command.ExecuteNonQuery());
+            }
+        }
+        internal void ChangeOrderStatusReturnAndRemoveResponsibility(int orderId, string StatusName, int ChangerId, int DepartmentId, string Refusual)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.CHANGE_ORDER_STATUS_RETURN_AND_REMOVE_RESPONSIBILITY;
+                command.Parameters.Clear();
+                //(@OrderId, @StatusName, @Changer, @DepartmentId, @Refusual
+                command.Parameters.Add("OrderId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = StatusName;
+                command.Parameters.Add("StatusNameRR", SqlDbType.NVarChar).Value = CirculationStatuses.RemovedResponsibility.Value;
                 command.Parameters.Add("Changer", SqlDbType.Int).Value = ChangerId;
                 command.Parameters.Add("DepartmentId", SqlDbType.Int).Value = DepartmentId;
                 command.Parameters.Add("Refusual", SqlDbType.NVarChar).Value = Refusual ?? (object)DBNull.Value;

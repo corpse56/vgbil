@@ -26,7 +26,7 @@ namespace LibflClassLibrary.ExportToVufind.Litres
             /////////////////////////////////////////////////////////////////////////////////////////////
 
             VufindXMLWriter vfWriter = new VufindXMLWriter("litres");
-            vfWriter.StartVufindXML(@"F:\import\" + Fund.ToLower() + ".xml");
+            vfWriter.StartVufindXML(@"E:\import\" + Fund.ToLower() + ".xml");
 
             XDocument xdoc = XDocument.Load(@"f:\litres_source.xml");
             //XDocument xdoc = XDocument.Load(@"f:\litres_example.xml");
@@ -407,7 +407,7 @@ namespace LibflClassLibrary.ExportToVufind.Litres
             //    }
             //}
 
-            XmlWriter writ = XmlTextWriter.Create(@"F:\litres_source.xml");
+            XmlWriter writ = XmlTextWriter.Create(@"E:\import\litres_source.xml");
             xdoc.WriteTo(writ);
             writ.Flush();
             writ.Close();
