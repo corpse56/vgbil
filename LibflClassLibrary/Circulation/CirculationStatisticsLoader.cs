@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books;
 using LibflClassLibrary.Circulation.DB;
 using LibflClassLibrary.Circulation.Loaders;
 using System;
@@ -37,6 +38,21 @@ namespace LibflClassLibrary.Circulation
                 orders.Add(order);
             }
             return orders;
+        }
+
+        internal int GetReadersRecievedBookCount(DateTime startDate, DateTime endDate, BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetReadersRecievedBookCount(startDate, endDate, bjUser.SelectedUserStatus.UnifiedLocationCode);
+            return table.Rows.Count;
+        }
+
+        internal List<BookBase> GetAllBooksInHall(BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetAllBooksInHall(bjUser.SelectedUserStatus.DepId);
+
+
+
+            return new List<BookBase>();
         }
 
         internal List<OrderInfo> GetFinishedHallOrders(BJUserInfo bjUser_)

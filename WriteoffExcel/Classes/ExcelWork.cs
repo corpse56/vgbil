@@ -203,7 +203,7 @@ namespace WriteoffExcel.Classes
             _ws1.Range["BB12"].Value = 7709102090;
             _ws1.Range["CG25"].Value = Count;
             _ws1.Range["CG28"].Value = _cost.ToString("0.00");
-            int IntCost = Convert.ToInt32(_cost);
+            int IntCost = (int)(_cost);
             decimal decPenny = _cost % 1.0m;
             int IntPenny = Convert.ToInt32(decPenny * 100);
             string Penny = IntPenny.ToString();

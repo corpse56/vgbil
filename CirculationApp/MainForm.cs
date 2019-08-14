@@ -1380,6 +1380,13 @@ namespace CirculationApp
             tbv.ShowDialog();
 
         }
+
+        private void AllBooksInHallToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TableDataVisualizer tbv = new TableDataVisualizer(null, bjUser, ReferenceType.AllBooksInHall);
+            tbv.ShowDialog();
+
+        }
     }
   
 }

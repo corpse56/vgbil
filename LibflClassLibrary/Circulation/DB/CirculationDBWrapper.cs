@@ -19,9 +19,6 @@ namespace LibflClassLibrary.Circulation.DB
         private string connectionString;
         public CirculationDBWrapper()
         {
-            //connectionString = "Data Source=80.250.173.142;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
-            //connectionString = "Data Source=192.168.1.165;Initial Catalog=Circulation;Persist Security Info=True;User ID=demo;Password=demo;Connect Timeout=1200";
-            //connectionString = "Data Source=127.0.0.1;Initial Catalog=Circulation;Integrated Security=True;Connect Timeout=1200";
             connectionString = AppSettings.ConnectionString;
             Queries = new CirculationQueries();
         }
@@ -386,6 +383,19 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        internal DataTable GetOverdueOrders(string statusName)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_OVERDUE_ORDERS, connection);
+                dataAdapter.SelectCommand.Parameters.Add("statusName", SqlDbType.NVarChar).Value = statusName;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal DataTable GetOrdersFlow(int unifiedLocationCode)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -416,33 +426,7 @@ namespace LibflClassLibrary.Circulation.DB
             ChangeOrderStatus(orderId, CirculationStatuses.Finished.Value, userId, deptId, null);
         }
 
-        internal DataTable GetLitresAccount(int readerId)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_LITRES_ACCOUNT, connection);
-                dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = readerId;
-                DataTable table = new DataTable();
-                int cnt = dataAdapter.Fill(table);
-                return table;
-            }
-        }
 
-        internal void AssignLitresAccount(int readerId)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand command = new SqlCommand();
-                command.Connection = connection;
-                command.Connection.Open();
-                command.CommandText = Queries.ASSIGN_LITRES_ACCOUNT;
-                command.Parameters.Clear();
-                command.Parameters.Add("ReaderId", SqlDbType.Int).Value = readerId;
-                command.Parameters.Add("AccountId", SqlDbType.Int).Value = GetFirstFreeLitresAccount();
-                command.ExecuteNonQuery();
-            }
-
-        }
 
 
         internal void RefuseOrder(int orderId, string cause, string value, int UserId, int DepId)
@@ -464,21 +448,6 @@ namespace LibflClassLibrary.Circulation.DB
 
         }
 
-        private int GetFirstFreeLitresAccount()
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_FIRST_FREE_LITRES_ACCOUNT, connection);
-                DataTable table = new DataTable();
-                int cnt = dataAdapter.Fill(table);
-                if (cnt == 0)
-                {
-                    throw new Exception("L003");
-                }
-                return Convert.ToInt32(table.Rows[0]["ID"]);
-            }
-
-        }
         internal void ProlongOrder(int orderId, int days)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

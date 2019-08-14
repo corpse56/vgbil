@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,9 +33,20 @@ namespace LibflClassLibrary.Circulation
             return csl_.GetActiveHallOrders( bjUser);
         }
 
-        public List<OrderInfo> GetFinishedHallOrders(BJUserInfo bjUser_)
+        public List<OrderInfo> GetFinishedHallOrders(BJUserInfo bjUser)
         {
-            return csl_.GetFinishedHallOrders(bjUser_);
+            return csl_.GetFinishedHallOrders(bjUser);
+        }
+
+        public List<BookBase> GetAllBooksInHall(BJUserInfo bjUser)
+        {
+            return csl_.GetAllBooksInHall(bjUser);
+        }
+
+        public int GetReadersRecievedBookCount(DateTime startDate, DateTime endDate, BJUserInfo bjUser)
+        {
+            return csl_.GetReadersRecievedBookCount(startDate, endDate, bjUser);
+
         }
     }
 }

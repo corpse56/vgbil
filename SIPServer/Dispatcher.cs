@@ -277,7 +277,7 @@ namespace SIPServer
             response.RecallDate = (order == null) ? DateTime.Now : order.IssueDate;
             response.HoldPickupDate = (order == null) ? DateTime.Now : order.ReturnDate;
             response.ItemIdentifier = request.ItemIdentifier;
-            response.TitleIdentifier = (book.Fields["200$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.TitleIdentifier = (book.Fields["700$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
             response.Owner = "ВГБИЛ";
             response.CurrencyType = Currency.RUB;
             response.FeeAmount = 0;

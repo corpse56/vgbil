@@ -28,7 +28,7 @@ namespace AddLitresAccounts
             da.InsertCommand.Connection = new SqlConnection();
             da.InsertCommand.Connection.ConnectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
             da.InsertCommand.Connection.Open();
-            StreamReader sr = new StreamReader(@"f:\network\Lib_100S36522.txt");
+            StreamReader sr = new StreamReader(@"e:\network\Lib_100S39832.txt");
             string account;
             while (sr.Peek() >= 0)
             {
@@ -37,7 +37,7 @@ namespace AddLitresAccounts
                 da.InsertCommand.Parameters.AddWithValue("login", account.Split(',')[0]);
                 da.InsertCommand.Parameters.AddWithValue("pwd", account.Split(',')[1]);
                 da.InsertCommand.CommandText = "insert into LITRES..ACCOUNTS (LRLOGIN,LRPWD,CREATED) values (@login, @pwd, getdate())";
-                //da.InsertCommand.ExecuteNonQuery();
+                da.InsertCommand.ExecuteNonQuery();
             }
             da.InsertCommand.Connection.Close();
 

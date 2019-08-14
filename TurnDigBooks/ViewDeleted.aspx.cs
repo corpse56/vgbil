@@ -16,7 +16,7 @@ public partial class ViewDeleted : System.Web.UI.Page
         SqlDataAdapter DA = new SqlDataAdapter();
         DA.SelectCommand = new SqlCommand();
         DA.SelectCommand.Connection = new SqlConnection(XmlConnections.GetConnection("/Connections/Turn"));
-        DA.SelectCommand.CommandText = "with main as ( select row_number() over (order by (A.DELDATE )) num,A.IDMAIN pin,case when A.BAZA = 1 then avtp.PLAIN else ravtp.PLAIN end avt, A.DELDATE dd," +
+        DA.SelectCommand.CommandText = "with main as ( select row_number() over (order by (A.DELDATE ) desc) num,A.IDMAIN pin,case when A.BAZA = 1 then avtp.PLAIN else ravtp.PLAIN end avt, A.DELDATE dd," +
                                         "case when A.BAZA = 1 then zagp.PLAIN else rzagp.PLAIN end zag,A.CREATED cre,case when A.BAZA = 1 then 'Основной фонд' else 'Фонд редкой книги' end baza, A.ID id,A.DELCAUSE dc " +
                                            " from Reservation_R..TURNTODIGITIZE A " +
                                            " left join BJVVV..DATAEXT zag on A.IDMAIN = zag.IDMAIN and zag.MNFIELD = 200 and zag.MSFIELD = '$a' " +
@@ -28,7 +28,7 @@ public partial class ViewDeleted : System.Web.UI.Page
                                            " left join REDKOSTJ..DATAEXT ravt on A.IDMAIN = ravt.IDMAIN and ravt.MNFIELD = 700 and ravt.MSFIELD = '$a' " +
                                            " left join REDKOSTJ..DATAEXTPLAIN ravtp on ravt.ID = ravtp.IDDATAEXT " +
                                            " where A.DELETED = 1) " +
-                                           " select top 100 * from main   where num<=100 order by num desc";
+                                           " select top 100 * from main   where num<=100 order by num ";
 
         DataSet DS = new DataSet();
         int i = DA.Fill(DS, "data");

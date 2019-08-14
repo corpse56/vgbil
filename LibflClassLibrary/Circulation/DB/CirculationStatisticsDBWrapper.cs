@@ -49,6 +49,32 @@ namespace LibflClassLibrary.Circulation.DB
 
         }
 
+        internal DataTable GetReadersRecievedBookCount(DateTime startDate, DateTime endDate, int unifiedLocationCode)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_READERS_RECIEVED_BOOKS_COUNT, connection);
+                dataAdapter.SelectCommand.Parameters.Add("startDate", SqlDbType.DateTime).Value = startDate;
+                dataAdapter.SelectCommand.Parameters.Add("endDate", SqlDbType.DateTime).Value = endDate;
+                dataAdapter.SelectCommand.Parameters.Add("unifiedLocationCode", SqlDbType.Int).Value = unifiedLocationCode;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
+        internal DataTable GetAllBooksInHall(int depId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_ALL_BOOKS_IN_HALL, connection);
+                dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
         internal DataTable GetFinishedHallOrders(int unifiedLocationCode)
         {
             DataTable table = new DataTable();

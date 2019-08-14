@@ -295,29 +295,6 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
-        public string GET_LITRES_ACCOUNT
-        {
-            get
-            {
-                return " select * from LITRES..ACCOUNTS where IDREADER = @ReaderId";
-            }
-        }
-
-        public string ASSIGN_LITRES_ACCOUNT
-        {
-            get
-            {
-                return " update LITRES..ACCOUNTS set IDREADER = @ReaderId, ASSIGNED=getdate() where ID = @AccountId ";
-            }
-        }
-
-        public string GET_FIRST_FREE_LITRES_ACCOUNT
-        {
-            get
-            {
-                return " select top 1 ID from LITRES..ACCOUNTS where IDREADER is null order by ID ";
-            }
-        }
 
         public string REFUSE_ORDER//этот запрос сам вставляет действие оператора. Остальные используют метод ChangeStatus. не знаю зачем. можно переделать для однообразия.
         {
@@ -428,6 +405,16 @@ namespace LibflClassLibrary.Circulation.DB
                 return  " select * from Circulation..Orders A " +
                         " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
                         " where ExemplarId = @idData and fund =@fund ";
+            }
+        }
+
+        public string GET_OVERDUE_ORDERS
+        {
+            get
+            {
+                return " select * from Circulation..Orders A " +
+                        " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                        " where ReturnDate < getdate() and A.StatusName = @statusName ";
             }
         }
 

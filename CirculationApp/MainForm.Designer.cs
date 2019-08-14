@@ -112,6 +112,7 @@ namespace CirculationApp
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.timerIssuedInHallCount = new System.Windows.Forms.Timer(this.components);
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.AllBooksInHallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainTabContainer.SuspendLayout();
             this.MainTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -963,7 +964,8 @@ namespace CirculationApp
             this.ÒÔ‡‚Í‡ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.HallServiceToolStripMenuItem,
             this.ActiveHallOrdersToolStripMenuItem,
-            this.FinishedHallOrdersToolStripMenuItem});
+            this.FinishedHallOrdersToolStripMenuItem,
+            this.AllBooksInHallToolStripMenuItem});
             this.ÒÔ‡‚Í‡ToolStripMenuItem.Name = "ÒÔ‡‚Í‡ToolStripMenuItem";
             this.ÒÔ‡‚Í‡ToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.ÒÔ‡‚Í‡ToolStripMenuItem.Text = "—Ô‡‚Í‡";
@@ -1012,6 +1014,14 @@ namespace CirculationApp
             this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
+            // 
+            // AllBooksInHallToolStripMenuItem
+            // 
+            this.AllBooksInHallToolStripMenuItem.Name = "AllBooksInHallToolStripMenuItem";
+            this.AllBooksInHallToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+            this.AllBooksInHallToolStripMenuItem.Text = "¬ÒÂ ÍÌË„Ë ÚÂÍÛ˘Â„Ó Á‡Î‡";
+            this.AllBooksInHallToolStripMenuItem.Visible = false;
+            this.AllBooksInHallToolStripMenuItem.Click += new System.EventHandler(this.AllBooksInHallToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1148,6 +1158,7 @@ namespace CirculationApp
         private System.Windows.Forms.ToolStripMenuItem HallServiceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ActiveHallOrdersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FinishedHallOrdersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AllBooksInHallToolStripMenuItem;
         //private System.Windows.Forms.DataGridView dgvTransfer;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;

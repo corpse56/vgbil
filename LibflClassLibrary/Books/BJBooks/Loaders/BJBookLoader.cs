@@ -66,6 +66,7 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             int CurrentIdData = 0;
             foreach (DataRow row in table.Rows)
             {
+                if (row["IDBLOCK"] == DBNull.Value) continue;
                 if ((int)row["IDBLOCK"] != 260)
                 {
                     if ((int)row["IDBLOCK"] == 270)//если есть гиперссылка

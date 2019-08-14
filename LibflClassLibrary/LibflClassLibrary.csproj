@@ -222,7 +222,12 @@
     <Compile Include="ExportToVufind\CERFVufindConverter.cs" />
     <Compile Include="ExportToVufind\KeyValueMapping.cs" />
     <Compile Include="Books\BJBooks\DB\DatabaseWrapper.cs" />
+    <Compile Include="Litres\LitresAccountManager.cs" />
+    <Compile Include="Litres\LitresApiHandler.cs" />
+    <Compile Include="Litres\LitresDBWrapper.cs" />
     <Compile Include="Litres\LitresInfo.cs" />
+    <Compile Include="Litres\LitresLoader.cs" />
+    <Compile Include="Litres\LitresQueries.cs" />
     <Compile Include="Readers\DB\ReaderQueries.cs" />
     <Compile Include="Readers\DB\ReaderDatabaseWrapper.cs" />
     <Compile Include="Readers\Loaders\ReaderLoader.cs" />

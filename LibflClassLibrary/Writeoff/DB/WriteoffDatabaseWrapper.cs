@@ -72,6 +72,19 @@ namespace LibflClassLibrary.Writeoff.DB
                 return table;
             }
         }
+
+        internal DataTable GetBooksOnSpecifiedActNumbers(string filter)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(WQueries.GET_BOOKS_ON_SPECIFIED_ACT_NUMBERS, connection);
+                dataAdapter.SelectCommand.CommandText += filter;
+                int i = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal DataTable GetBooksPerYearInActNameOF(int year)
         {
             DataTable table = new DataTable();

@@ -65,6 +65,26 @@ namespace LibflClassLibrary.Writeoff.Loaders
             }
             return result;
         }
+
+        internal List<BJExemplarInfo> GetBooksOnSpecifiedActNumbers(List<string> acts)
+        {
+            StringBuilder filter = new StringBuilder("(");
+            foreach (var act in acts)
+            {
+                filter.Append($"'{act}',");
+            }
+            filter.Remove(filter.Length - 1, 1);
+            filter.Append(")");
+            DataTable table = db.GetBooksOnSpecifiedActNumbers(filter.ToString());
+            List<BJExemplarInfo> result = new List<BJExemplarInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                BJExemplarInfo b = BJExemplarInfo.GetExemplarByIdData((int)row["IDDATA"], Fund);
+                result.Add(b);
+            }
+            return result;
+        }
+
         internal List<BJExemplarInfo> GetBooksPerYearInActNameAB(int year)
         {
             DataTable table = db.GetBooksPerYearInActNameAB(year);

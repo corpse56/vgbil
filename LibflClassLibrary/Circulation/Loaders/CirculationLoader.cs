@@ -429,24 +429,6 @@ namespace LibflClassLibrary.Circulation.Loaders
             dbWrapper.FinishOrder(order.OrderId, bjUser.Id, KeyValueMapping.BJDepartmentIdToUnifiedLocationId[bjUser.SelectedUserStatus.DepId]);
         }
 
-        internal LitresInfo GetLitresAccount(int readerId)
-        {
-            DataTable table = dbWrapper.GetLitresAccount(readerId);
-            if (table.Rows.Count == 0)
-            {
-                return null;
-            }
-            LitresInfo result = new LitresInfo();
-            result.Login = table.Rows[0]["LRLOGIN"].ToString();
-            result.Password = table.Rows[0]["LRPWD"].ToString();
-            return result;
-        }
-
-        internal void AssignLitresAccount(int readerId)
-        {
-            dbWrapper.AssignLitresAccount(readerId);
-
-        }
 
 
         internal void RefuseOrder(int orderId, string cause, BJUserInfo user)
@@ -470,5 +452,18 @@ namespace LibflClassLibrary.Circulation.Loaders
             return Orders;
         }
 
+        internal List<OrderInfo> GetOverdueOrders(string statusName)
+        {
+            DataTable table = dbWrapper.GetOverdueOrders(statusName);
+            List<OrderInfo> Orders = new List<OrderInfo>();
+            int i = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                i++;
+                OrderInfo order = FillOrderFromDataRow(row);
+                Orders.Add(order);
+            }
+            return Orders;
+        }
     }
 }

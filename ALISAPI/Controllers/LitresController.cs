@@ -29,11 +29,11 @@ namespace ALISAPI.Controllers
         public HttpResponseMessage LitresAccount([Description("Номер чит билета")]int ReaderId)
         {
 
-            CirculationInfo Circulation = new CirculationInfo();
+            LitresAccountManager accManager = new LitresAccountManager();
             LitresInfo result;
             try
             {
-                result = Circulation.GetLitresAccount(ReaderId);
+                result = accManager.GetLitresAccount(ReaderId);
             }
             catch (Exception ex)
             {
@@ -53,11 +53,11 @@ namespace ALISAPI.Controllers
         public HttpResponseMessage AssignLitresAccount(int ReaderId)
         {
 
-            CirculationInfo Circulation = new CirculationInfo();
+            LitresAccountManager accManager = new LitresAccountManager();
             LitresInfo result;
             try
             {
-                result = Circulation.AssignLitresAccount(ReaderId);
+                result = accManager.AssignLitresAccount(ReaderId);
             }
             catch (Exception ex)
             {

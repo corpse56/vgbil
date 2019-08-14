@@ -42,6 +42,7 @@ namespace WriteOff
             this.bByYearInActNameOF = new System.Windows.Forms.Button();
             this.bByYearInActNameAB = new System.Windows.Forms.Button();
             this.bByYearInActNameAnotherFundholder = new System.Windows.Forms.Button();
+            this.bSpecifiedActNumbers = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bCreateAct
@@ -197,11 +198,22 @@ namespace WriteOff
             this.bByYearInActNameAnotherFundholder.UseVisualStyleBackColor = true;
             this.bByYearInActNameAnotherFundholder.Click += new System.EventHandler(this.bByYearInActNameAnotherFundholder_Click);
             // 
+            // bSpecifiedActNumbers
+            // 
+            this.bSpecifiedActNumbers.Location = new System.Drawing.Point(12, 373);
+            this.bSpecifiedActNumbers.Name = "bSpecifiedActNumbers";
+            this.bSpecifiedActNumbers.Size = new System.Drawing.Size(609, 23);
+            this.bSpecifiedActNumbers.TabIndex = 8;
+            this.bSpecifiedActNumbers.Text = "Сделать акт из указанных номеров актов";
+            this.bSpecifiedActNumbers.UseVisualStyleBackColor = true;
+            this.bSpecifiedActNumbers.Click += new System.EventHandler(this.bSpecifiedActNumbers_Click);
+            // 
             // FSelectAct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(804, 412);
+            this.Controls.Add(this.bSpecifiedActNumbers);
             this.Controls.Add(this.bByYearInActNameAnotherFundholder);
             this.Controls.Add(this.bByYearInActNameAB);
             this.Controls.Add(this.bByYearInActNameOF);
@@ -242,6 +254,7 @@ namespace WriteOff
         private System.Windows.Forms.Button bByYearInActNameOF;
         private System.Windows.Forms.Button bByYearInActNameAB;
         private System.Windows.Forms.Button bByYearInActNameAnotherFundholder;
+        private System.Windows.Forms.Button bSpecifiedActNumbers;
     }
 }
 

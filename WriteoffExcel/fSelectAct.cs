@@ -221,5 +221,16 @@ namespace WriteOff
             //ms.CreateAct("123", "department", 100, 12, 14, "makulature", "old");
         }
 
+        private void bSpecifiedActNumbers_Click(object sender, EventArgs e)
+        {
+            List<string> acts = new List<string>() { "¿¡727032019", "¿¡1101042019", "¿¡3816042019", "¿¡6313052019", "Œ‘6915052019", "Œ‘7216052019", "¿¡7316052019",
+                "¿¡7922052019", "¿¡8624052019", "¿¡8929052019", "¿¡994062019", "¿¡11426062019", "¿¡1153072019", "¿¡11612072019", "Œ‘3118042019",
+                "Œ‘4822042019", "Œ‘9704062019", "Œ‘10518062019", "Œ‘10718062019" };
+
+            List<BJExemplarInfo> Exemplars = wi.GetBooksOnSpecifiedActNumbers(acts);
+            string ActNumber = "ƒÛ„ËÂ ÙÓÌ‰Ó‰ÂÊ‡ÚÂÎË";
+            GenerateAct(Exemplars, ActNumber);
+
+        }
     }
 }

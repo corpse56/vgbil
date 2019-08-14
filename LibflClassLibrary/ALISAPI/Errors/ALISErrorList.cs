@@ -181,6 +181,12 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Свободные Литрес аккаунты закончились. Попробуйте позже.",
                 httpStatusCode = System.Net.HttpStatusCode.NotFound,
             },
+            new ALISError()
+            {
+                Code = "L004",
+                Message = "Получение аккаунта из Литрес завершилось неудачей. Попробуйте позже.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
 
  
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -56,5 +56,9 @@ namespace LibflClassLibrary.Writeoff
             return loader.GetBooksPerYearInActNameAnotherFundholder(Year);
         }
 
+        public List<BJExemplarInfo> GetBooksOnSpecifiedActNumbers(List<string> acts)
+        {
+            return loader.GetBooksOnSpecifiedActNumbers(acts);
+        }
     }
 }

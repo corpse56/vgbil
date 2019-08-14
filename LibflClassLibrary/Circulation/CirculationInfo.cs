@@ -787,26 +787,6 @@ namespace LibflClassLibrary.Circulation
             loader.DeleteFromBasket(request);
         }
 
-        public LitresInfo GetLitresAccount(int ReaderId)
-        {
-            LitresInfo result = loader.GetLitresAccount(ReaderId);
-            if (result == null)
-            {
-                throw new Exception("L001");
-            }
-            return result;
-        }
-        public LitresInfo AssignLitresAccount(int ReaderId)
-        {
-            LitresInfo result = loader.GetLitresAccount(ReaderId);
-            if (result != null)
-            {
-                throw new Exception("L002");
-            }
-            loader.AssignLitresAccount(ReaderId);
-            result = loader.GetLitresAccount(ReaderId);
-            return result;
-        }
 
         public void ChangeOrderStatus(BJUserInfo user, int OrderId, string statusName)
         {
@@ -825,6 +805,12 @@ namespace LibflClassLibrary.Circulation
         public void RemoveResponsibility(BJUserInfo bjUser, int orderId, string status)
         {
             loader.ChangeOrderStatusReturnAndRemoveResponsibility(bjUser, orderId, status);
+        }
+
+        public List<OrderInfo> GetOverdueOrders(string statusName)
+        {
+            return loader.GetOverdueOrders(statusName);
+
         }
     }
 }

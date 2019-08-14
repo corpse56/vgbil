@@ -32,6 +32,7 @@
             this.bOk = new System.Windows.Forms.Button();
             this.cbStatuses = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.bSaveToFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgViewer)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,6 +63,7 @@
             this.bOk.TabIndex = 1;
             this.bOk.Text = "ОК";
             this.bOk.UseVisualStyleBackColor = true;
+            this.bOk.Click += new System.EventHandler(this.bOk_Click);
             // 
             // cbStatuses
             // 
@@ -84,11 +86,23 @@
             this.label1.Text = "Выберите статуст заказа";
             this.label1.Visible = false;
             // 
+            // bSaveToFile
+            // 
+            this.bSaveToFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bSaveToFile.Location = new System.Drawing.Point(1229, 509);
+            this.bSaveToFile.Name = "bSaveToFile";
+            this.bSaveToFile.Size = new System.Drawing.Size(149, 29);
+            this.bSaveToFile.TabIndex = 4;
+            this.bSaveToFile.Text = "Сохранить в файл";
+            this.bSaveToFile.UseVisualStyleBackColor = true;
+            this.bSaveToFile.Click += new System.EventHandler(this.bSaveToFile_Click);
+            // 
             // TableDataVisualizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1501, 550);
+            this.Controls.Add(this.bSaveToFile);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbStatuses);
             this.Controls.Add(this.bOk);
@@ -109,5 +123,6 @@
         private System.Windows.Forms.Button bOk;
         private System.Windows.Forms.ComboBox cbStatuses;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button bSaveToFile;
     }
 }

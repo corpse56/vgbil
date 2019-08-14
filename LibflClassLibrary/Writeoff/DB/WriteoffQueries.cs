@@ -109,7 +109,15 @@ namespace LibflClassLibrary.Writeoff.DB
             }
         }
 
-
-
-    }
+        public string GET_BOOKS_ON_SPECIFIED_ACT_NUMBERS
+        {
+            get
+            {
+                return "select distinct DATAEXT.IDDATA " +
+                       " from " + this.Fund + "..DATAEXT " +
+                       " where MNFIELD = 929 and MSFIELD = '$b' " +
+                       "  and SORT in  ";
+            }
+        }
+}
 }
