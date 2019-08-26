@@ -59,9 +59,9 @@ namespace LibflClassLibrary.Litres
             writer.WriteStartObject();
 
             writer.WritePropertyName("login");
-            writer.WriteValue("Anonymous");
+            writer.WriteValue("403255407");
             writer.WritePropertyName("pwd");
-            writer.WriteValue("0");
+            writer.WriteValue("799*654");
             writer.WritePropertyName("sid");
             writer.WriteValue("78838d3c7fbf640a4c52956569bef3c685");
 
@@ -92,8 +92,23 @@ namespace LibflClassLibrary.Litres
             }
             throw new Exception("L004");
         }
-
-        internal string w_biblio_reader_create(string sid)
+        private static LitresInfo get_account_from_response(string response)
+        {
+            JObject data = (JObject)JsonConvert.DeserializeObject(response);
+            bool success = (bool)data["success"];
+            if (success)
+            {
+                if ((bool)data["new_reader"]["success"])
+                {
+                    LitresInfo result = new LitresInfo();
+                    result.Login = data["new_reader"]["lib_card"].ToString();
+                    result.Password = data["new_reader"]["password"].ToString();
+                    return result;
+                }
+            }
+            throw new Exception("L004");
+        }
+        internal LitresInfo w_biblio_reader_create(string sid)
         {
             StringBuilder sb = new StringBuilder();
             StringWriter strwriter = new StringWriter(sb);
@@ -122,26 +137,31 @@ namespace LibflClassLibrary.Litres
             writer.WritePropertyName("func");
             writer.WriteValue("w_biblio_reader_create");
             writer.WritePropertyName("id");
-            writer.WriteValue("my_sid");
+            writer.WriteValue("new_reader");
             writer.WritePropertyName("param");
 
             writer.WriteStartObject();
 
-            writer.WritePropertyName("login");
-            writer.WriteValue("Anonymous");
-            writer.WritePropertyName("pwd");
-            writer.WriteValue("0");
-            writer.WritePropertyName("sid");
-            writer.WriteValue("78838d3c7fbf640a4c52956569bef3c685");
+            writer.WritePropertyName("libhouse");
+            writer.WriteValue("193956553");
+            writer.WritePropertyName("name");
+            writer.WriteValue("litres libfl");
+            writer.WritePropertyName("birth_date");
+            writer.WriteValue("2000-01-01");
+            writer.WritePropertyName("mail");
+            string email = $"a{DateTime.Now.ToBinary()}@libfl.ru";
+            writer.WriteValue(email);
+            //writer.WritePropertyName("phone");
+            //writer.WriteValue("79261234567");
 
             writer.WriteEndObject();
             writer.WriteEndObject();
             writer.WriteEndArray();
             writer.WriteEndObject();
-
+           
             string jsonData = sb.ToString();
-            return LitresApiHandler.SendRequest(jsonData);
-
+            string jsonResponse = LitresApiHandler.SendRequest(jsonData);
+            return get_account_from_response(jsonResponse);
         }
 
 

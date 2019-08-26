@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -22,8 +23,17 @@ namespace GetLitresAccountTest
             LitresInfo account = new LitresInfo();
 
             LitresAccountManager manager = new LitresAccountManager();
-            LitresApiHandler.get_sid_from_response("");
-            manager.GetLitresNewAccount();
+
+            for (int i = 0;i<100;i++)
+            {
+                account = manager.GetLitresNewAccount();
+                Console.WriteLine($"{account.Login} {account.Password}");
+
+                Thread.Sleep(10000);
+            }
+            LitresInfo newAccount = manager.GetLitresNewAccount();
+
+            Console.Write("End.");
 
 
 

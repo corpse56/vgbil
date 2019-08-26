@@ -15,14 +15,44 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "select * from Circulation..OrdersFlow A " +
-                       " left join Circulation..Orders B on A.OrderId = B.ID " +
-                       " left join BJVVV..DATAEXT C on C.IDDATA = B.ExemplarId and C.MNFIELD = 899 and C.MSFIELD = '$a' " +
-                       " where cast(cast(A.Changed as varchar(11)) as datetime) between cast(cast(@startDate as varchar(11)) as datetime) and cast(cast(@endDate as varchar(11)) as datetime) " +
-                       " and DepartmentId = @unifiedLocationCode and C.SORT not like '%нигохранени%' " +
-                       " and A.StatusName in ('"+CirculationStatuses.IssuedAtHome.Value+"', '"+ CirculationStatuses.IssuedInHall.Value + "') " +
-                       " order by OrderId";
-
+                //return "select * from Circulation..OrdersFlow A " +
+                //       " left join Circulation..Orders B on A.OrderId = B.ID " +
+                //       " left join BJVVV..DATAEXT C on C.IDDATA = B.ExemplarId and C.MNFIELD = 899 and C.MSFIELD = '$a' " +
+                //       " where cast(cast(A.Changed as varchar(11)) as datetime) between cast(cast(@startDate as varchar(11)) as datetime) and cast(cast(@endDate as varchar(11)) as datetime) " +
+                //       " and DepartmentId = @unifiedLocationCode and C.SORT not like '%нигохранени%' " +
+                //       " and A.StatusName in ('"+CirculationStatuses.IssuedAtHome.Value+"', '"+ CirculationStatuses.IssuedInHall.Value + "') " +
+                //       " order by OrderId";
+                return
+                    "with F0 as ( " +
+                    "select B.ID orderId, B.Fund fund, B.ExemplarId,A.Id " +
+                    "from Circulation..OrdersFlow A " +
+                    "left join Circulation..Orders B on A.OrderId = B.ID " +
+                    " where cast(cast(A.Changed as varchar(11)) as datetime) between " +
+                    " @startDate and @endDate  " +
+                    " and DepartmentId = @unifiedLocationCode " +
+                    " and A.StatusName in ('" + CirculationStatuses.IssuedAtHome.Value + "', '" + CirculationStatuses.IssuedInHall.Value + "') " +
+                    " ), " +
+                    " bases as " +
+                    " ( " +
+                    "select orderId, fund, C.SORT sort from F0 " +
+                    "left join BJVVV..DATAEXT C on C.IDDATA = ExemplarId and C.MNFIELD = 899 and C.MSFIELD = '$a' and fund = 'BJVVV' " +
+                    "union all " +
+                    "select orderId, fund, D.SORT sort from F0 " +
+                    "left join REDKOSTJ..DATAEXT D on D.IDDATA = ExemplarId and D.MNFIELD = 899 and D.MSFIELD = '$a' and fund = 'REDKOSTJ' " +
+                    "union all " +
+                    "select orderId, fund, E.SORT sort from F0 " +
+                    "left join BJFCC..DATAEXT E on E.IDDATA = ExemplarId and E.MNFIELD = 899 and E.MSFIELD = '$a' and fund = 'BJFCC' " +
+                    "union all " +
+                    "select orderId, fund, F.SORT collate cyrillic_general_ci_ai sort from F0 " +
+                    "left join BJACC..DATAEXT F on F.IDDATA = ExemplarId and F.MNFIELD = 899 and F.MSFIELD = '$a' and fund = 'BJACC' " +
+                    "union all " +
+                    "select orderId, fund, G.SORT sort from F0 " +
+                    "left join BJSCC..DATAEXT G on G.IDDATA = ExemplarId and G.MNFIELD = 899 and G.MSFIELD = '$a' and fund = 'BJSCC' " +
+                    ") " +
+                    "select* from F0 " +
+                    "left join bases on F0.orderId = bases.orderId " +
+                    "where bases.sort is not null " +
+                    "and bases.sort not like '%нигохранени%' ";
             }
         }
 
@@ -30,14 +60,44 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return "select * from Circulation..OrdersFlow A " +
-                       " left join Circulation..Orders B on A.OrderId = B.ID " +
-                       " left join BJVVV..DATAEXT C on C.IDDATA = B.ExemplarId and C.MNFIELD = 899 and C.MSFIELD = '$a' " +
-                       " where cast(cast(A.Changed as varchar(11)) as datetime) between cast(cast(@startDate as varchar(11)) as datetime) and cast(cast(@endDate as varchar(11)) as datetime) " +
-                       " and DepartmentId = @unifiedLocationCode and C.IDINLIST in (15,6,7,8,9,10,11,47,31,13,79,46) " + //всё хранение
-                       " and A.StatusName in ('" + CirculationStatuses.IssuedAtHome.Value + "', '" + CirculationStatuses.IssuedInHall.Value + "') " +
-                       " order by OrderId";
-
+                //return "select * from Circulation..OrdersFlow A " +
+                //       " left join Circulation..Orders B on A.OrderId = B.ID " +
+                //       " left join BJVVV..DATAEXT C on C.IDDATA = B.ExemplarId and C.MNFIELD = 899 and C.MSFIELD = '$a' " +
+                //       " where cast(cast(A.Changed as varchar(11)) as datetime) between cast(cast(@startDate as varchar(11)) as datetime) and cast(cast(@endDate as varchar(11)) as datetime) " +
+                //       " and DepartmentId = @unifiedLocationCode and C.IDINLIST in (15,6,7,8,9,10,11,47,31,13,79,46) " + //всё хранение
+                //       " and A.StatusName in ('" + CirculationStatuses.IssuedAtHome.Value + "', '" + CirculationStatuses.IssuedInHall.Value + "') " +
+                //       " order by OrderId";
+                return
+                    "with F0 as ( " +
+                    "select B.ID orderId, B.Fund fund, B.ExemplarId,A.Id " +
+                    "from Circulation..OrdersFlow A " +
+                    "left join Circulation..Orders B on A.OrderId = B.ID " +
+                    " where cast(cast(A.Changed as varchar(11)) as datetime) between " +
+                    " @startDate and @endDate  " +
+                    " and DepartmentId = @unifiedLocationCode " +
+                    " and A.StatusName in ('" + CirculationStatuses.IssuedAtHome.Value + "', '" + CirculationStatuses.IssuedInHall.Value + "') " +
+                    " ), " +
+                    " bases as " +
+                    " ( " +
+                    "select orderId, fund, C.SORT sort from F0 " +
+                    "left join BJVVV..DATAEXT C on C.IDDATA = ExemplarId and C.MNFIELD = 899 and C.MSFIELD = '$a' and fund = 'BJVVV' " +
+                    "union all " +
+                    "select orderId, fund, D.SORT sort from F0 " +
+                    "left join REDKOSTJ..DATAEXT D on D.IDDATA = ExemplarId and D.MNFIELD = 899 and D.MSFIELD = '$a' and fund = 'REDKOSTJ' " +
+                    "union all " +
+                    "select orderId, fund, E.SORT sort from F0 " +
+                    "left join BJFCC..DATAEXT E on E.IDDATA = ExemplarId and E.MNFIELD = 899 and E.MSFIELD = '$a' and fund = 'BJFCC' " +
+                    "union all " +
+                    "select orderId, fund, F.SORT collate cyrillic_general_ci_ai sort from F0 " +
+                    "left join BJACC..DATAEXT F on F.IDDATA = ExemplarId and F.MNFIELD = 899 and F.MSFIELD = '$a' and fund = 'BJACC' " +
+                    "union all " +
+                    "select orderId, fund, G.SORT sort from F0 " +
+                    "left join BJSCC..DATAEXT G on G.IDDATA = ExemplarId and G.MNFIELD = 899 and G.MSFIELD = '$a' and fund = 'BJSCC' " +
+                    ") " +
+                    "select* from F0 " +
+                    "left join bases on F0.orderId = bases.orderId " +
+                    "where bases.sort is not null " +
+                    "and bases.sort  like '%нигохранени%' ";
             }
         }
 

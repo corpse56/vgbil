@@ -407,6 +407,8 @@ namespace SIPServer
         }
         private void FillCheckinFailedResponse(CheckinResponse response, CheckinRequest request)
         {
+
+            //поправить этот метод.
             response.Ok = false;
             response.Resensitize = false;
             response.MagneticMedia = false;

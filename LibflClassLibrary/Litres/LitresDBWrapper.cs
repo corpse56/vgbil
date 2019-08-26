@@ -42,6 +42,22 @@ namespace LibflClassLibrary.Litres
             }
 
         }
+
+        internal void InsertNewLitresAccount(LitresInfo newAccount)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.INSERT_NEW_LITRES_ACCOUNT;
+                command.Parameters.Clear();
+                command.Parameters.Add("login", SqlDbType.NVarChar).Value = newAccount.Login;
+                command.Parameters.Add("password", SqlDbType.NVarChar).Value = newAccount.Password;
+                command.ExecuteNonQuery();
+            }
+        }
+
         private int GetFirstFreeLitresAccount()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

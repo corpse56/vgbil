@@ -29,5 +29,9 @@ namespace LibflClassLibrary.Litres
 
         }
 
+        internal void InsertNewLitresAccount(LitresInfo newAccount)
+        {
+            dbWrapper.InsertNewLitresAccount(newAccount);
+        }
     }
 }

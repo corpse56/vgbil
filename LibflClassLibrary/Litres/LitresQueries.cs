@@ -32,5 +32,13 @@ namespace LibflClassLibrary.Litres
             }
         }
 
+        public string INSERT_NEW_LITRES_ACCOUNT
+        {
+            get
+            {
+                return "insert into LITRES..ACCOUNTS (LRLOGIN,LRPWD,CREATED) values (@login, @password, getdate())";
+            }
+        }
+
     }
 }

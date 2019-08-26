@@ -38,15 +38,15 @@ namespace LibflClassLibrary.Litres
         {
             LitresApiHandler api = new LitresApiHandler();
             string sid = api.w_create_sid();
-
-
-            api.w_biblio_reader_create();
-
-
-
-            return new LitresInfo();
+            LitresInfo result = api.w_biblio_reader_create(sid);
+            this.InsertNewLitresAccount(result);
+            return result;
         }
 
+        public void InsertNewLitresAccount(LitresInfo newAccount)
+        {
+            loader.InsertNewLitresAccount(newAccount);
+        }
 
 
     }
