@@ -40,6 +40,7 @@ namespace LibflClassLibrary.Circulation
 
         public List<BookBase> GetAllBooksInHall(BJUserInfo bjUser)
         {
+            //здесь написать условия 
             return csl_.GetAllBooksInHall(bjUser);
         }
 

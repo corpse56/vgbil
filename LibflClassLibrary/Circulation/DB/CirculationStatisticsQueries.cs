@@ -24,7 +24,7 @@ namespace LibflClassLibrary.Circulation.DB
                 //       " order by OrderId";
                 return
                     "with F0 as ( " +
-                    "select B.ID orderId, B.Fund fund, B.ExemplarId,A.Id " +
+                    "select B.ID orderId, B.Fund fund, B.ExemplarId,A.Id flowId " +
                     "from Circulation..OrdersFlow A " +
                     "left join Circulation..Orders B on A.OrderId = B.ID " +
                     " where cast(cast(A.Changed as varchar(11)) as datetime) between " +
@@ -34,23 +34,23 @@ namespace LibflClassLibrary.Circulation.DB
                     " ), " +
                     " bases as " +
                     " ( " +
-                    "select orderId, fund, C.SORT sort from F0 " +
+                    "select orderId, flowId, fund, C.SORT sort from F0 " +
                     "left join BJVVV..DATAEXT C on C.IDDATA = ExemplarId and C.MNFIELD = 899 and C.MSFIELD = '$a' and fund = 'BJVVV' " +
                     "union all " +
-                    "select orderId, fund, D.SORT sort from F0 " +
+                    "select orderId, flowId, fund, D.SORT sort from F0 " +
                     "left join REDKOSTJ..DATAEXT D on D.IDDATA = ExemplarId and D.MNFIELD = 899 and D.MSFIELD = '$a' and fund = 'REDKOSTJ' " +
                     "union all " +
-                    "select orderId, fund, E.SORT sort from F0 " +
+                    "select orderId, flowId, fund, E.SORT sort from F0 " +
                     "left join BJFCC..DATAEXT E on E.IDDATA = ExemplarId and E.MNFIELD = 899 and E.MSFIELD = '$a' and fund = 'BJFCC' " +
                     "union all " +
-                    "select orderId, fund, F.SORT collate cyrillic_general_ci_ai sort from F0 " +
+                    "select orderId, flowId, fund, F.SORT collate cyrillic_general_ci_ai sort from F0 " +
                     "left join BJACC..DATAEXT F on F.IDDATA = ExemplarId and F.MNFIELD = 899 and F.MSFIELD = '$a' and fund = 'BJACC' " +
                     "union all " +
-                    "select orderId, fund, G.SORT sort from F0 " +
+                    "select orderId, flowId, fund, G.SORT sort from F0 " +
                     "left join BJSCC..DATAEXT G on G.IDDATA = ExemplarId and G.MNFIELD = 899 and G.MSFIELD = '$a' and fund = 'BJSCC' " +
                     ") " +
                     "select* from F0 " +
-                    "left join bases on F0.orderId = bases.orderId " +
+                    "left join bases on F0.flowId = bases.flowId " +
                     "where bases.sort is not null " +
                     "and bases.sort not like '%нигохранени%' ";
             }
@@ -69,7 +69,7 @@ namespace LibflClassLibrary.Circulation.DB
                 //       " order by OrderId";
                 return
                     "with F0 as ( " +
-                    "select B.ID orderId, B.Fund fund, B.ExemplarId,A.Id " +
+                    "select B.ID orderId, B.Fund fund, B.ExemplarId,A.Id flowId " +
                     "from Circulation..OrdersFlow A " +
                     "left join Circulation..Orders B on A.OrderId = B.ID " +
                     " where cast(cast(A.Changed as varchar(11)) as datetime) between " +
@@ -79,23 +79,23 @@ namespace LibflClassLibrary.Circulation.DB
                     " ), " +
                     " bases as " +
                     " ( " +
-                    "select orderId, fund, C.SORT sort from F0 " +
+                    "select orderId, flowId, fund, C.SORT sort from F0 " +
                     "left join BJVVV..DATAEXT C on C.IDDATA = ExemplarId and C.MNFIELD = 899 and C.MSFIELD = '$a' and fund = 'BJVVV' " +
                     "union all " +
-                    "select orderId, fund, D.SORT sort from F0 " +
+                    "select orderId, flowId, fund, D.SORT sort from F0 " +
                     "left join REDKOSTJ..DATAEXT D on D.IDDATA = ExemplarId and D.MNFIELD = 899 and D.MSFIELD = '$a' and fund = 'REDKOSTJ' " +
                     "union all " +
-                    "select orderId, fund, E.SORT sort from F0 " +
+                    "select orderId, flowId, fund, E.SORT sort from F0 " +
                     "left join BJFCC..DATAEXT E on E.IDDATA = ExemplarId and E.MNFIELD = 899 and E.MSFIELD = '$a' and fund = 'BJFCC' " +
                     "union all " +
-                    "select orderId, fund, F.SORT collate cyrillic_general_ci_ai sort from F0 " +
+                    "select orderId, flowId, fund, F.SORT collate cyrillic_general_ci_ai sort from F0 " +
                     "left join BJACC..DATAEXT F on F.IDDATA = ExemplarId and F.MNFIELD = 899 and F.MSFIELD = '$a' and fund = 'BJACC' " +
                     "union all " +
-                    "select orderId, fund, G.SORT sort from F0 " +
+                    "select orderId, flowId, fund, G.SORT sort from F0 " +
                     "left join BJSCC..DATAEXT G on G.IDDATA = ExemplarId and G.MNFIELD = 899 and G.MSFIELD = '$a' and fund = 'BJSCC' " +
                     ") " +
                     "select* from F0 " +
-                    "left join bases on F0.orderId = bases.orderId " +
+                    "left join bases on F0.flowId = bases.flowId " +
                     "where bases.sort is not null " +
                     "and bases.sort  like '%нигохранени%' ";
             }

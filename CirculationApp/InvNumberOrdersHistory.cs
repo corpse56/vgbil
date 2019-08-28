@@ -121,6 +121,10 @@ namespace CirculationApp
                 {
                     lbOrders.SelectedIndex = 0;
                 }
+                else
+                {
+                    MessageBox.Show("Инвентарный номер найден, но заказов на него не было.");
+                }
             }
 
 

@@ -112,8 +112,8 @@ namespace LibflClassLibrary.Circulation.DB
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_BOOKS_ISSUED_FROM_BOOKKEPING_COUNT, connection);
-                dataAdapter.SelectCommand.Parameters.Add("startDate", SqlDbType.DateTime).Value = startDate;
-                dataAdapter.SelectCommand.Parameters.Add("endDate", SqlDbType.DateTime).Value = endDate;
+                dataAdapter.SelectCommand.Parameters.Add("startDate", SqlDbType.DateTime).Value = startDate.Date;
+                dataAdapter.SelectCommand.Parameters.Add("endDate", SqlDbType.DateTime).Value = endDate.Date;
                 dataAdapter.SelectCommand.Parameters.Add("unifiedLocationCode", SqlDbType.Int).Value = unifiedLocationCode;
                 int cnt = dataAdapter.Fill(table);
             }

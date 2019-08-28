@@ -28,7 +28,7 @@ namespace AddLitresAccounts
             da.InsertCommand.Connection = new SqlConnection();
             da.InsertCommand.Connection.ConnectionString = "Data Source=192.168.4.25,1443;Initial Catalog=Reservation_R;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
             da.InsertCommand.Connection.Open();
-            StreamReader sr = new StreamReader(@"e:\network\Lib_100S39832.txt");
+            StreamReader sr = new StreamReader(@"g:\network\Lib_100S39832.txt");
             string account;
             while (sr.Peek() >= 0)
             {

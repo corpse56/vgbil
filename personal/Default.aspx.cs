@@ -184,7 +184,7 @@ public partial class _Default : System.Web.UI.Page
                     Status.Append(" нига уже заказана другим сотрудником.");
                     StatusCode = 4;
                 }
-                else if (exemplar.IsIssuedToReader())
+                else if (false)//(exemplar.IsIssuedToReader())//метод проверки зан€тости книги идЄт по старым базам. это нужно переписать на новую базу Circulation
                 {
                     Status = new StringBuilder();
                     Status.Append(" нига заказана/выдана другому читателю.");
@@ -627,7 +627,13 @@ public partial class _Default : System.Web.UI.Page
     {
         //sdvig.DeleteCommand = new SqlCommand("delete from Reservation_E..Basket where IDReader = " + b.IdBasket, ZCon);
         //sdvig.DeleteCommand.ExecuteNonQuery();
-
+        SqlCommand command = new SqlCommand();
+        ZCon.Open();
+        command = new SqlCommand("delete from Reservation_E..Basket where IDREADER = @IDREADER", ZCon);
+        command.Parameters.Add("IDREADER", SqlDbType.Int).Value = int.Parse(CurReader.ID);
+        command.ExecuteNonQuery();
+        ZCon.Close();
+        ShowBasketTable();
     }
     protected void Button6_Click(object sender, EventArgs e)//удалить выбранные
     {
