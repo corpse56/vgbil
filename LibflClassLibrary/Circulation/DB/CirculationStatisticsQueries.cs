@@ -139,11 +139,61 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return  " select * from BJVVV..DATAEXT A " +
-                        " left join BJVVV..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 899 and B.MSFIELD = '$w' " +
-                        " where MNFIELD = =899 and MSFIELD = '$a' and IDINLIST = @depId";
+                return " select 'BJVVV' fund, A.IDMAIN pin, A.IDDATA exemplarId from BJVVV..DATAEXT A " +
+                        //" left join BJVVV..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 899 and B.MSFIELD = '$w' " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$a' and A.IDINLIST = @depId";
             }
         }
+        public string GET_ALL_BOOKS_IN_HALL_ACC
+        {
+            get
+            {
+                return " select 'BJVVV' fund, A.IDMAIN pin, A.IDDATA exemplarId from BJVVV..DATAEXT A " +
+                        //" left join BJVVV..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 899 and B.MSFIELD = '$w' " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$a' and A.IDINLIST = @depId " +
+                        " union all" +
+                        " select 'BJACC' fund, A.IDMAIN pin, A.IDDATA exemplarId from BJACC..DATAEXT A " +
+                        " where MNFIELD = 899 and MSFIELD = '$w' ";
+            }
+        }
+        public string GET_ALL_BOOKS_IN_HALL_FCC
+        {
+            get
+            {
+                return " select 'BJVVV' fund, A.IDMAIN pin, A.IDDATA exemplarId from BJVVV..DATAEXT A " +
+                        //" left join BJVVV..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 899 and B.MSFIELD = '$w' " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$a' and A.IDINLIST = @depId " +
+                        " union all" +
+                        " select 'BJFCC' fund, A.IDMAIN pin, A.IDDATA exemplarId from BJFCC..DATAEXT A " +
+                        " where MNFIELD = 899 and MSFIELD = '$p' ";
+            }
+        }
+        public string GET_ALL_BOOKS_IN_HALL_SCC
+        {
+            get
+            {
+                return " select 'BJVVV' fund, A.IDMAIN pin, A.IDDATA exemplarId from BJVVV..DATAEXT A " +
+                        //" left join BJVVV..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 899 and B.MSFIELD = '$w' " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$a' and A.IDINLIST = @depId " +
+                        " union all" +
+                        " select 'BJSCC' fund, A.IDMAIN pin, A.IDDATA exemplarId from BJSCC..DATAEXT A " +
+                        " where MNFIELD = 899 and MSFIELD = '$p' ";
+            }
+        }
+        public string GET_ALL_BOOKS_IN_HALL_REDKOSTJ
+        {
+            get
+            {
+                return " select 'BJVVV' fund, A.IDMAIN pin, A.IDDATA exemplarId from BJVVV..DATAEXT A " +
+                        //" left join BJVVV..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 899 and B.MSFIELD = '$p' " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$a' and A.IDINLIST = @depId " +
+                        " union all" +
+                        " select 'REDKOSTJ' fund, A.IDMAIN pin, A.IDDATA exemplarId from REDKOSTJ..DATAEXT A " +
+                        //" left join REDKOSTJ..DATAEXT B on A.IDDATA = B.IDDATA and B.MNFIELD = 899 and B.MSFIELD = '$p' " +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$a' and A.IDINLIST in (20,21)";
+            }
+        }
+
 
         public string GET_READERS_RECIEVED_BOOKS_COUNT
         {
@@ -156,5 +206,6 @@ namespace LibflClassLibrary.Circulation.DB
                        " and A.StatusName in ('" + CirculationStatuses.IssuedAtHome.Value + "', '" + CirculationStatuses.IssuedInHall.Value + "') ";
             }
         }
+
     }
 }

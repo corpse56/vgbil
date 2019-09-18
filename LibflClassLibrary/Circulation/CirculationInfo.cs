@@ -223,6 +223,14 @@ namespace LibflClassLibrary.Circulation
         public enum IssueType { AtHome, InHall }
         private IssueType GetIssueType(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
         {
+            if (scannedExemplar.Fields["899$a"].ToString().ToLower().Contains("выст"))
+            {
+                return IssueType.InHall;
+            }
+            if (scannedReader.Rights[ReaderRightsEnum.Partner] != null)
+            {
+                return IssueType.InHall;
+            }
             if (scannedReader.Rights[ReaderRightsEnum.Employee] != null)
             {
                 if (scannedExemplar.Fields["921$c"].ToString() == "ДП")

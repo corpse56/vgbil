@@ -1,5 +1,6 @@
 ﻿using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation.DB;
 using LibflClassLibrary.Circulation.Loaders;
 using System;
@@ -40,20 +41,66 @@ namespace LibflClassLibrary.Circulation
             return orders;
         }
 
+        internal List<BookExemplarBase> GetAllBooksInHallACC(BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetAllBooksInHallACC(bjUser.SelectedUserStatus.DepId);
+            List<BookExemplarBase> result = GetExemplarListFromPinList(table);
+            return result;
+        }
+
+        internal List<BookExemplarBase> GetAllBooksInHallFCC(BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetAllBooksInHallFCC(bjUser.SelectedUserStatus.DepId);
+            List<BookExemplarBase> result = GetExemplarListFromPinList(table);
+            return result;
+        }
+
+        internal List<BookExemplarBase> GetAllBooksInHallREDKOSTJ(BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetAllBooksInHallREDKOSTJ(bjUser.SelectedUserStatus.DepId);
+            List<BookExemplarBase> result = GetExemplarListFromPinList(table);
+            return result;
+        }
+
+        internal List<BookExemplarBase> GetAllBooksInHallSCC(BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetAllBooksInHallSCC(bjUser.SelectedUserStatus.DepId);
+            List<BookExemplarBase> result = GetExemplarListFromPinList(table);
+            return result;
+        }
+        internal List<BookExemplarBase> GetAllBooksInHall(BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetAllBooksInHall(bjUser.SelectedUserStatus.DepId);
+            List<BookExemplarBase> result = GetExemplarListFromPinList(table);
+            return result;
+        }
+
+        private List<BookExemplarBase> GetExemplarListFromPinList(DataTable table)
+        {
+            List<BookExemplarBase> result = new List<BookExemplarBase>();
+            foreach (DataRow row in table.Rows)
+            {
+                BookExemplarBase exemplar = ExemplarFactory.CreateExemplar(Convert.ToInt32(row["exemplarId"]), row["fund"].ToString());
+                result.Add(exemplar);
+            }
+            return result;
+        }
+        private List<BookBase> GetBookListFromPinList(DataTable table)
+        {
+            List<BookBase> result = new List<BookBase>();
+            foreach (DataRow row in table.Rows)
+            {
+                BookBase book = BookFactory.CreateBook(Convert.ToInt32(row["pin"]), row["fund"].ToString());
+                result.Add(book);
+            }
+            return result;
+        }
         internal int GetReadersRecievedBookCount(DateTime startDate, DateTime endDate, BJUserInfo bjUser)
         {
             DataTable table = dbWrapper_.GetReadersRecievedBookCount(startDate, endDate, bjUser.SelectedUserStatus.UnifiedLocationCode);
             return table.Rows.Count;
         }
 
-        internal List<BookBase> GetAllBooksInHall(BJUserInfo bjUser)
-        {
-            DataTable table = dbWrapper_.GetAllBooksInHall(bjUser.SelectedUserStatus.DepId);
-
-
-
-            return new List<BookBase>();
-        }
 
         internal List<OrderInfo> GetFinishedHallOrders(BJUserInfo bjUser_)
         {

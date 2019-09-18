@@ -26,7 +26,7 @@ namespace LibflClassLibrary.ExportToVufind
         {
             get
             {
-                string connectionString = "Data Source=192.168.4.24,1442;Initial Catalog=Readers;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
+                string connectionString = "Data Source=192.168.4.24,1442;Initial Catalog=BJVVV;Persist Security Info=True;User ID=sasha;Password=Corpse536;Connect Timeout=1200";
                 return connectionString;
             }
         }

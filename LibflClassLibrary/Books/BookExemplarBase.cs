@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LibflClassLibrary.Books.BJBooks.BJExemplars
+namespace LibflClassLibrary.Books
 {
     public abstract class BookExemplarBase
     {

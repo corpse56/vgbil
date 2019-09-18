@@ -402,8 +402,13 @@ namespace SIPServer
             response.InstitutionId = request.InstitutionId;
             response.PatronIdentifier = request.PatronIdentifier;
             response.ItemIdentifier = request.ItemIdentifier;
-            response.TitleIdentifier = string.Empty;
-            response.DueDate = DateTime.Now;
+            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
+            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+            var ci = new CirculationInfo();
+            var order = ci.FindOrderByExemplar(exemplar);
+
+            response.TitleIdentifier = (book.Fields["700$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.DueDate = (order == null)? order.ReturnDate : DateTime.Now;
         }
         private void FillCheckinFailedResponse(CheckinResponse response, CheckinRequest request)
         {
@@ -416,8 +421,11 @@ namespace SIPServer
             response.TransactionDate = DateTime.Now;
             response.InstitutionId = request.InstitutionId;
             response.ItemIdentifier = request.ItemIdentifier;
-            response.PermanentLocation = string.Empty;
-            response.TitleIdentifier = "BookTitle";
+            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
+            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+
+            response.PermanentLocation = (exemplar.Fields["899$a"].MNFIELD == 0)? "Неизвестно" : exemplar.Fields["899$a"].ToString();
+            response.TitleIdentifier = (book.Fields["700$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}"; ;
         }
         public void OnCheckin(Session session, CheckinRequest request, CheckinResponse response)
         {
@@ -444,6 +452,12 @@ namespace SIPServer
                 ci = new CirculationInfo();
                 order = ci.FindOrderByExemplar(exemplar);
                 if (order == null)
+                {
+                    //никому не выдана
+                    FillCheckinFailedResponse(response, request);
+                    return;
+                }
+                if (order.StatusName == CirculationStatuses.Finished.Value || order.StatusName == CirculationStatuses.Refusual.Value || order.StatusName == CirculationStatuses.SelfOrder.Value)
                 {
                     //никому не выдана
                     FillCheckinFailedResponse(response, request);

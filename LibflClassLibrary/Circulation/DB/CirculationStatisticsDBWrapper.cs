@@ -66,7 +66,7 @@ namespace LibflClassLibrary.Circulation.DB
         internal DataTable GetAllBooksInHall(int depId)
         {
             DataTable table = new DataTable();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(AppSettings.ConnectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_ALL_BOOKS_IN_HALL, connection);
                 dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
@@ -74,6 +74,52 @@ namespace LibflClassLibrary.Circulation.DB
             }
             return table;
         }
+        internal DataTable GetAllBooksInHallACC(int depId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(AppSettings.ConnectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_ALL_BOOKS_IN_HALL_ACC, connection);
+                dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+        internal DataTable GetAllBooksInHallFCC(int depId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(AppSettings.ConnectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_ALL_BOOKS_IN_HALL_FCC, connection);
+                dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+        internal DataTable GetAllBooksInHallSCC(int depId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(AppSettings.ConnectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_ALL_BOOKS_IN_HALL_SCC, connection);
+                dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+        internal DataTable GetAllBooksInHallREDKOSTJ(int depId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(AppSettings.ConnectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_ALL_BOOKS_IN_HALL_REDKOSTJ, connection);
+                dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
+                dataAdapter.SelectCommand.CommandTimeout = 300;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
 
         internal DataTable GetFinishedHallOrders(int unifiedLocationCode)
         {

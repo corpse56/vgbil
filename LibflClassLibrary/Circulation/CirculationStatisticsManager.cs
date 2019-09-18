@@ -1,5 +1,6 @@
 ﻿using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,10 +39,29 @@ namespace LibflClassLibrary.Circulation
             return csl_.GetFinishedHallOrders(bjUser);
         }
 
-        public List<BookBase> GetAllBooksInHall(BJUserInfo bjUser)
+        public List<BookExemplarBase> GetAllBooksInHall(BJUserInfo bjUser)
         {
-            //здесь написать условия 
-            return csl_.GetAllBooksInHall(bjUser);
+            //так как отделы в каждой базе с разными номерами, нужно для каждого отдела, книги которого в разных базах, написать собственные условия
+            List<BookExemplarBase> result = new List<BookExemplarBase>();
+            switch (bjUser.SelectedUserStatus.DepId)
+            {
+                case 52:// "америка":
+                    result = csl_.GetAllBooksInHallACC(bjUser);
+                    break;
+                case 60:// "французск":
+                    result = csl_.GetAllBooksInHallFCC(bjUser);
+                    break;
+                case 61: // "славянски":
+                    result = csl_.GetAllBooksInHallSCC(bjUser);
+                    break;
+                case 20: // "редк":
+                    result = csl_.GetAllBooksInHallREDKOSTJ(bjUser);
+                    break;
+                default:
+                    result = csl_.GetAllBooksInHall(bjUser);
+                    break;
+            }
+            return result;
         }
 
         public int GetReadersRecievedBookCount(DateTime startDate, DateTime endDate, BJUserInfo bjUser)

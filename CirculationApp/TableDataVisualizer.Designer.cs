@@ -52,6 +52,7 @@
             this.dgViewer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgViewer.Size = new System.Drawing.Size(1469, 486);
             this.dgViewer.TabIndex = 0;
+            this.dgViewer.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgViewer_ColumnHeaderMouseClick);
             // 
             // bOk
             // 

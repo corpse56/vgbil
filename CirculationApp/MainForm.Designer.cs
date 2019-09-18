@@ -109,10 +109,10 @@ namespace CirculationApp
             this.HallServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ActiveHallOrdersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FinishedHallOrdersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AllBooksInHallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.timerIssuedInHallCount = new System.Windows.Forms.Timer(this.components);
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.AllBooksInHallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainTabContainer.SuspendLayout();
             this.MainTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -991,6 +991,13 @@ namespace CirculationApp
             this.FinishedHallOrdersToolStripMenuItem.Text = "Завершённые заказы текущего зала";
             this.FinishedHallOrdersToolStripMenuItem.Click += new System.EventHandler(this.FinishedHallOrdersToolStripMenuItem_Click);
             // 
+            // AllBooksInHallToolStripMenuItem
+            // 
+            this.AllBooksInHallToolStripMenuItem.Name = "AllBooksInHallToolStripMenuItem";
+            this.AllBooksInHallToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+            this.AllBooksInHallToolStripMenuItem.Text = "Все книги текущего зала";
+            this.AllBooksInHallToolStripMenuItem.Click += new System.EventHandler(this.AllBooksInHallToolStripMenuItem_Click);
+            // 
             // pbLogo
             // 
             this.pbLogo.Image = global::CirculationApp.Properties.Resources.Artboard2;
@@ -1014,14 +1021,6 @@ namespace CirculationApp
             this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
-            // 
-            // AllBooksInHallToolStripMenuItem
-            // 
-            this.AllBooksInHallToolStripMenuItem.Name = "AllBooksInHallToolStripMenuItem";
-            this.AllBooksInHallToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
-            this.AllBooksInHallToolStripMenuItem.Text = "Все книги текущего зала";
-            this.AllBooksInHallToolStripMenuItem.Visible = false;
-            this.AllBooksInHallToolStripMenuItem.Click += new System.EventHandler(this.AllBooksInHallToolStripMenuItem_Click);
             // 
             // MainForm
             // 

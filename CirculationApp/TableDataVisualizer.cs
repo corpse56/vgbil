@@ -26,7 +26,8 @@ namespace CirculationApp
         private BJUserInfo bjUser_;
         private List<OrderInfo> orders_;
         private List<BookBase> books_;
-
+        private List<BookExemplarBase> exemplars_;
+        private ReferenceType rt_;
 
         public TableDataVisualizer()
         {
@@ -36,7 +37,8 @@ namespace CirculationApp
         public TableDataVisualizer(fDatePeriod dp, BJUserInfo bjUser, ReferenceType rt )
         {
             this.dp_ = dp;
-            bjUser_ = bjUser;
+            this.bjUser_ = bjUser;
+            this.rt_ = rt;
             InitializeComponent();
 
             switch (rt)
@@ -45,20 +47,73 @@ namespace CirculationApp
                     HallService();
                     break;
                 case ReferenceType.ActiveHallOrders:
-                    orders_ = csm_.GetActiveHallOrders(bjUser_);
+                    orders_ = csm_.GetActiveHallOrders(bjUser);
                     FillStatuses();
                     ShowOrders(CirculationStatuses.IssuedInHall.Value);
                     break;
                 case ReferenceType.FinishedHallOrders:
-                    orders_ = csm_.GetFinishedHallOrders(bjUser_);
+                    orders_ = csm_.GetFinishedHallOrders(bjUser);
                     ShowOrders(CirculationStatuses.Finished.Value);
                     break;
                 case ReferenceType.AllBooksInHall:
-                    books_ = csm_.GetAllBooksInHall(bjUser_);
+                    exemplars_ = csm_.GetAllBooksInHall(bjUser);
+                    ShowBooks();
                     break;
             }
         }
 
+        private void ShowBooks()
+        {
+            this.Text = "Все книги текущего зала.";
+            KeyValuePair<string, string>[] columns =
+            {
+                new KeyValuePair<string, string> ( "NN", "№№"),
+                new KeyValuePair<string, string> ( "author", "Автор"),
+                new KeyValuePair<string, string> ( "title", "Заглавие"),
+                new KeyValuePair<string, string> ( "inventoryNumber", "Инвентарный номер"),
+                new KeyValuePair<string, string> ( "bar", "Штрихкод"),
+                new KeyValuePair<string, string> ( "rack", "Полка"),
+                new KeyValuePair<string, string> ( "db", "Фонд БД"),
+            };
+            dgViewer.Columns.Clear();
+            foreach (var c in columns)
+                dgViewer.Columns.Add(c.Key, c.Value);
+            dgViewer.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgViewer.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dgViewer.Columns["NN"].Width = 80;
+            dgViewer.Columns["author"].Width = 250;
+            dgViewer.Columns["title"].Width = 400;
+            dgViewer.Columns["inventoryNumber"].Width = 130;
+            dgViewer.Columns["bar"].Width = 130;
+            dgViewer.Columns["rack"].Width = 200;
+            dgViewer.Columns["db"].Width = 50;
+
+            int i = 1;
+            foreach (BookExemplarBase exemplar in exemplars_)
+            {
+                dgViewer.Rows.Add();
+                var row = dgViewer.Rows[dgViewer.Rows.Count - 1];
+
+
+                if (exemplar is BJExemplarInfo)
+                {
+                    BJExemplarInfo bjExemplar = (BJExemplarInfo)exemplar;
+                    BJBookInfo bjBook = (BJBookInfo)BookFactory.CreateBook(bjExemplar.IDMAIN, bjExemplar.Fund);
+                    row.Cells["author"].Value = i++;
+                    row.Cells["author"].Value = bjBook.Fields["700$a"].ToString();
+                    row.Cells["title"].Value = bjBook.Fields["200$a"].ToString();
+                    row.Cells["inventoryNumber"].Value = bjExemplar.Fields["899$p"].ToString();
+                    row.Cells["bar"].Value = bjExemplar.Fields["899$w"].ToString();
+                    row.Cells["rack"].Value = bjExemplar.Fields["899$c"].ToString();
+                    row.Cells["db"].Value = bjExemplar.Fund;
+
+
+                }
+
+
+            }
+            autoNumber();
+        }
 
         private void FillStatuses()
         {
@@ -248,6 +303,23 @@ namespace CirculationApp
         private void bOk_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void dgViewer_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (this.rt_ == ReferenceType.AllBooksInHall)
+            {
+                autoNumber();
+            }
+        }
+
+        private void autoNumber()
+        {
+            int i = 1;
+            foreach(DataGridViewRow row in dgViewer.Rows)
+            {
+                row.Cells["NN"].Value = i++;
+            }
         }
     }
 }

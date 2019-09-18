@@ -135,10 +135,12 @@
     <Compile Include="Books\BJBooks\Loaders\BJBookLoader.cs" />
     <Compile Include="Books\BJBooks\Loaders\BJExemplarLoader.cs" />
     <Compile Include="Books\BookBase.cs" />
-    <Compile Include="Books\BJBooks\BJExemplars\BookExemplarBase.cs" />
+    <Compile Include="Books\BookExemplarBase.cs" />
+    <Compile Include="Books\BookFactory.cs" />
     <Compile Include="Books\BookJsonConverter.cs" />
     <Compile Include="Books\BookJSONViewers\BookJSONFullViewer.cs" />
     <Compile Include="Books\BookJSONViewers\BookJSONShortViewer.cs" />
+    <Compile Include="Books\ExemplarFactory.cs" />
     <Compile Include="CirculationACC\Classes\BJRecord.cs" />
     <Compile Include="CirculationACC\Classes\BookVO.cs" />
     <Compile Include="CirculationACC\Classes\DataGridViewDisableButtonCell.cs" />

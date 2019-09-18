@@ -1383,8 +1383,12 @@ namespace CirculationApp
 
         private void AllBooksInHallToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TableDataVisualizer tbv = new TableDataVisualizer(null, bjUser, ReferenceType.AllBooksInHall);
-            tbv.ShowDialog();
+            DialogResult dr = MessageBox.Show("Операция может занять до 15 минут. Нажмите Да для продолжения, Нет - для отмены", "Внимание!", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                TableDataVisualizer tbv = new TableDataVisualizer(null, bjUser, ReferenceType.AllBooksInHall);
+                tbv.ShowDialog();
+            }
 
         }
     }
