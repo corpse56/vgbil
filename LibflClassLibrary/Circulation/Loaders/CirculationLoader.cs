@@ -43,6 +43,11 @@ namespace LibflClassLibrary.Circulation.Loaders
             return basket;
         }
 
+        internal DateTime? GetLastEmailDate(ReaderInfo reader)
+        {
+            DataTable table = dbWrapper.GetLastEmailDate(reader.NumberReader);
+            return (table.Rows.Count == 0) ? null : (DateTime?)table.Rows[0][0];
+        }
 
         internal bool IsExemplarIssued(BookExemplarBase exemplar)
         {
@@ -149,6 +154,12 @@ namespace LibflClassLibrary.Circulation.Loaders
                 Orders.Add(order);
             }
             return Orders;
+        }
+
+        internal void InsertSentEmailAction(ReaderInfo reader, BJUserInfo bjUser)
+        {
+            dbWrapper.InsertAdditionalAction(reader.NumberReader, CirculationAdditionalActions.EmailSent.Value, -1, bjUser.Id);
+
         }
 
         internal int GetAttendance(BJUserInfo bjUser)
@@ -465,6 +476,12 @@ namespace LibflClassLibrary.Circulation.Loaders
                 Orders.Add(order);
             }
             return Orders;
+        }
+
+        internal OrderInfo GetLastOrder(int idData, string fund)
+        {
+            DataTable table = dbWrapper.GetLastOrder(idData, fund);
+            return (table.Rows.Count == 0) ? null : FillOrderFromDataRow(table.Rows[0]);
         }
     }
 }

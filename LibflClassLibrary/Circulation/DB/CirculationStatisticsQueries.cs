@@ -123,6 +123,19 @@ namespace LibflClassLibrary.Circulation.DB
 
             }
         }
+        public string GET_DEBTORS_IN_HALL
+        {
+            get
+            {
+                return " select A.*, B.Refusual from Circulation..Orders A " +
+                       " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @statusRefusual" +
+                       " where (IssuingDepId = @unifiedLocationCode and  ReturnDepId is null or ReturnDepId = @unifiedLocationCode) " +
+                       " and A.StatusName not in ('Завершено','Самостоятельный заказ','Электронная выдача', 'Для возврата в хранение') " + 
+                       " and cast(cast(ReturnDate as varchar(11)) as datetime) < cast(cast(getDate() as varchar(11)) as datetime)" +
+                       " order by ID";
+
+            }
+        }
         public string GET_FINISHED_HALL_ORDERS
         {
             get
@@ -204,6 +217,38 @@ namespace LibflClassLibrary.Circulation.DB
                        " where cast(cast(A.Changed as varchar(11)) as datetime) between cast(cast(@startDate as varchar(11)) as datetime) and cast(cast(@endDate as varchar(11)) as datetime) " +
                        " and DepartmentId = @unifiedLocationCode " +
                        " and A.StatusName in ('" + CirculationStatuses.IssuedAtHome.Value + "', '" + CirculationStatuses.IssuedInHall.Value + "') ";
+            }
+        }
+
+        public string REGISTERED_READERS_ALL_COUNT
+        {
+            get
+            {
+                return " select 1 from Readers..Main where cast(cast(DateRegistration as varchar(11)) as datetime) between @startDate and @endDate ";
+            }
+        }
+
+        public string REGISTERED_READERS_REMOTE_COUNT
+        {
+            get
+            {
+                return " select 1 from Readers..Main where cast(cast(DateRegistration as varchar(11)) as datetime) between @startDate and @endDate and TypeReader = 1 ";
+            }
+        }
+
+        public string LITRES_ACCOUNT_ASSIGNED_COUNT
+        {
+            get
+            {
+                return " select 1 from LITRES..ACCOUNTS where cast(cast(ASSIGNED as varchar(11)) as datetime) between @startDate and @endDate";
+            }
+        }
+
+        public string GET_ORDERS_COUNT_BY_SUBJECT
+        {
+            get
+            {
+                return " select 1 from LITRES..ACCOUNTS where cast(cast(ASSIGNED as varchar(11)) as datetime) between @startDate and @endDate";
             }
         }
 

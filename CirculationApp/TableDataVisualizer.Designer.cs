@@ -33,6 +33,8 @@
             this.cbStatuses = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.bSaveToFile = new System.Windows.Forms.Button();
+            this.bSendEmail = new System.Windows.Forms.Button();
+            this.lInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgViewer)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,20 +46,21 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgViewer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgViewer.Location = new System.Drawing.Point(16, 15);
+            this.dgViewer.Location = new System.Drawing.Point(16, 29);
             this.dgViewer.Margin = new System.Windows.Forms.Padding(4);
             this.dgViewer.MultiSelect = false;
             this.dgViewer.Name = "dgViewer";
             this.dgViewer.RowHeadersVisible = false;
             this.dgViewer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgViewer.Size = new System.Drawing.Size(1469, 486);
+            this.dgViewer.Size = new System.Drawing.Size(1469, 537);
             this.dgViewer.TabIndex = 0;
             this.dgViewer.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgViewer_ColumnHeaderMouseClick);
+            this.dgViewer.SelectionChanged += new System.EventHandler(this.dgViewer_SelectionChanged);
             // 
             // bOk
             // 
             this.bOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bOk.Location = new System.Drawing.Point(1385, 509);
+            this.bOk.Location = new System.Drawing.Point(1385, 574);
             this.bOk.Margin = new System.Windows.Forms.Padding(4);
             this.bOk.Name = "bOk";
             this.bOk.Size = new System.Drawing.Size(100, 28);
@@ -68,9 +71,10 @@
             // 
             // cbStatuses
             // 
+            this.cbStatuses.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbStatuses.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatuses.FormattingEnabled = true;
-            this.cbStatuses.Location = new System.Drawing.Point(199, 509);
+            this.cbStatuses.Location = new System.Drawing.Point(202, 577);
             this.cbStatuses.Name = "cbStatuses";
             this.cbStatuses.Size = new System.Drawing.Size(467, 24);
             this.cbStatuses.TabIndex = 2;
@@ -79,8 +83,9 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 509);
+            this.label1.Location = new System.Drawing.Point(19, 577);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(177, 16);
             this.label1.TabIndex = 3;
@@ -90,7 +95,7 @@
             // bSaveToFile
             // 
             this.bSaveToFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bSaveToFile.Location = new System.Drawing.Point(1229, 509);
+            this.bSaveToFile.Location = new System.Drawing.Point(1229, 574);
             this.bSaveToFile.Name = "bSaveToFile";
             this.bSaveToFile.Size = new System.Drawing.Size(149, 29);
             this.bSaveToFile.TabIndex = 4;
@@ -98,11 +103,33 @@
             this.bSaveToFile.UseVisualStyleBackColor = true;
             this.bSaveToFile.Click += new System.EventHandler(this.bSaveToFile_Click);
             // 
+            // bSendEmail
+            // 
+            this.bSendEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bSendEmail.Location = new System.Drawing.Point(941, 574);
+            this.bSendEmail.Name = "bSendEmail";
+            this.bSendEmail.Size = new System.Drawing.Size(282, 29);
+            this.bSendEmail.TabIndex = 5;
+            this.bSendEmail.Text = "Отправить Email с задолженностями";
+            this.bSendEmail.UseVisualStyleBackColor = true;
+            this.bSendEmail.Visible = false;
+            this.bSendEmail.Click += new System.EventHandler(this.bSendEmail_Click);
+            // 
+            // lInfo
+            // 
+            this.lInfo.AutoSize = true;
+            this.lInfo.Location = new System.Drawing.Point(19, 9);
+            this.lInfo.Name = "lInfo";
+            this.lInfo.Size = new System.Drawing.Size(0, 16);
+            this.lInfo.TabIndex = 6;
+            // 
             // TableDataVisualizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1501, 550);
+            this.ClientSize = new System.Drawing.Size(1501, 615);
+            this.Controls.Add(this.lInfo);
+            this.Controls.Add(this.bSendEmail);
             this.Controls.Add(this.bSaveToFile);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbStatuses);
@@ -125,5 +152,7 @@
         private System.Windows.Forms.ComboBox cbStatuses;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button bSaveToFile;
+        private System.Windows.Forms.Button bSendEmail;
+        private System.Windows.Forms.Label lInfo;
     }
 }

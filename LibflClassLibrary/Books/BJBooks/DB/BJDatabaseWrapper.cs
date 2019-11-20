@@ -84,6 +84,18 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         }
 
+        internal DataTable GetAuthor(int idMain)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_AUTHOR, connection);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("IDMAIN", SqlDbType.Int).Value = idMain;
+                dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal DataTable GetIncrementDeleted()
         {
             DataSet ds = new DataSet();

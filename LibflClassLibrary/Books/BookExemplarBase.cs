@@ -9,6 +9,10 @@ namespace LibflClassLibrary.Books
     {
         public string Id { get; set; }
 
+        public virtual string Author() { return string.Empty; }
+        public virtual string Title() { return string.Empty; }
+
+
 
     }
 }

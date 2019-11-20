@@ -57,7 +57,8 @@ namespace ALISAPI.Controllers
             LitresInfo result;
             try
             {
-                result = accManager.AssignLitresAccount(ReaderId);
+                //result = accManager.AssignLitresAccount(ReaderId);
+                result = accManager.GenerateNewLitresAccountAndAssignToReader(ReaderId);
             }
             catch (Exception ex)
             {

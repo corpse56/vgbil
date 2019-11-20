@@ -38,6 +38,11 @@ namespace LibflClassLibrary.Circulation
             return result;
         }
 
+        public DateTime? GetLastEmailDate(ReaderInfo reader)
+        {
+            return loader.GetLastEmailDate(reader);
+        }
+
         private List<int> GetAcceptableOrderTypesForReader(string bookId, int readerId)
         {
             List<int> result = new List<int>();
@@ -45,18 +50,29 @@ namespace LibflClassLibrary.Circulation
             ReaderInfo reader = ReaderInfo.GetReader(readerId);
             foreach (BJExemplarInfo exemplar in book.Exemplars)
             {
-                if (exemplar.Fields["929$b"].MNFIELD != 0)//списано
+                if (exemplar.Fields["929$b"].HasValue)//списано
                 {
-                    continue;
+                    if (exemplar.Fields["921$c"].ToLower() == "списано")
+                    {
+                        continue;
+                    }
                 }
                 int AcceptableOrderType = this.GetExemplarAcceptableOrderType(exemplar);
                 if (AcceptableOrderType == 0)
                 {
                     continue;
                 }
+
                 if (!result.Contains(AcceptableOrderType))
                 {
                     result.Add(AcceptableOrderType);
+                }
+            }
+            if (book.IsExistsDigitalCopy && result.Count == 0)
+            {
+                if (!result.Contains(OrderTypes.ElectronicVersion.Id))
+                {
+                    result.Add(OrderTypes.ElectronicVersion.Id);
                 }
             }
             if (null != reader.Rights.RightsList.FirstOrDefault(x => x.ReaderRightValue == ReaderRightsEnum.Employee))
@@ -106,6 +122,11 @@ namespace LibflClassLibrary.Circulation
             //{ 1017,   "Проследовать в Зал выдачи документов 2 этаж. Возможность доступа уточните у сотрудника."},
             //{ 1020,   "Экстремистская литература.Не попадает в индекс.Обрабатывать не нужно."},
             //{ 1999,   "Невозможно определить доступ"},
+        }
+
+        public void InsertSentEmailAction(ReaderInfo reader, BJUserInfo bjUser)
+        {
+            loader.InsertSentEmailAction(reader, bjUser);
         }
 
         public List<OrderInfo> GetOrders(int idData, string fund)
@@ -175,7 +196,8 @@ namespace LibflClassLibrary.Circulation
             {
                 if (exemplar.Fields["921$c"].ToString() == "ДП")
                 {
-                    if (exemplar.Fields["899$a"].ToString() != bjUser.SelectedUserStatus.DepName)
+                    if ((exemplar.Fields["899$a"].ToString() != bjUser.SelectedUserStatus.DepName) &&
+                        !(bjUser.Login.ToLower().In("station1","station2") ))
                     {
                         throw new Exception("C022");
                     }
@@ -221,8 +243,62 @@ namespace LibflClassLibrary.Circulation
         }
 
         public enum IssueType { AtHome, InHall }
-        private IssueType GetIssueType(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
+
+        public IssueType GetIssueType(BJExemplarInfo scannedExemplar)
         {
+            if (scannedExemplar.Fields["899$a"].ToString().ToLower().Contains("выст"))
+            {
+                return IssueType.InHall;
+            }
+            switch (scannedExemplar.ExemplarAccess.Access)
+            {
+                case 1000: //1000    14  4001 Взять на дом
+                    return IssueType.AtHome;
+                case 1001: //1001    1   4002 Удалённый доступ
+                    return IssueType.InHall;
+                case 1002://1002    2   4002 Удалённый доступ
+                    return IssueType.InHall;
+                case 1003://1003    8   4000 В помещении бибилотеки
+                    return IssueType.InHall;
+                case 1004://1004    3   4002 Удалённый доступ
+                    return IssueType.InHall;
+                case 1005://1005    6   4000 В помещении бибилотеки
+                    return IssueType.InHall;
+                case 1006://1006    7   4001 Взять на дом
+                    return IssueType.AtHome;
+                case 1007://1007    9   4000 В помещении бибилотеки
+                    return IssueType.InHall;
+                case 1008://1008    4   4002 Удалённый доступ
+                    return IssueType.InHall;
+                case 1009://1009    5   4003 Печать по требованию
+                    return IssueType.InHall;
+                case 1010://1010    11  4005 Уточнить доступ
+                    return IssueType.InHall;
+                case 1011://1011    10  4000 В помещении бибилотеки
+                    return IssueType.InHall;
+                case 1012://1012    6   4000 В помещении бибилотеки
+                    return IssueType.InHall;
+                case 1013://1013    12  4005 Уточнить доступ
+                    return IssueType.InHall;
+                case 1014://1014    9   4000 В помещении бибилотеки
+                    return IssueType.InHall;
+                case 1016://1016    99  4005 Уточнить доступ
+                    return IssueType.InHall;
+                case 1017://1017    99  4005 Уточнить доступ
+                    return IssueType.InHall;
+                case 1020://1020    99  4005 Уточнить доступ
+                    return IssueType.InHall;
+                case 1999://1999    99  4005 Уточнить доступ
+                    return IssueType.InHall;
+
+            }
+            return IssueType.InHall;
+
+        }
+        public IssueType GetIssueType(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
+        {
+            IssueType result = GetIssueType(scannedExemplar);
+
             if (scannedExemplar.Fields["899$a"].ToString().ToLower().Contains("выст"))
             {
                 return IssueType.InHall;
@@ -231,6 +307,7 @@ namespace LibflClassLibrary.Circulation
             {
                 return IssueType.InHall;
             }
+
             if (scannedReader.Rights[ReaderRightsEnum.Employee] != null)
             {
                 if (scannedExemplar.Fields["921$c"].ToString() == "ДП")
@@ -398,6 +475,11 @@ namespace LibflClassLibrary.Circulation
             //    case 1999://Уточнить доступ    Проследовать в { { location_2007} }. Возможность доступа уточните у сотрудника.
             //        break;
             //}
+        }
+
+        public OrderInfo GetLastOrder(int idData, string fund)
+        {
+            return loader.GetLastOrder(idData, fund);
         }
 
         public List<OrderFlowInfo> GetOrdersFlow(int unifiedLocationCode)
@@ -574,7 +656,7 @@ namespace LibflClassLibrary.Circulation
                         //приоритет для книг, которые в хранении, чтобы их принесли на кафедру для читателя
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
-                            if (e.Fields["899$a"].MNFIELD == 0) continue;
+                            if (!e.Fields["899$a"].HasValue) continue;
                             if (e.ExemplarAccess.Access == 1000)
                             {
                                 if (!this.IsExemplarIssued(e))
@@ -592,7 +674,7 @@ namespace LibflClassLibrary.Circulation
                         //если свободных книг в хранении не осталось, то ищем те, которые в отрытом доступе. это будет самостоятельный заказ
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
-                            if (e.Fields["899$a"].MNFIELD == 0) continue;
+                            if (!e.Fields["899$a"].HasValue) continue;
                             if ((e.ExemplarAccess.Access == 1006))
                             {
                                 if (!this.IsExemplarIssued(e))
@@ -616,7 +698,7 @@ namespace LibflClassLibrary.Circulation
                         //тут опять приоритет у тех, которые надо заказать из книгохранения перед самостоятельным заказом
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
-                            if (e.Fields["899$a"].MNFIELD == 0) continue;
+                            if (!e.Fields["899$a"].HasValue) continue;
                             if ((e.ExemplarAccess.Access == 1005) || (e.ExemplarAccess.Access == 1012))
                             {
                                 if (!this.IsExemplarIssued(e))
@@ -634,7 +716,7 @@ namespace LibflClassLibrary.Circulation
                         //если свободных книг в хранении не осталось, то ищем те, которые в отрытом доступе. это будет самостоятельный заказ
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
-                            if (e.Fields["899$a"].MNFIELD == 0) continue;
+                            if (!e.Fields["899$a"].HasValue) continue;
                             if ((e.ExemplarAccess.Access == 1007) || (e.ExemplarAccess.Access == 1014))
                             {
                                 if (!this.IsExemplarIssued(e))

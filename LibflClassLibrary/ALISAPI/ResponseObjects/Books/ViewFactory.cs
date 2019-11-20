@@ -185,7 +185,13 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             ExemplarSimpleView ExemplarView = new ExemplarSimpleView();
             try
             {
-                if (exemplar.Fields["929$b"].MNFIELD != 0) return null;
+                if (exemplar.Fields["929$b"].HasValue)
+                {
+                    if (exemplar.Fields["921$c"].ToLower() == "списано")
+                    {
+                        return null;
+                    }
+                }
                 ExemplarView.Barcode = exemplar.Fields["899$w"].ToString();
                 ExemplarView.Carrier = exemplar.Fields["921$a"].ToString();
                 //ExemplarView.CarrierCode = KeyValueMapping.CarrierNameToCode[ExemplarView.Carrier];

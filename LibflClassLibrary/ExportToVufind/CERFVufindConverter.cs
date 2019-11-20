@@ -8,6 +8,7 @@ using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 using System.Text;
 using Newtonsoft.Json;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace LibflClassLibrary.ExportToVufind
 {
@@ -208,6 +209,16 @@ namespace LibflClassLibrary.ExportToVufind
             }
             vfWriter.FinishWriting();
 
+        }
+
+        public override void Export(List<string> idSet, string exportFilename)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override List<VufindDoc> Export(List<string> idSet)
+        {
+            throw new NotImplementedException();
         }
 
         public override void ExportCovers()

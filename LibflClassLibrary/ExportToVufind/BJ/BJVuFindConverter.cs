@@ -60,7 +60,9 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 try
                 {
                     vfDoc = CreateVufindDocument( i );
-                    if (vfDoc == null) continue;//одна из причин - все экземпляры списаны и нет электронного экземпляра
+                    //одна из причин - все экземпляры списаны и нет электронного экземпляра
+                    //вторая причина - по ошибке в ошибки попадает серия, так как нет местонахождения
+                    if (vfDoc == null) continue;
                 }
                 catch (Exception ex)
                 {
@@ -78,6 +80,34 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             File.WriteAllLines(@"e:\import\importErrors\" + this.Fund + "Errors.txt", errors.ToArray());
 
         }
+        public override void Export(List<string> idSet, string exportFilename)
+        {
+            writer = new VufindXMLWriter(this.Fund);
+            writer.StartVufindXML(@exportFilename);
+
+            VufindDoc vfDoc = new VufindDoc();
+            foreach(string id in idSet)
+            {
+                int intId = int.Parse(id.Substring(Fund.Length + 1));
+                vfDoc = CreateVufindDocument(intId);
+                writer.AppendVufindDoc(vfDoc);
+            }
+            writer.FinishWriting();
+        }
+        public override List<VufindDoc> Export(List<string> idSet)
+        {
+            List<VufindDoc> result = new List<VufindDoc>();
+            VufindDoc vfDoc = new VufindDoc();
+            foreach (string id in idSet)
+            {
+                int intId = int.Parse(id.Substring(Fund.Length + 1));
+                vfDoc = CreateVufindDocument(intId);
+                result.Add(vfDoc);
+            }
+            return result;
+        }
+
+
         public override void ExportSingleRecord( int idmain )
         {
             VufindXMLWriter writer = new VufindXMLWriter(this.Fund);
@@ -949,5 +979,6 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             string TPR = BJLoader.Clarify_606a(IDChain);
             return TPR;
         }
+
     }
 }

@@ -357,6 +357,8 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             get
             {
                 return "  select distinct IDMAIN from (" +
+                        " select ID IDMAIN from "+ this.Fund + "..MAIN where DateChange >= (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" + 
+                        " union all" +
                         " select IDMAIN from " + this.Fund + "..DATAEXT " +
                         "  where Changed >=  (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
                         //"     or Created >=  (select LastIncrement from EXPORTNEB..VufindIncrementUpdate where BaseName = '" + this.Fund + "')" +
@@ -415,7 +417,8 @@ namespace LibflClassLibrary.Books.BJBooks.DB
         {
             get
             {
-                return "select 1 from " + this.Fund + "..DATAEXT where MNFIELD = 940 and MSFIELD = '$a' and IDMAIN = @IDMAIN";
+                return "select 1 from BookAddInf..ScanInfo where IDBook = @IDMAIN and IDBase = " + ((this.Fund == "BJVVV") ? "1" : "2");
+                //return "select 1 from " + this.Fund + "..DATAEXT where MNFIELD = 940 and MSFIELD = '$a' and IDMAIN = @IDMAIN";
             }
         }
 
@@ -467,6 +470,17 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                 return " select A.LOGIN from BJVVV..USERS A where ID = @id";
             }
         }
+
+        public string GET_AUTHOR
+        {
+            get
+            {
+                return  " select B.PLAIN from " + this.Fund + "..DATAEXT A" +
+                        " left join " + this.Fund + "..DATAEXTPLAIN B on A.ID = B.IDDATAEXT " +
+                        " where A.IDMAIN = @IDMAIN and A.MNFIELD = 700 and A.MSFIELD = '$a' ";
+            }
+        }
+
 
     }
 

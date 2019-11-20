@@ -20,6 +20,17 @@ namespace LibflClassLibrary.Readers.ReadersRight
             }
         }
 
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder();
+            foreach (var right in RightsList)
+            {
+                if (right.ReaderRightValue == ReaderRightsEnum.ReadingRoomUser) continue;
+                result.Append($"{right.ToString()} до {right.DateEndReaderRight.ToString("dd.MM.yyyy")}; ");
+            }
+            return result.ToString();
+        }
+
         private ReaderRight FindRight(ReaderRightsEnum right)
         {
             ReaderRight result = null;

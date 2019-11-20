@@ -12,62 +12,62 @@ using Itenso.Rtf.Converter.Html;
 using Itenso.Rtf.Support;
 using Itenso.Rtf;
 using CirculationACC;
+using LibflClassLibrary.Readers;
+using LibflClassLibrary.Circulation;
+using LibflClassLibrary.Books.BJBooks;
+using LibflClassLibrary.BJUsers;
+using Utilities;
 
 namespace CirculationApp
 {
     public partial class EmailSending : Form
     {
-        MainForm f1;
-        ReaderVO reader;
+        ReaderInfo reader;
         List<int> bold;
-        string mailtext;
-        public bool canshow = false;
         string rn = System.Environment.NewLine;
         string Email = "";
         string htmltext;
-        int IDISSUED_ACC;
-        public EmailSending(MainForm f1_, ReaderVO reader_)
+        BJUserInfo bjUser;
+        public EmailSending(ReaderInfo reader_, BJUserInfo bjUser_)
         {
             InitializeComponent();
-            f1 = f1_;
             reader = reader_;
+            bjUser = bjUser_;
             label1.Text = reader.FIO;
             int rownum = 0;
             bold = new List<int>();
-            //IDISSUED_ACC = IDISS;
-            label2.Text = "Дата последней отправки письма: " + reader.GetLastDateEmail();
-
-
-
-            Email = reader.GetEmail();
-            //WorkEmail = reader.GetWorkEmail();
-            //RegEmail = reader.GetRegEmail();
-            //LiveEmail = "debarkader@gmail.com";
-            //WorkEmail = "debarkader@gmail.com";
-
-            if (Email == "")
+            CirculationInfo ci = new CirculationInfo();
+            DateTime? lastEmailDate = ci.GetLastEmailDate(reader);
+            label2.Text = "Дата последней отправки письма: " + 
+                          ((lastEmailDate == null) ? "Email не отправлялся" : lastEmailDate.Value.ToString("dd.MM.yyyy"));
+            Email = reader.Email;
+            if (string.IsNullOrWhiteSpace(Email))
             {
                 MessageBox.Show("Email не существует или имеет неверный формат!");
-                this.Close();
-                return;
+                this.Load += (s, e) =>  this.Close();
             }
-            this.canshow = true;
-            richTextBox1.Text = "Уважаемый(ая) " + reader.Name + " " + reader.Father + "!" + rn +
+            richTextBox1.Text = "Уважаемый(ая) " + reader.Name + " " + reader.FatherName + "!" + rn +
                 "Вы задерживаете книги:" + rn + rn;
-            foreach (DataGridViewRow r in f1.dgvFormular.Rows)
+            List<OrderInfo> orders = ci.GetOrders(reader.NumberReader);
+            foreach (OrderInfo o in orders)
             {
-                if (r.DefaultCellStyle.BackColor == Color.Tomato)
+                if (!o.StatusCode.In(CirculationStatuses.IssuedInHall.Id,
+                                    CirculationStatuses.IssuedFromAnotherReserve.Id,
+                                    CirculationStatuses.IssuedAtHome.Id))
+                {
+                    continue;
+                }
+                if (o.ReturnDate < DateTime.Today)
                 {
                     rownum++;
-                    string zag = r.Cells["tit"].Value.ToString();
-                    if (zag.Length > 21)
-                        zag.Remove(20);
-                    TimeSpan ts = DateTime.Now.AddDays(1) - (DateTime)r.Cells["ret"].Value;
-                    richTextBox1.Text += rownum.ToString() + ". " + r.Cells["avt"].Value.ToString() +
-                        ", " + zag +
-                        ", выдано: " + ((DateTime)r.Cells["iss"].Value).ToString("dd.MM.yyyy") +
-                        ", дата возврата: ";
-                    richTextBox1.Text += ((DateTime)r.Cells["ret"].Value).ToString("dd.MM.yyyy");
+                    BJBookInfo book = BJBookInfo.GetBookInfoByPIN(o.BookId);
+                    string zag = book.AuthorTitle(); 
+                    if (zag.Length > 51)
+                        zag.Remove(50);
+                    TimeSpan ts = DateTime.Now.AddDays(1) - o.ReturnDate;
+                    richTextBox1.Text += rownum.ToString() + ". " + zag +
+                        ", выдано: " + ((o.IssueDate.HasValue) ? o.IssueDate.Value.ToString("dd.MM.yyyy") : "не выдавалось") +
+                        ", дата возврата: " + o.ReturnDate.ToString("dd.MM.yyyy");
                     bold.Add(richTextBox1.TextLength - 10);
                     richTextBox1.Text += ". Задержано на " + ts.Days.ToString() + " дней." + rn;
                 }
@@ -75,14 +75,13 @@ namespace CirculationApp
             if (rownum == 0)
             {
                 MessageBox.Show("За читателем нет задоженностей!");
-                this.canshow = false;
-                this.Close();
+                this.Load += (s, e) => this.Close();
                 return;
             }
-            richTextBox1.Text += rn + "Просим Вас в ближайшее время вернуть литературу в Центр Американской Культуры Библиотеки иностранной литературы." + rn +
+            richTextBox1.Text += rn + "Просим Вас в ближайшее время вернуть литературу." + rn +
                 "С уважением, " + rn +
-                "Центр Американской Культуры ВГБИЛ," + rn +
-                "тел. +7 (495) " + rn +
+                "Библиотека Иностранной Литературы," + rn +
+                "тел. +7 (495) 915-36-41" + rn +
                 "пн-пт - с 11:00 до 20:45." + rn +
                 "субб - с 11:00 до 18:45";
 
@@ -94,6 +93,8 @@ namespace CirculationApp
             htmltext = EmailSending.ConvertRtfToHtml(richTextBox1.Rtf);
 
         }
+
+
         private static string ConvertRtfToHtml(string rtfText)
         {
             IRtfDocument rtfDocument = RtfInterpreterTool.BuildDoc(rtfText);
@@ -114,14 +115,15 @@ namespace CirculationApp
 
             client.Credentials = new NetworkCredential("no-reply@libfl.ru", "noreplayLIBFL");
             //client.Credentials = new NetworkCredential("lingua_automail@libfl.ru", "automail");
-            MailAddress from = new MailAddress("noreply@libfl.ru", "Библиотека Иностранной Литературы - Зал абонементного обслуживания", Encoding.UTF8);
+            MailAddress from = new MailAddress("noreply@libfl.ru", "Библиотека Иностранной Литературы", Encoding.UTF8);
             MailAddress to;
             MailMessage message = new MailMessage();
             message.From = from;
             message.IsBodyHtml = true;
             if (Email != "")
             {
-                to = new MailAddress(Email);
+                to = new MailAddress("debarkader@gmail.com");
+                //to = new MailAddress(Email);
                 message.To.Add(to);
             }
 
@@ -142,8 +144,8 @@ namespace CirculationApp
             }
             message.Dispose();
             MessageBox.Show("Отправлено успешно!");
-            DBGeneral dbg = new DBGeneral();
-            dbg.InsertSendEmailAction(1,reader.ID);
+            CirculationInfo ci = new CirculationInfo();
+            ci.InsertSentEmailAction(reader,bjUser);
             Close();
         }
 

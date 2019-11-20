@@ -70,5 +70,22 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             DataTable table = dbWrapper.IsExistsDigitalCopy(BookId);
             return (table.Rows.Count == 0)? false : true;
         }
+
+        internal string GetAuthor(int idMain)
+        {
+            DataTable table = dbWrapper.GetAuthor(idMain);
+            string result = string.Empty;
+            foreach (DataRow row in table.Rows)
+            {
+                result += $"{row[0].ToString()};";
+            }
+            return (result.Length == 0)? result : result.Remove(result.Length - 1);
+        }
+        internal string GetTitle(int idMain)
+        {
+            DataTable table = dbWrapper.GetTitle(idMain);
+            string result = $"{table.Rows[0]["PLAIN"].ToString()}";
+            return result;
+        }
     }
 }

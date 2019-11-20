@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.Books.BJBooks.DB;
+using LibflClassLibrary.Books.BJBooks.Loaders;
 using LibflClassLibrary.ExportToVufind;
 using System;
 using System.Data;
@@ -97,6 +98,10 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                     continue;
                 }
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());//добавляем все поля блока 260 к объекту экземпляра
+                if ((int)row["MNFIELD"] == 929 && row["MSFIELD"].ToString() == "$b")
+                { 
+                    exemplar.Fields["929$b"].AFLINKID = (int)row["AFLINKID"];
+                }
             }
             try
             {
@@ -106,7 +111,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             {
                 throw ex;
             }
-            if (exemplar.Fields["482$a"].MNFIELD != 0)//это приплётышь
+            if (exemplar.Fields["482$a"].HasValue)//это приплётышь
             {
                 BJConvoluteInfo convolute = BJExemplarInfo.GetConvoluteInfo(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
                 //BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
@@ -360,10 +365,27 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         }
 
 
+        public override string Author()
+        {
+            BJExemplarLoader loader = new BJExemplarLoader(this.Fund);
+            return loader.GetAuthor(this.IDMAIN);
+        }
 
+        public override string Title()
+        {
+            BJExemplarLoader loader = new BJExemplarLoader(this.Fund);
+            return loader.GetTitle(this.IDMAIN);
+        }
 
+        //public string GetWriteoffReason()
+        //{
+        //    //BJExemplarLoader loader = new BJExemplarLoader(this.Fund);
+        //    //string result = this.Fields["929$b"].ToString();
+        //    ////loader.GetWriteoffreason(this.Fields["929$b"].);
+        //    //return "dsfsdfsdf";
+        //}
 
-#region эти методы надо выносить в другой класс. Они относятся к книговыдаче
+        #region эти методы надо выносить в другой класс. Они относятся к книговыдаче
         public bool IsIssuedOrOrderedEmployee()
         {
             switch (this.Fund)

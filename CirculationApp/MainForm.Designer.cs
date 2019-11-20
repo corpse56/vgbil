@@ -51,7 +51,6 @@ namespace CirculationApp
             this.dgvLog = new System.Windows.Forms.DataGridView();
             this.label4 = new System.Windows.Forms.Label();
             this.FormularTab = new System.Windows.Forms.TabPage();
-            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.bReaderRegistration = new System.Windows.Forms.Button();
             this.bComment = new System.Windows.Forms.Button();
             this.bRemoveResponsibility = new System.Windows.Forms.Button();
@@ -75,7 +74,6 @@ namespace CirculationApp
             this.DateIssue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
             this.pbFormular = new System.Windows.Forms.PictureBox();
             this.ReferenceTab = new System.Windows.Forms.TabPage();
             this.bSaveReferenceToFile = new System.Windows.Forms.Button();
@@ -110,9 +108,14 @@ namespace CirculationApp
             this.ActiveHallOrdersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FinishedHallOrdersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AllBooksInHallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DebtoListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ReaderRegistrationAndLitresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OrdersBySubjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.timerIssuedInHallCount = new System.Windows.Forms.Timer(this.components);
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
+            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
             this.MainTabContainer.SuspendLayout();
             this.MainTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -401,14 +404,6 @@ namespace CirculationApp
             this.FormularTab.Text = "Формуляр читателя";
             this.FormularTab.UseVisualStyleBackColor = true;
             // 
-            // readerRightsView1
-            // 
-            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
-            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
-            this.readerRightsView1.Name = "readerRightsView1";
-            this.readerRightsView1.Size = new System.Drawing.Size(536, 97);
-            this.readerRightsView1.TabIndex = 26;
-            // 
             // bReaderRegistration
             // 
             this.bReaderRegistration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -446,7 +441,6 @@ namespace CirculationApp
             // bFormularSendEmail
             // 
             this.bFormularSendEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bFormularSendEmail.Enabled = false;
             this.bFormularSendEmail.Location = new System.Drawing.Point(726, 41);
             this.bFormularSendEmail.Name = "bFormularSendEmail";
             this.bFormularSendEmail.Size = new System.Drawing.Size(174, 26);
@@ -649,15 +643,6 @@ namespace CirculationApp
             this.DateVozvFact.Name = "DateVozvFact";
             this.DateVozvFact.ReadOnly = true;
             this.DateVozvFact.Width = 80;
-            // 
-            // Penalt
-            // 
-            this.Penalt.HeaderText = "Нарушение";
-            this.Penalt.Name = "Penalt";
-            this.Penalt.ReadOnly = true;
-            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Penalt.Width = 85;
             // 
             // pbFormular
             // 
@@ -965,7 +950,10 @@ namespace CirculationApp
             this.HallServiceToolStripMenuItem,
             this.ActiveHallOrdersToolStripMenuItem,
             this.FinishedHallOrdersToolStripMenuItem,
-            this.AllBooksInHallToolStripMenuItem});
+            this.AllBooksInHallToolStripMenuItem,
+            this.DebtoListToolStripMenuItem,
+            this.ReaderRegistrationAndLitresToolStripMenuItem,
+            this.OrdersBySubjectToolStripMenuItem});
             this.справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
             this.справкаToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.справкаToolStripMenuItem.Text = "Справка";
@@ -973,30 +961,51 @@ namespace CirculationApp
             // HallServiceToolStripMenuItem
             // 
             this.HallServiceToolStripMenuItem.Name = "HallServiceToolStripMenuItem";
-            this.HallServiceToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+            this.HallServiceToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
             this.HallServiceToolStripMenuItem.Text = "Обслуживание в залах";
             this.HallServiceToolStripMenuItem.Click += new System.EventHandler(this.HallServiceToolStripMenuItem_Click);
             // 
             // ActiveHallOrdersToolStripMenuItem
             // 
             this.ActiveHallOrdersToolStripMenuItem.Name = "ActiveHallOrdersToolStripMenuItem";
-            this.ActiveHallOrdersToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+            this.ActiveHallOrdersToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
             this.ActiveHallOrdersToolStripMenuItem.Text = "Активные заказы текущего зала";
             this.ActiveHallOrdersToolStripMenuItem.Click += new System.EventHandler(this.ActiveHallOrdersToolStripMenuItem_Click);
             // 
             // FinishedHallOrdersToolStripMenuItem
             // 
             this.FinishedHallOrdersToolStripMenuItem.Name = "FinishedHallOrdersToolStripMenuItem";
-            this.FinishedHallOrdersToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+            this.FinishedHallOrdersToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
             this.FinishedHallOrdersToolStripMenuItem.Text = "Завершённые заказы текущего зала";
             this.FinishedHallOrdersToolStripMenuItem.Click += new System.EventHandler(this.FinishedHallOrdersToolStripMenuItem_Click);
             // 
             // AllBooksInHallToolStripMenuItem
             // 
             this.AllBooksInHallToolStripMenuItem.Name = "AllBooksInHallToolStripMenuItem";
-            this.AllBooksInHallToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+            this.AllBooksInHallToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
             this.AllBooksInHallToolStripMenuItem.Text = "Все книги текущего зала";
             this.AllBooksInHallToolStripMenuItem.Click += new System.EventHandler(this.AllBooksInHallToolStripMenuItem_Click);
+            // 
+            // DebtoListToolStripMenuItem
+            // 
+            this.DebtoListToolStripMenuItem.Name = "DebtoListToolStripMenuItem";
+            this.DebtoListToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
+            this.DebtoListToolStripMenuItem.Text = "Список должников";
+            this.DebtoListToolStripMenuItem.Click += new System.EventHandler(this.DebtoListToolStripMenuItem_Click);
+            // 
+            // ReaderRegistrationAndLitresToolStripMenuItem
+            // 
+            this.ReaderRegistrationAndLitresToolStripMenuItem.Name = "ReaderRegistrationAndLitresToolStripMenuItem";
+            this.ReaderRegistrationAndLitresToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
+            this.ReaderRegistrationAndLitresToolStripMenuItem.Text = "Регистрация читателей и литрес аккаунты";
+            this.ReaderRegistrationAndLitresToolStripMenuItem.Click += new System.EventHandler(this.ReaderRegistrationAndLitresToolStripMenuItem_Click);
+            // 
+            // OrdersBySubjectToolStripMenuItem
+            // 
+            this.OrdersBySubjectToolStripMenuItem.Name = "OrdersBySubjectToolStripMenuItem";
+            this.OrdersBySubjectToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
+            this.OrdersBySubjectToolStripMenuItem.Text = "Выдачи по тематике";
+            this.OrdersBySubjectToolStripMenuItem.Click += new System.EventHandler(this.OrdersBySubjectToolStripMenuItem_Click);
             // 
             // pbLogo
             // 
@@ -1021,6 +1030,23 @@ namespace CirculationApp
             this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
+            // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(536, 97);
+            this.readerRightsView1.TabIndex = 26;
+            // 
+            // Penalt
+            // 
+            this.Penalt.HeaderText = "Нарушение";
+            this.Penalt.Name = "Penalt";
+            this.Penalt.ReadOnly = true;
+            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Penalt.Width = 85;
             // 
             // MainForm
             // 
@@ -1158,6 +1184,9 @@ namespace CirculationApp
         private System.Windows.Forms.ToolStripMenuItem ActiveHallOrdersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FinishedHallOrdersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AllBooksInHallToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DebtoListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ReaderRegistrationAndLitresToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OrdersBySubjectToolStripMenuItem;
         //private System.Windows.Forms.DataGridView dgvTransfer;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;

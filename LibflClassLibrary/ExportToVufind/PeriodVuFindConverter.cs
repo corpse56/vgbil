@@ -219,5 +219,15 @@ namespace LibflClassLibrary.ExportToVufind
         {
             throw new NotImplementedException();
         }
+
+        public override void Export(List<string> idSet, string exportFilename)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override List<VufindDoc> Export(List<string> idSet)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

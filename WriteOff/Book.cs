@@ -114,6 +114,9 @@ namespace BookClasses
 
     public class Book : IComparable<Book>
     {
+
+
+        public string IDMAIN;
         private string iddataact;//язык
         public string IDDATAACT
         {

@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static LibflClassLibrary.Circulation.CirculationInfo;
 
 namespace SIPServer
 {
@@ -268,16 +269,40 @@ namespace SIPServer
                 }
             }
 
-            response.SecurityMarker = SecurityMarker.NONE;
+            //здесь вообще-то SecurityMarker - это что-то другое. мы в сотрудничестве с IDLogic даём тут этому параметру другое предназначение
+            //это поле будет сигнализировать о том, снимать или нет противокражный бит. 
+            //SecurityMarker.OTHER - "00" - не будет противокражка сниматься. это для книг, которые только в зал
+            //SecurityMarker.NONE - "01" - будет противокражка сниматься. Для книг, которые на дом
+            //таким образом узнаем способ доступа для конкретного экземпляра и присвоим соответствующее значение.
+            //response.SecurityMarker = SecurityMarker.NONE;
+            IssueType it = ci.GetIssueType(exemplar);
+            if (it == IssueType.AtHome)
+            {
+                response.SecurityMarker = SecurityMarker.NONE;
+            }
+            else
+            {
+                response.SecurityMarker = SecurityMarker.OTHER;
+            }
             response.FeeType = FeeType.ADMINISTRATIVE;
+            DateTime dateReaderNeedToReturn;
+            if (order != null)
+            {
+                dateReaderNeedToReturn = (it == IssueType.AtHome) ? order.ReturnDate : DateTime.Now;
+            }
+            else
+            {
+                dateReaderNeedToReturn = (it == IssueType.AtHome) ? DateTime.Now.AddDays(30) : DateTime.Now;
+            }
+
 
             response.TransactionDate = DateTime.Now;
             response.HoldQueueLength = 0;
-            response.DueDate = (order == null) ? DateTime.Now : order.ReturnDate;
+            response.DueDate = dateReaderNeedToReturn;//(order == null) ? DateTime.Now : order.ReturnDate;
             response.RecallDate = (order == null) ? DateTime.Now : order.IssueDate;
-            response.HoldPickupDate = (order == null) ? DateTime.Now : order.ReturnDate;
+            response.HoldPickupDate = dateReaderNeedToReturn;//(order == null) ? DateTime.Now : order.ReturnDate;
             response.ItemIdentifier = request.ItemIdentifier;
-            response.TitleIdentifier = (book.Fields["700$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
             response.Owner = "ВГБИЛ";
             response.CurrencyType = Currency.RUB;
             response.FeeAmount = 0;
@@ -369,14 +394,18 @@ namespace SIPServer
                 }
             }
 
+            //Desentize - раньше я думал, что это отвечает за снятие противокражкин, но оказалось, что нет
+            //IssueType issueType = ci.GetIssueType(exemplar, reader);
+            //response.Desensitize = (issueType == IssueType.AtHome)?  true:false; //снять бит или нет
+
+            response.Desensitize = false; 
 
             response.MagneticMedia = false;
-            response.Desensitize = true; //снять бит или нет
             response.TransactionDate = DateTime.Now;
             response.InstitutionId = "ВГБИЛ";
             response.PatronIdentifier = request.PatronIdentifier;// + " (took from request)";
             response.ItemIdentifier = request.ItemIdentifier;// + " (also took from request)";
-            response.TitleIdentifier = (book.Fields["200$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
             response.DueDate = DateTime.Now;
 
             // необязательные поля
@@ -407,7 +436,7 @@ namespace SIPServer
             var ci = new CirculationInfo();
             var order = ci.FindOrderByExemplar(exemplar);
 
-            response.TitleIdentifier = (book.Fields["700$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
             response.DueDate = (order == null)? order.ReturnDate : DateTime.Now;
         }
         private void FillCheckinFailedResponse(CheckinResponse response, CheckinRequest request)
@@ -424,8 +453,8 @@ namespace SIPServer
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
             BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
 
-            response.PermanentLocation = (exemplar.Fields["899$a"].MNFIELD == 0)? "Неизвестно" : exemplar.Fields["899$a"].ToString();
-            response.TitleIdentifier = (book.Fields["700$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}"; ;
+            response.PermanentLocation = (!exemplar.Fields["899$a"].HasValue)? "Неизвестно" : exemplar.Fields["899$a"].ToString();
+            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}"; ;
         }
         public void OnCheckin(Session session, CheckinRequest request, CheckinResponse response)
         {
@@ -492,7 +521,7 @@ namespace SIPServer
             response.InstitutionId = "ВГБИЛ";
             response.ItemIdentifier = request.ItemIdentifier;
             response.PermanentLocation = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];//"Permanent Location";
-            response.TitleIdentifier = (book.Fields["200$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
             response.SortBin = "Sort bin...";
             response.PatronIdentifier = reader.BarCode;//"Patron id";
             response.MediaType = MediaType.BOOK;
@@ -582,7 +611,7 @@ namespace SIPServer
             response.InstitutionId = "ВГБИЛ";
             response.PatronIdentifier = request.PatronIdentifier;
             response.ItemIdentifier = request.ItemIdentifier;
-            response.TitleIdentifier = (book.Fields["200$a"].MNFIELD == 0) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
 
             response.DueDate = order.ReturnDate;
 

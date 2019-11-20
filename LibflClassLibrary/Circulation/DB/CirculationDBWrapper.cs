@@ -40,8 +40,6 @@ namespace LibflClassLibrary.Circulation.DB
         {
             //////////////////////////////////////////
             DataTable table = new DataTable();
-            Stopwatch w = new Stopwatch();
-            w.Start();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_ORDERS, connection);
@@ -49,9 +47,22 @@ namespace LibflClassLibrary.Circulation.DB
                 dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
                 int cnt = dataAdapter.Fill(table);
             }
-            w.Stop();
             return table;
         }
+
+        internal DataTable GetLastEmailDate(int numberReader)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_LAST_EMAIL_DATE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = numberReader;
+                dataAdapter.SelectCommand.Parameters.Add("EmailSentAction", SqlDbType.NVarChar).Value = CirculationAdditionalActions.EmailSent.Value;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
         internal DataTable GetOrdersByExemplar(int idData, string fund)
         {
             DataTable table = new DataTable();
@@ -114,6 +125,21 @@ namespace LibflClassLibrary.Circulation.DB
                 DataTable table = new DataTable();
                 int cnt = dataAdapter.Fill(table);
                 return table;
+            }
+
+        }
+
+        internal void InsertAdditionalAction(int readerId, string action, int orderId, int userId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(Queries.INSERT_ADDITIONAL_ACTION, connection);
+                command.Parameters.Add("readerId", SqlDbType.Int).Value = readerId;
+                command.Parameters.Add("orderId", SqlDbType.Int).Value = (orderId == -1) ? DBNull.Value : (object)orderId;
+                command.Parameters.Add("userId", SqlDbType.Int).Value = userId;
+                command.Parameters.Add("action", SqlDbType.NVarChar).Value = action;
+                connection.Open();
+                command.ExecuteNonQuery();
             }
 
         }
@@ -389,6 +415,20 @@ namespace LibflClassLibrary.Circulation.DB
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_OVERDUE_ORDERS, connection);
                 dataAdapter.SelectCommand.Parameters.Add("statusName", SqlDbType.NVarChar).Value = statusName;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                DataTable table = new DataTable();
+                int cnt = dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
+        internal DataTable GetLastOrder(int idData, string fund)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.GET_LAST_ORDER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idData", SqlDbType.Int).Value = idData;
+                dataAdapter.SelectCommand.Parameters.Add("fund", SqlDbType.NVarChar).Value = fund;
                 dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
                 DataTable table = new DataTable();
                 int cnt = dataAdapter.Fill(table);

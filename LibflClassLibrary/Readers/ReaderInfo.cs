@@ -30,7 +30,10 @@ namespace LibflClassLibrary.Readers
         private ReaderLoader loader = new ReaderLoader();
 
         public string FamilyName { get; set; }
-
+        public string FIO
+        {
+            get { return $"{this.FamilyName} {this.Name} {this.FatherName}"; }
+        }
         public string Name { get; set; }
         public string FatherName { get; set; }
         public DateTime DateBirth { get; set; }

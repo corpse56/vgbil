@@ -39,15 +39,25 @@ namespace LibflClassLibrary.Circulation.DB
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_ACTIVE_HALL_ORDERS, connection);
                 dataAdapter.SelectCommand.Parameters.Add("unifiedLocationCode", SqlDbType.Int).Value = unifiedLocationCode;
-                //dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
                 dataAdapter.SelectCommand.Parameters.Add("statusRefusual", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
-                //dataAdapter.SelectCommand.Parameters.Add("depId", SqlDbType.Int).Value = depId;
-
                 int cnt = dataAdapter.Fill(table);
             }
             return table;
 
         }
+        internal DataTable GetDebtorsInHall(int unifiedLocationCode)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_DEBTORS_IN_HALL, connection);
+                dataAdapter.SelectCommand.Parameters.Add("unifiedLocationCode", SqlDbType.Int).Value = unifiedLocationCode;
+                dataAdapter.SelectCommand.Parameters.Add("statusRefusual", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
 
         internal DataTable GetReadersRecievedBookCount(DateTime startDate, DateTime endDate, int unifiedLocationCode)
         {
@@ -58,6 +68,59 @@ namespace LibflClassLibrary.Circulation.DB
                 dataAdapter.SelectCommand.Parameters.Add("startDate", SqlDbType.DateTime).Value = startDate;
                 dataAdapter.SelectCommand.Parameters.Add("endDate", SqlDbType.DateTime).Value = endDate;
                 dataAdapter.SelectCommand.Parameters.Add("unifiedLocationCode", SqlDbType.Int).Value = unifiedLocationCode;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
+        internal DataTable GetOrdersCountBySubject(int unifiedLocationCode, DateTime startDate, DateTime endDate)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_ORDERS_COUNT_BY_SUBJECT, connection);
+                dataAdapter.SelectCommand.Parameters.Add("startDate", SqlDbType.DateTime).Value = startDate;
+                dataAdapter.SelectCommand.Parameters.Add("endDate", SqlDbType.DateTime).Value = endDate;
+                dataAdapter.SelectCommand.Parameters.Add("unifiedLocationCode", SqlDbType.Int).Value = unifiedLocationCode;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
+        internal DataTable LitresAccountAssignedCount(DateTime startDate, DateTime endDate)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.LITRES_ACCOUNT_ASSIGNED_COUNT, connection);
+                dataAdapter.SelectCommand.Parameters.Add("startDate", SqlDbType.DateTime).Value = startDate.Date;
+                dataAdapter.SelectCommand.Parameters.Add("endDate", SqlDbType.DateTime).Value = endDate.Date;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
+        internal DataTable RegisteredReadersRemoteCount(DateTime startDate, DateTime endDate)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.REGISTERED_READERS_REMOTE_COUNT, connection);
+                dataAdapter.SelectCommand.Parameters.Add("startDate", SqlDbType.DateTime).Value = startDate.Date;
+                dataAdapter.SelectCommand.Parameters.Add("endDate", SqlDbType.DateTime).Value = endDate.Date;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
+        internal DataTable RegisteredReadersAllCount(DateTime startDate, DateTime endDate)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.REGISTERED_READERS_ALL_COUNT, connection);
+                dataAdapter.SelectCommand.Parameters.Add("startDate", SqlDbType.DateTime).Value = startDate.Date;
+                dataAdapter.SelectCommand.Parameters.Add("endDate", SqlDbType.DateTime).Value = endDate.Date;
                 int cnt = dataAdapter.Fill(table);
             }
             return table;

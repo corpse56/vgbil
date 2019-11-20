@@ -996,12 +996,9 @@ namespace CirculationApp
                 MessageBox.Show("Введите номер или считайте штрихкод читателя!");
                 return;
             }
-            ReaderVO reader = new ReaderVO(int.Parse(lFromularNumber.Text)); 
-            EmailSending es = new EmailSending(this, reader);
-            if (es.canshow)
-            {
-                es.ShowDialog();
-            }
+            ReaderInfo reader = ReaderInfo.GetReader(int.Parse(lFromularNumber.Text)); 
+            EmailSending es = new EmailSending(reader, bjUser);
+            es.ShowDialog();
         }
 
         private void списокДействийОператораЗаПериодToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1389,6 +1386,32 @@ namespace CirculationApp
                 TableDataVisualizer tbv = new TableDataVisualizer(null, bjUser, ReferenceType.AllBooksInHall);
                 tbv.ShowDialog();
             }
+
+        }
+
+        private void DebtoListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TableDataVisualizer tbv = new TableDataVisualizer(null, bjUser, ReferenceType.DebtorList);
+            tbv.ShowDialog();
+        }
+
+        private void ReaderRegistrationAndLitresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fDatePeriod dp = new fDatePeriod();
+            dp.ShowDialog();
+
+            TableDataVisualizer tbv = new TableDataVisualizer(dp, bjUser, ReferenceType.ReaderRegistration);
+            tbv.ShowDialog();
+
+        }
+
+        private void OrdersBySubjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fDatePeriod dp = new fDatePeriod();
+            dp.ShowDialog();
+
+            TableDataVisualizer tbv = new TableDataVisualizer(dp, bjUser, ReferenceType.OrdersCountBySubject);
+            tbv.ShowDialog();
 
         }
     }

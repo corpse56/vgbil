@@ -418,5 +418,35 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        public string GET_LAST_ORDER
+        {
+            get
+            {
+                return " select top 1 * from Circulation..Orders A " +
+                       " left join Circulation..OrdersFlow B on A.ID = B.OrderId and B.StatusName = @RefusualStatusName" +
+                       " where ExemplarId = @iddata and Fund = @fund " +
+                       " order by A.Id desc";
+            }
+        }
+
+        public string GET_LAST_EMAIL_DATE
+        {
+            get
+            {
+                return " select top 1 DateAction from Circulation..AdditionalActions A " +
+                       " where ReaderId = @ReaderId and Action = @EmailSentAction " +
+                       " order by A.Id desc";
+            }
+        }
+
+        public string INSERT_ADDITIONAL_ACTION
+        {
+            get
+            {
+                return " insert into Circulation..AdditionalActions (Action, DateAction, ReaderId, CreatorId, OrderId) " +
+                       " values                                     (@action, getdate(), @readerId, @userId,  @orderId)  ";
+            }
+        }
+
     }
 }

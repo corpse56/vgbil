@@ -1147,7 +1147,11 @@ public partial class _Default : System.Web.UI.Page
         //теперь по-новому
         //BJBookLoader BJLoader = new BJBookLoader(rm.BAZA);
         //BJElectronicExemplarAvailabilityCodes ElectronincAccessLevel = BJLoader.GetElectronicExemplarAccessLevel(int.Parse(IDMAIN), 2);//1 - VGBIL, 2 - NEB
-        BJElectronicExemplarInfo ElExemplar = new BJElectronicExemplarInfo(int.Parse(IDMAIN), rm.BAZA);
+        BJElectronicExemplarInfo ElExemplar = null;
+        //try
+        //{
+            ElExemplar = new BJElectronicExemplarInfo(int.Parse(IDMAIN), rm.BAZA);
+        //}
         var Status = ElExemplar.Statuses.Find(x => x.Project ==  BJElectronicAvailabilityProjects.NEB);
 
         string path = DS.Tables["PDF"].Rows[0]["IDBook"].ToString();

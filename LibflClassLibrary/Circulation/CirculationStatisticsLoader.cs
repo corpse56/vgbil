@@ -40,6 +40,18 @@ namespace LibflClassLibrary.Circulation
             }
             return orders;
         }
+        internal List<OrderInfo> GetDebtorsInHall(BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetDebtorsInHall(bjUser.SelectedUserStatus.UnifiedLocationCode);
+            List<OrderInfo> orders = new List<OrderInfo>();
+            CirculationLoader cl = new CirculationLoader();
+            foreach (DataRow row in table.Rows)
+            {
+                OrderInfo order = cl.FillOrderFromDataRow(row);
+                orders.Add(order);
+            }
+            return orders;
+        }
 
         internal List<BookExemplarBase> GetAllBooksInHallACC(BJUserInfo bjUser)
         {
@@ -60,6 +72,29 @@ namespace LibflClassLibrary.Circulation
             DataTable table = dbWrapper_.GetAllBooksInHallREDKOSTJ(bjUser.SelectedUserStatus.DepId);
             List<BookExemplarBase> result = GetExemplarListFromPinList(table);
             return result;
+        }
+
+        internal DataTable GetOrdersCountBySubject(BJUserInfo bjUser, DateTime startDate, DateTime endDate)
+        {
+            return dbWrapper_.GetOrdersCountBySubject(bjUser.SelectedUserStatus.UnifiedLocationCode, startDate, endDate);
+        }
+
+        internal int RegisteredReadersRemoteCount(DateTime startDate, DateTime endDate)
+        {
+            DataTable table = dbWrapper_.RegisteredReadersRemoteCount(startDate, endDate);
+            return table.Rows.Count;
+        }
+
+        internal int LitresAccountAssignedCount(DateTime startDate, DateTime endDate)
+        {
+            DataTable table = dbWrapper_.LitresAccountAssignedCount(startDate, endDate);
+            return table.Rows.Count;
+        }
+
+        internal int RegisteredReadersAllCount(DateTime startDate, DateTime endDate)
+        {
+            DataTable table = dbWrapper_.RegisteredReadersAllCount(startDate, endDate);
+            return table.Rows.Count;
         }
 
         internal List<BookExemplarBase> GetAllBooksInHallSCC(BJUserInfo bjUser)

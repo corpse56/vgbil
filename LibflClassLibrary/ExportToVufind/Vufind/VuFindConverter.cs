@@ -23,6 +23,10 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
         }
 
         public abstract void Export();
+
+        public abstract void Export(List<string> idSet, string exportFilename);
+        public abstract List<VufindDoc> Export(List<string> idSet);
+
         public abstract void ExportSingleRecord(int idRecord);
         public abstract void ExportCovers();
         public abstract void ExportSingleCover(object idRecord);

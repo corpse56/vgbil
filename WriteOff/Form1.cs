@@ -67,7 +67,16 @@ namespace WriteOff
                 return;
             }
             List<string> l = new List<string>();
-            List<Book> ListOfBooks = reader_.GetBooksOnAct(comboBox3.SelectedItem.ToString());
+            List<Book> ListOfBooks = new List<Book>();
+            //try
+            {
+                ListOfBooks = reader_.GetBooksOnAct(comboBox3.SelectedItem.ToString());
+            }
+            //catch (Exception ex)
+            {
+             //   MessageBox.Show(ex.Message + ex.Source + ex.InnerException + ex.Data + ex.HResult);
+             //   Application.Exit();
+            }
             if (ListOfBooks == null)
             {
                 MessageBox.Show("”казанный акт не содержит книг!");

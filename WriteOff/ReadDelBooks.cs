@@ -163,6 +163,7 @@ namespace WriteOff
                 return null;
             }
             string idm = ds_.Tables[0].Rows[0]["IDMAIN"].ToString();
+            this.book_.IDMAIN = idm;
             foreach (DataRow row in ds_.Tables[0].Rows) //ищем другие акты в текущей книге
             {
                 if (idm != row["IDMAIN"].ToString())
@@ -175,9 +176,12 @@ namespace WriteOff
 
             List<Book> Rlist = new List<Book>();//список книг списанных по акту
             idm = ds_.Tables[0].Rows[0]["IDMAIN"].ToString();
+
             foreach (DataRow r in ds_.Tables[0].Rows)
             {
-                if (r["IDMAIN"].ToString() == "1001538")
+                this.book_.IDMAIN = idm;
+
+                if (r["IDMAIN"].ToString() == "1282629")
                 {
                     int ff = 1;
                 }
@@ -185,11 +189,7 @@ namespace WriteOff
                 {
                     Rlist.Add(this.book_);
                     int fred = 1;
-                    if (this.book_.Title == "Osszes versei. 2 [E.Ady]")
-                    {
-                        fred++;
-                    }
-
+                    
 
                     anotherActs.Clear();
                     string idmtmp = r["IDMAIN"].ToString();

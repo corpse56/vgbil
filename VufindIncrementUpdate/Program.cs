@@ -21,12 +21,12 @@ namespace VufindIncrementUpdate
         static void Main(string[] args)
         {
 
-            Program.LitresIncrementUpdate();
             Program.BJIncrementUpdate("BJVVV");
             Program.BJIncrementUpdate("REDKOSTJ");
             Program.BJIncrementUpdate("BJACC");
             Program.BJIncrementUpdate("BJFCC");
             Program.BJIncrementUpdate("BJSCC");
+            Program.LitresIncrementUpdate();
 
 
             //для отладки
@@ -113,19 +113,27 @@ namespace VufindIncrementUpdate
             Console.WriteLine("Начинаю обновление " + Fund + " изменённых записей...");
             logger.Info("Начинаю обновление " + Fund + " изменённых записей...");
 
+
             BJVuFindConverter converter = new BJVuFindConverter(Fund);
             List<VufindDoc> UpdatedBooksList = new List<VufindDoc>();
             VufindDoc doc;
-
+            string tmp = "";
             //для отладки
             //UpdatedBooks = UpdatedBooks.Take(5).ToList();
+            //doc = converter.CreateVufindDocument(1497354);
+
             try
             {
                 foreach (IncrementStruct elt in UpdatedBooks)
                 {
+                    tmp = elt.Id;
                     BJDatabaseWrapper wrapper = new BJDatabaseWrapper(Fund);
                     int IDMAIN = int.Parse(elt.Id.Substring(elt.Id.IndexOf("_") + 1));
                     DataTable BJRecord = wrapper.GetBJRecord(IDMAIN);
+                    if (IDMAIN == 1497354)//это битая запись
+                    {
+                        continue;
+                    }
                     if (BJRecord.Rows.Count == 0)
                     {
                         continue;

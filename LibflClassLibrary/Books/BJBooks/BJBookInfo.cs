@@ -70,6 +70,14 @@ namespace LibflClassLibrary.Books.BJBooks
             BJBookInfo result = BJBookInfo.GetBookInfoByPIN((int)table.Rows[0]["IDMAIN"], fund);
             return result;
         }
+
+        public string AuthorTitle()
+        {
+            return (this.Fields["700$a"].HasValue) ? 
+                                                    $"{this.Fields["700$a"].ToString()}; {this.Fields["200$a"].ToString()}" 
+                                                    : this.Fields["200$a"].ToString();
+        }
+
         internal static BJBookInfo GetBookInfoByBAR(string data)
         {
             BJBookInfo book;

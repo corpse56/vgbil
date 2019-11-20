@@ -169,6 +169,7 @@
     <Compile Include="Circulation\CirculationInfo.cs" />
     <Compile Include="Circulation\CirculationStatisticsLoader.cs" />
     <Compile Include="Circulation\CirculationStatisticsManager.cs" />
+    <Compile Include="Circulation\CirculationAdditionalActions.cs" />
     <Compile Include="Circulation\CirculationStatuses.cs" />
     <Compile Include="Circulation\DB\CirculationDBWrapper.cs" />
     <Compile Include="Circulation\DB\CirculationQueries.cs" />

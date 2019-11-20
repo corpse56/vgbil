@@ -33,6 +33,21 @@ namespace LibflClassLibrary.Litres
             result = loader.GetLitresAccount(ReaderId);
             return result;
         }
+        public LitresInfo GenerateNewLitresAccountAndAssignToReader(int readerId)
+        {
+            LitresInfo result;
+            try
+            {
+                result = this.GetLitresNewAccount();
+            }
+            catch
+            {
+                throw new Exception("L004");
+            }
+            loader.AssignLitresAccount(readerId);
+            return result;
+
+        }
 
         public LitresInfo GetLitresNewAccount()
         {
@@ -47,7 +62,6 @@ namespace LibflClassLibrary.Litres
         {
             loader.InsertNewLitresAccount(newAccount);
         }
-
 
     }
 }

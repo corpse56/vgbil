@@ -3,6 +3,7 @@ using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,10 +65,35 @@ namespace LibflClassLibrary.Circulation
             return result;
         }
 
+        public List<OrderInfo> GetDebtorsInHall(BJUserInfo bjUser)
+        {
+            return csl_.GetDebtorsInHall(bjUser);
+        }
+
         public int GetReadersRecievedBookCount(DateTime startDate, DateTime endDate, BJUserInfo bjUser)
         {
             return csl_.GetReadersRecievedBookCount(startDate, endDate, bjUser);
 
+        }
+
+        public DataTable GetOrdersCountBySubject(BJUserInfo bjUser, DateTime startDate, DateTime endDate)
+        {
+            return csl_.GetOrdersCountBySubject(bjUser, startDate, endDate);
+        }
+
+        public int RegisteredReadersAllCount(DateTime startDate, DateTime endDate)
+        {
+            return csl_.RegisteredReadersAllCount(startDate, endDate);
+        }
+
+        public int RegisteredReadersRemoteCount(DateTime startDate, DateTime endDate)
+        {
+            return csl_.RegisteredReadersRemoteCount(startDate, endDate);
+        }
+
+        public int LitresAccountAssignedCount(DateTime startDate, DateTime endDate)
+        {
+            return csl_.LitresAccountAssignedCount(startDate, endDate);
         }
     }
 }
