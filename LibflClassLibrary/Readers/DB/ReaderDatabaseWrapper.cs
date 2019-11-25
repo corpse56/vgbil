@@ -225,6 +225,18 @@ namespace LibflClassLibrary.Readers.DB
             }
         }
 
+        internal DataTable IsEnteredThroughAccessControlSystem(int numberReader)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ReaderQueries.IS_ENTERED_THROUGH_ACCESS_CONTROL_SYSTEM, connection);
+                dataAdapter.SelectCommand.Parameters.Add("readerId", SqlDbType.Int).Value = numberReader;
+                dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal void UpdateLiveFields(ReaderInfo readerInfo)
         {
             string connectionString = this.ConnectionString;

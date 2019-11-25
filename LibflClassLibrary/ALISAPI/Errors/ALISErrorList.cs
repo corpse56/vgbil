@@ -354,6 +354,12 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Заказ с таким статусом не нужно принимать на кафедру.",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
+            new ALISError()
+            {
+                Code = "C028",
+                Message = "Читатель не проходил через турникет. Выдача невозможна!",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
 
         };
     }

@@ -256,6 +256,13 @@ namespace LibflClassLibrary.Readers.Loaders
             ReaderInfo result = this.LoadReader(Convert.ToInt32(table.Rows[0][0]));
             return result;
         }
+
+        internal bool IsEnteredThroughAccessControlSystem(ReaderInfo reader)
+        {
+            DataTable table = dbw.IsEnteredThroughAccessControlSystem(reader.NumberReader);
+            return (table.Rows.Count == 0) ? false : true;
+        }
+
         internal ReaderRightsInfo GetReaderRights(int NumberReader)
         {
             DataTable table = dbw.GetReaderRights(NumberReader);

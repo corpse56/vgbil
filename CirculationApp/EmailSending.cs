@@ -122,8 +122,8 @@ namespace CirculationApp
             message.IsBodyHtml = true;
             if (Email != "")
             {
-                to = new MailAddress("debarkader@gmail.com");
-                //to = new MailAddress(Email);
+                //to = new MailAddress("debarkader@gmail.com");
+                to = new MailAddress(Email);
                 message.To.Add(to);
             }
 

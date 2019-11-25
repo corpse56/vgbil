@@ -167,5 +167,11 @@ namespace LibflClassLibrary.Books.BJBooks
         {
             throw new NotImplementedException();
         }
+
+        public static string GetFieldValue(string fund, int iDMAIN, int MNFIELD, string MSFIELD)
+        {
+            BJBookLoader loader = new BJBookLoader(fund);
+            return loader.GetFieldValue(iDMAIN, MNFIELD, MSFIELD);
+        }
     }
 }

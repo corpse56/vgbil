@@ -164,6 +164,17 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        internal DataTable GetFieldValue(int iDMAIN, int mNFIELD, string mSFIELD)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_FIELD_VALUE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = iDMAIN;
+                dataAdapter.SelectCommand.Parameters.Add("mnfield", SqlDbType.Int).Value = mNFIELD;
+                dataAdapter.SelectCommand.Parameters.Add("msfield", SqlDbType.NVarChar).Value = mSFIELD;
+                return this.ExecuteSelectQuery(dataAdapter);
+            }
+        }
 
         internal DataTable Clarify_205a_3(int iddata)
         {

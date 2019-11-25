@@ -184,6 +184,12 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             return TPR;
         }
 
+        internal string GetFieldValue(int iDMAIN, int mNFIELD, string mSFIELD)
+        {
+            DataTable table = dbWrapper.GetFieldValue(iDMAIN, mNFIELD, mSFIELD);
+            return (table.Rows.Count == 0) ?  string.Empty : table.Rows[0][0].ToString();
+        }
+
         internal DataTable GetAllIdmainWithImages()
         {
             return dbWrapper.GetAllIdmainWithImages();

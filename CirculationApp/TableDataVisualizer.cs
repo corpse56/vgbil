@@ -96,8 +96,8 @@ namespace CirculationApp
                 dgViewer.Rows.Add();
                 var row = dgViewer.Rows[dgViewer.Rows.Count - 1];
 
-                row.Cells["tema"].Value = r[0].ToString();
-                row.Cells["issueCount"].Value = r[1].ToString();
+                row.Cells["tema"].Value = r["tema"].ToString();
+                row.Cells["issueCount"].Value = r["cnt"].ToString();
             }
         }
 
@@ -278,7 +278,7 @@ namespace CirculationApp
                 if (exemplar is BJExemplarInfo)
                 {
                     BJExemplarInfo bjExemplar = (BJExemplarInfo)exemplar;
-                    BJBookInfo bjBook = (BJBookInfo)BookFactory.CreateBook(bjExemplar.IDMAIN, bjExemplar.Fund);
+                    //BJBookInfo bjBook = (BJBookInfo)BookFactory.CreateBook(bjExemplar.IDMAIN, bjExemplar.Fund);
                     row.Cells["NN"].Value = i++;
                     row.Cells["author"].Value = bjExemplar.Author(); //bjBook.Fields["700$a"].ToString();
                     row.Cells["title"].Value = bjExemplar.Title();//bjBook.Fields["200$a"].ToString();
@@ -286,8 +286,8 @@ namespace CirculationApp
                     row.Cells["bar"].Value = bjExemplar.Fields["899$w"].ToString();
                     row.Cells["rack"].Value = bjExemplar.Fields["899$c"].ToString();
                     row.Cells["db"].Value = bjExemplar.Fund;
-                    row.Cells["lang"].Value = bjBook.Fields["101$a"].ToString();
-                    row.Cells["tema"].Value = bjBook.Fields["922$e"].ToString();
+                    row.Cells["lang"].Value = BJBookInfo.GetFieldValue(bjExemplar.Fund, bjExemplar.IDMAIN, 101, "$a");//bjBook.Fields["101$a"].ToString();
+                    row.Cells["tema"].Value = BJBookInfo.GetFieldValue(bjExemplar.Fund, bjExemplar.IDMAIN, 922, "$e");//bjBook.Fields["922$e"].ToString();
                     CirculationInfo ci = new CirculationInfo();
                     OrderInfo order = ci.GetLastOrder(bjExemplar.IdData, bjExemplar.Fund);
                     row.Cells["status"].Value = (order == null ||

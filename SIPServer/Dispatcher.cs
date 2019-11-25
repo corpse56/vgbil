@@ -374,7 +374,7 @@ namespace SIPServer
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("347" + ex.Message + ex.Source + ex.Data + ex.StackTrace);
+                    Console.WriteLine("377" + ex.Message + ex.Source + ex.Data + ex.StackTrace);
                     FillCheckoutFailedResponse(response, request);
                     return;
                 }
@@ -388,7 +388,8 @@ namespace SIPServer
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("361" + ex.Message + ex.Source + ex.Data + ex.StackTrace);
+                    Console.WriteLine("391" + ex.Message + ex.Source + ex.Data + ex.StackTrace);
+                    
                     FillCheckoutFailedResponse(response, request);
                     return;
                 }
@@ -432,12 +433,13 @@ namespace SIPServer
             response.PatronIdentifier = request.PatronIdentifier;
             response.ItemIdentifier = request.ItemIdentifier;
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
-            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
-            var ci = new CirculationInfo();
-            var order = ci.FindOrderByExemplar(exemplar);
 
-            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
-            response.DueDate = (order == null)? order.ReturnDate : DateTime.Now;
+            BJBookInfo book = (exemplar == null)? null : BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+            var ci = new CirculationInfo();
+            var order = (exemplar == null)? null : ci.FindOrderByExemplar(exemplar);
+
+            response.TitleIdentifier = (book == null) ? "Неизвестная книга" : (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.DueDate = (order != null) ? order.ReturnDate : DateTime.Now;
         }
         private void FillCheckinFailedResponse(CheckinResponse response, CheckinRequest request)
         {
@@ -451,10 +453,13 @@ namespace SIPServer
             response.InstitutionId = request.InstitutionId;
             response.ItemIdentifier = request.ItemIdentifier;
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
-            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+            BJBookInfo book = (exemplar == null) ? null : BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
 
-            response.PermanentLocation = (!exemplar.Fields["899$a"].HasValue)? "Неизвестно" : exemplar.Fields["899$a"].ToString();
-            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}"; ;
+            response.PermanentLocation = (exemplar == null) ? null : 
+                                         (!exemplar.Fields["899$a"].HasValue)? "Неизвестно" : exemplar.Fields["899$a"].ToString();
+            response.TitleIdentifier = (book == null) ? "Неизвестная книга" : 
+                                       (!book.Fields["700$a"].HasValue) ? 
+                                       book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}"; ;
         }
         public void OnCheckin(Session session, CheckinRequest request, CheckinResponse response)
         {
@@ -613,7 +618,18 @@ namespace SIPServer
             response.ItemIdentifier = request.ItemIdentifier;
             response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
 
-            response.DueDate = order.ReturnDate;
+            IssueType it = ci.GetIssueType(exemplar);
+            DateTime dateReaderNeedToReturn;
+            if (order != null)
+            {
+                dateReaderNeedToReturn = (it == IssueType.AtHome) ? order.ReturnDate : DateTime.Now;
+            }
+            else
+            {
+                dateReaderNeedToReturn = (it == IssueType.AtHome) ? DateTime.Now.AddDays(30) : DateTime.Now;
+            }
+
+            response.DueDate = dateReaderNeedToReturn;
 
             response.FeeType = FeeType.OTHER_UNKNOWN;
             response.SecurityInhibit = false;

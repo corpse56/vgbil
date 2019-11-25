@@ -248,7 +248,59 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return " select 1 from LITRES..ACCOUNTS where cast(cast(ASSIGNED as varchar(11)) as datetime) between @startDate and @endDate";
+                return " with F0 as  " +
+                         "( " +
+                        "select Id orderId, Fund, SUBSTRING(BookId, charindex('_', BookId, 0) + 1, len(BookId)) idmain " +
+                        "from Circulation..Orders A " +
+                        "where IssueDate between @startDate and @endDate and " +
+                        "(IssueDepId = @unifiedLocationCode or IssuingDepId = @unifiedLocationCode) " +
+                        "), " +
+                        "F1 as " +
+                        "( " +
+                        "select orderId, vvvp.PLAIN " +
+                        " from F0 A " +
+                        "left join BJVVV..DATAEXT vvv on vvv.ID = (select top 1 ID " +
+                                                                  "from BJVVV..DATAEXT B " +
+                                                                  "where A.idmain = B.IDMAIN and A.Fund = 'BJVVV' and " +
+                                                                  "B.MNFIELD = 922 and B.MSFIELD = '$e')  " +
+                        "left join BJVVV..DATAEXTPLAIN vvvp on vvv.ID = vvvp.IDDATAEXT " +
+                        "union all " +
+                        "select orderId, redkp.PLAIN " +
+                        "from F0 A " +
+                        "left join REDKOSTJ..DATAEXT redk on redk.ID = (select top 1 ID " +
+                                                                        "from REDKOSTJ..DATAEXT B " +
+                                                                        "where A.idmain = B.IDMAIN and A.Fund = 'REDKOSTJ' and " +
+                                                                        "B.MNFIELD = 922 and B.MSFIELD = '$e') " +
+                        "left join REDKOSTJ..DATAEXTPLAIN redkp on redk.ID = redkp.IDDATAEXT " +
+                        "union all " +
+                        "select orderId, accp.PLAIN " +
+                        "from F0 A " +
+                        "left join BJACC..DATAEXT acc on acc.ID = (select top 1 ID " +
+                                                                    "from BJACC..DATAEXT B " +
+                                                                    "where A.idmain = B.IDMAIN and A.Fund = 'BJACC' and " +
+                                                                    "B.MNFIELD = 922 and B.MSFIELD = '$e') " +
+                        "left join BJACC..DATAEXTPLAIN accp on acc.ID = accp.IDDATAEXT " +
+                        "union all " +
+                        "select orderId, fccp.PLAIN " +
+                        "from F0 A " +
+                        "left join BJFCC..DATAEXT fcc on fcc.ID = (select top 1 ID " +
+                                                                    "from BJFCC..DATAEXT B " +
+                                                                    "where A.idmain = B.IDMAIN and A.Fund = 'BJFCC' and " +
+                                                                    "B.MNFIELD = 922 and B.MSFIELD = '$e') " +
+                        "left join BJFCC..DATAEXTPLAIN fccp on fcc.ID = fccp.IDDATAEXT " +
+                        "union all " +
+                        "select orderId, sccp.PLAIN collate cyrillic_general_ci_ai " +
+                        "from F0 A " +
+                        "left join BJSCC..DATAEXT scc on scc.ID = (select top 1 ID " +
+                                                                    "from BJSCC..DATAEXT B " +
+                                                                    "where A.idmain = B.IDMAIN and A.Fund = 'BJSCC' and " +
+                                                                    "B.MNFIELD = 922 and B.MSFIELD = '$e') " +
+                        "left join BJSCC..DATAEXTPLAIN sccp on scc.ID = sccp.IDDATAEXT " +
+                         ") " +
+                         "select case when PLAIN is null then 'тематика не указана в базе' else PLAIN end tema, count(orderId) cnt " +
+                         "from F1 " +
+                         "group by PLAIN " +
+                         "order by cnt desc";
             }
         }
 

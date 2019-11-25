@@ -150,6 +150,17 @@ namespace LibflClassLibrary.Readers.DB
                 return "select BarCodeBarCodeToUID from Readers..BarCodeToUID where UIDBarCodeToUID = @uid";
             }
         }
+
+        public string IS_ENTERED_THROUGH_ACCESS_CONTROL_SYSTEM
+        {
+            get
+            {
+                return "select 1 from Readers..Input where IDReaderInput = @readerId " +
+                       " and cast(cast(DateInInput as varchar(11)) as datetime) = cast(cast(getdate() as varchar(11)) as datetime) " +
+                       " and DateOutInput is null";
+            }
+        }
+
     }
 
 }

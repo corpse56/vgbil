@@ -31,6 +31,7 @@ namespace SIPServer
             var encoding =  new AsciiUTF8Encoding();
 
             controller_ = new Controller(endpoint, disp_, encoding);
+            
             while (true)
             {
                 if (Console.ReadLine() ==  "quit")

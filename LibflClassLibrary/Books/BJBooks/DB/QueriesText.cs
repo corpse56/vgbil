@@ -481,6 +481,18 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
+        public string GET_FIELD_VALUE
+        {
+            get
+            {
+                return " select "+
+                        "substring( "+
+                        "    (select '; ' + SORT from BJVVV..DATAEXT " +
+                        "    where IDMAIN = @idmain and MNFIELD = @mnfield and MSFIELD = @msfield " +
+                        "    for XML path('')) " +
+                        ",2,1000)";
+            }
+        }
 
     }
 

@@ -374,6 +374,13 @@ namespace LibflClassLibrary.Circulation
         {
             //метод выдаёт книгу, либо возвращает исключения
 
+            //если читатель не проходил через проход, то книгу не выдавать, пока не пройдёт через проход
+            //это сделано для того, чтобы читатель не прошёл по гостевому, набрал бы книг, и вышел по гостевому.
+
+            if (!scannedReader.IsEnteredThroughAccessControlSystem())
+            {
+                throw new Exception("C028");
+            }
 
             //ищем заказ с таким экземпляром.
             OrderInfo order = this.FindOrderByExemplar(scannedExemplar);

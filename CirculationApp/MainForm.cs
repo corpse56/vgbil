@@ -383,6 +383,7 @@ namespace CirculationApp
             //и ещё проверку, чтоб не более ста книг в зал.
 
 
+
             department.IssueBookToReader();
             CancelIssue();
             ShowLog();
@@ -791,6 +792,11 @@ namespace CirculationApp
         public string pass;
         private void bMainEmulation_Click(object sender, EventArgs e)
         {
+            //ReaderInfo reader = ReaderInfo.GetReader(189245);
+            //MessageBox.Show(reader.IsEnteredThroughAccessControlSystem().ToString());
+            //reader = ReaderInfo.GetReader(194405);
+            //MessageBox.Show(reader.IsEnteredThroughAccessControlSystem().ToString());
+
             ParolEmulation f20 = new ParolEmulation(this);
             f20.ShowDialog();
             if (pass == "aa")

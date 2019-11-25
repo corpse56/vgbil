@@ -267,5 +267,10 @@ namespace LibflClassLibrary.Readers
         {
             loader.SetPasswordLocalReader(request, reader);
         }
+
+        public bool IsEnteredThroughAccessControlSystem()
+        {
+            return loader.IsEnteredThroughAccessControlSystem(this);
+        }
     }
 }
