@@ -38,8 +38,6 @@ namespace LibflClassLibrary.Books.BJBooks
 
         public int ID { get; set; }
 
-        public string Fund {get;set;}
-
 
         #region Экземпляры книги
 

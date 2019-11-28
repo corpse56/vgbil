@@ -1,6 +1,7 @@
 ﻿using ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.Errors;
 using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation;
@@ -30,8 +31,8 @@ namespace CirculationApp
 
 
         CirculationInfo ci = new CirculationInfo();
-        public BJBookInfo ScannedBook;
-        public BJExemplarInfo ScannedExemplar;
+        public BookBase ScannedBook;
+        public BookExemplarBase ScannedExemplar;
         public ReaderInfo ScannedReader;
         public BJUserInfo bjUser;
         /// <summary>
@@ -64,7 +65,7 @@ namespace CirculationApp
                 {
                     return 3;
                 }
-                this.ScannedBook = BJBookInfo.GetBookInfoByBAR(PortData);
+                this.ScannedBook = BookFactory.CreateBook(PortData);
                 ScannedExemplar = (BJExemplarInfo)ScannedBook.Exemplars.Find(x => ((BJExemplarInfo)x).Bar == PortData);
                 if (ci.IsIssuedToReader(ScannedExemplar))
                 {
@@ -150,6 +151,7 @@ namespace CirculationApp
 
         public void RecieveBook(string fromPort)
         {
+
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromPort);
             OrderInfo oi = ci.FindOrderByExemplar(exemplar);
 

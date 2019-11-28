@@ -16,6 +16,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         public BJExemplarInfo(int idData)
         {
             this._iddata = idData;
+            this.Id = idData.ToString();
         }
 
         private int _iddata;
@@ -27,7 +28,6 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             }
         }
 
-        public string Fund { get; set; }
         public int IDMAIN { get; set; }
         public string BookId
         {

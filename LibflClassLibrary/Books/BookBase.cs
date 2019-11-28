@@ -13,7 +13,7 @@ namespace LibflClassLibrary.Books
     public abstract class BookBase
     {
         public string Id { get; set; }
-
+        public string Fund { get; set; }
         public List<BookExemplarBase> Exemplars { get; set; } = new List<BookExemplarBase>();
 
         internal string ToJsonString()

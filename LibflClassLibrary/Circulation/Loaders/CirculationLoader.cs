@@ -167,9 +167,9 @@ namespace LibflClassLibrary.Circulation.Loaders
             return dbWrapper.GetAttendance(bjUser.SelectedUserStatus.UnifiedLocationCode).Rows.Count;
         }
 
-        internal bool IsIssuedToReader(BJExemplarInfo exemplar)
+        internal bool IsIssuedToReader(BookExemplarBase exemplar)
         {
-            DataTable table = dbWrapper.IsIssuedToReader(exemplar.IdData, exemplar.Fund);
+            DataTable table = dbWrapper.IsIssuedToReader(exemplar.Id, exemplar.Fund);
             return (table.Rows.Count != 0) ? true : false;
         }
 

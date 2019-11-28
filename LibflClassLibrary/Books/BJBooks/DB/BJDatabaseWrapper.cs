@@ -16,7 +16,7 @@ namespace LibflClassLibrary.Books.BJBooks.DB
 
         public string Fund { get; set; }
         public string AFTable { get; set; }
-        public Bibliojet BJQueries;
+        private Bibliojet BJQueries;
         private string connectionString;
         public BJDatabaseWrapper(string fund)
         {

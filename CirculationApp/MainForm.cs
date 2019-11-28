@@ -30,6 +30,7 @@ using LibflClassLibrary.Readers;
 using ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.Errors;
 using LibflClassLibrary.ExportToVufind;
+using LibflClassLibrary.Books;
 
 namespace CirculationApp
 {
@@ -151,6 +152,7 @@ namespace CirculationApp
 
         private void RecieveBookFromInBookKeeping(string fromport)
         {
+            
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromport);
             if (exemplar == null)
             {

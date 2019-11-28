@@ -16,11 +16,11 @@ namespace VufindConditionalBulkUpdate
         static void Main(string[] args)
         {
             string fund = "BJVVV";
-            BJVufindIndexUpdater bj = new BJVufindIndexUpdater(@"dev-catalog.libfl.ru", fund);
+            BJVufindIndexUpdater bj = new BJVufindIndexUpdater(@"catalog.libfl.ru", fund);
 
-            List<string> unknownLocation = findUnknownLocationBookId(fund,99);
+            List<string> unknownLocation = findUnknownLocationBookId(fund,31);
             //все эти надо пройти на проде завтра
-            //100    99    26
+            //100    99    26     40    18    102    31
             //удаляем из индекса все найденные функцией пины
             bj.DeleteFromIndex(unknownLocation);
 

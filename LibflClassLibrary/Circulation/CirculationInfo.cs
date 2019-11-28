@@ -379,7 +379,10 @@ namespace LibflClassLibrary.Circulation
 
             if (!scannedReader.IsEnteredThroughAccessControlSystem())
             {
-                throw new Exception("C028");
+                if (scannedReader.Rights[ReaderRightsEnum.Employee] == null)//на сотрудников не распространяется
+                {
+                    throw new Exception("C028");
+                }
             }
 
             //ищем заказ с таким экземпляром.
@@ -508,7 +511,7 @@ namespace LibflClassLibrary.Circulation
             return loader.FindOrderByExemplar(exemplar);
         }
 
-        internal bool IsIssuedToReader(BJExemplarInfo exemplar)
+        internal bool IsIssuedToReader(BookExemplarBase exemplar)
         {
             return loader.IsIssuedToReader(exemplar);
         }
@@ -516,7 +519,7 @@ namespace LibflClassLibrary.Circulation
 
         internal BARType CheckBAR(string data)
         {
-            BJBookInfo book = BJBookInfo.GetBookInfoByBAR(data);
+            BookBase book = BookFactory.CreateBook(data);
             if (book != null) return BARType.Book;
             ReaderInfo reader = ReaderInfo.GetReaderByBar(data);
             if (reader != null) return BARType.Reader;

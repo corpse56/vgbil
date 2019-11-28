@@ -101,6 +101,7 @@ namespace LibflClassLibrary.ExportToVufind.Vufind
 
             foreach (VufindDoc vfdoc in vfDocList)
             {
+                if (vfdoc == null) continue;
                 XmlNode node = vfdoc.CreateExportXmlNode();
                 node = doc.ImportNode(node, true);
                 RootNode.AppendChild(node);

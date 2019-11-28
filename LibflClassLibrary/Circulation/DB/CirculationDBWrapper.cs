@@ -226,12 +226,12 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
-        internal DataTable IsIssuedToReader(int idData, string fund)
+        internal DataTable IsIssuedToReader(string exemplarId, string fund)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.IS_ISSUED_TO_READER, connection);
-                dataAdapter.SelectCommand.Parameters.Add("idData", SqlDbType.Int).Value = idData;
+                dataAdapter.SelectCommand.Parameters.Add("exemplarId", SqlDbType.Int).Value = exemplarId;
                 dataAdapter.SelectCommand.Parameters.Add("fund", SqlDbType.NVarChar).Value = fund;
                 DataTable table = new DataTable();
                 int cnt = dataAdapter.Fill(table);

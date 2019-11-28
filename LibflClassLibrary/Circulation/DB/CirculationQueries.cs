@@ -323,7 +323,7 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return " select top 1 ID from Circulation..Orders where ExemplarId = @idData and Fund = @fund " +
+                return " select top 1 ID from Circulation..Orders where ExemplarId = @exemplarId and Fund = @fund " +
                         " and StatusName in ('Выдано в зал','Выдано на дом','Выдано с чужой бронеполки') ";
                         
             }
