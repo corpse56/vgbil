@@ -12,6 +12,7 @@ namespace SIPServer
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
             // The code provided will print ‘Hello World’ to the console.
@@ -24,9 +25,14 @@ namespace SIPServer
 
             //IPAddress ip = IPAddress.Any;
             //IPAddress ip = IPAddress.Parse("80.250.173.142"); //IPAddress.Any;
-            IPAddress ip = IPAddress.Parse("192.168.1.68"); //IPAddress.Any;
+            //IPAddress ip = IPAddress.Parse("192.168.1.68"); //IPAddress.Any;
             //IPAddress ip = IPAddress.Parse("192.168.1.165"); //IPAddress.Any;
             //var ip = IPAddress.Loopback;
+
+            Utilities.IniFile iniFile = new Utilities.IniFile("SipServerSettings.ini");
+            var ip = IPAddress.Parse(iniFile.Read("ip", "SIPServer"));
+
+
             var endpoint = new IPEndPoint(ip, 6001);
             var encoding =  new AsciiUTF8Encoding();
 
