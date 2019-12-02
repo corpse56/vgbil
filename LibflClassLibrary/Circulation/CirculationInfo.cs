@@ -197,7 +197,7 @@ namespace LibflClassLibrary.Circulation
                 if (exemplar.Fields["921$c"].ToString() == "ДП")
                 {
                     if ((exemplar.Fields["899$a"].ToString() != bjUser.SelectedUserStatus.DepName) &&
-                        !(bjUser.Login.ToLower().In("station1","station2") ))
+                        !(bjUser.Login.ToLower().In("station1","station2","station3","station4") ))
                     {
                         throw new Exception("C022");
                     }

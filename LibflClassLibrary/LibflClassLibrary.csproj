@@ -232,6 +232,7 @@
     <Compile Include="ExportToVufind\CERFVufindConverter.cs" />
     <Compile Include="ExportToVufind\KeyValueMapping.cs" />
     <Compile Include="Books\BJBooks\DB\DatabaseWrapper.cs" />
+    <Compile Include="Utilites\IniFile.cs" />
     <Compile Include="Litres\LitresAccountManager.cs" />
     <Compile Include="Litres\LitresApiHandler.cs" />
     <Compile Include="Litres\LitresDBWrapper.cs" />

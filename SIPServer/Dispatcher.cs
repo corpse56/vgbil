@@ -1,4 +1,6 @@
-﻿using LibflClassLibrary.BJUsers;
+﻿using ALISAPI.Errors;
+using LibflClassLibrary.ALISAPI.Errors;
+using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation;
@@ -26,7 +28,7 @@ namespace SIPServer
         List<SipClientInfo> clients_ = new List<SipClientInfo>();
         SipServerHandler handler_ = new SipServerHandler();
 
-        
+
         public void OnConnected(Session session)
         {
             SipClientInfo client = new SipClientInfo();
@@ -99,7 +101,7 @@ namespace SIPServer
         {
 
             Console.WriteLine("PatronInformation Message");
-            
+
             ReaderInfo reader = handler_.GetPatron(request.PatronId);
             if (reader == null)
             {
@@ -140,9 +142,9 @@ namespace SIPServer
                 response.PatronIdentifier = request.PatronId;
                 response.PersonalName = $"{reader.FamilyName} {reader.Name} {reader.FatherName}";
 
-                response.HoldItemsLimit = 666;
+                response.HoldItemsLimit = 100;
                 response.OverdueItemsLimit = 667;
-                response.ChargedItemsLimit = 668;
+                response.ChargedItemsLimit = 100;
 
                 response.ValidPatron = true;
                 response.ValidPatronPassword = string.Empty;
@@ -157,7 +159,7 @@ namespace SIPServer
                 response.HomePhoneNumber = reader.MobileTelephone;
 
                 response.ScreenMessage = "Информация о читателе";
-                response.PrintLine = "Print Line Заголовок";
+                response.PrintLine = "";
 
                 foreach (var order in chargedOrders)
                 {
@@ -177,7 +179,7 @@ namespace SIPServer
             Console.WriteLine("Sc Status Message");
 
             SipClientInfo client = clients_.Find(x => x.session.Ip == session.Ip);
-            response.OnlineStatus = (client == null)?  false : true;
+            response.OnlineStatus = (client == null) ? false : true;
             response.CheckInOk = true;
             response.CheckOutOk = true;
             response.RenewalPolicy = true;
@@ -217,10 +219,17 @@ namespace SIPServer
                 response.FeeType = FeeType.ADMINISTRATIVE;
                 response.TransactionDate = DateTime.Now;
                 response.ItemIdentifier = request.ItemIdentifier;
-                response.TitleIdentifier = string.Empty;
+                exemplar = BJExemplarInfo.GetExemplarByBar(bar);
+                if (exemplar != null)
+                {
+                    response.TitleIdentifier = $"{exemplar.Title()}; {exemplar.Author()}";
+                }
+                else
+                {
+                    response.TitleIdentifier = "Неизвестная книга";
+                }
                 return;
             }
-
 
             if (order == null)
             {
@@ -299,7 +308,7 @@ namespace SIPServer
             response.TransactionDate = DateTime.Now;
             response.HoldQueueLength = 0;
             response.DueDate = dateReaderNeedToReturn;//(order == null) ? DateTime.Now : order.ReturnDate;
-            response.RecallDate = (order == null) ? DateTime.Now : order.IssueDate;
+            response.RecallDate = dateReaderNeedToReturn;// (order == null) ? DateTime.Now : order.IssueDate;
             response.HoldPickupDate = dateReaderNeedToReturn;//(order == null) ? DateTime.Now : order.ReturnDate;
             response.ItemIdentifier = request.ItemIdentifier;
             response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
@@ -309,9 +318,9 @@ namespace SIPServer
             response.MediaType = MediaType.BOOK;
             response.PermanentLocation = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];
             response.CurrentLocation = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];
-            response.ItemProperties = "The Item Properties";//string.Empty;
-            response.ScreenMessage = "The Screen Message"; //string.Empty;// 
-            response.PrintLine = "The Print Line"; //string.Empty;// 
+            response.ItemProperties = "";//string.Empty;
+            response.ScreenMessage = ""; //string.Empty;// 
+            response.PrintLine = ""; //string.Empty;// 
         }
 
         public void OnCheckout(Session session, CheckoutRequest request, CheckoutResponse response)
@@ -320,13 +329,13 @@ namespace SIPServer
             SipClientInfo client = clients_.Find(x => x.session.Ip == session.Ip);
             if (client == null)
             {
-                FillCheckoutFailedResponse(response, request);
+                FillCheckoutFailedResponse(response, request, "");
                 Console.WriteLine("Client is not logged in. CheckOut operation impossible.");
                 return;
             }
             if (client.bjUser == null)
             {
-                FillCheckoutFailedResponse(response, request);
+                FillCheckoutFailedResponse(response, request, "");
                 Console.WriteLine("NOT LOGGED IN");
                 return;
             }
@@ -347,12 +356,12 @@ namespace SIPServer
             }
             catch (Exception ex)
             {
-                Console.WriteLine("320"+ex.Message + ex.Source + ex.Data + ex.StackTrace);
-                FillCheckoutFailedResponse(response, request);
+                Console.WriteLine("320" + ex.Message + ex.Source + ex.Data + ex.StackTrace);
+                FillCheckoutFailedResponse(response, request, ex.Message);
                 return;
             }
 
-            
+
             // обязательные поля
             response.Ok = true;
             if (order != null)
@@ -375,7 +384,7 @@ namespace SIPServer
                 catch (Exception ex)
                 {
                     Console.WriteLine("377" + ex.Message + ex.Source + ex.Data + ex.StackTrace);
-                    FillCheckoutFailedResponse(response, request);
+                    FillCheckoutFailedResponse(response, request, ex.Message);
                     return;
                 }
             }
@@ -389,17 +398,16 @@ namespace SIPServer
                 catch (Exception ex)
                 {
                     Console.WriteLine("391" + ex.Message + ex.Source + ex.Data + ex.StackTrace);
-                    
-                    FillCheckoutFailedResponse(response, request);
+
+                    FillCheckoutFailedResponse(response, request, ex.Message);
                     return;
                 }
             }
 
             //Desentize - раньше я думал, что это отвечает за снятие противокражкин, но оказалось, что нет
-            //IssueType issueType = ci.GetIssueType(exemplar, reader);
-            //response.Desensitize = (issueType == IssueType.AtHome)?  true:false; //снять бит или нет
-
-            response.Desensitize = false; 
+            //правильно я раньше думал!
+            IssueType issueType = ci.GetIssueType(exemplar);
+            response.Desensitize = (issueType == IssueType.AtHome) ? true : false; //снять бит или нет
 
             response.MagneticMedia = false;
             response.TransactionDate = DateTime.Now;
@@ -407,7 +415,22 @@ namespace SIPServer
             response.PatronIdentifier = request.PatronIdentifier;// + " (took from request)";
             response.ItemIdentifier = request.ItemIdentifier;// + " (also took from request)";
             response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
-            response.DueDate = DateTime.Now;
+            order = ci.FindOrderByExemplar(exemplar);
+            if (order != null)
+            {
+                if (issueType == IssueType.InHall)
+                {
+                    response.DueDate = DateTime.Now;
+                }
+                else
+                {
+                    response.DueDate = order.ReturnDate;
+                }
+            }
+            else
+            {
+                response.DueDate = DateTime.Now;
+            }
 
             // необязательные поля
             response.FeeType = FeeType.OTHER_UNKNOWN;
@@ -422,7 +445,7 @@ namespace SIPServer
             response.PrintLine = string.Empty;// "The Print Line";
         }
 
-        private void FillCheckoutFailedResponse(CheckoutResponse response, CheckoutRequest request)
+        private void FillCheckoutFailedResponse(CheckoutResponse response, CheckoutRequest request, string message)
         {
             response.Ok = false;
             response.RenewalOk = false;
@@ -434,19 +457,45 @@ namespace SIPServer
             response.ItemIdentifier = request.ItemIdentifier;
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
 
-            BJBookInfo book = (exemplar == null)? null : BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+            BJBookInfo book = (exemplar == null) ? null : BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
             var ci = new CirculationInfo();
-            var order = (exemplar == null)? null : ci.FindOrderByExemplar(exemplar);
+            var order = (exemplar == null) ? null : ci.FindOrderByExemplar(exemplar);
 
             response.TitleIdentifier = (book == null) ? "Неизвестная книга" : (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
-            response.DueDate = (order != null) ? order.ReturnDate : DateTime.Now;
+            IssueType issueType = ci.GetIssueType(exemplar);
+
+            if (order != null)
+            {
+                if (issueType == IssueType.InHall)
+                {
+                    response.DueDate = DateTime.Now;
+                }
+                else
+                {
+                    response.DueDate = order.ReturnDate;
+                }
+            }
+            else
+            {
+                response.DueDate = DateTime.Now;
+            }
+
+            if (string.IsNullOrEmpty(message))
+            {
+                ALISError error = ALISErrorList._list.Find(x => x.Code == message);
+                response.ScreenMessage = error.Message;
+            }
+            else
+            {
+                response.ScreenMessage = "Неизвестная ошибка";
+            }
         }
         private void FillCheckinFailedResponse(CheckinResponse response, CheckinRequest request)
         {
 
             //поправить этот метод.
             response.Ok = false;
-            response.Resensitize = false;
+            response.Resensitize = true;
             response.MagneticMedia = false;
             response.Alert = false;
             response.TransactionDate = DateTime.Now;
@@ -455,10 +504,10 @@ namespace SIPServer
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
             BJBookInfo book = (exemplar == null) ? null : BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
 
-            response.PermanentLocation = (exemplar == null) ? null : 
-                                         (!exemplar.Fields["899$a"].HasValue)? "Неизвестно" : exemplar.Fields["899$a"].ToString();
-            response.TitleIdentifier = (book == null) ? "Неизвестная книга" : 
-                                       (!book.Fields["700$a"].HasValue) ? 
+            response.PermanentLocation = (exemplar == null) ? null :
+                                         (!exemplar.Fields["899$a"].HasValue) ? "Неизвестно" : exemplar.Fields["899$a"].ToString();
+            response.TitleIdentifier = (book == null) ? "Неизвестная книга" :
+                                       (!book.Fields["700$a"].HasValue) ?
                                        book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}"; ;
         }
         public void OnCheckin(Session session, CheckinRequest request, CheckinResponse response)
@@ -509,7 +558,7 @@ namespace SIPServer
 
             try
             {
-                ci.RecieveBookFromReader(exemplar,order,client.bjUser);
+                ci.RecieveBookFromReader(exemplar, order, client.bjUser);
             }
             catch (Exception ex)
             {
@@ -534,8 +583,8 @@ namespace SIPServer
 
             response.MagneticMedia = false;
 
-            response.ScreenMessage = "Screen message";
-            response.PrintLine = "Print Line";
+            response.ScreenMessage = "Книга успешно принята";
+            response.PrintLine = "";
         }
         private void FillRenewFailedResponse(RenewResponse response, RenewRequest request)
         {
@@ -547,8 +596,22 @@ namespace SIPServer
             response.InstitutionId = request.InstitutionId;
             response.PatronIdentifier = request.PatronIdentifier;
             response.ItemIdentifier = request.ItemIdentifier;
-            response.TitleIdentifier = "BookTtile";
-            response.DueDate = DateTime.Now;
+            CirculationInfo ci = new CirculationInfo();
+            //BJBookInfo book;
+            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
+            if (exemplar != null)
+            {
+                OrderInfo order = ci.GetLastOrder(exemplar.IdData, exemplar.Fund);
+                response.DueDate = order.ReturnDate;
+            }
+            else
+            {
+                response.DueDate = DateTime.Now;
+
+            }
+            //book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+            response.TitleIdentifier = $"{exemplar.Author()};{exemplar.Title()}";
+
         }
         public void OnRenew(Session session, RenewRequest request, RenewResponse response)
         {
@@ -599,6 +662,8 @@ namespace SIPServer
                 catch (Exception ex)
                 {
                     result = false;
+                    ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                    response.ScreenMessage = error.Message;
                 }
             }
 
@@ -637,10 +702,12 @@ namespace SIPServer
             response.FeeAmount = 0;
             response.MediaType = MediaType.BOOK;
 
-            response.ItemProperties = "Properies";
+            response.ItemProperties = "";
             response.TransactionId = order.OrderId.ToString();
-
-            response.ScreenMessage = "User Screen Message";
+            if (result == false)
+            {
+                response.ScreenMessage = "";
+            }
             response.PrintLine = "The Print Line";
         }
 
