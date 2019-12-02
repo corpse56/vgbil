@@ -7691,3 +7691,9 @@
 /circulationof/bin/Debug/BouncyCastle.Crypto.dll
 /circulationof/bin/Debug/Google.Protobuf.dll
 /circulationof/bin/Debug/Renci.SshNet.dll
+/CirculationAppAdmin/obj/Debug/build.force
+/CirculationScheduledMaintenance/obj/Debug/build.force
+/DebugBookBaseCreator/obj/Debug/build.force
+/VufindConditionalBulkUpdate/obj/Debug/build.force
+/WalkThroughAllCovers/obj/Debug/build.force
+/WriteOff/obj/Debug/build.force
