@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Books.PeriodicBooks;
 
 namespace LibflClassLibrary.Books.PeriodBooks
@@ -37,6 +38,18 @@ namespace LibflClassLibrary.Books.PeriodBooks
             return result;
         }
 
+        internal PeriodicExemplarInfo GetPeriodicExemplarInfoByExemplarId(int exemplarId)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal string GetBookBarByInventoryNumber(string inventoryNumber)
+        {
+            DataTable table = dbWrapper_.GetBookBarByInventoryNumber(inventoryNumber);
+            if (table.Rows.Count == 0) return null;
+            return table.Rows[0]["bar"].ToString();
+        }
+
         internal PeriodicExemplarInfo GetExemplarByBar(string bar)
         {
             PeriodicExemplarInfo result = new PeriodicExemplarInfo();
@@ -49,6 +62,11 @@ namespace LibflClassLibrary.Books.PeriodBooks
             result.Id = row["exemplarId"].ToString();//idz of bar
             result.PublishYear = row["pubYear"].ToString();
             result.BookId = $"PERIOD_{row["pin"].ToString()}";
+            result.Author = string.Empty ;
+            result.Title = row["title"].ToString();
+            result.AccessInfo = new ExemplarAccessInfo();
+            result.AccessInfo.Access = 1005;
+            result.AccessInfo.MethodOfAccess = 4000;
             return result;
         }
     }

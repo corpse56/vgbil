@@ -139,7 +139,7 @@ namespace BookkeepingForOrder
             }
             foreach (var order in orders)
             {
-                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                BookExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
                 ReaderInfo reader = ReaderInfo.GetReader(order.ReaderId);
                 dgwReaders.Rows.Add();
                 var row = dgwReaders.Rows[dgwReaders.Rows.Count - 1];
@@ -148,7 +148,7 @@ namespace BookkeepingForOrder
                 row.Cells["pin"].Value = order.BookId.Substring(order.BookId.IndexOf("_")+1);
                 row.Cells["author"].Value = order.Book.Author;
                 row.Cells["title"].Value = order.Book.Title;
-                row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
+                row.Cells["inv"].Value = exemplar.InventoryNumber;//exemplar.Fields["899$p"].ToString();
                 row.Cells["cipher"].Value = exemplar.Cipher;
                 row.Cells["readerid"].Value = order.ReaderId;
                 
@@ -216,7 +216,7 @@ namespace BookkeepingForOrder
             List<OrderInfo> orders = circulation.GetOrdersHistoryForStorage(user.SelectedUserStatus.DepId, user.SelectedUserStatus.DepName);
             foreach (var order in orders)
             {
-                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                BookExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
                 ReaderInfo reader = ReaderInfo.GetReader(order.ReaderId);
                 dgwRHis.Rows.Add();
                 var row = dgwRHis.Rows[dgwRHis.Rows.Count - 1];
@@ -225,7 +225,7 @@ namespace BookkeepingForOrder
                 row.Cells["pin"].Value = order.BookId.Substring(order.BookId.IndexOf("_") + 1);
                 row.Cells["author"].Value = order.Book.Author;
                 row.Cells["title"].Value = order.Book.Title;
-                row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
+                row.Cells["inv"].Value = exemplar.InventoryNumber;//exemplar.Fields["899$p"].ToString();
                 row.Cells["cipher"].Value = exemplar.Cipher;
                 row.Cells["readerid"].Value = order.ReaderId;
                 row.Cells["fio"].Value = (string.IsNullOrEmpty(reader.FatherName)) ? $"{reader.FamilyName} {reader.Name.Substring(0, 1)}." :

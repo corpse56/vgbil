@@ -11,5 +11,6 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         public int IDMAIN { get; set; }
         public int IDDATA { get; set; }
         public string Fund { get; set; }
+        public string BookId { get; set; }
     }
 }

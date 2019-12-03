@@ -129,7 +129,6 @@
     <Compile Include="BJUsers\BJUserDBWrapper.cs" />
     <Compile Include="BJUsers\BJUserInfo.cs" />
     <Compile Include="BJUsers\BJUserLoader.cs" />
-    <Compile Include="Books\BJBooks\BJBookFactory.cs" />
     <Compile Include="Books\BJBooks\BJBookJsonConverter.cs" />
     <Compile Include="Books\BJBooks\BJExemplars\BJConvoluteInfo.cs" />
     <Compile Include="Books\BJBooks\BJExemplars\BJElectronicExemplarAvailabilityStatus.cs" />
@@ -142,7 +141,6 @@
     <Compile Include="Books\BookJSONViewers\BookJSONFullViewer.cs" />
     <Compile Include="Books\BookJSONViewers\BookJSONShortViewer.cs" />
     <Compile Include="Books\ExemplarFactory.cs" />
-    <Compile Include="Books\PeriodicBooks\PeriodicBookFactory.cs" />
     <Compile Include="Books\PeriodicBooks\PeriodicBookInfo.cs" />
     <Compile Include="Books\PeriodicBooks\PeriodicDatabaseWrapper.cs" />
     <Compile Include="Books\PeriodicBooks\PeriodicExemplarInfo.cs" />

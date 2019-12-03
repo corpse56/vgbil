@@ -1,5 +1,6 @@
 ﻿using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using LibflClassLibrary.Books.PeriodicBooks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +23,17 @@ namespace LibflClassLibrary.Books
                 case "BJSCC":
                     result = BJExemplarInfo.GetExemplarByIdData(exemplarId, fund);
                     break;
-
+                case "PERIOD":
+                    result = PeriodicExemplarInfo.GetPeriodicExemplarInfoByExemplarId(exemplarId);
+                    break;
             }
             return result ?? null;
         }
+        public static CreateExemplar(string bar)
+        {
+            BookExemplarBase result = null;
+            result = BJExemplarInfo.GetExemplarByBar(bar);
 
+        }
     }
 }

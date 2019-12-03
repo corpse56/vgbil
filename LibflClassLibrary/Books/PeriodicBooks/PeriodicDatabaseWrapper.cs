@@ -32,5 +32,17 @@ namespace LibflClassLibrary.Books.PeriodBooks
                 return table;
             }
         }
+
+        internal DataTable GetBookBarByInventoryNumber(string inventoryNumber)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_BOOK_BAR_BY_INVENTORYNUMBER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("inventoryNumber", SqlDbType.NVarChar).Value = inventoryNumber;
+                dataAdapter.Fill(table);
+                return table;
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 {
-    public class BJExemplarAccessInfo
+    public class ExemplarAccessInfo
     {
         public int Access { get; set; }
         public int MethodOfAccess { get; set; }

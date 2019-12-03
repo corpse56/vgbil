@@ -29,24 +29,18 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         }
 
         public int IDMAIN { get; set; }
-        public string BookId
-        {
-            get
-            {
-                return $"{Fund}_{IDMAIN.ToString()}";
-            }
-        }
         public bool IsAlligat { get; set; }
         public string ConvolutePin { get; set; }
         public int ConvoluteIdData { get; set; }
-        public string Cipher { get; set; }
         public string Bar { get; set; }
+
         public DateTime Created; //для новых поступлений. Дата присвоения инвентарного номера.
-
         public BJFields Fields = new BJFields();
+        public ExemplarAccessInfo ExemplarAccess = new ExemplarAccessInfo();
 
-        public BJExemplarAccessInfo ExemplarAccess = new BJExemplarAccessInfo(); 
-
+        //virtual properties
+        public override string Cipher { get; set; }
+        public override string InventoryNumber { get; set; }
 
         public static BJExemplarInfo GetExemplarByInventoryNumber(string inv, string fund)
         {
@@ -57,12 +51,16 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 return null;
             }
             BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData((int)table.Rows[0]["IDDATA"], fund);
+            exemplar.Author = exemplar.GetAuthor();
+            exemplar.Title = exemplar.GetTitle();
             return exemplar;
         }
         public static BJExemplarInfo GetExemplarByBar(string bar)
         {
             BJBookInfo book = BJBookInfo.GetBookInfoByBAR(bar);
             BJExemplarInfo exemplar = (BJExemplarInfo)book.Exemplars.Find(x => ((BJExemplarInfo)x).Fields["899$w"].ToString() == bar);
+            exemplar.Author = exemplar.GetAuthor();
+            exemplar.Title = exemplar.GetTitle();
             return exemplar;
         }
 
@@ -74,8 +72,8 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             BJExemplarInfo exemplar = new BJExemplarInfo((int)table.Rows[0]["IDDATA"]);
             exemplar.IDMAIN = (int)table.Rows[0]["IDMAIN"];
             exemplar.Fund = fund;
-
-
+            exemplar.BookId = $"{exemplar.Fund}_{exemplar.IDMAIN.ToString()}";
+            exemplar.InventoryNumber = 
             foreach (DataRow row in table.Rows)//записываем все поля в объект
             {
                 if (fund == "BJACC")
@@ -134,7 +132,8 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 
             exemplar.Cipher = string.IsNullOrEmpty(exemplar.Fields["899$j"].ToString()) ? dbw.GetCipher(exemplar.Fields["899$b"].ToString(), exemplar.IDMAIN) : exemplar.Fields["899$j"].ToString();
             exemplar.Bar = exemplar.Fields["899$w"].ToString();
-
+            exemplar.InventoryNumber = string.IsNullOrWhiteSpace(exemplar.Fields["899$p"].ToString()) ?
+                                        exemplar.Fields["899$w"].ToString() : exemplar.Fields["899$p"].ToString();
             return exemplar;
         }
 
@@ -154,14 +153,16 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             convolute.Fund = fund;
             convolute.IDDATA = (int)table.Rows[0]["IDDATA"];
             convolute.IDMAIN = (int)table.Rows[0]["IDMAIN"];
+            convolute.BookId = $"{convolute.Fund}_{convolute.IDMAIN.ToString()}";
+
             return convolute;
 
         }
 
-        private static BJExemplarAccessInfo GetExemplarAccess(BJExemplarInfo exemplar)
+        private static ExemplarAccessInfo GetExemplarAccess(BJExemplarInfo exemplar)
         {
 
-            BJExemplarAccessInfo access = new BJExemplarAccessInfo();
+            ExemplarAccessInfo access = new ExemplarAccessInfo();
             //сначала суперусловия
             if (exemplar.Fields["899$x"].ToString().ToLower().Contains("э"))
             {
@@ -364,14 +365,14 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             return access;
         }
 
-
-        public override string Author()
+        public override string Author { get; set; }
+        private string GetAuthor()
         {
             BJExemplarLoader loader = new BJExemplarLoader(this.Fund);
             return loader.GetAuthor(this.IDMAIN);
         }
-
-        public override string Title()
+        public override string Title { get; set; }
+        private string GetTitle()
         {
             BJExemplarLoader loader = new BJExemplarLoader(this.Fund);
             return loader.GetTitle(this.IDMAIN);

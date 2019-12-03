@@ -8,16 +8,11 @@ using System.Linq;
 using System.Net;
 using System.Web;
 
-
-
 namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 {
-    
-    
     /// <summary>
     /// Сводное описание для ElectronicExemplarInfo
     /// </summary>
-
     public class BJElectronicExemplarInfo : BJExemplarInfo  //наследуем этот класс от  ExemplarInfo. нахуя?
     {
 
@@ -38,7 +33,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             }
             Statuses = loader.LoadAvailabilityStatuses(IDMAIN, Fund);
             var Status = Statuses.Find(x => x.Project == BJElectronicAvailabilityProjects.VGBIL);
-            this.ExemplarAccess = new BJExemplarAccessInfo();
+            this.ExemplarAccess = new ExemplarAccessInfo();
             if (Status == null)//это значит книги нет в базе BookAddInf, но она там должна быть! либо надо гиперссылку из BJVVV убирать
             {
                 this.ExemplarAccess.Access = 1999;

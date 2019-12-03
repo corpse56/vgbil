@@ -10,22 +10,33 @@ using System.Threading.Tasks;
 
 namespace LibflClassLibrary.Books
 {
-    public abstract class BookFactory
+    public class BookFactory
     {
-        public abstract BookBase CreateBook(int pin, string fund);
+        //public abstract BookBase CreateBook(int pin, string fund);
         public BookBase CreateBook(string bar)
         {
+            //два баз. BJ и Periodica
+
             BookBase result = null;
             result = BJBookInfo.GetBookInfoByBAR(bar);            
             return result ?? PeriodicBookInfo.GetBookInfoByBar(bar);
         }
-        public abstract BookExemplarBase CreateExemplar(int id, string fund);
-        public BookExemplarBase CreateExemplar(string bar)
+        public BookBase CreateBook(int pin, string fund)
         {
-            BookExemplarBase result = null;
-            result = BJExemplarInfo.GetExemplarByBar(bar);
-            return result ?? PeriodicExemplarInfo.GetPeriodicExemplarInfo(bar);
+            BookBase result = null;
+            result = PeriodicBookInfo.GetBookInfoByPIN(pin, fund);
+            return result ?? null;
+        }
 
+        public static BookBase CreateBookInfoByInventoryNumber(string invNumber, string fund)
+        {
+            BookBase result = null;
+            result = BJBookInfo.GetBookInfoByInventoryNumber(invNumber, fund);
+            if (result == null)
+            {
+                result = PeriodicBookInfo.GetBookInfoByInventoryNumber(invNumber);
+            }
+            return result;
         }
     }
 }

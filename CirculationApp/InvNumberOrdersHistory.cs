@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation;
@@ -70,24 +71,7 @@ namespace CirculationApp
             dgOrderFlow.Rows.Clear();
             lbOrders.Items.Clear();
 
-            //GetBookInfoByInventoryNumber - это полный шлак а не метод... переписать, чтобы сам искал по всех фондах!
-            BJBookInfo book = BJBookInfo.GetBookInfoByInventoryNumber(tbInvNumber.Text, "BJVVV");
-            if (book == null)
-            {
-                book = BJBookInfo.GetBookInfoByInventoryNumber(tbInvNumber.Text, "REDKOSTJ");
-            }
-            if (book == null)
-            {
-                book = BJBookInfo.GetBookInfoByInventoryNumber(tbInvNumber.Text, "BJACC");
-            }
-            if (book == null)
-            {
-                book = BJBookInfo.GetBookInfoByInventoryNumber(tbInvNumber.Text, "BJFCC");
-            }
-            if (book == null)
-            {
-                book = BJBookInfo.GetBookInfoByInventoryNumber(tbInvNumber.Text, "BJSCC");
-            }
+            BookBase book = BookFactory.CreateBookInfoByInventoryNumber(tbInvNumber.Text, "BJVVV");
             if (book == null)
             {
                 label3.Text = "Не найдено";

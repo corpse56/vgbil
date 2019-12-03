@@ -12,6 +12,7 @@ using LibflClassLibrary.Readers.ReadersRight;
 using LibflClassLibrary.Readers.ReadersRights;
 using System.Windows.Forms;
 using LibflClassLibrary.Circulation;
+using LibflClassLibrary.Books;
 
 namespace BookkeepingForOrder
 {
@@ -358,7 +359,7 @@ namespace BookkeepingForOrder
                 
                 OrderInfo order = ci.GetOrder(Convert.ToInt32(dg.SelectedRows[0].Cells["orderid"].Value));
 
-                BJExemplarInfo Exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund );
+                BookExemplarBase Exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund );
                 //BJBookInfo Book = BJBookInfo.GetBookInfoByPIN(order.BookId);
                 if (Exemplar == null)
                 {

@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Readers;
@@ -85,7 +86,7 @@ namespace BookkeepingForOrder
             }
             foreach (var order in orders)
             {
-                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                BookExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
                 ReaderInfo reader = ReaderInfo.GetReader(order.ReaderId);
                 dgwReaders.Rows.Add();
                 var row = dgwReaders.Rows[dgwReaders.Rows.Count - 1];

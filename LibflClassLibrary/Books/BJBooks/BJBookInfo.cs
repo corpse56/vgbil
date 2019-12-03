@@ -79,17 +79,10 @@ namespace LibflClassLibrary.Books.BJBooks
         internal static BJBookInfo GetBookInfoByBAR(string data)
         {
             BJBookInfo book;
-            BJBookLoader loader = new BJBookLoader("BJVVV");
+            BJBookLoader loader = new BJBookLoader("");//фонд не задаём, потому что он запросом ищет во всех базах
             book = loader.GetBJBookByBar(data);
-            return book;
-            
+            return book;            
         }
-
-
-
-
-
-
 
         public int GetBusyElectronicExemplarCount()
         {

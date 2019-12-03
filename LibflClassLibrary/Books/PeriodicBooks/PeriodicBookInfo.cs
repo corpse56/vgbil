@@ -24,5 +24,13 @@ namespace LibflClassLibrary.Books.PeriodBooks
         {
             throw new NotImplementedException();
         }
+
+        internal static BookBase GetBookInfoByInventoryNumber(string inventoryNumber)
+        {
+            PeriodicLoader loader = new PeriodicLoader();
+            string bar = loader.GetBookBarByInventoryNumber(inventoryNumber);
+            if (bar == null) return null;
+            return loader.GetBookByBar(bar);
+        }
     }
 }
