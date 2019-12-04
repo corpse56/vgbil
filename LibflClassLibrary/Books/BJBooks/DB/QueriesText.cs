@@ -133,18 +133,57 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
-        public string GET_EXEMPLAR_BY_INVENTORY_NUMBER
+        public string GET_EXEMPLAR_ID_BY_INVENTORY_NUMBER
         {
             get
             {
-                return " select * from " + this.Fund + "..DATAEXT A" +
-                        //" left join " + this.Fund + "..DATAEXT B on A.IDDATA = B.IDDATA " +
-                        //" left join " + this.Fund + "..DATAEXTPLAIN C on C.IDDATAEXT = A.ID " +
+                return " select 'BJVVV' fund, A.IDDATA exemplarId, A.IDMAIN bookId from BJVVV..DATAEXT A" +
                         " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv " +
-                        " and not exists (select 1 from " + this.Fund + "..DATAEXT C where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')";
+                        " and not exists (select 1 from BJVVV..DATAEXT C " +
+                        "                 where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')" +
+                        " union all" +
+                        " select 'BJVVV' fund, A.IDDATA exemplarId, A.IDMAIN bookId from REDKOSTJ..DATAEXT A" +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv " +
+                        " and not exists (select 1 from REDKOSTJ..DATAEXT C " +
+                        "                 where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')" +
+                        " union all" +
+                        " select 'BJACC' fund, A.IDDATA exemplarId, A.IDMAIN bookId from BJACC..DATAEXT A" +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv " +
+                        " and not exists (select 1 from BJACC..DATAEXT C " +
+                        "                 where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')" +
+                        " union all" +
+                        " select 'BJFCC' fund, A.IDDATA exemplarId, A.IDMAIN bookId from BJFCC..DATAEXT A" +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv " +
+                        " and not exists (select 1 from BJFCC..DATAEXT C " +
+                        "                 where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')" +
+                        " union all" +
+                        " select 'BJSCC' fund, A.IDDATA exemplarId, A.IDMAIN bookId from BJSCC..DATAEXT A" +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv " +
+                        " and not exists (select 1 from BJSCC..DATAEXT C " +
+                        "                 where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')" ;
             }
         }
-        
+        public string GET_EXEMPLAR_ID_BY_BAR
+        {
+            get
+            {
+                return " select 'BJVVV' fund, A.IDDATA exemplarId, A.IDMAIN bookId from BJVVV..DATAEXT A" +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$w' and A.SORT = @bar " +
+                        " union all" +
+                        " select 'BJVVV' fund, A.IDDATA exemplarId, A.IDMAIN bookId from REDKOSTJ..DATAEXT A" +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$w' and A.SORT = @bar " +
+                        " union all" +
+                        " select 'BJACC' fund, A.IDDATA exemplarId, A.IDMAIN bookId from BJACC..DATAEXT A" +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$w' and A.SORT = @bar " +
+                        " union all" +
+                        " select 'BJFCC' fund, A.IDDATA exemplarId, A.IDMAIN bookId from BJFCC..DATAEXT A" +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$w' and A.SORT = @bar " +
+                        " union all" +
+                        " select 'BJSCC' fund, A.IDDATA exemplarId, A.IDMAIN bookId from BJSCC..DATAEXT A" +
+                        " where A.MNFIELD = 899 and A.MSFIELD = '$w' and A.SORT = @bar ";
+            }
+        }
+
         public string GET_CONVOLUTE_BY_INVENTORY_NUMBER
         {
             get

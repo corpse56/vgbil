@@ -77,12 +77,13 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_EXISTS_DIGITAL_COPY, connection);
-                dataAdapter.SelectCommand.Parameters.AddWithValue("IDMAIN", SqlDbType.Int).Value = BookBase.GetIDMAIN(bookId);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("IDMAIN", SqlDbType.Int).Value = BookBase.GetPIN(bookId);
                 dataAdapter.Fill(table);
                 return table;
             }
 
         }
+
 
         internal DataTable GetAuthor(int idMain)
         {
@@ -245,17 +246,29 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
-        internal DataTable GetExemplar(string InventoryNumber)
+        internal DataTable GetExemplarIdByInventoryNumber(string InventoryNumber)
         {
             DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_EXEMPLAR_BY_INVENTORY_NUMBER, connection);
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_EXEMPLAR_ID_BY_INVENTORY_NUMBER, connection);
                 dataAdapter.SelectCommand.Parameters.Add("inv", SqlDbType.NVarChar).Value = InventoryNumber;
                 dataAdapter.Fill(table);
                 return table;
             }
         }
+        internal DataTable GetExemplarIdByBar(string bar)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.GET_EXEMPLAR_ID_BY_BAR, connection);
+                dataAdapter.SelectCommand.Parameters.Add("bar", SqlDbType.NVarChar).Value = bar;
+                dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
         internal DataTable GetConvolute(string inventoryNumber)
         {
             DataTable table = new DataTable();

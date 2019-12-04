@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace LibflClassLibrary.Books.PeriodicBooks
 {
-    class PeriodicExemplarInfo : BookExemplarBase
+    class PeriodicExemplarInfo : ExemplarBase
     {
-        public string Bar { get; set; }
         public string Number { get; set; }
         public string PublishYear { get; set; }
 
@@ -18,6 +17,11 @@ namespace LibflClassLibrary.Books.PeriodicBooks
         public override string Cipher { get; set; }
         public override string Author { get; set; }
         public override string Title { get; set; }
+        public override string Rack { get; set; }
+        public override string Bar { get; set; }
+        public override string Location { get; set; }
+        public override string Language { get; set; }
+        public override string PublicationClass { get; set; }
 
         public static PeriodicExemplarInfo GetPeriodicExemplarInfoByBar(string bar)
         {
@@ -34,5 +38,11 @@ namespace LibflClassLibrary.Books.PeriodicBooks
             return result;
         }
 
+        internal static ExemplarBase GetExemplarByInventoryNumber(string inventoryNumber)
+        {
+            PeriodicLoader loader = new PeriodicLoader();
+            PeriodicExemplarInfo result = loader.GetExemplarByInventoryNumber(inventoryNumber);
+            return result;
+        }
     }
 }

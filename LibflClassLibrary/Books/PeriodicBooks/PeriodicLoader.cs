@@ -38,14 +38,39 @@ namespace LibflClassLibrary.Books.PeriodBooks
             return result;
         }
 
-        internal PeriodicExemplarInfo GetPeriodicExemplarInfoByExemplarId(int exemplarId)
+        internal BookBase GetBookInfoByPIN(int pin)
         {
-            throw new NotImplementedException();
+            DataTable table = dbWrapper_.GetBookInfoByPIN(pin);
+            if (table.Rows.Count == 0) return null;
+            DataRow row = table.Rows[0];
+            PeriodicBookInfo result = new PeriodicBookInfo();
+            result.Id = $"PERIOD_{pin.ToString()}";
+            result.Fund = "PERIOD";
+            result.Exemplars = new List<ExemplarBase>();
+            result.Pin = pin.ToString();
+            result.Title = row["title"].ToString();
+            result.Language = row["language"].ToString();
+            return result;
         }
 
-        internal string GetBookBarByInventoryNumber(string inventoryNumber)
+        internal PeriodicExemplarInfo GetExemplarByInventoryNumber(string inventoryNumber)
         {
-            DataTable table = dbWrapper_.GetBookBarByInventoryNumber(inventoryNumber);
+            string bar = this.GetExemplarBarByInventoryNumber(inventoryNumber);
+            PeriodicExemplarInfo result = this.GetExemplarByBar(bar);
+            return result;
+        }
+
+        internal PeriodicExemplarInfo GetPeriodicExemplarInfoByExemplarId(int exemplarId)
+        {
+            DataTable table = dbWrapper_.GetPeriodicExemplarBarByExemplarId(exemplarId);
+            if (table.Rows.Count == 0) return null;
+            string bar = table.Rows[0]["bar"].ToString();
+            return PeriodicExemplarInfo.GetPeriodicExemplarInfoByBar(bar);
+        }
+
+        internal string GetExemplarBarByInventoryNumber(string inventoryNumber)
+        {
+            DataTable table = dbWrapper_.GetExemplarBarByInventoryNumber(inventoryNumber);
             if (table.Rows.Count == 0) return null;
             return table.Rows[0]["bar"].ToString();
         }
@@ -67,6 +92,11 @@ namespace LibflClassLibrary.Books.PeriodBooks
             result.AccessInfo = new ExemplarAccessInfo();
             result.AccessInfo.Access = 1005;
             result.AccessInfo.MethodOfAccess = 4000;
+            result.Rack = string.Empty;
+            result.Location = row["location"].ToString();
+            result.Language = row["language"].ToString();
+            result.Cipher = row["cipher"].ToString();
+            result.PublicationClass = row["pubClass"].ToString();
             return result;
         }
     }

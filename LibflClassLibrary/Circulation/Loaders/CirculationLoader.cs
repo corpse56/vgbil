@@ -49,10 +49,10 @@ namespace LibflClassLibrary.Circulation.Loaders
             return (table.Rows.Count == 0) ? null : (DateTime?)table.Rows[0][0];
         }
 
-        internal bool IsExemplarIssued(BookExemplarBase exemplar)
+        internal bool IsExemplarIssued(ExemplarBase exemplar)
         {
-            if (!(exemplar is BJExemplarInfo)) return false;
-            DataTable table = dbWrapper.IsExemplarIssued(exemplar as BJExemplarInfo);
+            //if (!(exemplar is BJExemplarInfo)) return false;
+            DataTable table = dbWrapper.IsExemplarIssued(exemplar);
             if (table.Rows.Count > 0)
             {
                 return true;
@@ -67,7 +67,7 @@ namespace LibflClassLibrary.Circulation.Loaders
             DataTable table = dbWrapper.IsBookAlreadyIssuedToReader(book, reader);
             return (table.Rows.Count != 0);
         }
-        internal void NewOrder(BookExemplarBase exemplar, ReaderInfo reader, int orderTypeId, int ReturnInDays, string AlligatBookId, int IssuingDepId)
+        internal void NewOrder(ExemplarBase exemplar, ReaderInfo reader, int orderTypeId, int ReturnInDays, string AlligatBookId, int IssuingDepId)
         {
             switch (orderTypeId)
             {
@@ -167,7 +167,7 @@ namespace LibflClassLibrary.Circulation.Loaders
             return dbWrapper.GetAttendance(bjUser.SelectedUserStatus.UnifiedLocationCode).Rows.Count;
         }
 
-        internal bool IsIssuedToReader(BookExemplarBase exemplar)
+        internal bool IsIssuedToReader(ExemplarBase exemplar)
         {
             DataTable table = dbWrapper.IsIssuedToReader(exemplar.Id, exemplar.Fund);
             return (table.Rows.Count != 0) ? true : false;
@@ -314,9 +314,9 @@ namespace LibflClassLibrary.Circulation.Loaders
             return Orders;
         }
 
-        internal OrderInfo FindOrderByExemplar(BJExemplarInfo exemplar)
+        internal OrderInfo FindOrderByExemplar(ExemplarBase exemplar)
         {
-            DataTable table = dbWrapper.FindOrderByExemplar(exemplar.IdData, exemplar.Fund);
+            DataTable table = dbWrapper.FindOrderByExemplar(Convert.ToInt32(exemplar.Id), exemplar.Fund);
             if (table.Rows.Count == 0) return null;
             return FillOrderFromDataRow(table.Rows[0]);
         }

@@ -151,7 +151,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
         {
             ElectronicCopyFullView electronicCopyFullView = new ElectronicCopyFullView();
             BJElectronicExemplarInfo exemplar;
-            exemplar = new BJElectronicExemplarInfo(BookBase.GetIDMAIN(BookId),BookBase.GetFund(BookId));
+            exemplar = new BJElectronicExemplarInfo(BookBase.GetPIN(BookId),BookBase.GetFund(BookId));
             exemplar.FillFileFields();
             electronicCopyFullView.AccessCode = exemplar.ExemplarAccess.Access;
             electronicCopyFullView.HeightFirstFile = exemplar.HeightFirstFile;

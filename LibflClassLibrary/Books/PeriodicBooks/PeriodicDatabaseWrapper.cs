@@ -33,13 +33,38 @@ namespace LibflClassLibrary.Books.PeriodBooks
             }
         }
 
-        internal DataTable GetBookBarByInventoryNumber(string inventoryNumber)
+        internal DataTable GetExemplarBarByInventoryNumber(string inventoryNumber)
         {
             DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_BOOK_BAR_BY_INVENTORYNUMBER, connection);
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_EXEMPLAR_BAR_BY_INVENTORYNUMBER, connection);
                 dataAdapter.SelectCommand.Parameters.Add("inventoryNumber", SqlDbType.NVarChar).Value = inventoryNumber;
+                dataAdapter.Fill(table);
+                return table;
+            }
+        }
+
+        internal DataTable GetBookInfoByPIN(int pin)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_BOOK_BY_PIN, connection);
+                dataAdapter.SelectCommand.Parameters.Add("pin", SqlDbType.NVarChar).Value = pin.ToString();
+                dataAdapter.Fill(table);
+                return table;
+            }
+
+        }
+
+        internal DataTable GetPeriodicExemplarBarByExemplarId(int exemplarId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_BAR_BY_EXEMPLARID, connection);
+                dataAdapter.SelectCommand.Parameters.Add("exemplarId", SqlDbType.Int).Value = exemplarId;
                 dataAdapter.Fill(table);
                 return table;
             }

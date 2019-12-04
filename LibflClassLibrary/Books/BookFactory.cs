@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace LibflClassLibrary.Books
 {
-    public class BookFactory
+    public static class BookFactory
     {
         //public abstract BookBase CreateBook(int pin, string fund);
-        public BookBase CreateBook(string bar)
+        public static BookBase CreateBookByBar(string bar)
         {
             //два баз. BJ и Periodica
 
@@ -21,17 +21,23 @@ namespace LibflClassLibrary.Books
             result = BJBookInfo.GetBookInfoByBAR(bar);            
             return result ?? PeriodicBookInfo.GetBookInfoByBar(bar);
         }
-        public BookBase CreateBook(int pin, string fund)
+        public static BookBase CreateBookByPin(int pin, string fund)
         {
             BookBase result = null;
-            result = PeriodicBookInfo.GetBookInfoByPIN(pin, fund);
-            return result ?? null;
+            result = BJBookInfo.GetBookInfoByPIN(pin, fund);
+            return result ?? PeriodicBookInfo.GetBookInfoByPIN($"PERIOD_{pin}");
+        }
+        public static BookBase CreateBookByPin(string fullPin)
+        {
+            BookBase result = null;
+            result = BJBookInfo.GetBookInfoByPIN(BookBase.GetPIN(fullPin), BookBase.GetFund(fullPin));
+            return result ?? PeriodicBookInfo.GetBookInfoByPIN(fullPin);
         }
 
         public static BookBase CreateBookInfoByInventoryNumber(string invNumber, string fund)
         {
             BookBase result = null;
-            result = BJBookInfo.GetBookInfoByInventoryNumber(invNumber, fund);
+            result = BJBookInfo.GetBookInfoByInventoryNumber(invNumber);
             if (result == null)
             {
                 result = PeriodicBookInfo.GetBookInfoByInventoryNumber(invNumber);

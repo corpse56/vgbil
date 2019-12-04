@@ -81,7 +81,7 @@ namespace CirculationApp
                 return;
             }
 
-            BJExemplarInfo exemplar = (BJExemplarInfo)book.Exemplars.Find(x=> ((BJExemplarInfo)x).Fields["899$p"].ToString() == tbInvNumber.Text);
+            ExemplarBase exemplar = ExemplarFactory.CreateExemplarByInventoryNumber(tbInvNumber.Text);
             if (exemplar == null)
             {
                 label3.Text = "Не найдено";
@@ -92,10 +92,9 @@ namespace CirculationApp
             }
             else
             {
-
-                label3.Text = book.Fields["200$a"].ToString();
+                label3.Text = exemplar.AuthorTitle;//book.Fields["200$a"].ToString();
                 CirculationInfo ci = new CirculationInfo();
-                List<OrderInfo> orders = ci.GetOrders(exemplar.IdData, exemplar.Fund);
+                List<OrderInfo> orders = ci.GetOrders(Convert.ToInt32(exemplar.Id), exemplar.Fund);
                 lbOrders.Items.Clear();
                 foreach (OrderInfo order in orders)
                 {
@@ -110,8 +109,6 @@ namespace CirculationApp
                     MessageBox.Show("Инвентарный номер найден, но заказов на него не было.");
                 }
             }
-
-
         }
     }
 }

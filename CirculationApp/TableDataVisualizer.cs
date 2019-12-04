@@ -29,7 +29,7 @@ namespace CirculationApp
         private BJUserInfo bjUser_;
         private List<OrderInfo> orders_;
         private List<BookBase> books_;
-        private List<BookExemplarBase> exemplars_;
+        private List<ExemplarBase> exemplars_;
         private ReferenceType rt_;
         private DataTable tableToDisplay_;
         public TableDataVisualizer()
@@ -193,27 +193,24 @@ namespace CirculationApp
                 var row = dgViewer.Rows[dgViewer.Rows.Count - 1];
 
                 ReaderInfo reader = ReaderInfo.GetReader(order.ReaderId);
-                BookExemplarBase exemplarBase = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
+                ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
 
-                if (exemplarBase is BJExemplarInfo == false)
+                //if (exemplarBase is BJExemplarInfo == false)
+                if (exemplar == null)
                 {
                     row.Cells["NN"].Value = i++;
                     row.Cells["fio"].Value = reader.FIO;
                     row.Cells["readerId"].Value = order.ReaderId;
                     row.Cells["readerRights"].Value = reader.Rights.ToString();
-                    row.Cells["inventoryNumber"].Value = "Неопознанный экземпляр";
+                    row.Cells["inventoryNumber"].Value = $"Неопознанный экземпляр: {order.Fund}_{order.ExemplarId}";
                     continue;
                 }
-                BJExemplarInfo exemplar = (BJExemplarInfo)exemplarBase;
-
-
-
                 row.Cells["NN"].Value = i++;
                 row.Cells["fio"].Value = reader.FIO;
                 row.Cells["readerId"].Value = order.ReaderId;
                 row.Cells["readerRights"].Value = reader.Rights.ToString();
-                row.Cells["inventoryNumber"].Value = $"{exemplar.Fields["899$p"].ToString()}";
-                row.Cells["bar"].Value = $"{exemplar.Fields["899$w"].ToString()}";
+                row.Cells["inventoryNumber"].Value = exemplar.InventoryNumber;
+                row.Cells["bar"].Value = exemplar.Bar;
                 row.Cells["phone"].Value = reader.MobileTelephone;
                 row.Cells["email"].Value = reader.Email;
                 row.Cells["address"].Value = $"{reader.RegistrationCity}, {reader.RegistrationStreet}";
@@ -223,7 +220,6 @@ namespace CirculationApp
                 int daysOverdue = (DateTime.Now - order.ReturnDate).Days;
                 row.Cells["daysOverdue"].Value = daysOverdue;
                 row.Cells["db"].Value = order.Fund;
-                
             }
             if (dgViewer.Rows.Count != 0)
             {
@@ -269,24 +265,24 @@ namespace CirculationApp
 
 
             int i = 1;
-            foreach (BookExemplarBase exemplar in exemplars_)
+            foreach (ExemplarBase exemplar in exemplars_)
             {
                 dgViewer.Rows.Add();
                 var row = dgViewer.Rows[dgViewer.Rows.Count - 1];
 
 
-                if (exemplar is BJExemplarInfo)
+                //if (exemplar is BJExemplarInfo)
                 {
-                    BJExemplarInfo bjExemplar = (BJExemplarInfo)exemplar;
+                    //BJExemplarInfo bjExemplar = (BJExemplarInfo)exemplar;
                     //BJBookInfo bjBook = (BJBookInfo)BookFactory.CreateBook(bjExemplar.IDMAIN, bjExemplar.Fund);
                     row.Cells["NN"].Value = i++;
-                    row.Cells["author"].Value = bjExemplar.Author(); //bjBook.Fields["700$a"].ToString();
-                    row.Cells["title"].Value = bjExemplar.Title();//bjBook.Fields["200$a"].ToString();
-                    row.Cells["inventoryNumber"].Value = bjExemplar.Fields["899$p"].ToString();
-                    row.Cells["bar"].Value = bjExemplar.Fields["899$w"].ToString();
-                    row.Cells["rack"].Value = bjExemplar.Fields["899$c"].ToString();
-                    row.Cells["db"].Value = bjExemplar.Fund;
-                    row.Cells["lang"].Value = BJBookInfo.GetFieldValue(bjExemplar.Fund, bjExemplar.IDMAIN, 101, "$a");//bjBook.Fields["101$a"].ToString();
+                    row.Cells["author"].Value = exemplar.Author;
+                    row.Cells["title"].Value = exemplar.Title;
+                    row.Cells["inventoryNumber"].Value = exemplar.InventoryNumber;
+                    row.Cells["bar"].Value = exemplar.Bar;
+                    row.Cells["rack"].Value = exemplar.Rack;
+                    row.Cells["db"].Value = exemplar.Fund;
+                    row.Cells["lang"].Value = exemplar.la//BJBookInfo.GetFieldValue(bjExemplar.Fund, bjExemplar.IDMAIN, 101, "$a");//bjBook.Fields["101$a"].ToString();
                     row.Cells["tema"].Value = BJBookInfo.GetFieldValue(bjExemplar.Fund, bjExemplar.IDMAIN, 922, "$e");//bjBook.Fields["922$e"].ToString();
                     CirculationInfo ci = new CirculationInfo();
                     OrderInfo order = ci.GetLastOrder(bjExemplar.IdData, bjExemplar.Fund);
@@ -365,13 +361,12 @@ namespace CirculationApp
             {
                 dgViewer.Rows.Add();
                 var row = dgViewer.Rows[dgViewer.Rows.Count - 1];
-                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
-                BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
+                ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
                 row.Cells["orderId"].Value = order.OrderId;
-                row.Cells["bar"].Value = exemplar.Fields["899$w"].ToString();
-                row.Cells["inventoryNumber"].Value = exemplar.Fields["899$p"].ToString();
-                row.Cells["author"].Value = book.Fields["700$a"].ToString();
-                row.Cells["title"].Value = book.Fields["200$a"].ToString();
+                row.Cells["bar"].Value = exemplar.Bar;
+                row.Cells["inventoryNumber"].Value = exemplar.InventoryNumber;
+                row.Cells["author"].Value = exemplar.Author;
+                row.Cells["title"].Value = exemplar.Title;
                 row.Cells["IssueDate"].Value = order.IssueDate;
                 row.Cells["ReturnDate"].Value = order.ReturnDate;
                 row.Cells["cipher"].Value = exemplar.Cipher;
@@ -380,7 +375,7 @@ namespace CirculationApp
                 //row.Cells["rack"].Value = exemplar.Fields["899$c"].ToString();
                 row.Cells["IssueHall"].Value = string.IsNullOrEmpty(order.IssueDep) ? "" : KeyValueMapping.LocationCodeToName[int.Parse(order.IssueDep)];
                 row.Cells["ReturnHall"].Value = string.IsNullOrEmpty(order.ReturnDep) ? "" : KeyValueMapping.LocationCodeToName[int.Parse(order.ReturnDep)];
-                row.Cells["location"].Value = exemplar.Fields["899$a"].ToString();
+                row.Cells["location"].Value = exemplar.Location;
                 row.Cells["readerId"].Value = order.ReaderId;
                 row.Cells["orderId"].Value = order.OrderId;
             }

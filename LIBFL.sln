@@ -93,28 +93,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsertElectronicExemplarBJ"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvOfBook", "InvOfBook\InvOfBook.csproj", "{59C057BF-40EC-4A9E-AE49-1D70B1FC0521}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "LIBFLDataProviderAPI", "LIBFLDataProviderAPI\", "{2AED174A-26E4-4D64-B043-5E0B34513106}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
-		ProjectReferences = "{CA4020F7-B048-4DFA-9E13-3E04DB83B093}|LibflClassLibrary.dll;"
-		Debug.AspNetCompiler.VirtualPath = "/LIBFLDataProviderAPI"
-		Debug.AspNetCompiler.PhysicalPath = "LIBFLDataProviderAPI\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\LIBFLDataProviderAPI\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/LIBFLDataProviderAPI"
-		Release.AspNetCompiler.PhysicalPath = "LIBFLDataProviderAPI\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\LIBFLDataProviderAPI\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "13214"
-		SlnRelativePath = "LIBFLDataProviderAPI\"
-	EndProjectSection
-EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "LITRESADMIN", "LITRESADMIN\", "{B32AC8EB-5803-4825-A8FC-5885C15A5BCD}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
@@ -338,10 +316,6 @@ Global
 		{59C057BF-40EC-4A9E-AE49-1D70B1FC0521}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59C057BF-40EC-4A9E-AE49-1D70B1FC0521}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59C057BF-40EC-4A9E-AE49-1D70B1FC0521}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AED174A-26E4-4D64-B043-5E0B34513106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AED174A-26E4-4D64-B043-5E0B34513106}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AED174A-26E4-4D64-B043-5E0B34513106}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AED174A-26E4-4D64-B043-5E0B34513106}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{B32AC8EB-5803-4825-A8FC-5885C15A5BCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B32AC8EB-5803-4825-A8FC-5885C15A5BCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B32AC8EB-5803-4825-A8FC-5885C15A5BCD}.Release|Any CPU.ActiveCfg = Debug|Any CPU
@@ -475,7 +449,6 @@ Global
 		{EB7743C5-645F-4C5A-AB02-0BCD7579757D} = {43CBF2E9-8CE3-4AFF-9948-87AA9904013A}
 		{30A76BA6-A52B-429E-A852-F9EB1B362AE1} = {43CBF2E9-8CE3-4AFF-9948-87AA9904013A}
 		{B9124E5A-C576-4578-9B8F-BDB087138157} = {172B6033-F306-482B-B443-5D565ADCB12A}
-		{2AED174A-26E4-4D64-B043-5E0B34513106} = {43CBF2E9-8CE3-4AFF-9948-87AA9904013A}
 		{B32AC8EB-5803-4825-A8FC-5885C15A5BCD} = {43CBF2E9-8CE3-4AFF-9948-87AA9904013A}
 		{C25A9A8E-220A-40B2-A0A1-0DB19972C9E5} = {43CBF2E9-8CE3-4AFF-9948-87AA9904013A}
 		{240FAA3D-FD95-486C-A10A-EC6E4A895C5F} = {43CBF2E9-8CE3-4AFF-9948-87AA9904013A}

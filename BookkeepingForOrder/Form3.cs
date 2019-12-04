@@ -86,7 +86,7 @@ namespace BookkeepingForOrder
             }
             foreach (var order in orders)
             {
-                BookExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
+                ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
                 ReaderInfo reader = ReaderInfo.GetReader(order.ReaderId);
                 dgwReaders.Rows.Add();
                 var row = dgwReaders.Rows[dgwReaders.Rows.Count - 1];

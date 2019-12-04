@@ -32,7 +32,7 @@ namespace CirculationApp
 
         CirculationInfo ci = new CirculationInfo();
         public BookBase ScannedBook;
-        public BookExemplarBase ScannedExemplar;
+        public ExemplarBase ScannedExemplar;
         public ReaderInfo ScannedReader;
         public BJUserInfo bjUser;
         /// <summary>
@@ -65,8 +65,9 @@ namespace CirculationApp
                 {
                     return 3;
                 }
-                this.ScannedBook = BookFactory.CreateBook(PortData);
-                ScannedExemplar = (BJExemplarInfo)ScannedBook.Exemplars.Find(x => ((BJExemplarInfo)x).Bar == PortData);
+                //this.ScannedBook = BookFactory.CreateBookByBar(PortData);
+                //ScannedExemplar = (BJExemplarInfo)ScannedBook.Exemplars.Find(x => ((BJExemplarInfo)x).Bar == PortData);
+                ScannedExemplar = ExemplarFactory.CreateExemplar(PortData);
                 if (ci.IsIssuedToReader(ScannedExemplar))
                 {
                     return 0;
@@ -152,7 +153,8 @@ namespace CirculationApp
         public void RecieveBook(string fromPort)
         {
 
-            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromPort);
+            //BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromPort);
+            ExemplarBase exemplar = ExemplarFactory.CreateExemplar(fromPort);
             OrderInfo oi = ci.FindOrderByExemplar(exemplar);
 
             if (ci.RecieveBookFromReader(exemplar, oi, bjUser) == 1)

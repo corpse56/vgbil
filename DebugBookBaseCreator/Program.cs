@@ -16,7 +16,7 @@ namespace DebugBookBaseCreator
         {
             const string bookId = "BJVVV_1016768";
             BJVuFindConverter converter = new BJVuFindConverter(BookBase.GetFund(bookId));
-            VufindDoc vfDoc = converter.CreateVufindDocument(BookBase.GetIDMAIN(bookId));
+            VufindDoc vfDoc = converter.CreateVufindDocument(BookBase.GetPIN(bookId));
             decimal _cost =  1036476.76m;
 
             int IntCost = (int)(_cost);

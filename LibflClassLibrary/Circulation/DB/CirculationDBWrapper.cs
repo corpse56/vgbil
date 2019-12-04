@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.ExportToVufind;
@@ -307,7 +308,7 @@ namespace LibflClassLibrary.Circulation.DB
             this.ChangeOrderStatus(orderId, CirculationStatuses.Finished.Value, 1, 2033, null);
         }
 
-        internal void IssueBookToReader(BJExemplarInfo scannedExemplar, int numberReader, int returnInDays, int userId, int deptId, string statusName)
+        internal void IssueBookToReader(ExemplarBase scannedExemplar, int numberReader, int returnInDays, int userId, int deptId, string statusName)
         {
             int OrderId;
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -321,11 +322,11 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Parameters.Add("IssueDepId", SqlDbType.Int).Value = deptId;
                 command.Parameters.Add("BookId", SqlDbType.NVarChar).Value = scannedExemplar.BookId;
                 command.Parameters.Add("IssuingDepId", SqlDbType.Int).Value = deptId;
-                command.Parameters.Add("ExemplarId", SqlDbType.Int).Value = scannedExemplar.IdData;
+                command.Parameters.Add("ExemplarId", SqlDbType.Int).Value = scannedExemplar.Id;
                 command.Parameters.Add("ReturnInDays", SqlDbType.Int).Value = returnInDays;
                 command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = statusName;
                 command.Parameters.Add("Fund", SqlDbType.NVarChar).Value = scannedExemplar.Fund;
-                command.Parameters.Add("Barcode", SqlDbType.NVarChar).Value = scannedExemplar.Fields["899$w"].ToString();
+                command.Parameters.Add("Barcode", SqlDbType.NVarChar).Value = scannedExemplar.Bar;
                 OrderId = Convert.ToInt32(command.ExecuteScalar());
             }
             this.ChangeOrderStatus(OrderId, statusName, userId, deptId, null);
@@ -448,13 +449,13 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
-        internal DataTable IsExemplarIssued(BJExemplarInfo bJExemplarInfo)
+        internal DataTable IsExemplarIssued(ExemplarBase exemplar)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.IS_ALREADY_ISSUED, connection);
-                dataAdapter.SelectCommand.Parameters.Add("BookId", SqlDbType.NVarChar).Value = bJExemplarInfo.BookId;
-                dataAdapter.SelectCommand.Parameters.Add("ExemplarId", SqlDbType.Int).Value = bJExemplarInfo.IdData;
+                dataAdapter.SelectCommand.Parameters.Add("BookId", SqlDbType.NVarChar).Value = exemplar.BookId;
+                dataAdapter.SelectCommand.Parameters.Add("ExemplarId", SqlDbType.Int).Value = exemplar.Id;
                 DataTable table = new DataTable();
                 int cnt = dataAdapter.Fill(table);
                 return table;
@@ -546,7 +547,7 @@ namespace LibflClassLibrary.Circulation.DB
             return OrderId;
         }
 
-        internal int NewOrder(BJExemplarInfo exemplar, ReaderInfo reader, int ReturnInDays, string StatusName, string AlligatBookId, int IssuingDepId)
+        internal int NewOrder(ExemplarBase exemplar, ReaderInfo reader, int ReturnInDays, string StatusName, string AlligatBookId, int IssuingDepId)
         {
             int OrderId;
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -560,11 +561,11 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Parameters.Add("BookId", SqlDbType.NVarChar).Value = exemplar.BookId;
                 command.Parameters.Add("AlligatBookId", SqlDbType.NVarChar).Value = (object)AlligatBookId ?? DBNull.Value;
                 command.Parameters.Add("IssuingDepId", SqlDbType.Int).Value = IssuingDepId;
-                command.Parameters.Add("ExemplarId", SqlDbType.Int).Value = exemplar.IdData;
+                command.Parameters.Add("ExemplarId", SqlDbType.Int).Value = exemplar.Id;
                 command.Parameters.Add("ReturnInDays", SqlDbType.Int).Value = ReturnInDays;//(orderType == "На дом") ? 30 : 4;
                 command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = StatusName;
                 command.Parameters.Add("Fund", SqlDbType.NVarChar).Value = exemplar.Fund;
-                command.Parameters.Add("Barcode", SqlDbType.NVarChar).Value = exemplar.Fields["899$w"].ToString();
+                command.Parameters.Add("Barcode", SqlDbType.NVarChar).Value = exemplar.Bar;
                 OrderId = Convert.ToInt32(command.ExecuteScalar());
             }
             this.ChangeOrderStatus(OrderId, StatusName, 1, 2033, null);

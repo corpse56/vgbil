@@ -40,10 +40,10 @@ namespace LibflClassLibrary.Circulation
             return csl_.GetFinishedHallOrders(bjUser);
         }
 
-        public List<BookExemplarBase> GetAllBooksInHall(BJUserInfo bjUser)
+        public List<ExemplarBase> GetAllBooksInHall(BJUserInfo bjUser)
         {
             //так как отделы в каждой базе с разными номерами, нужно для каждого отдела, книги которого в разных базах, написать собственные условия
-            List<BookExemplarBase> result = new List<BookExemplarBase>();
+            List<ExemplarBase> result = new List<ExemplarBase>();
             switch (bjUser.SelectedUserStatus.DepId)
             {
                 case 52:// "америка":

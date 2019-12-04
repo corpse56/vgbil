@@ -441,7 +441,7 @@ namespace ALISAPI_TEST
                 {
                     continue;
                 }
-                foreach(BookExemplarBase exemplar in book.Exemplars)
+                foreach(ExemplarBase exemplar in book.Exemplars)
                 {
 
                     switch (((BJExemplarInfo)exemplar).ExemplarAccess.Access)

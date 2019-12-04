@@ -153,7 +153,8 @@ namespace CirculationApp
         private void RecieveBookFromInBookKeeping(string fromport)
         {
             
-            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromport);
+            //BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromport);
+            ExemplarBase exemplar = ExemplarFactory.CreateExemplar(fromport);
             if (exemplar == null)
             {
                 MessageBox.Show("Книга не найдена.");
@@ -324,13 +325,14 @@ namespace CirculationApp
             {
                 dgvFormular.Rows.Add();
                 var row = dgvFormular.Rows[dgvFormular.Rows.Count - 1];
-                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
-                BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
+                //BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
+                //BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
                 row.Cells["id"].Value = order.OrderId;
-                row.Cells["bar"].Value = exemplar.Fields["899$w"].ToString();
-                row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
-                row.Cells["author"].Value = book.Fields["700$a"].ToString();
-                row.Cells["title"].Value = book.Fields["200$a"].ToString();
+                row.Cells["bar"].Value = exemplar..Fields["899$w"].ToString();
+                row.Cells["inv"].Value = exemplar.InventoryNumber;//.Fields["899$p"].ToString();
+                row.Cells["author"].Value = exemplar.Author;//book.Fields["700$a"].ToString();
+                row.Cells["title"].Value = exemplar.Title;//book.Fields["200$a"].ToString();
                 row.Cells["issueDate"].Value = order.IssueDate;
                 row.Cells["returnDate"].Value = order.ReturnDate;
                 row.Cells["cipher"].Value = exemplar.Cipher;
@@ -440,16 +442,17 @@ namespace CirculationApp
                 dgvLog.Rows.Add();
                 var row = dgvLog.Rows[dgvLog.Rows.Count - 1];
                 OrderInfo oi = ci.GetOrder(fi.OrderId);
-                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(oi.ExemplarId, oi.Fund);
+                //BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(oi.ExemplarId, oi.Fund);
+                ExemplarBase exemplar = ExemplarFactory.CreateExemplar(oi.ExemplarId, oi.Fund);
                 BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
 
                 row.Cells["time"].Value = fi.Changed;
                 row.Cells["bar"].Value = exemplar.Bar;
-                string title = string.IsNullOrEmpty(book.Fields["700$a"].ToString()) ? "<нет>" : book.Fields["700$a"].ToString();
-                row.Cells["title"].Value = $"{title}; {book.Fields["200$a"].ToString()}";
+                //string title = string.IsNullOrEmpty(book.Fields["700$a"].ToString()) ? "<нет>" : book.Fields["700$a"].ToString();
+                row.Cells["title"].Value = exemplar.AuthorTitle;// $"{title}; {book.Fields["200$a"].ToString()}";
                 row.Cells["reader"].Value = oi.ReaderId;
                 row.Cells["status"].Value = fi.StatusName;
-                row.Cells["baseName"].Value = GetRusFundName(oi.Fund);
+                row.Cells["baseName"].Value = BookBase.GetRusFundName(oi.Fund);
                 //row.Cells["issueType"].Value = exemplar.ExemplarAccess.Access.In(new [] {1000,1006}) ? "на дом" : "в зал";
                 if (i++ == 30) break;
             }
@@ -461,23 +464,6 @@ namespace CirculationApp
             
         }
 
-        private string GetRusFundName(string fund)
-        {
-            switch (fund)
-            {
-                case "BJVVV":
-                    return "ОФ";
-                case "REDKOSTJ":
-                    return "Редкая книга";
-                case "BJACC":
-                    return "АКЦ";
-                case "BJFCC":
-                    return "ФКЦ";
-                case "BJSCC":
-                    return "СКЦ";
-            }
-            return "<неизвестно>";
-        }
 
         private void bFormularFindById_Click(object sender, EventArgs e)
         {
@@ -613,7 +599,7 @@ namespace CirculationApp
             {
                 dgvTransfer.Rows.Add();
                 var row = dgvTransfer.Rows[dgvTransfer.Rows.Count - 1];
-                BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(oi.ExemplarId, oi.Fund);
+                ExemplarBase exemplar = ExemplarFactory.CreateExemplar(oi.ExemplarId, oi.Fund);
                 if (exemplar == null)
                 {
                     row.Cells["pin"].Value = oi.BookId;
@@ -623,17 +609,15 @@ namespace CirculationApp
                     continue;
                 }
 
-                BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
-
+                BookBase book = BookFactory.CreateBookByPin(exemplar.BookId);
                 row.Cells["pin"].Value = oi.BookId;
                 row.Cells["bar"].Value = exemplar.Bar;
-                string title = string.IsNullOrEmpty(book.Fields["700$a"].ToString()) ? "<нет>" : book.Fields["700$a"].ToString();
-                row.Cells["title"].Value = $"{title}; {book.Fields["200$a"].ToString()}";
+                row.Cells["title"].Value = exemplar.AuthorTitle;
                 row.Cells["reader"].Value = oi.ReaderId;
-                row.Cells["location"].Value = exemplar.Fields["899$a"].ToString();
+                row.Cells["location"].Value = exemplar.Location;
                 row.Cells["issDep"].Value = KeyValueMapping.LocationCodeToName[oi.IssuingDepartmentId];
                 row.Cells["retDep"].Value = string.IsNullOrEmpty(oi.ReturnDep) ? "" : KeyValueMapping.LocationCodeToName[int.Parse(oi.ReturnDep)];
-                row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
+                row.Cells["inv"].Value = exemplar.InventoryNumber;
                 row.Cells["status"].Value = oi.StatusName;
                 //row.Cells["issueType"].Value = exemplar.ExemplarAccess.Access.In(new [] {1000,1006}) ? "на дом" : "в зал";
             }

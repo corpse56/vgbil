@@ -39,12 +39,6 @@ namespace LibflClassLibrary.Books.BJBooks
         public int ID { get; set; }
 
 
-        #region Экземпляры книги
-
-        //public List<ExemplarInfo> Exemplars = new List<ExemplarInfo>();
-
-        #endregion
-
         public BJElectronicExemplarInfo DigitalCopy = null;
         public bool IsExistsDigitalCopy => this.DigitalCopy != null;
 
@@ -60,12 +54,10 @@ namespace LibflClassLibrary.Books.BJBooks
             int IDRecord = int.Parse(FullPin.Substring(FullPin.LastIndexOf("_") + 1));
             return BJBookInfo.GetBookInfoByPIN(IDRecord, fund);
         }
-        public static BJBookInfo GetBookInfoByInventoryNumber(string inv, string fund)
+        public static BJBookInfo GetBookInfoByInventoryNumber(string inv)
         {
-            BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
-            DataTable table = dbw.GetExemplar(inv);
-            if (table.Rows.Count == 0) return null;
-            BJBookInfo result = BJBookInfo.GetBookInfoByPIN((int)table.Rows[0]["IDMAIN"], fund);
+            BJBookLoader loader = new BJBookLoader("");
+            BJBookInfo result = loader.GetBookByInventoryNumber(inv);
             return result;
         }
 
@@ -83,7 +75,8 @@ namespace LibflClassLibrary.Books.BJBooks
             book = loader.GetBJBookByBar(data);
             return book;            
         }
-
+        //==================================================================
+        //это надо искоренить
         public int GetBusyElectronicExemplarCount()
         {
             BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);

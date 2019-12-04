@@ -11,9 +11,9 @@ namespace LibflClassLibrary.Books
 {
     public class ExemplarFactory
     {
-        public static BookExemplarBase CreateExemplar(int exemplarId, string fund)
+        public static ExemplarBase CreateExemplar(int exemplarId, string fund)
         {
-            BookExemplarBase result = null;
+            ExemplarBase result = null;
             switch (fund)
             {
                 case "BJVVV":
@@ -29,10 +29,18 @@ namespace LibflClassLibrary.Books
             }
             return result ?? null;
         }
-        public static CreateExemplar(string bar)
+        public static ExemplarBase CreateExemplar(string bar)
         {
-            BookExemplarBase result = null;
+            ExemplarBase result = null;
             result = BJExemplarInfo.GetExemplarByBar(bar);
+            return result ?? PeriodicExemplarInfo.GetPeriodicExemplarInfoByBar(bar)
+        }
+
+        public static ExemplarBase CreateExemplarByInventoryNumber(string inventoryNumber)
+        {
+            ExemplarBase result = null;
+            result = BJExemplarInfo.GetExemplarByInventoryNumber(inventoryNumber);
+            return result ?? PeriodicExemplarInfo.GetExemplarByInventoryNumber(inventoryNumber);
 
         }
     }

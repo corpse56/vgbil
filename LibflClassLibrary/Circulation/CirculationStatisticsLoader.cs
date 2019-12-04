@@ -53,24 +53,24 @@ namespace LibflClassLibrary.Circulation
             return orders;
         }
 
-        internal List<BookExemplarBase> GetAllBooksInHallACC(BJUserInfo bjUser)
+        internal List<ExemplarBase> GetAllBooksInHallACC(BJUserInfo bjUser)
         {
             DataTable table = dbWrapper_.GetAllBooksInHallACC(bjUser.SelectedUserStatus.DepId);
-            List<BookExemplarBase> result = GetExemplarListFromPinList(table);
+            List<ExemplarBase> result = GetExemplarListFromPinList(table);
             return result;
         }
 
-        internal List<BookExemplarBase> GetAllBooksInHallFCC(BJUserInfo bjUser)
+        internal List<ExemplarBase> GetAllBooksInHallFCC(BJUserInfo bjUser)
         {
             DataTable table = dbWrapper_.GetAllBooksInHallFCC(bjUser.SelectedUserStatus.DepId);
-            List<BookExemplarBase> result = GetExemplarListFromPinList(table);
+            List<ExemplarBase> result = GetExemplarListFromPinList(table);
             return result;
         }
 
-        internal List<BookExemplarBase> GetAllBooksInHallREDKOSTJ(BJUserInfo bjUser)
+        internal List<ExemplarBase> GetAllBooksInHallREDKOSTJ(BJUserInfo bjUser)
         {
             DataTable table = dbWrapper_.GetAllBooksInHallREDKOSTJ(bjUser.SelectedUserStatus.DepId);
-            List<BookExemplarBase> result = GetExemplarListFromPinList(table);
+            List<ExemplarBase> result = GetExemplarListFromPinList(table);
             return result;
         }
 
@@ -97,25 +97,25 @@ namespace LibflClassLibrary.Circulation
             return table.Rows.Count;
         }
 
-        internal List<BookExemplarBase> GetAllBooksInHallSCC(BJUserInfo bjUser)
+        internal List<ExemplarBase> GetAllBooksInHallSCC(BJUserInfo bjUser)
         {
             DataTable table = dbWrapper_.GetAllBooksInHallSCC(bjUser.SelectedUserStatus.DepId);
-            List<BookExemplarBase> result = GetExemplarListFromPinList(table);
+            List<ExemplarBase> result = GetExemplarListFromPinList(table);
             return result;
         }
-        internal List<BookExemplarBase> GetAllBooksInHall(BJUserInfo bjUser)
+        internal List<ExemplarBase> GetAllBooksInHall(BJUserInfo bjUser)
         {
             DataTable table = dbWrapper_.GetAllBooksInHall(bjUser.SelectedUserStatus.DepId);
-            List<BookExemplarBase> result = GetExemplarListFromPinList(table);
+            List<ExemplarBase> result = GetExemplarListFromPinList(table);
             return result;
         }
 
-        private List<BookExemplarBase> GetExemplarListFromPinList(DataTable table)
+        private List<ExemplarBase> GetExemplarListFromPinList(DataTable table)
         {
-            List<BookExemplarBase> result = new List<BookExemplarBase>();
+            List<ExemplarBase> result = new List<ExemplarBase>();
             foreach (DataRow row in table.Rows)
             {
-                BookExemplarBase exemplar = ExemplarFactory.CreateExemplar(Convert.ToInt32(row["exemplarId"]), row["fund"].ToString());
+                ExemplarBase exemplar = ExemplarFactory.CreateExemplar(Convert.ToInt32(row["exemplarId"]), row["fund"].ToString());
                 result.Add(exemplar);
             }
             return result;

@@ -10,7 +10,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
     /// <summary>
     /// Сводное описание для ExemplarInfo
     /// </summary>
-    public class BJExemplarInfo : BookExemplarBase
+    public class BJExemplarInfo : ExemplarBase
     {
         public BJExemplarInfo() { }
         public BJExemplarInfo(int idData)
@@ -32,7 +32,6 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         public bool IsAlligat { get; set; }
         public string ConvolutePin { get; set; }
         public int ConvoluteIdData { get; set; }
-        public string Bar { get; set; }
 
         public DateTime Created; //для новых поступлений. Дата присвоения инвентарного номера.
         public BJFields Fields = new BJFields();
@@ -41,103 +40,33 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         //virtual properties
         public override string Cipher { get; set; }
         public override string InventoryNumber { get; set; }
+        public override string Title { get; set; }
+        public override string Rack { get; set; }
+        public override string Bar { get; set; }
+        public override string Location { get; set; }
+        public override string PublicationClass { get; set; }
 
-        public static BJExemplarInfo GetExemplarByInventoryNumber(string inv, string fund)
+        public static BJExemplarInfo GetExemplarByInventoryNumber(string inv)
         {
-            BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
-            DataTable table = dbw.GetExemplar(inv);
-            if (table.Rows.Count == 0)
-            {
-                return null;
-            }
-            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData((int)table.Rows[0]["IDDATA"], fund);
-            exemplar.Author = exemplar.GetAuthor();
-            exemplar.Title = exemplar.GetTitle();
-            return exemplar;
+            BJExemplarLoader loader = new BJExemplarLoader("");
+            BJExemplarInfo result = loader.GetExemplarByInventoryNumber(inv);
+            return result;
         }
         public static BJExemplarInfo GetExemplarByBar(string bar)
         {
-            BJBookInfo book = BJBookInfo.GetBookInfoByBAR(bar);
-            BJExemplarInfo exemplar = (BJExemplarInfo)book.Exemplars.Find(x => ((BJExemplarInfo)x).Fields["899$w"].ToString() == bar);
-            exemplar.Author = exemplar.GetAuthor();
-            exemplar.Title = exemplar.GetTitle();
-            return exemplar;
+            BJExemplarLoader loader = new BJExemplarLoader("");
+            BJExemplarInfo result = loader.GetExemplarByBar(bar);
+            return result;
         }
 
-        public static BJExemplarInfo GetExemplarByIdData(int iddata, string fund)
+        public static BJExemplarInfo GetExemplarByIdData(int exemplarId, string fund)
         {
-            BJDatabaseWrapper dbw = new BJDatabaseWrapper(fund);
-            DataTable table = dbw.GetExemplar(iddata);
-            if (table.Rows.Count == 0) return null;
-            BJExemplarInfo exemplar = new BJExemplarInfo((int)table.Rows[0]["IDDATA"]);
-            exemplar.IDMAIN = (int)table.Rows[0]["IDMAIN"];
-            exemplar.Fund = fund;
-            exemplar.BookId = $"{exemplar.Fund}_{exemplar.IDMAIN.ToString()}";
-            exemplar.InventoryNumber = 
-            foreach (DataRow row in table.Rows)//записываем все поля в объект
-            {
-                if (fund == "BJACC")
-                {
-                    if (row["MNFIELD"].ToString() + row["MSFIELD"].ToString() == "899$w")//в американской базе нет инвентарных номеров. берем штрихкод
-                    {
-                        exemplar.Created = (DateTime)row["Created"];//за дату создания берем дату присвоения штрихкода
-                    }
-                }
-                else
-                {
-                    if (row["MNFIELD"].ToString() + row["MSFIELD"].ToString() == "899$p")//в остальных есть и берём дату создания поля инвентарный номер
-                    {
-                        exemplar.Created = (DateTime)row["Created"];//за дату создания берем дату присвоения инвентаря
-                    }
-                }
-                if (row["MNFIELD"].ToString() + row["MSFIELD"].ToString() == "899$a")
-                {
-                    exemplar.Fields.AddField(row["NAME"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString()); //местонахождение берём из LIST_8, а не из DATAEXTPLAIN, потому что в поле PLAIN меняются некоторые символы
-                    continue;
-                }
-                exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());//добавляем все поля блока 260 к объекту экземпляра
-                if ((int)row["MNFIELD"] == 929 && row["MSFIELD"].ToString() == "$b")
-                { 
-                    exemplar.Fields["929$b"].AFLINKID = (int)row["AFLINKID"];
-                }
-            }
-            try
-            {
-                exemplar.ExemplarAccess = BJExemplarInfo.GetExemplarAccess(exemplar);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            if (exemplar.Fields["482$a"].HasValue)//это приплётышь
-            {
-                BJConvoluteInfo convolute = BJExemplarInfo.GetConvoluteInfo(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
-                //BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
-                if (convolute != null)//нашёлся конволют
-                {
-                    exemplar.ConvolutePin = $"{convolute.Fund}_{convolute.IDMAIN}";
-                    exemplar.ConvoluteIdData = convolute.IDDATA;
-                }
-                else//не нашёлся конволют
-                {
-                    exemplar.ConvolutePin = null;
-                }
-            }
-            else
-            {
-                //это не приплётышь ConvolutePin 
-                exemplar.ConvolutePin = null;
-            }
-
-
-            exemplar.Cipher = string.IsNullOrEmpty(exemplar.Fields["899$j"].ToString()) ? dbw.GetCipher(exemplar.Fields["899$b"].ToString(), exemplar.IDMAIN) : exemplar.Fields["899$j"].ToString();
-            exemplar.Bar = exemplar.Fields["899$w"].ToString();
-            exemplar.InventoryNumber = string.IsNullOrWhiteSpace(exemplar.Fields["899$p"].ToString()) ?
-                                        exemplar.Fields["899$w"].ToString() : exemplar.Fields["899$p"].ToString();
-            return exemplar;
+            BJExemplarLoader loader = new BJExemplarLoader(fund);
+            BJExemplarInfo result = loader.GetExemplarByIdData(exemplarId, fund);
+            return result;
         }
 
-        private static BJConvoluteInfo GetConvoluteInfo(string InventoryNumber, string fund)
+        public static BJConvoluteInfo GetConvoluteInfo(string InventoryNumber, string fund)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -159,7 +88,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 
         }
 
-        private static ExemplarAccessInfo GetExemplarAccess(BJExemplarInfo exemplar)
+        public static ExemplarAccessInfo GetExemplarAccess(BJExemplarInfo exemplar)
         {
 
             ExemplarAccessInfo access = new ExemplarAccessInfo();
@@ -366,12 +295,14 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         }
 
         public override string Author { get; set; }
+        public override string Language { get; set; }
+
         private string GetAuthor()
         {
             BJExemplarLoader loader = new BJExemplarLoader(this.Fund);
             return loader.GetAuthor(this.IDMAIN);
         }
-        public override string Title { get; set; }
+
         private string GetTitle()
         {
             BJExemplarLoader loader = new BJExemplarLoader(this.Fund);

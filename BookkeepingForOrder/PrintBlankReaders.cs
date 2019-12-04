@@ -359,7 +359,7 @@ namespace BookkeepingForOrder
                 
                 OrderInfo order = ci.GetOrder(Convert.ToInt32(dg.SelectedRows[0].Cells["orderid"].Value));
 
-                BookExemplarBase Exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund );
+                ExemplarBase Exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund );
                 //BJBookInfo Book = BJBookInfo.GetBookInfoByPIN(order.BookId);
                 if (Exemplar == null)
                 {
