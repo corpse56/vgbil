@@ -1,5 +1,9 @@
-﻿using LibflClassLibrary.Books.BJBooks.DB;
+﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.Books.BJBooks.Loaders;
+using LibflClassLibrary.Circulation;
+using LibflClassLibrary.Circulation.CirculationService;
+using LibflClassLibrary.Circulation.CirculationService.RecieveExemplarFromReader;
 using LibflClassLibrary.ExportToVufind;
 using System;
 using System.Data;
@@ -15,18 +19,9 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         public BJExemplarInfo() { }
         public BJExemplarInfo(int idData)
         {
-            this._iddata = idData;
             this.Id = idData.ToString();
         }
 
-        private int _iddata;
-        public int IdData
-        {
-            get
-            {
-                return _iddata;
-            }
-        }
 
         public int IDMAIN { get; set; }
         public bool IsAlligat { get; set; }
@@ -35,9 +30,11 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 
         public DateTime Created; //для новых поступлений. Дата присвоения инвентарного номера.
         public BJFields Fields = new BJFields();
-        public ExemplarAccessInfo ExemplarAccess = new ExemplarAccessInfo();
+        //public ExemplarAccessInfo ExemplarAccess = new ExemplarAccessInfo();
 
         //virtual properties
+        public override string Author { get; set; }
+        public override string Language { get; set; }
         public override string Cipher { get; set; }
         public override string InventoryNumber { get; set; }
         public override string Title { get; set; }
@@ -45,6 +42,8 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         public override string Bar { get; set; }
         public override string Location { get; set; }
         public override string PublicationClass { get; set; }
+
+        
 
         public static BJExemplarInfo GetExemplarByInventoryNumber(string inv)
         {
@@ -105,11 +104,11 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 case "BJVVV":
                     if (exemplar.Fields["482$a"].ToLower() != "")
                     {
-                        BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
+                        BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString());
                         if (Convolute != null)
                         {
-                            access.MethodOfAccess = Convolute.ExemplarAccess.MethodOfAccess;
-                            access.Access = Convolute.ExemplarAccess.Access;
+                            access.MethodOfAccess = Convolute.AccessInfo.MethodOfAccess;
+                            access.Access = Convolute.AccessInfo.Access;
                         }
                         else
                         {
@@ -294,28 +293,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             return access;
         }
 
-        public override string Author { get; set; }
-        public override string Language { get; set; }
 
-        private string GetAuthor()
-        {
-            BJExemplarLoader loader = new BJExemplarLoader(this.Fund);
-            return loader.GetAuthor(this.IDMAIN);
-        }
-
-        private string GetTitle()
-        {
-            BJExemplarLoader loader = new BJExemplarLoader(this.Fund);
-            return loader.GetTitle(this.IDMAIN);
-        }
-
-        //public string GetWriteoffReason()
-        //{
-        //    //BJExemplarLoader loader = new BJExemplarLoader(this.Fund);
-        //    //string result = this.Fields["929$b"].ToString();
-        //    ////loader.GetWriteoffreason(this.Fields["929$b"].);
-        //    //return "dsfsdfsdf";
-        //}
 
         #region эти методы надо выносить в другой класс. Они относятся к книговыдаче
         public bool IsIssuedOrOrderedEmployee()
@@ -345,19 +323,6 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         }
 
 
-        //этот метод закрыть с потрохами
-        public bool IsIssuedToReader()
-        {
-            switch (this.Fund)
-            {
-                case "BJVVV":
-                    BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
-                    DataTable table = dbw.IsIssuedToReader(this.IdData);
-                    return (table.Rows.Count == 0) ? false : true;
-                default:
-                    return false;
-            }
-        }
 
         public string GetEmployeeStatus()
         {
@@ -371,6 +336,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                     return "";
             }
         }
+
         #endregion
     }
 }

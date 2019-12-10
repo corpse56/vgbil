@@ -5,6 +5,7 @@ using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation;
+using LibflClassLibrary.Circulation.CirculationService;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.ReadersRight;
 using LibflClassLibrary.Readers.ReadersRights;
@@ -19,7 +20,7 @@ namespace CirculationApp
     public enum BARType { Book, Reader, NotExist }
     public enum ExpectingAction { WaitingBook, WaitingReader, WaitingConfimation }//0 - ожидается штрихкод книги, 1 - ожидается штрихкод читателя, 2 - ожидается подтверждение или отмена выдачи
 
-    public class Department 
+    public class Department : ICirculation
     {
         public ExpectingAction ExpectedBar = ExpectingAction.WaitingBook;
 
@@ -65,9 +66,8 @@ namespace CirculationApp
                 {
                     return 3;
                 }
-                //this.ScannedBook = BookFactory.CreateBookByBar(PortData);
-                //ScannedExemplar = (BJExemplarInfo)ScannedBook.Exemplars.Find(x => ((BJExemplarInfo)x).Bar == PortData);
                 ScannedExemplar = ExemplarFactory.CreateExemplar(PortData);
+                this.circulation_ = ScannedExemplar.circulation;
                 if (ci.IsIssuedToReader(ScannedExemplar))
                 {
                     return 0;
@@ -90,14 +90,10 @@ namespace CirculationApp
                 
             }
         }
-
-
         private BARType BookOrReader(string data) //false - книга, true - читатель
         {
             return ci.CheckBAR(data);
         }
-
-
         public void IssueBookToReader()
         {
             try
@@ -112,12 +108,10 @@ namespace CirculationApp
             }
             
         }
-
         public void AttendanceScan(string barcode)
         {
             ci.AttendanceScan(barcode, bjUser);
         }
-
         private bool CheckFreeAbonementRights()
         {
             ReaderRightsInfo rights = ReaderRightsInfo.GetReaderRights(ScannedReader.NumberReader);
@@ -136,39 +130,30 @@ namespace CirculationApp
             }
             return true;
         }
-
         public int GetAttendance()
         {
             return ci.GetAttendance(bjUser);
         }
 
-
-        public void RemoveResponsibility(int idiss, int EmpID)
-        {
-           // DBGeneral dbg = new DBGeneral();
-            //dbg.RemoveResposibility(idiss, EmpID);
-            return;
-        }
-
         public void RecieveBook(string fromPort)
         {
-
-            //BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(fromPort);
             ExemplarBase exemplar = ExemplarFactory.CreateExemplar(fromPort);
             OrderInfo oi = ci.FindOrderByExemplar(exemplar);
-
-            if (ci.RecieveBookFromReader(exemplar, oi, bjUser) == 1)
+            if (exemplar.circulation.exemplarRecieverFromReader.IsNeedToAskReaderForReserve(exemplar, oi))
             {
                 DialogResult dr = MessageBox.Show("Читатель сдаёт книгу на бронеполку?", "Внимание!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 if (dr == DialogResult.Yes)
                 {
-                    ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.InReserve.Value); 
+                    exemplar.circulation.exemplarRecieverFromReader.RecieveBookFromReader(exemplar, oi, bjUser, CirculationStatuses.InReserve.Value);
                 }
                 else if (dr == DialogResult.No)
                 {
-                    ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.ForReturnToBookStorage.Value); 
+                    exemplar.circulation.exemplarRecieverFromReader.RecieveBookFromReader(exemplar, oi, bjUser, CirculationStatuses.ForReturnToBookStorage.Value);
                 }
-
+            }
+            else
+            {
+                exemplar.circulation.exemplarRecieverFromReader.RecieveBookFromReader(exemplar, oi, bjUser);
             }
         }
 
@@ -177,11 +162,5 @@ namespace CirculationApp
             if (bjUser == null) return 0;
             return ci.GetIssuedInHallBooksCount(bjUser);
         }
-
-        //// public int GetCountOfPrologedTimes(int value)
-        // {
-        //     //DBGeneral dbg = new DBGeneral();
-        //     //return dbg.GetCountOfPrologedTimes(value);
-        // }
     }
 }

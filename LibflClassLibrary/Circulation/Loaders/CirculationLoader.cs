@@ -62,7 +62,7 @@ namespace LibflClassLibrary.Circulation.Loaders
                 return false;
             }
         }
-        internal bool IsBookAlreadyIssuedToReader(BJBookInfo book, ReaderInfo reader)
+        internal bool IsBookAlreadyIssuedToReader(BookBase book, ReaderInfo reader)
         {
             DataTable table = dbWrapper.IsBookAlreadyIssuedToReader(book, reader);
             return (table.Rows.Count != 0);
@@ -110,7 +110,7 @@ namespace LibflClassLibrary.Circulation.Loaders
             return table.Rows.Count;
         }
 
-        internal bool IsElectronicIssueAlreadyIssued(ReaderInfo reader, BJBookInfo book)
+        internal bool IsElectronicIssueAlreadyIssued(ReaderInfo reader, BookBase book)
         {
             DataTable table = dbWrapper.IsElectronicIssueAlreadyIssued(reader, book);
             return (table.Rows.Count > 0) ? true : false;
@@ -265,12 +265,12 @@ namespace LibflClassLibrary.Circulation.Loaders
 
 
         //прямая выдача книги. заказ ещё не создан
-        internal void IssueBookToReader(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader, IssueType issueType, BJUserInfo bjUser)
+        internal void IssueBookToReader(ExemplarBase exemplar, ReaderInfo reader, IssueType issueType, BJUserInfo bjUser)
         {
             int ReturnInDays = (issueType == IssueType.AtHome) ? 30 : 10;//30 дней на дом. 10 дней бронеполка.
             string statusName = (issueType == IssueType.AtHome) ? CirculationStatuses.IssuedAtHome.Value : CirculationStatuses.IssuedInHall.Value;
             int deptId = KeyValueMapping.BJDepartmentIdToUnifiedLocationId[bjUser.SelectedUserStatus.DepId];
-            dbWrapper.IssueBookToReader(scannedExemplar, scannedReader.NumberReader, ReturnInDays, bjUser.Id,
+            dbWrapper.IssueBookToReader(exemplar, reader.NumberReader, ReturnInDays, bjUser.Id,
                                         deptId, statusName);
         }
 

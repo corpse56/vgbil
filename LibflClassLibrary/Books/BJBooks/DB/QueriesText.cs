@@ -301,18 +301,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
-        public string IS_ISSUED_TO_READER
-        {
-            get
-            {
-                return " select 1 from Reservation_O..Orders A " +
-                       " where IDDATA = @iddata and Status not in (8,10,11)" +
-                       " union all" +
-                       " select 1 from Reservation_R..ISSUED_OF where IDDATA = @iddata";
-                       //" union all " +
-                       //" select 1 from Circulation..Orders";
-            }
-        }
 
         public string GET_EMPLOYEE_STATUS
         {

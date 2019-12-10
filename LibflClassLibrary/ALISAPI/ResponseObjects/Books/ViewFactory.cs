@@ -31,6 +31,9 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 case "BJSCC":
                     result = ViewFactory.GetBJ(IDRecord, fund);
                     break;
+                case "PERIOD":
+                    result = ViewFactory.GetPeriodic(IDRecord);
+                    break;
                 default:
                     result = null;
                     break;
@@ -38,6 +41,12 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
 
             return result;
         }
+
+        private static BookSimpleView GetPeriodic(int iDRecord)
+        {
+            throw new NotImplementedException();
+        }
+
         public static BookSimpleView GetBookSimpleViewWithAvailabilityStatus(string ID)
         {
             BookSimpleView result = GetBookSimpleView(ID);
@@ -81,15 +90,8 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
 
         private static BookSimpleView GetBJ(int IDMAIN, string fund)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             BookSimpleView result = new BookSimpleView();
             BJBookInfo bjBook = BJBookInfo.GetBookInfoByPIN(IDMAIN, fund);
-            sw.Stop();
-            sw.Start();
-            //BJVuFindConverter converter = new BJVuFindConverter(fund);
-            //VufindDoc vfDoc = converter.CreateVufindDocument(IDMAIN);
-            //if (vfDoc == null) return null;
             result.ID = bjBook.Id;
             result.Annotation = bjBook.Fields["330$a"].ToString();//vfDoc.Annotation.ToString();
             result.Author = bjBook.Fields["700$a"].ToString(); //vfDoc.author.ToString();
@@ -101,24 +103,9 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             result.Publisher = bjBook.Fields["210$c"].ToString();//vfDoc.publisher.ToString();
             result.Title = bjBook.Fields["200$a"].ToString(); //vfDoc.title.ToString();
             result.CoverURL = VuFindConverter.GetCoverExportPath(result.ID);            /////http://cdn.libfl.ru/covers/BJVVV/000/025/169/JPEG_AB/cover.jpg
-            string LoginPath = @"\\" + AppSettings.IPAddressFileServer + @"\BookAddInf";
-            sw.Stop();
-            sw.Start();
 
-            //это может тормозить сильно
-            //using (new NetworkConnection(LoginPath, new NetworkCredential(AppSettings.LoginFileServerReadWrite, AppSettings.PasswordFileServerReadWrite)))
-            //{
-            //    LoginPath += @"\" + fund.ToUpper() + @"\" + result.CoverURL + @"\cover.jpg";
-            //    if (File.Exists(LoginPath))
-            //    {
-            //        result.CoverURL = $"http://cdn.libfl.ru/{fund.ToUpper()}/{result.CoverURL.Replace("\\", "/")}cover.jpg";
-            //    }
-            //    else
-            //    {
-            //        result.CoverURL = null;
-            //    }
-            //}
-            //заменим на это и надо сказать, что неизвестно есть ли обложка или нет...
+            //провекра существования картинки на сервере занимает много времени
+            //поэтому просто передаём ссылку, но неизвестно есть ли там обложка или нет. надо сказать, что неизвестно есть ли обложка или нет...
             result.CoverURL = $"http://cdn.libfl.ru/{fund.ToUpper()}/{result.CoverURL.Replace("\\", "/")}cover.jpg";
 
 
@@ -133,8 +120,8 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 ExemplarSimpleView ExemplarView = new ExemplarSimpleView();
                 ExemplarView.MethodOfAccess = "Удалённый доступ";
                 ExemplarView.MethodOfAccessCode = 4002;
-                ExemplarView.AccessCode = ElExemplar.ExemplarAccess.Access;
-                ExemplarView.Access = KeyValueMapping.AccessCodeToNameALISVersion[ElExemplar.ExemplarAccess.Access];
+                ExemplarView.AccessCode = ElExemplar.AccessInfo.Access;
+                ExemplarView.Access = KeyValueMapping.AccessCodeToNameALISVersion[ElExemplar.AccessInfo.Access];
                 ExemplarView.ID = 0;
                 ExemplarView.Barcode = "E00000000";
                 ExemplarView.Carrier = "Электронная копия";
@@ -153,12 +140,12 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
             BJElectronicExemplarInfo exemplar;
             exemplar = new BJElectronicExemplarInfo(BookBase.GetPIN(BookId),BookBase.GetFund(BookId));
             exemplar.FillFileFields();
-            electronicCopyFullView.AccessCode = exemplar.ExemplarAccess.Access;
+            electronicCopyFullView.AccessCode = exemplar.AccessInfo.Access;
             electronicCopyFullView.HeightFirstFile = exemplar.HeightFirstFile;
             electronicCopyFullView.IsExistsHQ = exemplar.IsExistsHQ;
             electronicCopyFullView.IsExistsLQ = exemplar.IsExistsLQ;
             electronicCopyFullView.JPGFiles = exemplar.JPGFiles;
-            electronicCopyFullView.MethodOfAccessCode = exemplar.ExemplarAccess.MethodOfAccess;
+            electronicCopyFullView.MethodOfAccessCode = exemplar.AccessInfo.MethodOfAccess;
             electronicCopyFullView.Path_Cover = exemplar.Path_Cover;
             electronicCopyFullView.Path_HQ = exemplar.Path_HQ;
             electronicCopyFullView.Path_LQ = exemplar.Path_LQ;
@@ -195,14 +182,14 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 ExemplarView.Barcode = exemplar.Fields["899$w"].ToString();
                 ExemplarView.Carrier = exemplar.Fields["921$a"].ToString();
                 //ExemplarView.CarrierCode = KeyValueMapping.CarrierNameToCode[ExemplarView.Carrier];
-                ExemplarView.ID = exemplar.IdData;
+                ExemplarView.ID = Convert.ToInt32(exemplar.Id);
                 ExemplarView.InventoryNote = exemplar.Fields["899$x"].ToString();
                 ExemplarView.InventoryNumber = exemplar.Fields["899$p"].ToString();
                 ExemplarView.Location = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];
                 ExemplarView.LocationCode = KeyValueMapping.UnifiedLocationCode[ExemplarView.Location];
-                ExemplarView.MethodOfAccessCode = exemplar.ExemplarAccess.MethodOfAccess;
+                ExemplarView.MethodOfAccessCode = exemplar.AccessInfo.MethodOfAccess;
                 ExemplarView.MethodOfAccess = KeyValueMapping.MethodOfAccessCodeToName[ExemplarView.MethodOfAccessCode];
-                ExemplarView.AccessCode = exemplar.ExemplarAccess.Access;
+                ExemplarView.AccessCode = exemplar.AccessInfo.Access;
                 ExemplarView.Access = KeyValueMapping.AccessCodeToName[ExemplarView.AccessCode];
                 ExemplarView.RackLocation = exemplar.Fields["899$c"].ToString();
                 //ExemplarView.Status = exemplar.IsIssuedToReader() ? "Занято" : "Свободно";

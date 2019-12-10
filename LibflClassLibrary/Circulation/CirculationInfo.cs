@@ -5,6 +5,8 @@ using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using LibflClassLibrary.Books.PeriodicBooks;
+using LibflClassLibrary.Circulation.CirculationService;
 using LibflClassLibrary.Circulation.Loaders;
 using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.Litres;
@@ -22,7 +24,7 @@ namespace LibflClassLibrary.Circulation
     public class CirculationInfo
     {
         CirculationLoader loader;
-
+        ICirculation circulation = new BJExemplarRecieverFromReader();
 
         public CirculationInfo()
         {
@@ -51,10 +53,11 @@ namespace LibflClassLibrary.Circulation
             ReaderInfo reader = ReaderInfo.GetReader(readerId);
             foreach (ExemplarBase eee in book.Exemplars)
             {
-                if (eee as BJExemplarInfo == null)
+                if (eee is PeriodicExemplarInfo)
                 {
                     //это костыль для периодики
                     //заказ периодики надо будет конечно сделать, но сейчас не прокатит.
+                    result.Add(OrderTypes.OrderProhibited.Id);
                     continue;
                 }
                 BJExemplarInfo exemplar = (BJExemplarInfo)eee;
@@ -198,41 +201,15 @@ namespace LibflClassLibrary.Circulation
 
         // 0 - ok
         // 1 - нужно спросить на бронеполку возвращают или нет
-        public int RecieveBookFromReader(BJExemplarInfo exemplar, OrderInfo oi, BJUserInfo bjUser)
+        public int RecieveBookFromReader(ExemplarBase exemplar, OrderInfo oi, BJUserInfo bjUser)
         {
-            if (oi.StatusCode == CirculationStatuses.IssuedInHall.Id)
-            {
-                if (exemplar.Fields["921$c"].ToString() == "ДП")
-                {
-                    if ((exemplar.Fields["899$a"].ToString() != bjUser.SelectedUserStatus.DepName) &&
-                        !(bjUser.Login.ToLower().In("station1","station2","station3","station4") ))
-                    {
-                        throw new Exception("C022");
-                    }
-                    this.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.Finished.Value);
-                }
-                else
-                {
-                    return 1;
-                }
-            }
-            else
-            {
-                if (exemplar.Fields["899$a"].ToString().ToLower().Contains("книгохранен"))
-                {
-                    this.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.ForReturnToBookStorage.Value);
-                }
-                else
-                {
-                    this.ChangeOrderStatusReturn(bjUser, oi.OrderId,  CirculationStatuses.Finished.Value);
-                }
-            }
-            return 0;
+            exemplar.circulation
 
 
 
 
-            //loader.RecieveBookFromReader(bar,bjUser,statusName);
+
+            
         }
 
 
@@ -252,13 +229,13 @@ namespace LibflClassLibrary.Circulation
 
         public enum IssueType { AtHome, InHall }
 
-        public IssueType GetIssueType(BJExemplarInfo scannedExemplar)
+        public IssueType GetIssueType(ExemplarBase exemplar)
         {
-            if (scannedExemplar.Fields["899$a"].ToString().ToLower().Contains("выст"))
+            if (exemplar.Location.ToLower().Contains("выст"))
             {
                 return IssueType.InHall;
             }
-            switch (scannedExemplar.ExemplarAccess.Access)
+            switch (exemplar.AccessInfo.Access)
             {
                 case 1000: //1000    14  4001 Взять на дом
                     return IssueType.AtHome;
@@ -303,11 +280,11 @@ namespace LibflClassLibrary.Circulation
             return IssueType.InHall;
 
         }
-        public IssueType GetIssueType(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
+        public IssueType GetIssueType(ExemplarBase exemplar, ReaderInfo scannedReader)
         {
-            IssueType result = GetIssueType(scannedExemplar);
+            IssueType result = GetIssueType(exemplar);
 
-            if (scannedExemplar.Fields["899$a"].ToString().ToLower().Contains("выст"))
+            if (exemplar.Location.ToLower().Contains("выст"))
             {
                 return IssueType.InHall;
             }
@@ -318,7 +295,7 @@ namespace LibflClassLibrary.Circulation
 
             if (scannedReader.Rights[ReaderRightsEnum.Employee] != null)
             {
-                if (scannedExemplar.Fields["921$c"].ToString() == "ДП")
+                if (exemplar.PublicationClass.In("ДП", "Для длительного пользования"))
                 {
                     return IssueType.InHall;
                 }
@@ -331,7 +308,7 @@ namespace LibflClassLibrary.Circulation
             {
                 if (scannedReader.Rights[ReaderRightsEnum.PaidAbonement].DateEndReaderRight > DateTime.Now)
                 {
-                    if (scannedExemplar.Fields["921$c"].ToString() == "ДП")
+                    if (exemplar.PublicationClass.In("ДП", "Для длительного пользования"))
                     {
                         return IssueType.InHall;
                     }
@@ -342,27 +319,27 @@ namespace LibflClassLibrary.Circulation
                 }
                 else
                 {
-                    return CheckFreeAbonementRights(scannedExemplar, scannedReader);
+                    return CheckFreeAbonementRights(exemplar, scannedReader);
                 }
             }
             else
             {
-                return CheckFreeAbonementRights(scannedExemplar, scannedReader);
+                return CheckFreeAbonementRights(exemplar, scannedReader);
             }
             
         }
 
-        private IssueType CheckFreeAbonementRights(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader)
+        private IssueType CheckFreeAbonementRights(ExemplarBase exemplar, ReaderInfo reader)
         {
-            if (scannedExemplar.ExemplarAccess.Access.In(new[] { 1000, 1006 }))
+            if (exemplar.AccessInfo.Access.In(new[] { 1000, 1006 }))
             {
-                if (scannedReader.Rights[ReaderRightsEnum.FreeAbonement] == null)
+                if (reader.Rights[ReaderRightsEnum.FreeAbonement] == null)
                 {
                     throw new Exception("C019");
                 }
                 else
                 {
-                    if (scannedReader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight <= DateTime.Now)
+                    if (reader.Rights[ReaderRightsEnum.FreeAbonement].DateEndReaderRight <= DateTime.Now)
                     {
                         throw new Exception("C020");
                     }
@@ -378,38 +355,38 @@ namespace LibflClassLibrary.Circulation
             }
         }
 
-        public void IssueBookToReader(BJExemplarInfo scannedExemplar, ReaderInfo scannedReader, BJUserInfo bjUser)
+        public void IssueBookToReader(ExemplarBase exemplar, ReaderInfo reader, BJUserInfo bjUser)
         {
             //метод выдаёт книгу, либо возвращает исключения
 
             //если читатель не проходил через проход, то книгу не выдавать, пока не пройдёт через проход
             //это сделано для того, чтобы читатель не прошёл по гостевому, набрал бы книг, и вышел по гостевому.
 
-            if (!scannedReader.IsEnteredThroughAccessControlSystem())
+            if (!reader.IsEnteredThroughAccessControlSystem())
             {
-                if (scannedReader.Rights[ReaderRightsEnum.Employee] == null)//на сотрудников не распространяется
+                if (reader.Rights[ReaderRightsEnum.Employee] == null)//на сотрудников не распространяется
                 {
                     throw new Exception("C028");
                 }
             }
 
             //ищем заказ с таким экземпляром.
-            OrderInfo order = this.FindOrderByExemplar(scannedExemplar);
+            OrderInfo order = this.FindOrderByExemplar(exemplar);
 
             //получаем способ выдачи для этого экземпляра. на дом или в зал. зависит от книги и от читателя.
-            IssueType issueType = GetIssueType(scannedExemplar, scannedReader);
+            IssueType issueType = GetIssueType(exemplar, reader);
 
 
-            if (order == null)//если заказа нет, то просто выдать. создать заказ со статусом выдано.
+            if (order == null)//если заказа нет, то просто reader. создать заказ со статусом выдано.
             {
-                loader.IssueBookToReader(scannedExemplar, scannedReader, issueType, bjUser);
+                loader.IssueBookToReader(exemplar, reader, issueType, bjUser);
                 return;
             }
 
-            if (order.ReaderId != scannedReader.NumberReader)//заказ делал не этот читатель. завершить текущий заказ и выдать этому читателю
+            if (order.ReaderId != reader.NumberReader)//заказ делал не этот читатель. завершить текущий заказ и выдать этому читателю
             {
                 this.FinishOrder(order, bjUser);
-                this.IssueBookToReader(scannedExemplar, scannedReader, bjUser);
+                this.IssueBookToReader(exemplar, reader, bjUser);
                 return;
             }
             switch (order.StatusName)
@@ -563,9 +540,9 @@ namespace LibflClassLibrary.Circulation
             return loader.GetOrder(orderId);
         }
 
-        private int GetExemplarAcceptableOrderType(BJExemplarInfo exemplar)
+        private int GetExemplarAcceptableOrderType(ExemplarBase exemplar)
         {
-            return KeyValueMapping.AccessCodeToOrderTypeId.GetValueOrDefault(exemplar.ExemplarAccess.Access, 0);
+            return KeyValueMapping.AccessCodeToOrderTypeId.GetValueOrDefault(exemplar.AccessInfo.Access, 0);
         }
 
         public void InsertIntoUserBasket(ImpersonalBasket request)
@@ -578,17 +555,20 @@ namespace LibflClassLibrary.Circulation
                 //("BJVVV_1444973");   <---Аллигат
                 BasketInfo item = new BasketInfo();
                 item.ReaderId = request.ReaderId;
-                BJBookInfo book = BJBookInfo.GetBookInfoByPIN(pin);
-                List<BJExemplarInfo> exemplars = book.Exemplars.ConvertAll(x => (BJExemplarInfo)x);
-                BJExemplarInfo convolute = exemplars.FirstOrDefault(x => x.ConvolutePin != null);
-                if (convolute != null)
+                BookBase book = BookFactory.CreateBookByPin(pin);
+                if (book.Fund.In("BJVVV", "REDKOSTJ", "BJACC", "BJSCC", "BJFCC"))
                 {
-                    item.BookId = convolute.ConvolutePin;
-                    item.AlligatBookId = book.Id;
-                }
-                else
-                {
-                    item.BookId = book.Id;
+                    List<BJExemplarInfo> exemplars = book.Exemplars.ConvertAll(x => (BJExemplarInfo)x);
+                    BJExemplarInfo convolute = exemplars.FirstOrDefault(x => x.ConvolutePin != null);
+                    if (convolute != null)
+                    {
+                        item.BookId = convolute.ConvolutePin;
+                        item.AlligatBookId = book.Id;
+                    }
+                    else
+                    {
+                        item.BookId = book.Id;
+                    }
                 }
                 UserBasket.Add(item);
             }
@@ -626,7 +606,7 @@ namespace LibflClassLibrary.Circulation
         public void MakeOrder(MakeOrder request)
         {
             //BookBase book = new BookBase()
-            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(request.BookId);
+            BookBase book = BookFactory.CreateBookByPin(request.BookId);
             BookSimpleView bookSimpleView = ViewFactory.GetBookSimpleView(request.BookId);
 
             ReaderInfo reader = ReaderInfo.GetReader(request.ReaderId);
@@ -675,7 +655,7 @@ namespace LibflClassLibrary.Circulation
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
                             if (!e.Fields["899$a"].HasValue) continue;
-                            if (e.ExemplarAccess.Access == 1000)
+                            if (e.AccessInfo.Access == 1000)
                             {
                                 if (!this.IsExemplarIssued(e))
                                 {
@@ -693,7 +673,7 @@ namespace LibflClassLibrary.Circulation
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
                             if (!e.Fields["899$a"].HasValue) continue;
-                            if ((e.ExemplarAccess.Access == 1006))
+                            if ((e.AccessInfo.Access == 1006))
                             {
                                 if (!this.IsExemplarIssued(e))
                                 {
@@ -717,7 +697,7 @@ namespace LibflClassLibrary.Circulation
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
                             if (!e.Fields["899$a"].HasValue) continue;
-                            if ((e.ExemplarAccess.Access == 1005) || (e.ExemplarAccess.Access == 1012))
+                            if ((e.AccessInfo.Access == 1005) || (e.AccessInfo.Access == 1012))
                             {
                                 if (!this.IsExemplarIssued(e))
                                 {
@@ -735,7 +715,7 @@ namespace LibflClassLibrary.Circulation
                         foreach (BJExemplarInfo e in book.Exemplars)
                         {
                             if (!e.Fields["899$a"].HasValue) continue;
-                            if ((e.ExemplarAccess.Access == 1007) || (e.ExemplarAccess.Access == 1014))
+                            if ((e.AccessInfo.Access == 1007) || (e.AccessInfo.Access == 1014))
                             {
                                 if (!this.IsExemplarIssued(e))
                                 {
@@ -823,7 +803,7 @@ namespace LibflClassLibrary.Circulation
             return loader.GetOrders(circulationStatus);
         }
 
-        private bool IsBookAlreadyIssuedToReader(BJBookInfo book, ReaderInfo reader)
+        private bool IsBookAlreadyIssuedToReader(BookBase book, ReaderInfo reader)
         {
             return loader.IsBookAlreadyIssuedToReader(book, reader);
         }
@@ -832,7 +812,7 @@ namespace LibflClassLibrary.Circulation
         private void NewOrder(ExemplarBase exemplar, ReaderInfo reader, int orderTypeId, int ReturnInDays)
         {
             List<BasketInfo> basket = loader.GetBasket(reader.NumberReader);
-            string bookId = ((BJExemplarInfo)exemplar).BookId;
+            string bookId = exemplar.BookId;
             BasketInfo bi = basket.FirstOrDefault(x => x.BookId == bookId && x.ReaderId == reader.NumberReader);
 
             string alligatBookId = null;
@@ -849,7 +829,7 @@ namespace LibflClassLibrary.Circulation
         private int GetFirstIssueDepartmentId(ExemplarBase exemplar)
         {
             BJExemplarInfo e = (BJExemplarInfo)exemplar;
-            int IssuingDepartmentId = KeyValueMapping.AccessCodeToIssuingDeparmentId[e.ExemplarAccess.Access];
+            int IssuingDepartmentId = KeyValueMapping.AccessCodeToIssuingDeparmentId[e.AccessInfo.Access];
             if (IssuingDepartmentId == 0)
             {
                 //тут вопросики возникают.
@@ -879,7 +859,7 @@ namespace LibflClassLibrary.Circulation
             return loader.IsExemplarIssued(exemplar);
         }
 
-        private bool IsElectronicIssueAlreadyIssued(ReaderInfo reader, BJBookInfo book)
+        private bool IsElectronicIssueAlreadyIssued(ReaderInfo reader, BookBase book)
         {
             return loader.IsElectronicIssueAlreadyIssued(reader, book);
         }

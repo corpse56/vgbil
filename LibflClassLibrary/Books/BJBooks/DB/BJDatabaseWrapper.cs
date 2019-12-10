@@ -439,16 +439,6 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             }
         }
 
-        internal DataTable IsIssuedToReader(int iddata)
-        {
-            DataSet ds = new DataSet();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.IS_ISSUED_TO_READER, connection);
-                dataAdapter.SelectCommand.Parameters.Add("iddata", SqlDbType.Int).Value = iddata;
-                return this.ExecuteSelectQuery(dataAdapter);
-            }
-        }
 
         internal DataTable GetEmployeeStatus(int idmain)
         {

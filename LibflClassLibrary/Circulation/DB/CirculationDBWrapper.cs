@@ -116,7 +116,7 @@ namespace LibflClassLibrary.Circulation.DB
             return table;
         }
 
-        internal DataTable IsBookAlreadyIssuedToReader(BJBookInfo book, ReaderInfo reader)
+        internal DataTable IsBookAlreadyIssuedToReader(BookBase book, ReaderInfo reader)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -382,14 +382,14 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
-        internal DataTable IsElectronicIssueAlreadyIssued(ReaderInfo reader, BJBookInfo book)
+        internal DataTable IsElectronicIssueAlreadyIssued(ReaderInfo reader, BookBase book)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(Queries.IS_ELECTRONIC_ISSUE_ALREADY_ISSUED, connection);
                 dataAdapter.SelectCommand.Parameters.Add("IDReader", SqlDbType.Int).Value = reader.NumberReader;
                 dataAdapter.SelectCommand.Parameters.Add("BookId", SqlDbType.NVarChar).Value = book.Id;
-                dataAdapter.SelectCommand.Parameters.Add("BookIdInt", SqlDbType.Int).Value = book.ID;
+                dataAdapter.SelectCommand.Parameters.Add("BookIdInt", SqlDbType.Int).Value = BookBase.GetPIN(book.Id);
                 dataAdapter.SelectCommand.Parameters.Add("BASE", SqlDbType.Int).Value = (book.Fund == "BJVVV")? 1 : 2;
 
                 DataTable table = new DataTable();

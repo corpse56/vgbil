@@ -1,4 +1,8 @@
-﻿using LibflClassLibrary.Books.BJBooks.BJExemplars;
+﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books.BJBooks.BJExemplars;
+using LibflClassLibrary.Circulation;
+using LibflClassLibrary.Circulation.CirculationService;
+using LibflClassLibrary.Circulation.CirculationService.RecieveExemplarFromReader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +10,7 @@ using System.Text;
 
 namespace LibflClassLibrary.Books
 {
-    public abstract class ExemplarBase
+    public abstract class ExemplarBase 
     {
         public string Id { get; set; }
         public string BookId { get; set; }
@@ -20,6 +24,9 @@ namespace LibflClassLibrary.Books
         public abstract string Location { get; set; }
         public abstract string Language { get; set; }
         public abstract string PublicationClass { get; set; }
+
+        public CirculationManager circulation;
+
         public string AuthorTitle
         {
             get

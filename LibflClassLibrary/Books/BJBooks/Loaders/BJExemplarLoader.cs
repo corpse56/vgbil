@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Books.BJBooks.DB;
+using LibflClassLibrary.Circulation.CirculationService.RecieveExemplarFromReader;
 
 namespace LibflClassLibrary.Books.BJBooks.Loaders
 {
@@ -103,7 +104,7 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             }
             try
             {
-                exemplar.ExemplarAccess = BJExemplarInfo.GetExemplarAccess(exemplar);
+                exemplar.AccessInfo = BJExemplarInfo.GetExemplarAccess(exemplar);
             }
             catch (Exception ex)
             {
@@ -140,6 +141,7 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             exemplar.Location = exemplar.Fields["899$a"].ToString();
             exemplar.Language = BJBookInfo.GetFieldValue(exemplar.Fund, BookBase.GetPIN(exemplar.BookId), 101, "$a");
             exemplar.PublicationClass = exemplar.Fields["921$c"].ToString();
+            exemplar.circulation = new BJCirculationManager();
             return exemplar;
         }
 

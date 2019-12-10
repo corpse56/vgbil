@@ -172,10 +172,16 @@
     <Compile Include="CirculationFCC\Classes\XmlConnections.cs" />
     <Compile Include="Circulation\BasketInfo.cs" />
     <Compile Include="Circulation\CirculationInfo.cs" />
+    <Compile Include="Circulation\CirculationService\BJCirculationManager.cs" />
+    <Compile Include="Circulation\CirculationService\CirculationManager.cs" />
+    <Compile Include="Circulation\CirculationService\PeriodicCirculation.cs" />
+    <Compile Include="Circulation\CirculationService\RecieveExemplarFromReader\IExemplarRecieverFromReader.cs" />
+    <Compile Include="Circulation\CirculationService\RecieveExemplarFromReader\PeriodicExemplarRecieverFromReader.cs" />
     <Compile Include="Circulation\CirculationStatisticsLoader.cs" />
     <Compile Include="Circulation\CirculationStatisticsManager.cs" />
     <Compile Include="Circulation\CirculationAdditionalActions.cs" />
     <Compile Include="Circulation\CirculationStatuses.cs" />
+    <Compile Include="Circulation\CirculationService\RecieveExemplarFromReader\BJExemplarRecieverFromReader.cs" />
     <Compile Include="Circulation\DB\CirculationDBWrapper.cs" />
     <Compile Include="Circulation\DB\CirculationQueries.cs" />
     <Compile Include="Circulation\DB\CirculationStatisticsDBWrapper.cs" />

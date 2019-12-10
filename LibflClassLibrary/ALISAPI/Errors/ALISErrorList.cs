@@ -360,6 +360,12 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Читатель не проходил через турникет. Выдача невозможна!",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
+            new ALISError()
+            {
+                Code = "C029",
+                Message = "Невозможная ситуация при приёме книги от читателя",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
 
         };
     }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Books.PeriodicBooks;
+using LibflClassLibrary.Circulation.CirculationService;
 
 namespace LibflClassLibrary.Books.PeriodBooks
 {
@@ -47,6 +48,7 @@ namespace LibflClassLibrary.Books.PeriodBooks
             result.Id = $"PERIOD_{pin.ToString()}";
             result.Fund = "PERIOD";
             result.Exemplars = new List<ExemplarBase>();
+            //result.Exemplars.Add(null);
             result.Pin = pin.ToString();
             result.Title = row["title"].ToString();
             result.Language = row["language"].ToString();
@@ -97,6 +99,7 @@ namespace LibflClassLibrary.Books.PeriodBooks
             result.Language = row["language"].ToString();
             result.Cipher = row["cipher"].ToString();
             result.PublicationClass = row["pubClass"].ToString();
+            result.circulation = new PeriodicCirculationManager();
             return result;
         }
     }
