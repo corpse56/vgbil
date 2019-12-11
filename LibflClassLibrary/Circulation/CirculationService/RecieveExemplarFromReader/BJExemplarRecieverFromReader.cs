@@ -71,9 +71,5 @@ namespace LibflClassLibrary.Circulation.CirculationService.RecieveExemplarFromRe
             ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, circulationStatus);
         }
 
-        void IExemplarRecieverFromReader.RecieveBookFromReader(ExemplarBase exemplar, OrderInfo oi, BJUserInfo bjUser)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

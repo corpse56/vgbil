@@ -1,6 +1,5 @@
 ﻿using ALISAPI.Errors;
 using ALISReaderRemote;
-using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ALISAPI.ResponseObjects;

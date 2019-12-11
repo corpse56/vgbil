@@ -7,7 +7,6 @@ using System.Runtime.Serialization;
 using System.Data;
 using System.Windows.Forms;
 using System.Security.Cryptography;
-using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Books.BJBooks.DB;

@@ -25,28 +25,49 @@ namespace LibflClassLibrary.Circulation.CirculationService.RecieveExemplarFromRe
 //Удалён
     class PeriodicExemplarRecieverFromReader : IExemplarRecieverFromReader
     {
-        //возвращаем 1 - значит нужно спросить на бронеполку будет класть или для возврата в хранение
-        //возвращаем 0 - значит либо книга в зал возвращается, либо из дома сдаёт, тоже для возврата в хранение
-        public int RecieveBookFromReader(ExemplarBase exemplarBase, OrderInfo oi, BJUserInfo bjUser)
+        public bool IsNeedToAskReaderForReserve(ExemplarBase exemplarBase, OrderInfo oi)
+        {
+            //BJExemplarInfo exemplar = (BJExemplarInfo)exemplarBase;
+            if (oi.StatusCode == CirculationStatuses.IssuedInHall.Id)
+            {
+                if (exemplarBase.PublicationClass == "Для длительного пользования")
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
+        public void RecieveBookFromReader(ExemplarBase exemplarBase, OrderInfo oi, BJUserInfo bjUser)
         {
             PeriodicExemplarInfo exemplar = (PeriodicExemplarInfo)exemplarBase;
             CirculationInfo ci = new CirculationInfo();
-            ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.Finished.Value);
-
-            if (oi.StatusCode == CirculationStatuses.IssuedInHall.Id)//в зал?
+            if (oi.StatusCode == CirculationStatuses.IssuedInHall.Id)
             {
                 if (exemplar.PublicationClass == "Для длительного пользования")
                 {
+                    if ((exemplar.Location != bjUser.SelectedUserStatus.DepName) &&
+                        !(bjUser.Login.ToLower().In("station1", "station2", "station3", "station4")))
+                    {
+                        throw new Exception("C022");
+                    }
                     ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.Finished.Value);
                 }
                 else
                 {
-                    return 1;
+                    //невозможная ситуация. это условие уже проверено при вызове IsNeedToAskReaderForReserve
+                    //Поэтому сюда не должно попасть. как это обойти хороший вопрос
+                    throw new Exception("C029");
                 }
             }
             else
             {
-                if (exemplar.Fields["899$a"].ToString().ToLower().Contains("книгохранен"))
+                if (exemplar.Location.ToLower().Contains("книгохранен"))
                 {
                     ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.ForReturnToBookStorage.Value);
                 }
@@ -55,8 +76,12 @@ namespace LibflClassLibrary.Circulation.CirculationService.RecieveExemplarFromRe
                     ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.Finished.Value);
                 }
             }
-            return 0;
+        }
 
+        public void RecieveBookFromReader(ExemplarBase exemplar, OrderInfo oi, BJUserInfo bjUser, string circulationStatus)
+        {
+            CirculationInfo ci = new CirculationInfo();
+            ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, circulationStatus);
         }
     }
 }

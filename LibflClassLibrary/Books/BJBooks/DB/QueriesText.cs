@@ -514,8 +514,9 @@ namespace LibflClassLibrary.Books.BJBooks.DB
             {
                 return " select "+
                         "substring( "+
-                        "    (select '; ' + SORT from BJVVV..DATAEXT " +
-                        "    where IDMAIN = @idmain and MNFIELD = @mnfield and MSFIELD = @msfield " +
+                        "    (select '; ' + B.PLAIN from " + this.Fund + "..DATAEXT A " +
+                        "     left join " + this.Fund + "..DATAEXTPLAIN B on A.ID = B.IDDATAEXT " +
+                        "    where A.IDMAIN = @idmain and MNFIELD = @mnfield and MSFIELD = @msfield " +
                         "    for XML path('')) " +
                         ",2,1000)";
             }

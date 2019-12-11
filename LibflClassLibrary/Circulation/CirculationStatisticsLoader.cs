@@ -125,7 +125,7 @@ namespace LibflClassLibrary.Circulation
             List<BookBase> result = new List<BookBase>();
             foreach (DataRow row in table.Rows)
             {
-                BookBase book = BookFactory.CreateBook(Convert.ToInt32(row["pin"]), row["fund"].ToString());
+                BookBase book = BookFactory.CreateBookByPin(Convert.ToInt32(row["pin"]), row["fund"].ToString());
                 result.Add(book);
             }
             return result;

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
 {
-    public class ExemplarSimpleView
+    public class ExemplarSimpleViewInfo
     {
         public string MethodOfAccess { get; set; }
         public int MethodOfAccessCode { get; set; }

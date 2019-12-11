@@ -44,18 +44,30 @@ namespace LibflClassLibrary.Books.PeriodBooks
                 return table;
             }
         }
+        //пином считаем IDZ штрихкода!!!!
+        //internal DataTable GetBookInfoByPIN(int pin)
+        //{
+        //    DataTable table = new DataTable();
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_BOOK_BY_PIN, connection);
+        //        dataAdapter.SelectCommand.Parameters.Add("pin", SqlDbType.NVarChar).Value = pin.ToString();
+        //        dataAdapter.Fill(table);
+        //        return table;
+        //    }
 
-        internal DataTable GetBookInfoByPIN(int pin)
+        //}
+
+        internal DataTable GetBookInfoByIDZBar(int idzBar)
         {
             DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_BOOK_BY_PIN, connection);
-                dataAdapter.SelectCommand.Parameters.Add("pin", SqlDbType.NVarChar).Value = pin.ToString();
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_BOOK_BY_IDZBar, connection);
+                dataAdapter.SelectCommand.Parameters.Add("idzBar", SqlDbType.Int).Value = idzBar;
                 dataAdapter.Fill(table);
                 return table;
             }
-
         }
 
         internal DataTable GetPeriodicExemplarBarByExemplarId(int exemplarId)

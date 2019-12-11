@@ -33,7 +33,7 @@ namespace LibflClassLibrary.Books
         {
             ExemplarBase result = null;
             result = BJExemplarInfo.GetExemplarByBar(bar);
-            return result ?? PeriodicExemplarInfo.GetPeriodicExemplarInfoByBar(bar)
+            return result ?? PeriodicExemplarInfo.GetPeriodicExemplarInfoByBar(bar);
         }
 
         public static ExemplarBase CreateExemplarByInventoryNumber(string inventoryNumber)

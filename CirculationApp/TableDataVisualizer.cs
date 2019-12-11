@@ -282,10 +282,11 @@ namespace CirculationApp
                     row.Cells["bar"].Value = exemplar.Bar;
                     row.Cells["rack"].Value = exemplar.Rack;
                     row.Cells["db"].Value = exemplar.Fund;
-                    row.Cells["lang"].Value = exemplar.la//BJBookInfo.GetFieldValue(bjExemplar.Fund, bjExemplar.IDMAIN, 101, "$a");//bjBook.Fields["101$a"].ToString();
-                    row.Cells["tema"].Value = BJBookInfo.GetFieldValue(bjExemplar.Fund, bjExemplar.IDMAIN, 922, "$e");//bjBook.Fields["922$e"].ToString();
+                    row.Cells["lang"].Value = exemplar.Language;//BJBookInfo.GetFieldValue(bjExemplar.Fund, bjExemplar.IDMAIN, 101, "$a");//bjBook.Fields["101$a"].ToString();
+                    row.Cells["tema"].Value = (exemplar.Fund == "PERIOD") ? "" :
+                                              BJBookInfo.GetFieldValue(exemplar.Fund, BookBase.GetPIN(exemplar.BookId), 922, "$e");//bjBook.Fields["922$e"].ToString();
                     CirculationInfo ci = new CirculationInfo();
-                    OrderInfo order = ci.GetLastOrder(bjExemplar.IdData, bjExemplar.Fund);
+                    OrderInfo order = ci.GetLastOrder(Convert.ToInt32(exemplar.Id), exemplar.Fund);
                     row.Cells["status"].Value = (order == null ||
                                                  order.StatusName.In(CirculationStatuses.Finished.Value, 
                                                                      CirculationStatuses.SelfOrder.Value,

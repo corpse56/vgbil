@@ -87,7 +87,7 @@ namespace LibflClassLibrary.Circulation.Loaders
             }
         }
 
-        internal bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
+        internal bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BookBase book)
         {
             DataTable table = dbWrapper.IsTwentyFourHoursPastSinceReturn(reader, book);
             if (table.Rows.Count == 0)
@@ -104,7 +104,7 @@ namespace LibflClassLibrary.Circulation.Loaders
             }
         }
 
-        internal int GetBusyExemplarsCount(BJBookInfo book)
+        internal int GetBusyExemplarsCount(BookBase book)
         {
             DataTable table = dbWrapper.GetBusyExemplarsCount(book);
             return table.Rows.Count;
@@ -251,9 +251,9 @@ namespace LibflClassLibrary.Circulation.Loaders
             {
                 return true;
             }
-            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+            ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
             if (exemplar == null) return true;
-            if (exemplar.Fields["899$a"].ToString() == depName)
+            if (exemplar.Location == depName)
             {
                 return false;
             }

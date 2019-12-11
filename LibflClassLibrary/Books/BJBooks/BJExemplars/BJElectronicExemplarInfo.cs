@@ -33,29 +33,29 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             }
             Statuses = loader.LoadAvailabilityStatuses(IDMAIN, Fund);
             var Status = Statuses.Find(x => x.Project == BJElectronicAvailabilityProjects.VGBIL);
-            this.ExemplarAccess = new ExemplarAccessInfo();
+            this.AccessInfo = new ExemplarAccessInfo();
             if (Status == null)//это значит книги нет в базе BookAddInf, но она там должна быть! либо надо гиперссылку из BJVVV убирать
             {
-                this.ExemplarAccess.Access = 1999;
-                this.ExemplarAccess.MethodOfAccess = 4005;
+                this.AccessInfo.Access = 1999;
+                this.AccessInfo.MethodOfAccess = 4005;
             }
             else
             {
                 if (Status.Code == BJElectronicExemplarAvailabilityCodes.vfreeview)
                 {
-                    this.ExemplarAccess.Access = 1001;
-                    this.ExemplarAccess.MethodOfAccess = 4002;
+                    this.AccessInfo.Access = 1001;
+                    this.AccessInfo.MethodOfAccess = 4002;
                 }
                 else if (Status.Code == BJElectronicExemplarAvailabilityCodes.vloginview)
                 {
-                    this.ExemplarAccess.Access = 1002;
-                    this.ExemplarAccess.MethodOfAccess = 4002;
+                    this.AccessInfo.Access = 1002;
+                    this.AccessInfo.MethodOfAccess = 4002;
 
                 }
                 else
                 {
-                    this.ExemplarAccess.Access = 1999;
-                    this.ExemplarAccess.MethodOfAccess = 4005;
+                    this.AccessInfo.Access = 1999;
+                    this.AccessInfo.MethodOfAccess = 4005;
                 }
             }
         }

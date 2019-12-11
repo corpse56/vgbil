@@ -76,6 +76,14 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
                     else
                     {
                         result.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());
+                        if ((int)row["MNFIELD"] == 200 && row["MSFIELD"].ToString() == "$a")
+                        {
+                            result.Title = row["PLAIN"].ToString();
+                        }
+                        if ((int)row["MNFIELD"] == 700 && row["MSFIELD"].ToString() == "$a" && string.IsNullOrWhiteSpace(result.Author))
+                        {
+                            result.Author = row["PLAIN"].ToString();
+                        }
                     }
                 }
                 else

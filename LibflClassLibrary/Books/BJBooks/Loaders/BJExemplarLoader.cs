@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Books.BJBooks.DB;
 using LibflClassLibrary.Circulation.CirculationService.RecieveExemplarFromReader;
@@ -142,6 +143,7 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             exemplar.Language = BJBookInfo.GetFieldValue(exemplar.Fund, BookBase.GetPIN(exemplar.BookId), 101, "$a");
             exemplar.PublicationClass = exemplar.Fields["921$c"].ToString();
             exemplar.circulation = new BJCirculationManager();
+            exemplar.simpleViewer = new BJExemplarSimpleViewer();
             return exemplar;
         }
 

@@ -228,7 +228,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                 case "REDKOSTJ":
                     if (exemplar.Fields["482$a"].ToLower() != "")
                     {
-                        BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString(), exemplar.Fund);
+                        BJExemplarInfo Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(exemplar.Fields["482$a"].ToString());
                         if (Convolute == null)
                         {
                             access.Access = 1016;
@@ -236,8 +236,8 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
                         }
                         else
                         {
-                            access.Access = Convolute.ExemplarAccess.Access;
-                            access.MethodOfAccess = Convolute.ExemplarAccess.MethodOfAccess;
+                            access.Access = Convolute.AccessInfo.Access;
+                            access.MethodOfAccess = Convolute.AccessInfo.MethodOfAccess;
                         }
 
                     } 
@@ -302,7 +302,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             {
                 case "BJVVV":
                     BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
-                    DataTable table = dbw.IsIssuedOrOrderedEmployee(this.IDMAIN, this.IdData);
+                    DataTable table = dbw.IsIssuedOrOrderedEmployee(this.IDMAIN, Convert.ToInt32(this.Id));
                     return (table.Rows.Count == 0) ? false : true;
                 default:
                     return false;
@@ -315,7 +315,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             {
                 case "BJVVV":
                     BJDatabaseWrapper dbw = new BJDatabaseWrapper(this.Fund);
-                    DataTable table = dbw.IsSelfIssuedOrOrderedEmployee(this.IdData, this.IDMAIN, IdReader);
+                    DataTable table = dbw.IsSelfIssuedOrOrderedEmployee(Convert.ToInt32(this.Id), this.IDMAIN, IdReader);
                     return (table.Rows.Count == 0) ? false : true;
                 default:
                     return false;

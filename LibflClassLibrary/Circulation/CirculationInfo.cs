@@ -24,7 +24,6 @@ namespace LibflClassLibrary.Circulation
     public class CirculationInfo
     {
         CirculationLoader loader;
-        ICirculation circulation = new BJExemplarRecieverFromReader();
 
         public CirculationInfo()
         {
@@ -103,11 +102,11 @@ namespace LibflClassLibrary.Circulation
             }
             if (book.DigitalCopy != null)
             {
-                if (book.DigitalCopy.ExemplarAccess.Access == 1002)
+                if (book.DigitalCopy.AccessInfo.Access == 1002)
                 {
                     result.Add(3);
                 }
-                if (book.DigitalCopy.ExemplarAccess.Access == 1001)
+                if (book.DigitalCopy.AccessInfo.Access == 1001)
                 {
                     result.Add(6);
                 }
@@ -198,18 +197,10 @@ namespace LibflClassLibrary.Circulation
             return loader.GetIssuedInHallBooksCount(bjUser);
         }
 
-
-        // 0 - ok
-        // 1 - нужно спросить на бронеполку возвращают или нет
-        public int RecieveBookFromReader(ExemplarBase exemplar, OrderInfo oi, BJUserInfo bjUser)
+        //метод надо переписать для станций самовыдачи
+        public void RecieveBookFromReader(ExemplarBase exemplar, OrderInfo oi, BJUserInfo bjUser)
         {
-            exemplar.circulation
-
-
-
-
-
-            
+            //exemplar.circulation.exemplarRecieverFromReader.RecieveBookFromReader(exemplar, oi, bjUser);
         }
 
 
@@ -504,7 +495,7 @@ namespace LibflClassLibrary.Circulation
 
         internal BARType CheckBAR(string data)
         {
-            BookBase book = BookFactory.CreateBook(data);
+            BookBase book = BookFactory.CreateBookByBar(data);
             if (book != null) return BARType.Book;
             ReaderInfo reader = ReaderInfo.GetReaderByBar(data);
             if (reader != null) return BARType.Reader;
@@ -635,7 +626,7 @@ namespace LibflClassLibrary.Circulation
                 {
                     throw new Exception("C004");
                 }
-                BJElectronicExemplarInfo exemplar = new BJElectronicExemplarInfo(book.ID, book.Fund);
+                BJElectronicExemplarInfo exemplar = new BJElectronicExemplarInfo(BookBase.GetPIN(book.Id), book.Fund);
                 //BJExemplarInfo exemplar = BJExemplarInfo(book.ID, book.Fund);
                 this.NewOrder(exemplar, reader, request.OrderTypeId, 30);
             }
@@ -652,9 +643,10 @@ namespace LibflClassLibrary.Circulation
                 {
                     case OrderTypes.PaperVersion.Id:
                         //приоритет для книг, которые в хранении, чтобы их принесли на кафедру для читателя
-                        foreach (BJExemplarInfo e in book.Exemplars)
+                        foreach (ExemplarBase e in book.Exemplars)
                         {
-                            if (!e.Fields["899$a"].HasValue) continue;
+                            //if (!e.Fields["899$a"].HasValue) continue;
+                            if (string.IsNullOrWhiteSpace(e.Location)) continue;
                             if (e.AccessInfo.Access == 1000)
                             {
                                 if (!this.IsExemplarIssued(e))
@@ -670,9 +662,9 @@ namespace LibflClassLibrary.Circulation
                             break;
                         }
                         //если свободных книг в хранении не осталось, то ищем те, которые в отрытом доступе. это будет самостоятельный заказ
-                        foreach (BJExemplarInfo e in book.Exemplars)
+                        foreach (ExemplarBase e in book.Exemplars)
                         {
-                            if (!e.Fields["899$a"].HasValue) continue;
+                            if (string.IsNullOrWhiteSpace(e.Location)) continue;
                             if ((e.AccessInfo.Access == 1006))
                             {
                                 if (!this.IsExemplarIssued(e))
@@ -694,9 +686,9 @@ namespace LibflClassLibrary.Circulation
 
                     case OrderTypes.InLibrary.Id:
                         //тут опять приоритет у тех, которые надо заказать из книгохранения перед самостоятельным заказом
-                        foreach (BJExemplarInfo e in book.Exemplars)
+                        foreach (ExemplarBase e in book.Exemplars)
                         {
-                            if (!e.Fields["899$a"].HasValue) continue;
+                            if (string.IsNullOrWhiteSpace(e.Location)) continue;
                             if ((e.AccessInfo.Access == 1005) || (e.AccessInfo.Access == 1012))
                             {
                                 if (!this.IsExemplarIssued(e))
@@ -712,9 +704,9 @@ namespace LibflClassLibrary.Circulation
                             break;
                         }
                         //если свободных книг в хранении не осталось, то ищем те, которые в отрытом доступе. это будет самостоятельный заказ
-                        foreach (BJExemplarInfo e in book.Exemplars)
+                        foreach (ExemplarBase e in book.Exemplars)
                         {
-                            if (!e.Fields["899$a"].HasValue) continue;
+                            if (string.IsNullOrWhiteSpace(e.Location)) continue;
                             if ((e.AccessInfo.Access == 1007) || (e.AccessInfo.Access == 1014))
                             {
                                 if (!this.IsExemplarIssued(e))
@@ -828,12 +820,12 @@ namespace LibflClassLibrary.Circulation
         }
         private int GetFirstIssueDepartmentId(ExemplarBase exemplar)
         {
-            BJExemplarInfo e = (BJExemplarInfo)exemplar;
-            int IssuingDepartmentId = KeyValueMapping.AccessCodeToIssuingDeparmentId[e.AccessInfo.Access];
+            //BJExemplarInfo e = (BJExemplarInfo)exemplar;
+            int IssuingDepartmentId = KeyValueMapping.AccessCodeToIssuingDeparmentId[exemplar.AccessInfo.Access];
             if (IssuingDepartmentId == 0)
             {
                 //тут вопросики возникают.
-                ExemplarSimpleView es = ViewFactory.GetExemplarSimpleView(e);
+                ExemplarSimpleViewInfo es = exemplar.simpleViewer.GetExemplarSimpleView(exemplar);
                 if (es == null)
                 {
                     IssuingDepartmentId = 2007;//по умолчанию
@@ -845,12 +837,12 @@ namespace LibflClassLibrary.Circulation
             }
             return IssuingDepartmentId;
         }
-        private bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
+        private bool IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BookBase book)
         {
             return loader.IsTwentyFourHoursPastSinceReturn(reader, book);
         }
 
-        public int GetBusyExemplarsCount(BJBookInfo book)
+        public int GetBusyExemplarsCount(BookBase book)
         {
             return loader.GetBusyExemplarsCount(book);
         }

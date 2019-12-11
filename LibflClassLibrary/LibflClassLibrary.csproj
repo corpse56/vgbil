@@ -117,10 +117,13 @@
     <Compile Include="ALISAPI\RequestObjects\Readers\SetPasswordRemoteReader.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\UserEmail.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\UserLogin.cs" />
+    <Compile Include="ALISAPI\ResponseObjects\Books\PeriodicExemplarSimpleViewer.cs" />
+    <Compile Include="ALISAPI\ResponseObjects\Books\BJExemplarSimpleViewer.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\BookSimpleView.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\DigitalCopySimpleView.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\ElectronicCopyFullView.cs" />
-    <Compile Include="ALISAPI\ResponseObjects\Books\ExemplarSimpleView.cs" />
+    <Compile Include="ALISAPI\ResponseObjects\Books\ExemplarSimpleViewInfo.cs" />
+    <Compile Include="ALISAPI\ResponseObjects\Books\IExemplarSimpleViewer.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\ViewFactory.cs" />
     <Compile Include="ALISAPI\ResponseObjects\General\BooleanResponse.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Readers\LoginType.cs" />

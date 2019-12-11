@@ -181,7 +181,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             {
                 exemplar = BJLoader.GetExemplar((int)iddata["IDDATA"]);
                 BJExemplarInfo bjExemplar = BJExemplarInfo.GetExemplarByIdData((int)iddata["IDDATA"], this.Fund);
-                if (bjExemplar.ExemplarAccess.Access == 1020)//экстремистская литература. не выгружаем такое.
+                if (bjExemplar.AccessInfo.Access == 1020)//экстремистская литература. не выгружаем такое.
                 {
                     continue;
                 }
@@ -212,7 +212,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                             writer.WriteValue(r["PLAIN"].ToString());
                             
                             writer.WritePropertyName("exemplar_convolute");
-                            Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(r["PLAIN"].ToString(), this.Fund);
+                            Convolute = BJExemplarInfo.GetExemplarByInventoryNumber(r["PLAIN"].ToString());
                             if (Convolute == null)
                             {
                                 writer.WriteValue("Ошибка заполнения библиографического описания конволюта");
@@ -349,11 +349,11 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                 writer.WriteValue(iddata["IDDATA"].ToString());
 
 
-                result.MethodOfAccess.Add(bjExemplar.ExemplarAccess.MethodOfAccess.ToString());
+                result.MethodOfAccess.Add(bjExemplar.AccessInfo.MethodOfAccess.ToString());
                 writer.WritePropertyName("exemplar_access");
-                writer.WriteValue(bjExemplar.ExemplarAccess.Access);
+                writer.WriteValue(bjExemplar.AccessInfo.Access);
                 writer.WritePropertyName("exemplar_access_group");
-                writer.WriteValue(KeyValueMapping.AccessCodeToGroup[bjExemplar.ExemplarAccess.Access]);
+                writer.WriteValue(KeyValueMapping.AccessCodeToGroup[bjExemplar.AccessInfo.Access]);
                 result.Exemplars.Add(bjExemplar);
 
                 writer.WriteEndObject();

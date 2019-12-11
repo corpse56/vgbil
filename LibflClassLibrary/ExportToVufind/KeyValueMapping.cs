@@ -425,7 +425,7 @@ namespace LibflClassLibrary.ExportToVufind
             {"BJSCC", 5005},
             //{"BRIT_SOVET", 5002},deprecated
             {"Litres", 5007},
-            {"period", 5006},
+            {"PERIOD", 5006},
             //{"HJB", 5009},deprecated
             {"Pearson", 5008},
         };

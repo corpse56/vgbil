@@ -20,7 +20,7 @@ namespace LibflClassLibrary.Books
         //виртуальные свойства
         public virtual string Language { get; set; }
         public virtual string Title { get; set; }
-
+        public virtual string Author { get; set; }
         internal string ToJsonString()
         {
             throw new NotImplementedException();

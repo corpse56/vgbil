@@ -20,7 +20,7 @@ namespace CirculationApp
     public enum BARType { Book, Reader, NotExist }
     public enum ExpectingAction { WaitingBook, WaitingReader, WaitingConfimation }//0 - ожидается штрихкод книги, 1 - ожидается штрихкод читателя, 2 - ожидается подтверждение или отмена выдачи
 
-    public class Department : ICirculation
+    public class Department 
     {
         public ExpectingAction ExpectedBar = ExpectingAction.WaitingBook;
 
@@ -32,7 +32,6 @@ namespace CirculationApp
 
 
         CirculationInfo ci = new CirculationInfo();
-        public BookBase ScannedBook;
         public ExemplarBase ScannedExemplar;
         public ReaderInfo ScannedReader;
         public BJUserInfo bjUser;
@@ -67,7 +66,6 @@ namespace CirculationApp
                     return 3;
                 }
                 ScannedExemplar = ExemplarFactory.CreateExemplar(PortData);
-                this.circulation_ = ScannedExemplar.circulation;
                 if (ci.IsIssuedToReader(ScannedExemplar))
                 {
                     return 0;

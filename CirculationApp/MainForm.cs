@@ -212,8 +212,8 @@ namespace CirculationApp
                     MessageBox.Show("Ожидался штрихкод издания, а считан штрихкод читателя!");
                     break;
                 case 4:
-                    lAuthor.Text = department.ScannedBook.Fields["700$a"].ToString();
-                    lTitle.Text = department.ScannedBook.Fields["200$a"].ToString();
+                    lAuthor.Text = department.ScannedExemplar.Author;
+                    lTitle.Text = department.ScannedExemplar.Title;
                     bCancel.Enabled = true;
                     label1.Text = "Считайте штрихкод читателя";
                     break;
@@ -329,16 +329,16 @@ namespace CirculationApp
                 ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
                 //BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
                 row.Cells["id"].Value = order.OrderId;
-                row.Cells["bar"].Value = exemplar..Fields["899$w"].ToString();
+                row.Cells["bar"].Value = exemplar.Bar;//.Fields["899$w"].ToString();
                 row.Cells["inv"].Value = exemplar.InventoryNumber;//.Fields["899$p"].ToString();
                 row.Cells["author"].Value = exemplar.Author;//book.Fields["700$a"].ToString();
                 row.Cells["title"].Value = exemplar.Title;//book.Fields["200$a"].ToString();
                 row.Cells["issueDate"].Value = order.IssueDate;
                 row.Cells["returnDate"].Value = order.ReturnDate;
                 row.Cells["cipher"].Value = exemplar.Cipher;
-                row.Cells["baseName"].Value = GetRusFundName(exemplar.Fund);
+                row.Cells["baseName"].Value = BookBase.GetRusFundName(exemplar.Fund);
                 row.Cells["status"].Value = order.StatusName;
-                row.Cells["rack"].Value = exemplar.Fields["899$c"].ToString();
+                row.Cells["rack"].Value = (exemplar is BJExemplarInfo) ? ((BJExemplarInfo)exemplar).Fields["899$c"].ToString() : "";
                 row.Cells["issDep"].Value = string.IsNullOrEmpty(order.IssueDep) ?  "" : KeyValueMapping.LocationCodeToName[int.Parse(order.IssueDep)];
                 row.Cells["retDep"].Value = string.IsNullOrEmpty(order.ReturnDep) ? "" : KeyValueMapping.LocationCodeToName[int.Parse(order.ReturnDep)];
             }

@@ -25,13 +25,13 @@ namespace LibflClassLibrary.Books
         {
             BookBase result = null;
             result = BJBookInfo.GetBookInfoByPIN(pin, fund);
-            return result ?? PeriodicBookInfo.GetBookInfoByPIN($"PERIOD_{pin}");
+            return result ?? PeriodicBookInfo.GetBookInfoByIDZBar($"PERIOD_{pin}");
         }
         public static BookBase CreateBookByPin(string fullPin)
         {
             BookBase result = null;
             result = BJBookInfo.GetBookInfoByPIN(BookBase.GetPIN(fullPin), BookBase.GetFund(fullPin));
-            return result ?? PeriodicBookInfo.GetBookInfoByPIN(fullPin);
+            return result ?? PeriodicBookInfo.GetBookInfoByIDZBar(fullPin);
         }
 
         public static BookBase CreateBookInfoByInventoryNumber(string invNumber, string fund)

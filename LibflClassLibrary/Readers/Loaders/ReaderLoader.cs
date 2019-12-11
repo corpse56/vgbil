@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using DataProviderAPI.ValueObjects;
 using LibflClassLibrary.Readers.DB;
 using LibflClassLibrary.Readers.ReadersRight;
 using Utilities;

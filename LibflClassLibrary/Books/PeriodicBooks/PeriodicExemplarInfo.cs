@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LibflClassLibrary.Books.PeriodicBooks
 {
-    class PeriodicExemplarInfo : ExemplarBase
+    public class PeriodicExemplarInfo : ExemplarBase
     {
         public string Number { get; set; }
         public string PublishYear { get; set; }
@@ -33,6 +33,7 @@ namespace LibflClassLibrary.Books.PeriodicBooks
         public static PeriodicExemplarInfo GetPeriodicExemplarInfoByExemplarId(int exemplarId)
         {
             //ExemplarId для периодики - это IDZ поля штрихкод в таблице PI !!!
+            //он же и является ПИНом книги для периодики!
             PeriodicLoader loader = new PeriodicLoader();
             PeriodicExemplarInfo result = loader.GetPeriodicExemplarInfoByExemplarId(exemplarId);
             return result;

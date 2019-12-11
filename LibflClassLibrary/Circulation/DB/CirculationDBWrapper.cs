@@ -651,7 +651,7 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
-        internal DataTable IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BJBookInfo book)
+        internal DataTable IsTwentyFourHoursPastSinceReturn(ReaderInfo reader, BookBase book)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -666,7 +666,7 @@ namespace LibflClassLibrary.Circulation.DB
 
         }
 
-        internal DataTable GetBusyExemplarsCount(BJBookInfo book)
+        internal DataTable GetBusyExemplarsCount(BookBase book)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

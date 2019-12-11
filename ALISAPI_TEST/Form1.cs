@@ -444,7 +444,7 @@ namespace ALISAPI_TEST
                 foreach(ExemplarBase exemplar in book.Exemplars)
                 {
 
-                    switch (((BJExemplarInfo)exemplar).ExemplarAccess.Access)
+                    switch (((BJExemplarInfo)exemplar).AccessInfo.Access)
                     {
                         case 1000:
                             if (A1000 < 2)

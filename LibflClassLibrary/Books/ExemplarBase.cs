@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.BJUsers;
+﻿using LibflClassLibrary.ALISAPI.ResponseObjects.Books;
+using LibflClassLibrary.BJUsers;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Circulation.CirculationService;
@@ -26,7 +27,7 @@ namespace LibflClassLibrary.Books
         public abstract string PublicationClass { get; set; }
 
         public CirculationManager circulation;
-
+        public IExemplarSimpleViewer simpleViewer;
         public string AuthorTitle
         {
             get
