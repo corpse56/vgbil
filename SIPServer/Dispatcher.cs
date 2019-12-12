@@ -481,10 +481,11 @@ namespace SIPServer
                 response.DueDate = DateTime.Now;
             }
 
-            if (string.IsNullOrEmpty(message))
+            if (!string.IsNullOrEmpty(message))
             {
                 ALISError error = ALISErrorList._list.Find(x => x.Code == message);
-                response.ScreenMessage = error.Message;
+                response.ScreenMessage = (error != null) ? error.Message : "Неизвестная ошибка";
+                    
             }
             else
             {

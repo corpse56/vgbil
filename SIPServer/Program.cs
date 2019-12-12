@@ -31,7 +31,7 @@ namespace SIPServer
 
             Utilities.IniFile iniFile = new Utilities.IniFile("SipServerSettings.ini");
             var ip = IPAddress.Parse(iniFile.Read("ip", "SIPServer"));
-            ip = IPAddress.Parse("192.168.1.165");
+            //ip = IPAddress.Parse("192.168.1.165");
 
             var endpoint = new IPEndPoint(ip, 6001);
             var encoding =  new AsciiUTF8Encoding();

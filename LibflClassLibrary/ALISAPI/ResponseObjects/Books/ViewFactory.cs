@@ -172,6 +172,11 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
         {
             BookSimpleView result = new BookSimpleView();
             BJBookInfo bjBook = BJBookInfo.GetBookInfoByPIN(IDMAIN, fund);
+            if (bjBook == null)
+            {
+                result.Title = $"Книга не найдена в базе: {IDMAIN} {fund}";
+                return result;
+            }
             result.ID = bjBook.Id;
             result.Annotation = bjBook.Fields["330$a"].ToString();//vfDoc.Annotation.ToString();
             result.Author = bjBook.Fields["700$a"].ToString(); //vfDoc.author.ToString();

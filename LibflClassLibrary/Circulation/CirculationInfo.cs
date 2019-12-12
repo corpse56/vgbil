@@ -353,13 +353,13 @@ namespace LibflClassLibrary.Circulation
             //если читатель не проходил через проход, то книгу не выдавать, пока не пройдёт через проход
             //это сделано для того, чтобы читатель не прошёл по гостевому, набрал бы книг, и вышел по гостевому.
 
-            //if (!reader.IsEnteredThroughAccessControlSystem())
-            //{
-            //    if (reader.Rights[ReaderRightsEnum.Employee] == null)//на сотрудников не распространяется
-            //    {
-            //        throw new Exception("C028");
-            //    }
-            //}
+            if (!reader.IsEnteredThroughAccessControlSystem())
+            {
+                if (reader.Rights[ReaderRightsEnum.Employee] == null)//на сотрудников не распространяется
+                {
+                    throw new Exception("C028");
+                }
+            }
 
             //ищем заказ с таким экземпляром.
             OrderInfo order = this.FindOrderByExemplar(exemplar);
