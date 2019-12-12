@@ -75,12 +75,6 @@ namespace CirculationApp
             this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pbFormular = new System.Windows.Forms.PictureBox();
-            this.ReferenceTab = new System.Windows.Forms.TabPage();
-            this.bSaveReferenceToFile = new System.Windows.Forms.Button();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.lReferenceName = new System.Windows.Forms.Label();
-            this.Statistics = new System.Windows.Forms.DataGridView();
-            this.bShowReference = new System.Windows.Forms.Button();
             this.AttendanceTab = new System.Windows.Forms.TabPage();
             this.bEmulation = new System.Windows.Forms.Button();
             this.lInfoAttendance = new System.Windows.Forms.Label();
@@ -126,9 +120,6 @@ namespace CirculationApp
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFormular)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).BeginInit();
-            this.ReferenceTab.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Statistics)).BeginInit();
             this.AttendanceTab.SuspendLayout();
             this.AcceptBooksTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTransfer)).BeginInit();
@@ -151,7 +142,7 @@ namespace CirculationApp
             // bChangeAuthorization
             // 
             this.bChangeAuthorization.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bChangeAuthorization.Location = new System.Drawing.Point(948, 110);
+            this.bChangeAuthorization.Location = new System.Drawing.Point(961, 110);
             this.bChangeAuthorization.Margin = new System.Windows.Forms.Padding(4);
             this.bChangeAuthorization.Name = "bChangeAuthorization";
             this.bChangeAuthorization.Size = new System.Drawing.Size(215, 28);
@@ -169,7 +160,7 @@ namespace CirculationApp
             this.tbCurrentEmployee.Margin = new System.Windows.Forms.Padding(4);
             this.tbCurrentEmployee.Name = "tbCurrentEmployee";
             this.tbCurrentEmployee.ReadOnly = true;
-            this.tbCurrentEmployee.Size = new System.Drawing.Size(648, 23);
+            this.tbCurrentEmployee.Size = new System.Drawing.Size(661, 23);
             this.tbCurrentEmployee.TabIndex = 8;
             // 
             // MainTabContainer
@@ -179,14 +170,13 @@ namespace CirculationApp
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MainTabContainer.Controls.Add(this.MainTab);
             this.MainTabContainer.Controls.Add(this.FormularTab);
-            this.MainTabContainer.Controls.Add(this.ReferenceTab);
             this.MainTabContainer.Controls.Add(this.AttendanceTab);
             this.MainTabContainer.Controls.Add(this.AcceptBooksTab);
             this.MainTabContainer.Location = new System.Drawing.Point(15, 138);
             this.MainTabContainer.Margin = new System.Windows.Forms.Padding(4);
             this.MainTabContainer.Name = "MainTabContainer";
             this.MainTabContainer.SelectedIndex = 0;
-            this.MainTabContainer.Size = new System.Drawing.Size(1148, 533);
+            this.MainTabContainer.Size = new System.Drawing.Size(1161, 581);
             this.MainTabContainer.TabIndex = 9;
             this.MainTabContainer.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -206,7 +196,7 @@ namespace CirculationApp
             this.MainTab.Margin = new System.Windows.Forms.Padding(4);
             this.MainTab.Name = "MainTab";
             this.MainTab.Padding = new System.Windows.Forms.Padding(4);
-            this.MainTab.Size = new System.Drawing.Size(1140, 504);
+            this.MainTab.Size = new System.Drawing.Size(1153, 552);
             this.MainTab.TabIndex = 0;
             this.MainTab.Text = "ѕриЄм/выдача изданий";
             this.MainTab.UseVisualStyleBackColor = true;
@@ -223,7 +213,7 @@ namespace CirculationApp
             // bMainEmulation
             // 
             this.bMainEmulation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bMainEmulation.Location = new System.Drawing.Point(1021, 469);
+            this.bMainEmulation.Location = new System.Drawing.Point(1034, 517);
             this.bMainEmulation.Name = "bMainEmulation";
             this.bMainEmulation.Size = new System.Drawing.Size(92, 24);
             this.bMainEmulation.TabIndex = 7;
@@ -234,7 +224,7 @@ namespace CirculationApp
             // bCancel
             // 
             this.bCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.bCancel.Location = new System.Drawing.Point(461, 466);
+            this.bCancel.Location = new System.Drawing.Point(467, 514);
             this.bCancel.Name = "bCancel";
             this.bCancel.Size = new System.Drawing.Size(75, 31);
             this.bCancel.TabIndex = 6;
@@ -245,7 +235,7 @@ namespace CirculationApp
             // bConfirm
             // 
             this.bConfirm.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.bConfirm.Location = new System.Drawing.Point(331, 466);
+            this.bConfirm.Location = new System.Drawing.Point(337, 514);
             this.bConfirm.Name = "bConfirm";
             this.bConfirm.Size = new System.Drawing.Size(116, 31);
             this.bConfirm.TabIndex = 1;
@@ -259,7 +249,7 @@ namespace CirculationApp
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.Green;
-            this.label1.Location = new System.Drawing.Point(299, 302);
+            this.label1.Location = new System.Drawing.Point(309, 302);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(373, 31);
             this.label1.TabIndex = 5;
@@ -271,9 +261,9 @@ namespace CirculationApp
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.RPhoto);
             this.groupBox2.Controls.Add(this.lReader);
-            this.groupBox2.Location = new System.Drawing.Point(409, 336);
+            this.groupBox2.Location = new System.Drawing.Point(516, 349);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(688, 127);
+            this.groupBox2.Size = new System.Drawing.Size(594, 162);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "„итатель";
@@ -284,7 +274,7 @@ namespace CirculationApp
             this.RPhoto.Cursor = System.Windows.Forms.Cursors.Hand;
             this.RPhoto.ErrorImage = global::CirculationApp.Properties.Resources.nofoto;
             this.RPhoto.InitialImage = global::CirculationApp.Properties.Resources.nofoto;
-            this.RPhoto.Location = new System.Drawing.Point(589, 16);
+            this.RPhoto.Location = new System.Drawing.Point(495, 34);
             this.RPhoto.Name = "RPhoto";
             this.RPhoto.Size = new System.Drawing.Size(93, 101);
             this.RPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -294,10 +284,11 @@ namespace CirculationApp
             // 
             // lReader
             // 
+            this.lReader.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lReader.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lReader.Location = new System.Drawing.Point(6, 19);
+            this.lReader.Location = new System.Drawing.Point(39, 26);
             this.lReader.Name = "lReader";
-            this.lReader.Size = new System.Drawing.Size(565, 89);
+            this.lReader.Size = new System.Drawing.Size(439, 120);
             this.lReader.TabIndex = 5;
             // 
             // groupBox1
@@ -307,9 +298,9 @@ namespace CirculationApp
             this.groupBox1.Controls.Add(this.lTitle);
             this.groupBox1.Controls.Add(this.lAuthor);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Location = new System.Drawing.Point(12, 336);
+            this.groupBox1.Location = new System.Drawing.Point(12, 349);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(367, 127);
+            this.groupBox1.Size = new System.Drawing.Size(488, 162);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "»здание";
@@ -328,15 +319,15 @@ namespace CirculationApp
             this.lTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lTitle.Location = new System.Drawing.Point(127, 72);
             this.lTitle.Name = "lTitle";
-            this.lTitle.Size = new System.Drawing.Size(329, 36);
+            this.lTitle.Size = new System.Drawing.Size(329, 74);
             this.lTitle.TabIndex = 5;
             // 
             // lAuthor
             // 
             this.lAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lAuthor.Location = new System.Drawing.Point(91, 32);
+            this.lAuthor.Location = new System.Drawing.Point(130, 32);
             this.lAuthor.Name = "lAuthor";
-            this.lAuthor.Size = new System.Drawing.Size(365, 25);
+            this.lAuthor.Size = new System.Drawing.Size(326, 25);
             this.lAuthor.TabIndex = 5;
             // 
             // label6
@@ -363,7 +354,7 @@ namespace CirculationApp
             this.dgvLog.Name = "dgvLog";
             this.dgvLog.ReadOnly = true;
             this.dgvLog.RowHeadersVisible = false;
-            this.dgvLog.Size = new System.Drawing.Size(1120, 270);
+            this.dgvLog.Size = new System.Drawing.Size(1133, 270);
             this.dgvLog.TabIndex = 2;
             // 
             // label4
@@ -399,7 +390,7 @@ namespace CirculationApp
             this.FormularTab.Location = new System.Drawing.Point(4, 25);
             this.FormularTab.Name = "FormularTab";
             this.FormularTab.Padding = new System.Windows.Forms.Padding(3);
-            this.FormularTab.Size = new System.Drawing.Size(1140, 504);
+            this.FormularTab.Size = new System.Drawing.Size(1153, 552);
             this.FormularTab.TabIndex = 3;
             this.FormularTab.Text = "‘ормул€р читател€";
             this.FormularTab.UseVisualStyleBackColor = true;
@@ -658,84 +649,6 @@ namespace CirculationApp
             this.pbFormular.TabStop = false;
             this.pbFormular.Click += new System.EventHandler(this.pbFormular_Click);
             // 
-            // ReferenceTab
-            // 
-            this.ReferenceTab.Controls.Add(this.bSaveReferenceToFile);
-            this.ReferenceTab.Controls.Add(this.flowLayoutPanel1);
-            this.ReferenceTab.Controls.Add(this.Statistics);
-            this.ReferenceTab.Controls.Add(this.bShowReference);
-            this.ReferenceTab.Location = new System.Drawing.Point(4, 25);
-            this.ReferenceTab.Margin = new System.Windows.Forms.Padding(4);
-            this.ReferenceTab.Name = "ReferenceTab";
-            this.ReferenceTab.Padding = new System.Windows.Forms.Padding(4);
-            this.ReferenceTab.Size = new System.Drawing.Size(1140, 504);
-            this.ReferenceTab.TabIndex = 1;
-            this.ReferenceTab.Text = "—правка";
-            this.ReferenceTab.UseVisualStyleBackColor = true;
-            // 
-            // bSaveReferenceToFile
-            // 
-            this.bSaveReferenceToFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bSaveReferenceToFile.Enabled = false;
-            this.bSaveReferenceToFile.Location = new System.Drawing.Point(724, 459);
-            this.bSaveReferenceToFile.Name = "bSaveReferenceToFile";
-            this.bSaveReferenceToFile.Size = new System.Drawing.Size(234, 28);
-            this.bSaveReferenceToFile.TabIndex = 5;
-            this.bSaveReferenceToFile.Text = "—охранить в файл";
-            this.bSaveReferenceToFile.UseVisualStyleBackColor = true;
-            this.bSaveReferenceToFile.Click += new System.EventHandler(this.bSaveReferenceToFile_Click);
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel1.Controls.Add(this.lReferenceName);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 9);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1126, 28);
-            this.flowLayoutPanel1.TabIndex = 4;
-            // 
-            // lReferenceName
-            // 
-            this.lReferenceName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lReferenceName.AutoSize = true;
-            this.lReferenceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lReferenceName.Location = new System.Drawing.Point(3, 0);
-            this.lReferenceName.Name = "lReferenceName";
-            this.lReferenceName.Size = new System.Drawing.Size(0, 26);
-            this.lReferenceName.TabIndex = 3;
-            // 
-            // Statistics
-            // 
-            this.Statistics.AllowUserToAddRows = false;
-            this.Statistics.AllowUserToDeleteRows = false;
-            this.Statistics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Statistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Statistics.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.Statistics.Location = new System.Drawing.Point(7, 43);
-            this.Statistics.Name = "Statistics";
-            this.Statistics.ReadOnly = true;
-            this.Statistics.RowHeadersVisible = false;
-            this.Statistics.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Statistics.Size = new System.Drawing.Size(1126, 409);
-            this.Statistics.TabIndex = 1;
-            this.Statistics.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_CellMouseDoubleClick);
-            this.Statistics.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Statistics_ColumnHeaderMouseClick);
-            // 
-            // bShowReference
-            // 
-            this.bShowReference.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bShowReference.Enabled = false;
-            this.bShowReference.Location = new System.Drawing.Point(964, 458);
-            this.bShowReference.Name = "bShowReference";
-            this.bShowReference.Size = new System.Drawing.Size(169, 29);
-            this.bShowReference.TabIndex = 0;
-            this.bShowReference.Text = "¬ывести в таблицу";
-            this.bShowReference.UseVisualStyleBackColor = true;
-            this.bShowReference.Click += new System.EventHandler(this.bShowReference_Click);
-            // 
             // AttendanceTab
             // 
             this.AttendanceTab.Controls.Add(this.bEmulation);
@@ -744,7 +657,7 @@ namespace CirculationApp
             this.AttendanceTab.Location = new System.Drawing.Point(4, 25);
             this.AttendanceTab.Name = "AttendanceTab";
             this.AttendanceTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AttendanceTab.Size = new System.Drawing.Size(1140, 504);
+            this.AttendanceTab.Size = new System.Drawing.Size(1153, 552);
             this.AttendanceTab.TabIndex = 4;
             this.AttendanceTab.Text = "”чЄт посещаемости";
             this.AttendanceTab.UseVisualStyleBackColor = true;
@@ -787,7 +700,7 @@ namespace CirculationApp
             this.AcceptBooksTab.Location = new System.Drawing.Point(4, 25);
             this.AcceptBooksTab.Name = "AcceptBooksTab";
             this.AcceptBooksTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AcceptBooksTab.Size = new System.Drawing.Size(1140, 504);
+            this.AcceptBooksTab.Size = new System.Drawing.Size(1153, 552);
             this.AcceptBooksTab.TabIndex = 5;
             this.AcceptBooksTab.Text = "ѕриЄм книг на кафедру из хранени€/в хранение с кафедры";
             this.AcceptBooksTab.UseVisualStyleBackColor = true;
@@ -860,63 +773,54 @@ namespace CirculationApp
             this.выданные нигиЌа“екущийћоментToolStripMenuItem.Name = "выданные нигиЌа“екущийћоментToolStripMenuItem";
             this.выданные нигиЌа“екущийћоментToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.выданные нигиЌа“екущийћоментToolStripMenuItem.Text = "¬ыданные книги на текущий момент";
-            this.выданные нигиЌа“екущийћоментToolStripMenuItem.Click += new System.EventHandler(this.выданные нигиЌа“екущийћоментToolStripMenuItem_Click);
             // 
             // просроченные нигиToolStripMenuItem
             // 
             this.просроченные нигиToolStripMenuItem.Name = "просроченные нигиToolStripMenuItem";
             this.просроченные нигиToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.просроченные нигиToolStripMenuItem.Text = "ѕросроченные книги";
-            this.просроченные нигиToolStripMenuItem.Click += new System.EventHandler(this.просроченные нигиToolStripMenuItem_Click);
             // 
             // списокƒействийќператора«аѕериодToolStripMenuItem
             // 
             this.списокƒействийќператора«аѕериодToolStripMenuItem.Name = "списокƒействийќператора«аѕериодToolStripMenuItem";
             this.списокƒействийќператора«аѕериодToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.списокƒействийќператора«аѕериодToolStripMenuItem.Text = "—писок действий оператора за период";
-            this.списокƒействийќператора«аѕериодToolStripMenuItem.Click += new System.EventHandler(this.списокƒействийќператора«аѕериодToolStripMenuItem_Click);
             // 
             // отчЄтќтдела«аѕериодToolStripMenuItem
             // 
             this.отчЄтќтдела«аѕериодToolStripMenuItem.Name = "отчЄтќтдела«аѕериодToolStripMenuItem";
             this.отчЄтќтдела«аѕериодToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.отчЄтќтдела«аѕериодToolStripMenuItem.Text = "ќтчЄт отдела за период";
-            this.отчЄтќтдела«аѕериодToolStripMenuItem.Click += new System.EventHandler(this.отчЄтќтдела«аѕериодToolStripMenuItem_Click);
             // 
             // отчЄт“екущегоќператора«аѕериодToolStripMenuItem
             // 
             this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem.Name = "отчЄт“екущегоќператора«аѕериодToolStripMenuItem";
             this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem.Text = "ќтчЄт текущего оператора за период";
-            this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem.Click += new System.EventHandler(this.отчЄт“екущегоќператора«аѕериодToolStripMenuItem_Click);
             // 
             // все ниги÷ентрајмериканской ультурыToolStripMenuItem
             // 
             this.все ниги÷ентрајмериканской ультурыToolStripMenuItem.Name = "все ниги÷ентрајмериканской ультурыToolStripMenuItem";
             this.все ниги÷ентрајмериканской ультурыToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.все ниги÷ентрајмериканской ультурыToolStripMenuItem.Text = "¬се книги ÷ј ";
-            this.все ниги÷ентрајмериканской ультурыToolStripMenuItem.Click += new System.EventHandler(this.все ниги÷ентрајмериканской ультурыToolStripMenuItem_Click);
             // 
             // обращаемость нигToolStripMenuItem
             // 
             this.обращаемость нигToolStripMenuItem.Name = "обращаемость нигToolStripMenuItem";
             this.обращаемость нигToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.обращаемость нигToolStripMenuItem.Text = "ќбращаемость книг";
-            this.обращаемость нигToolStripMenuItem.Click += new System.EventHandler(this.обращаемость нигToolStripMenuItem_Click);
             // 
             // список ниг— оторых—н€таќтветственностьToolStripMenuItem
             // 
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem.Name = "список ниг— оторых—н€таќтветственностьToolStripMenuItem";
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.список ниг— оторых—н€таќтветственностьToolStripMenuItem.Text = "—писок книг, с которых сн€та ответственность";
-            this.список ниг— оторых—н€таќтветственностьToolStripMenuItem.Click += new System.EventHandler(this.список ниг— оторых—н€таќтветственностьToolStripMenuItem_Click);
             // 
             // списокЌарушителей—роковѕользовани€ToolStripMenuItem
             // 
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Name = "списокЌарушителей—роковѕользовани€ToolStripMenuItem";
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Text = "—писок нарушителей сроков пользовани€";
-            this.списокЌарушителей—роковѕользовани€ToolStripMenuItem.Click += new System.EventHandler(this.списокЌарушителей—роковѕользовани€ToolStripMenuItem_Click);
             // 
             // MainMenu
             // 
@@ -925,7 +829,7 @@ namespace CirculationApp
             this.справкаToolStripMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(1176, 24);
+            this.MainMenu.Size = new System.Drawing.Size(1189, 24);
             this.MainMenu.TabIndex = 12;
             this.MainMenu.Text = "menuStrip1";
             // 
@@ -1012,7 +916,7 @@ namespace CirculationApp
             this.pbLogo.Image = global::CirculationApp.Properties.Resources.Artboard2;
             this.pbLogo.Location = new System.Drawing.Point(15, 27);
             this.pbLogo.Name = "pbLogo";
-            this.pbLogo.Size = new System.Drawing.Size(203, 84);
+            this.pbLogo.Size = new System.Drawing.Size(145, 84);
             this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbLogo.TabIndex = 10;
             this.pbLogo.TabStop = false;
@@ -1053,7 +957,7 @@ namespace CirculationApp
             this.AcceptButton = this.bConfirm;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1176, 684);
+            this.ClientSize = new System.Drawing.Size(1189, 732);
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.pbLogo);
             this.Controls.Add(this.label10);
@@ -1080,10 +984,6 @@ namespace CirculationApp
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFormular)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbFormular)).EndInit();
-            this.ReferenceTab.ResumeLayout(false);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Statistics)).EndInit();
             this.AttendanceTab.ResumeLayout(false);
             this.AttendanceTab.PerformLayout();
             this.AcceptBooksTab.ResumeLayout(false);
@@ -1105,7 +1005,6 @@ namespace CirculationApp
         public System.Windows.Forms.TextBox tbCurrentEmployee;
         private System.Windows.Forms.TabControl MainTabContainer;
         private System.Windows.Forms.TabPage MainTab;
-        private System.Windows.Forms.TabPage ReferenceTab;
         private System.Windows.Forms.DataGridView dgvTransfer;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -1121,10 +1020,6 @@ namespace CirculationApp
         private System.Windows.Forms.DataGridView dgvLog;
         private System.Windows.Forms.PictureBox pbLogo;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button bShowReference;
-        private System.Windows.Forms.DataGridView Statistics;
-        private System.Windows.Forms.Label lReferenceName;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TabPage ttabPage4;
         private System.Windows.Forms.Label lFormularName;
         private System.Windows.Forms.Label label17;
@@ -1141,7 +1036,6 @@ namespace CirculationApp
         private System.Windows.Forms.DataGridViewTextBoxColumn DateVozv;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateVozvFact;
         private System.Windows.Forms.DataGridViewButtonColumn Penalt;
-        private System.Windows.Forms.Button bSaveReferenceToFile;
         private System.Windows.Forms.Button bMainEmulation;
         private System.Windows.Forms.Button bOrdersHistory;
         private System.Windows.Forms.Button bReaderView;

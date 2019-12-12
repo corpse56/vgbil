@@ -90,15 +90,15 @@ namespace InsertElectronicExemplarBJ
                 BJBookInfo book = BJBookInfo.GetBookInfoByPIN((int)row["IDBook"], "BJVVV");
                 ElectronicExemplarInserter ec = new ElectronicExemplarInserter((int)row["IDBook"], "BJVVV_Test", "BJVVV");
                 ElectronicExemplarType AccessType = ElectronicExemplarType.Order;
-                if (book.DigitalCopy.ExemplarAccess.Access == 1001)
+                if (book.DigitalCopy.AccessInfo.Access == 1001)
                 {
                     AccessType = ElectronicExemplarType.Free;
                 }
-                if (book.DigitalCopy.ExemplarAccess.Access == 1002)
+                if (book.DigitalCopy.AccessInfo.Access == 1002)
                 {
                     AccessType = ElectronicExemplarType.Order;
                 }
-                if (book.DigitalCopy.ExemplarAccess.Access == 1003)
+                if (book.DigitalCopy.AccessInfo.Access == 1003)
                 {
                     AccessType = ElectronicExemplarType.Indoor;
                 }

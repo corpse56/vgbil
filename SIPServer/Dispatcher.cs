@@ -1,6 +1,7 @@
 ﻿using ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.Errors;
 using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation;
@@ -163,12 +164,12 @@ namespace SIPServer
 
                 foreach (var order in chargedOrders)
                 {
-                    BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                    ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
                     response.ChargedItems.Add(exemplar.Bar);
                 }
                 foreach (var order in holdOrders)
                 {
-                    BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
+                    ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
                     response.HoldItems.Add(exemplar.Bar);
                 }
             }
@@ -202,14 +203,14 @@ namespace SIPServer
             string bar = request.ItemIdentifier;
 
 
-            BJBookInfo book;
-            BJExemplarInfo exemplar;
+            BookBase book;
+            ExemplarBase exemplar;
             CirculationInfo ci = new CirculationInfo();
             OrderInfo order;
             try
             {
-                exemplar = BJExemplarInfo.GetExemplarByBar(bar);
-                book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+                exemplar = ExemplarFactory.CreateExemplar(bar);
+                book = BookFactory.CreateBookByPin(exemplar.BookId);
                 order = ci.FindOrderByExemplar(exemplar);
             }
             catch (Exception ex)
@@ -219,10 +220,10 @@ namespace SIPServer
                 response.FeeType = FeeType.ADMINISTRATIVE;
                 response.TransactionDate = DateTime.Now;
                 response.ItemIdentifier = request.ItemIdentifier;
-                exemplar = BJExemplarInfo.GetExemplarByBar(bar);
+                exemplar = ExemplarFactory.CreateExemplar(bar);
                 if (exemplar != null)
                 {
-                    response.TitleIdentifier = $"{exemplar.Title()}; {exemplar.Author()}";
+                    response.TitleIdentifier = exemplar.AuthorTitle;
                 }
                 else
                 {
@@ -311,13 +312,13 @@ namespace SIPServer
             response.RecallDate = dateReaderNeedToReturn;// (order == null) ? DateTime.Now : order.IssueDate;
             response.HoldPickupDate = dateReaderNeedToReturn;//(order == null) ? DateTime.Now : order.ReturnDate;
             response.ItemIdentifier = request.ItemIdentifier;
-            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.TitleIdentifier = book.AuthorTitle;
             response.Owner = "ВГБИЛ";
             response.CurrencyType = Currency.RUB;
             response.FeeAmount = 0;
             response.MediaType = MediaType.BOOK;
-            response.PermanentLocation = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];
-            response.CurrentLocation = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];
+            response.PermanentLocation = KeyValueMapping.UnifiedLocationAccess[exemplar.Location];
+            response.CurrentLocation = KeyValueMapping.UnifiedLocationAccess[exemplar.Location];
             response.ItemProperties = "";//string.Empty;
             response.ScreenMessage = ""; //string.Empty;// 
             response.PrintLine = ""; //string.Empty;// 
@@ -341,17 +342,17 @@ namespace SIPServer
             }
 
 
-            BJExemplarInfo exemplar;
+            ExemplarBase exemplar;
             CirculationInfo ci;
             OrderInfo order;
-            BJBookInfo book;
+            BookBase book;
             ReaderInfo reader;
             try
             {
-                exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
+                exemplar = ExemplarFactory.CreateExemplar(request.ItemIdentifier);
                 ci = new CirculationInfo();
                 order = ci.FindOrderByExemplar(exemplar);
-                book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+                book = BookFactory.CreateBookByPin(exemplar.BookId);
                 reader = handler_.GetPatron(request.PatronIdentifier);
             }
             catch (Exception ex)
@@ -414,7 +415,7 @@ namespace SIPServer
             response.InstitutionId = "ВГБИЛ";
             response.PatronIdentifier = request.PatronIdentifier;// + " (took from request)";
             response.ItemIdentifier = request.ItemIdentifier;// + " (also took from request)";
-            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.TitleIdentifier = book.AuthorTitle;
             order = ci.FindOrderByExemplar(exemplar);
             if (order != null)
             {
@@ -455,13 +456,13 @@ namespace SIPServer
             response.InstitutionId = request.InstitutionId;
             response.PatronIdentifier = request.PatronIdentifier;
             response.ItemIdentifier = request.ItemIdentifier;
-            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
+            ExemplarBase exemplar = ExemplarFactory.CreateExemplar(request.ItemIdentifier);
 
-            BJBookInfo book = (exemplar == null) ? null : BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+            BookBase book = (exemplar == null) ? null : BookFactory.CreateBookByPin(exemplar.BookId);
             var ci = new CirculationInfo();
             var order = (exemplar == null) ? null : ci.FindOrderByExemplar(exemplar);
 
-            response.TitleIdentifier = (book == null) ? "Неизвестная книга" : (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.TitleIdentifier = (book == null) ? "Неизвестная книга" : book.AuthorTitle;
             IssueType issueType = ci.GetIssueType(exemplar);
 
             if (order != null)
@@ -501,14 +502,11 @@ namespace SIPServer
             response.TransactionDate = DateTime.Now;
             response.InstitutionId = request.InstitutionId;
             response.ItemIdentifier = request.ItemIdentifier;
-            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
-            BJBookInfo book = (exemplar == null) ? null : BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+            ExemplarBase exemplar = ExemplarFactory.CreateExemplar(request.ItemIdentifier);
+            BookBase book = (exemplar == null) ? null : BookFactory.CreateBookByPin(exemplar.BookId);
 
-            response.PermanentLocation = (exemplar == null) ? null :
-                                         (!exemplar.Fields["899$a"].HasValue) ? "Неизвестно" : exemplar.Fields["899$a"].ToString();
-            response.TitleIdentifier = (book == null) ? "Неизвестная книга" :
-                                       (!book.Fields["700$a"].HasValue) ?
-                                       book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}"; ;
+            response.PermanentLocation = (exemplar == null) ? "Неизвестно" : exemplar.Location;
+            response.TitleIdentifier = (book == null) ? "Неизвестная книга" : book.AuthorTitle ;
         }
         public void OnCheckin(Session session, CheckinRequest request, CheckinResponse response)
         {
@@ -524,14 +522,14 @@ namespace SIPServer
 
 
 
-            BJExemplarInfo exemplar;
+            ExemplarBase exemplar;
             CirculationInfo ci;
             OrderInfo order;
-            BJBookInfo book;
+            BookBase book;
             ReaderInfo reader;
             try
             {
-                exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
+                exemplar = ExemplarFactory.CreateExemplar(request.ItemIdentifier);
                 ci = new CirculationInfo();
                 order = ci.FindOrderByExemplar(exemplar);
                 if (order == null)
@@ -546,7 +544,7 @@ namespace SIPServer
                     FillCheckinFailedResponse(response, request);
                     return;
                 }
-                book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+                book = BookFactory.CreateBookByPin(exemplar.BookId);
                 reader = ReaderInfo.GetReader(order.ReaderId);
             }
             catch (Exception ex)
@@ -574,8 +572,8 @@ namespace SIPServer
             response.TransactionDate = DateTime.Now;
             response.InstitutionId = "ВГБИЛ";
             response.ItemIdentifier = request.ItemIdentifier;
-            response.PermanentLocation = KeyValueMapping.UnifiedLocationAccess[exemplar.Fields["899$a"].ToString()];//"Permanent Location";
-            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.PermanentLocation = KeyValueMapping.UnifiedLocationAccess[exemplar.Location];//"Permanent Location";
+            response.TitleIdentifier = book.AuthorTitle;
             response.SortBin = "Sort bin...";
             response.PatronIdentifier = reader.BarCode;//"Patron id";
             response.MediaType = MediaType.BOOK;
@@ -597,11 +595,10 @@ namespace SIPServer
             response.PatronIdentifier = request.PatronIdentifier;
             response.ItemIdentifier = request.ItemIdentifier;
             CirculationInfo ci = new CirculationInfo();
-            //BJBookInfo book;
-            BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
+            ExemplarBase exemplar = ExemplarFactory.CreateExemplar(request.ItemIdentifier);
             if (exemplar != null)
             {
-                OrderInfo order = ci.GetLastOrder(exemplar.IdData, exemplar.Fund);
+                OrderInfo order = ci.GetLastOrder(Convert.ToInt32(exemplar.Id), exemplar.Fund);
                 response.DueDate = order.ReturnDate;
             }
             else
@@ -609,8 +606,7 @@ namespace SIPServer
                 response.DueDate = DateTime.Now;
 
             }
-            //book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
-            response.TitleIdentifier = $"{exemplar.Author()};{exemplar.Title()}";
+            response.TitleIdentifier = exemplar.AuthorTitle;
 
         }
         public void OnRenew(Session session, RenewRequest request, RenewResponse response)
@@ -626,14 +622,14 @@ namespace SIPServer
 
             bool result = false;
             CirculationInfo ci = new CirculationInfo();
-            BJExemplarInfo exemplar = new BJExemplarInfo();
+            ExemplarBase exemplar;
             OrderInfo order = new OrderInfo();
-            BJBookInfo book = new BJBookInfo();
+            BookBase book;
             try
             {
-                exemplar = BJExemplarInfo.GetExemplarByBar(request.ItemIdentifier);
+                exemplar = ExemplarFactory.CreateExemplar(request.ItemIdentifier);
                 order = ci.FindOrderByExemplar(exemplar);
-                book = BJBookInfo.GetBookInfoByPIN(exemplar.BookId);
+                book = BookFactory.CreateBookByPin(exemplar.BookId);
             }
             catch (Exception ex)
             {
@@ -681,7 +677,7 @@ namespace SIPServer
             response.InstitutionId = "ВГБИЛ";
             response.PatronIdentifier = request.PatronIdentifier;
             response.ItemIdentifier = request.ItemIdentifier;
-            response.TitleIdentifier = (!book.Fields["700$a"].HasValue) ? book.Fields["200$a"].ToString() : $"{book.Fields["700$a"].ToString()}; {book.Fields["200$a"].ToString()}";
+            response.TitleIdentifier = book.AuthorTitle;
 
             IssueType it = ci.GetIssueType(exemplar);
             DateTime dateReaderNeedToReturn;
@@ -708,7 +704,7 @@ namespace SIPServer
             {
                 response.ScreenMessage = "";
             }
-            response.PrintLine = "The Print Line";
+            response.PrintLine = (response.Ok == true) ? "Продлено успешно" : "Не продлено";
         }
 
         public void OnRenewAll(Session session, RenewAllRequest request, RenewAllResponse response)

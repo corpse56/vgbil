@@ -71,7 +71,7 @@ namespace CirculationApp
             dgOrderFlow.Rows.Clear();
             lbOrders.Items.Clear();
 
-            BookBase book = BookFactory.CreateBookInfoByInventoryNumber(tbInvNumber.Text, "BJVVV");
+            BookBase book = BookFactory.CreateBookInfoByInventoryNumber(tbInvNumber.Text);
             if (book == null)
             {
                 label3.Text = "Не найдено";

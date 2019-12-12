@@ -17,6 +17,7 @@ using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.BJUsers;
 using Utilities;
+using LibflClassLibrary.Books;
 
 namespace CirculationApp
 {
@@ -60,8 +61,8 @@ namespace CirculationApp
                 if (o.ReturnDate < DateTime.Today)
                 {
                     rownum++;
-                    BJBookInfo book = BJBookInfo.GetBookInfoByPIN(o.BookId);
-                    string zag = book.AuthorTitle(); 
+                    BookBase book = BookFactory.CreateBookByPin(o.BookId);
+                    string zag = book.AuthorTitle; 
                     if (zag.Length > 51)
                         zag.Remove(50);
                     TimeSpan ts = DateTime.Now.AddDays(1) - o.ReturnDate;

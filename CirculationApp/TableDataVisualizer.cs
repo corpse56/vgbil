@@ -158,6 +158,7 @@ namespace CirculationApp
                 new KeyValuePair<string, string> ( "readerRights", "Права читателя"),
                 new KeyValuePair<string, string> ( "inventoryNumber", "Инв номер"),
                 new KeyValuePair<string, string> ( "bar", "Штрихкод"),
+                new KeyValuePair<string, string> ( "authorTitle", "Автор; Заглавие"),
                 new KeyValuePair<string, string> ( "phone", "Телефон"),
                 new KeyValuePair<string, string> ( "email", "Email"),
                 new KeyValuePair<string, string> ( "address", "Адрес"),
@@ -177,6 +178,7 @@ namespace CirculationApp
             dgViewer.Columns["readerId"].Width = 100;
             dgViewer.Columns["readerRights"].Width = 300;
             dgViewer.Columns["inventoryNumber"].Width = 100;
+            dgViewer.Columns["authorTitle"].Width = 100;
             dgViewer.Columns["phone"].Width = 100;
             dgViewer.Columns["email"].Width = 100;
             dgViewer.Columns["address"].Width = 100;
@@ -192,10 +194,32 @@ namespace CirculationApp
                 dgViewer.Rows.Add();
                 var row = dgViewer.Rows[dgViewer.Rows.Count - 1];
 
-                ReaderInfo reader = ReaderInfo.GetReader(order.ReaderId);
+                ReaderInfo reader = new ReaderInfo();
+                try
+                {
+                    reader = ReaderInfo.GetReader(order.ReaderId);
+                }
+                catch (Exception ex)
+                {
+                    //не найден читатель
+                    reader = null;
+                }
                 ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
 
-                //if (exemplarBase is BJExemplarInfo == false)
+                if (reader == null)
+                {
+                    row.Cells["NN"].Value = i++;
+                    row.Cells["readerId"].Value = "Читатель не найден";
+                    if (exemplar == null)
+                    {
+                        row.Cells["inventoryNumber"].Value = $"Неопознанный экземпляр: {order.Fund}_{order.ExemplarId}";
+                    }
+                    else
+                    {
+                        row.Cells["inventoryNumber"].Value = exemplar.InventoryNumber;
+                    }
+                    continue;
+                }
                 if (exemplar == null)
                 {
                     row.Cells["NN"].Value = i++;
@@ -211,6 +235,7 @@ namespace CirculationApp
                 row.Cells["readerRights"].Value = reader.Rights.ToString();
                 row.Cells["inventoryNumber"].Value = exemplar.InventoryNumber;
                 row.Cells["bar"].Value = exemplar.Bar;
+                row.Cells["authorTitle"].Value = exemplar.AuthorTitle;
                 row.Cells["phone"].Value = reader.MobileTelephone;
                 row.Cells["email"].Value = reader.Email;
                 row.Cells["address"].Value = $"{reader.RegistrationCity}, {reader.RegistrationStreet}";
@@ -283,7 +308,7 @@ namespace CirculationApp
                     row.Cells["rack"].Value = exemplar.Rack;
                     row.Cells["db"].Value = exemplar.Fund;
                     row.Cells["lang"].Value = exemplar.Language;//BJBookInfo.GetFieldValue(bjExemplar.Fund, bjExemplar.IDMAIN, 101, "$a");//bjBook.Fields["101$a"].ToString();
-                    row.Cells["tema"].Value = (exemplar.Fund == "PERIOD") ? "" :
+                    row.Cells["tema"].Value = (exemplar.Fund == "PERIOD") ? "" ://тематику надо вынести в общий базовый класс
                                               BJBookInfo.GetFieldValue(exemplar.Fund, BookBase.GetPIN(exemplar.BookId), 922, "$e");//bjBook.Fields["922$e"].ToString();
                     CirculationInfo ci = new CirculationInfo();
                     OrderInfo order = ci.GetLastOrder(Convert.ToInt32(exemplar.Id), exemplar.Fund);
@@ -363,6 +388,7 @@ namespace CirculationApp
                 dgViewer.Rows.Add();
                 var row = dgViewer.Rows[dgViewer.Rows.Count - 1];
                 ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
+                //экземпляр может быть нулл... надо исправлять.
                 row.Cells["orderId"].Value = order.OrderId;
                 row.Cells["bar"].Value = exemplar.Bar;
                 row.Cells["inventoryNumber"].Value = exemplar.InventoryNumber;
@@ -524,10 +550,17 @@ namespace CirculationApp
                 return;
             }
             CirculationInfo ci = new CirculationInfo();
-            ReaderInfo reader = ReaderInfo.GetReader((int)dgViewer.SelectedRows[0].Cells["readerId"].Value);
-            DateTime? lastEmail = ci.GetLastEmailDate(reader);
-            lInfo.Text = (lastEmail.HasValue)? $"Дата последней отправки Email: {lastEmail.Value.ToString("dd.MM.yyyy hh:mm")}"
-                                                : "Email не отправлялся";
+            if (dgViewer.SelectedRows[0].Cells["readerId"].Value is int)
+            {
+                ReaderInfo reader = ReaderInfo.GetReader((int)dgViewer.SelectedRows[0].Cells["readerId"].Value);
+                DateTime? lastEmail = ci.GetLastEmailDate(reader);
+                lInfo.Text = (lastEmail.HasValue) ? $"Дата последней отправки Email: {lastEmail.Value.ToString("dd.MM.yyyy hh:mm")}"
+                                                    : "Email не отправлялся";
+            }
+            else
+            {
+                lInfo.Text = "Читатель не найден";
+            }
         }
     }
 }

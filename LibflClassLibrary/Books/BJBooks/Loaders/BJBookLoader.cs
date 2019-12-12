@@ -58,6 +58,7 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
         internal BJBookInfo GetBookInfoByPIN(int pin)
         {
             DataTable table = dbWrapper.GetBJRecord(pin);
+            if (table.Rows.Count == 0) return null;
             BJBookInfo result = new BJBookInfo();
             result.Id = $"{Fund}_{pin}";
             result.ID = pin;
@@ -71,7 +72,14 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
                 {
                     if ((int)row["IDBLOCK"] == 270)//если есть гиперссылка
                     {
-                        result.DigitalCopy = new BJElectronicExemplarInfo(pin, Fund);
+                        try
+                        {
+                            result.DigitalCopy = new BJElectronicExemplarInfo(pin, Fund);
+                        }
+                        catch(Exception ex)
+                        {
+                            result.DigitalCopy = null;
+                        }
                     }
                     else
                     {

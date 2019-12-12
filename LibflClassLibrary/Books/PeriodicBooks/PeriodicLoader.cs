@@ -108,7 +108,7 @@ namespace LibflClassLibrary.Books.PeriodBooks
             result.Number = row["number"].ToString();
             result.Id = row["exemplarId"].ToString();//idz of bar
             result.PublishYear = row["pubYear"].ToString();
-            result.BookId = $"PERIOD_{row["pin"].ToString()}";
+            result.BookId = $"PERIOD_{row["exemplarId"].ToString()}";//для периодики пин и id экземпляра совпадают
             result.Author = string.Empty ;
             result.Title = $"{row["title"].ToString()}-->{row["pubYear"].ToString()}-->{row["number"].ToString()}";
             result.AccessInfo = GetPeriodicAccessInfo(row["location"].ToString(), row["access"].ToString(), row["pubClass"].ToString());

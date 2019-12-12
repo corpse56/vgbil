@@ -156,7 +156,7 @@ namespace BookkeepingForOrder
                                                                                         $"{reader.FamilyName} {reader.Name.Substring(0,1)}. { reader.FatherName.Substring(0, 1)}.";
                 row.Cells["orderid"].Value = order.OrderId;
                 row.Cells["status"].Value = order.StatusName;
-                row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
+                row.Cells["note"].Value = (exemplar is BJExemplarInfo) ? ((BJExemplarInfo)exemplar).Fields["899$x"].ToString() : string.Empty;
                 row.Cells["pubdate"].Value = order.Book.PublishDate;
                 row.Cells["iddata"].Value = order.ExemplarId;
                 row.Cells["refusual"].Value = string.IsNullOrEmpty(order.Refusual) ? "<нет>" : order.Refusual;
@@ -232,7 +232,7 @@ namespace BookkeepingForOrder
                                                                                         $"{reader.FamilyName} {reader.Name.Substring(0, 1)}. { reader.FatherName.Substring(0, 1)}.";
                 row.Cells["orderid"].Value = order.OrderId;
                 row.Cells["status"].Value = order.StatusName;
-                row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
+                row.Cells["note"].Value = (exemplar is BJExemplarInfo) ? ((BJExemplarInfo)exemplar).Fields["899$x"].ToString() : string.Empty;
                 row.Cells["pubdate"].Value = order.Book.PublishDate;
                 row.Cells["iddata"].Value = order.ExemplarId;
                 row.Cells["refusual"].Value = string.IsNullOrEmpty(order.Refusual) ? "<нет>" : order.Refusual;

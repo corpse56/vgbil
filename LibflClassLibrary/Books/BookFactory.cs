@@ -23,26 +23,27 @@ namespace LibflClassLibrary.Books
         }
         public static BookBase CreateBookByPin(int pin, string fund)
         {
-            BookBase result = null;
-            result = BJBookInfo.GetBookInfoByPIN(pin, fund);
-            return result ?? PeriodicBookInfo.GetBookInfoByIDZBar($"PERIOD_{pin}");
+            return BookFactory.CreateBookByPin($"{fund}_{pin.ToString()}");
         }
         public static BookBase CreateBookByPin(string fullPin)
         {
             BookBase result = null;
-            result = BJBookInfo.GetBookInfoByPIN(BookBase.GetPIN(fullPin), BookBase.GetFund(fullPin));
-            return result ?? PeriodicBookInfo.GetBookInfoByIDZBar(fullPin);
+            if (BookBase.GetFund(fullPin) == "PERIOD")
+            {
+                result = PeriodicBookInfo.GetBookInfoByIDZBar(fullPin);
+            }
+            else
+            {
+                result = BJBookInfo.GetBookInfoByPIN(fullPin);
+            }
+            return result;
         }
 
-        public static BookBase CreateBookInfoByInventoryNumber(string invNumber, string fund)
+        public static BookBase CreateBookInfoByInventoryNumber(string invNumber)
         {
             BookBase result = null;
             result = BJBookInfo.GetBookInfoByInventoryNumber(invNumber);
-            if (result == null)
-            {
-                result = PeriodicBookInfo.GetBookInfoByInventoryNumber(invNumber);
-            }
-            return result;
+            return result ?? PeriodicBookInfo.GetBookInfoByInventoryNumber(invNumber);
         }
     }
 }

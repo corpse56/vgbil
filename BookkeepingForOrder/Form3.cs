@@ -95,7 +95,7 @@ namespace BookkeepingForOrder
                 row.Cells["pin"].Value = order.BookId.Substring(order.BookId.IndexOf("_") + 1);
                 row.Cells["author"].Value = order.Book.Author;
                 row.Cells["title"].Value = order.Book.Title;
-                row.Cells["inv"].Value = exemplar.Fields["899$p"].ToString();
+                row.Cells["inv"].Value = exemplar.InventoryNumber;
                 row.Cells["cipher"].Value = exemplar.Cipher;
                 row.Cells["readerid"].Value = order.ReaderId;
 
@@ -103,7 +103,7 @@ namespace BookkeepingForOrder
                                                                                         $"{reader.FamilyName} {reader.Name.Substring(0, 1)}. { reader.FatherName.Substring(0, 1)}.";
                 row.Cells["orderid"].Value = order.OrderId;
                 row.Cells["status"].Value = order.StatusName;
-                row.Cells["note"].Value = exemplar.Fields["899$x"].ToString();
+                row.Cells["note"].Value = (exemplar is BJExemplarInfo) ? ((BJExemplarInfo)exemplar).Fields["899$x"].ToString() : string.Empty;
                 row.Cells["pubdate"].Value = order.Book.PublishDate;
                 row.Cells["iddata"].Value = order.ExemplarId;
                 row.Cells["refusual"].Value = string.IsNullOrEmpty(order.Refusual) ? "<нет>" : order.Refusual;

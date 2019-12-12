@@ -21,6 +21,14 @@ namespace LibflClassLibrary.Books
         public virtual string Language { get; set; }
         public virtual string Title { get; set; }
         public virtual string Author { get; set; }
+        public string AuthorTitle
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(this.Author) ? this.Title : $"{this.Author}; {this.Title}";
+            }
+        }
+
         internal string ToJsonString()
         {
             throw new NotImplementedException();

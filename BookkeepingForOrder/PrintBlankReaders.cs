@@ -379,7 +379,7 @@ namespace BookkeepingForOrder
                 rectangle = new Rectangle(0, CurrentY, 70, 50);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
 
-                str = (Exemplar.ExemplarAccess.Access == 1000) ? "ÍÀ ÄÎÌ\n המ:" : "×Ç\nהמ:"; //1000 - םא המל
+                str = (Exemplar.AccessInfo.Access == 1000) ? "ÍÀ ÄÎÌ\n המ:" : "×Ç\nהמ:"; //1000 - םא המל
                 if (abonement.Contains("Ïכאעםûי"))
                 {
                     str = "ÍÀ ÄÎÌ\n המ:";
@@ -388,7 +388,7 @@ namespace BookkeepingForOrder
 
                 rectangle = new Rectangle(70, CurrentY, 245, 50);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
-                str = (Exemplar.ExemplarAccess.Access == 1000) ? DateTime.Now.AddDays(30).ToString("dd.MM.yyyy") : DateTime.Now.AddDays(3).ToString("dd.MM.yyyy");
+                str = (Exemplar.AccessInfo.Access == 1000) ? DateTime.Now.AddDays(30).ToString("dd.MM.yyyy") : DateTime.Now.AddDays(3).ToString("dd.MM.yyyy");
                 e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
                 CurrentY += 50;
 
@@ -533,7 +533,7 @@ namespace BookkeepingForOrder
                 CurrentY += 25;
                 rectangle = new Rectangle(0, CurrentY, 315, 50);
                 e.Graphics.DrawRectangle(Pens.Black, rectangle);
-                str = (Exemplar.ExemplarAccess.Access == 1000) ? "ÍÀ ÄÎÌ:" : "×Ç"; //1000 - םא המל
+                str = (Exemplar.AccessInfo.Access == 1000) ? "ÍÀ ÄÎÌ:" : "×Ç"; //1000 - םא המל
                 if (abonement.Contains("Ïכאעםûי"))
                 {
                     str = "ÍÀ ÄÎÌ\n המ:";
