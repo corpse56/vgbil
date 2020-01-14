@@ -222,6 +222,8 @@ namespace LibflClassLibrary.Circulation
 
         public IssueType GetIssueType(ExemplarBase exemplar)
         {
+            if (exemplar == null) return IssueType.InHall;
+            if (exemplar.AccessInfo == null) return IssueType.InHall;
             if (exemplar.Location.ToLower().Contains("выст"))
             {
                 return IssueType.InHall;

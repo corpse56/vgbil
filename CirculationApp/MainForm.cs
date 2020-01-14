@@ -933,6 +933,16 @@ namespace CirculationApp
             tbv.ShowDialog();
 
         }
+
+        private void SelfCheckStationReferenceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fDatePeriod dp = new fDatePeriod();
+            dp.ShowDialog();
+
+            TableDataVisualizer tbv = new TableDataVisualizer(dp, bjUser, ReferenceType.SelfCheckStationReference);
+            tbv.ShowDialog();
+
+        }
     }
   
 }

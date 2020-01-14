@@ -104,7 +104,8 @@ namespace BookkeepingForOrder
             //e.Graphics.DrawRectangle(Pens.Black, rectangle);
             e.Graphics.DrawLine(Pens.Black, new Point(280, 0), new Point(280, 490));
             e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-            if (dg.SelectedRows[0].Cells["fio"].Value.ToString().Contains("Âûñòàâêà"))
+            if (dg.SelectedRows[0].Cells["fio"].Value.ToString().Contains("Âûñòàâêà") ||
+                dg.SelectedRows[0].Cells["dp"].Value.ToString().ToLower().Contains("âûñò"))
             {
                 str = "ÁËÀÍÊ-ÇÀÊÀÇ ÄËß ÂÛÄÀ×È ËÈÒÅĞÀÒÓĞÛ ÍÀ\r\n ÂÛÑÒÀÂÊÓ";
             }

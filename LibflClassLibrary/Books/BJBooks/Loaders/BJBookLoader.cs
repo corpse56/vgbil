@@ -125,7 +125,7 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
             BJDatabaseWrapper dbw = new BJDatabaseWrapper("");
             DataTable table = dbw.GetExemplarIdByInventoryNumber(inv);
             if (table.Rows.Count == 0) return null;
-            string bookId = table.Rows[0]["exemplarId"].ToString();
+            string bookId = table.Rows[0]["bookId"].ToString();
             string fund = table.Rows[0]["fund"].ToString().ToUpper();
             BJBookInfo result = BJBookInfo.GetBookInfoByPIN($"{fund}_{bookId}");
             return result;

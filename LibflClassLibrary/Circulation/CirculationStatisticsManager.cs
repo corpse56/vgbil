@@ -81,6 +81,11 @@ namespace LibflClassLibrary.Circulation
             return csl_.GetOrdersCountBySubject(bjUser, startDate, endDate);
         }
 
+        public DataTable GetSelfCheckStationReference(DateTime startDate, DateTime endDate)
+        {
+            return csl_.GetSelfCheckStationReference(startDate, endDate);
+        }
+
         public int RegisteredReadersAllCount(DateTime startDate, DateTime endDate)
         {
             return csl_.RegisteredReadersAllCount(startDate, endDate);

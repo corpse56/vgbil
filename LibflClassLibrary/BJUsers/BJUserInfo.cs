@@ -63,7 +63,14 @@ namespace LibflClassLibrary.BJUsers
             byte[] bytes = new byte[HashedPasswordChars.Length];
             for (int i = 0; i < HashedPasswordChars.Length; i++)
             {
-                bytes[i] = Convert.ToByte(HashedPassword[i]);
+                try
+                {
+                    bytes[i] = Convert.ToByte(HashedPassword[i]);
+                }
+                catch
+                {
+                    return "";
+                }
             }
 
             var cp1251 = Encoding.GetEncoding(1251);

@@ -92,7 +92,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
 
             ExemplarAccessInfo access = new ExemplarAccessInfo();
             //сначала суперусловия
-            if (exemplar.Fields["899$x"].ToString().ToLower().Contains("э"))
+            if (exemplar.Fields["899$x"].ToString().ToLower() == "э")
             {
                 access.Access = 1020;//такого в таблице нет. это только здесь. означает экстремистскую литературу.
                 access.MethodOfAccess = 4005;

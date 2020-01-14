@@ -51,6 +51,7 @@ namespace CirculationApp
             this.dgvLog = new System.Windows.Forms.DataGridView();
             this.label4 = new System.Windows.Forms.Label();
             this.FormularTab = new System.Windows.Forms.TabPage();
+            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
             this.bReaderRegistration = new System.Windows.Forms.Button();
             this.bComment = new System.Windows.Forms.Button();
             this.bRemoveResponsibility = new System.Windows.Forms.Button();
@@ -74,6 +75,7 @@ namespace CirculationApp
             this.DateIssue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateVozvFact = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
             this.pbFormular = new System.Windows.Forms.PictureBox();
             this.AttendanceTab = new System.Windows.Forms.TabPage();
             this.bEmulation = new System.Windows.Forms.Button();
@@ -108,8 +110,7 @@ namespace CirculationApp
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.timerIssuedInHallCount = new System.Windows.Forms.Timer(this.components);
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.readerRightsView1 = new LibflClassLibrary.Controls.Readers.ReaderRightsView();
-            this.Penalt = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.SelfCheckStationReferenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainTabContainer.SuspendLayout();
             this.MainTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -395,6 +396,14 @@ namespace CirculationApp
             this.FormularTab.Text = "Ôîðìóëÿð ÷èòàòåëÿ";
             this.FormularTab.UseVisualStyleBackColor = true;
             // 
+            // readerRightsView1
+            // 
+            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
+            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
+            this.readerRightsView1.Name = "readerRightsView1";
+            this.readerRightsView1.Size = new System.Drawing.Size(536, 97);
+            this.readerRightsView1.TabIndex = 26;
+            // 
             // bReaderRegistration
             // 
             this.bReaderRegistration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -635,6 +644,15 @@ namespace CirculationApp
             this.DateVozvFact.ReadOnly = true;
             this.DateVozvFact.Width = 80;
             // 
+            // Penalt
+            // 
+            this.Penalt.HeaderText = "Íàðóøåíèå";
+            this.Penalt.Name = "Penalt";
+            this.Penalt.ReadOnly = true;
+            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Penalt.Width = 85;
+            // 
             // pbFormular
             // 
             this.pbFormular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -857,7 +875,8 @@ namespace CirculationApp
             this.AllBooksInHallToolStripMenuItem,
             this.DebtoListToolStripMenuItem,
             this.ReaderRegistrationAndLitresToolStripMenuItem,
-            this.OrdersBySubjectToolStripMenuItem});
+            this.OrdersBySubjectToolStripMenuItem,
+            this.SelfCheckStationReferenceToolStripMenuItem});
             this.ñïðàâêàToolStripMenuItem.Name = "ñïðàâêàToolStripMenuItem";
             this.ñïðàâêàToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.ñïðàâêàToolStripMenuItem.Text = "Ñïðàâêà";
@@ -935,22 +954,12 @@ namespace CirculationApp
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
             // 
-            // readerRightsView1
+            // SelfCheckStationReferenceToolStripMenuItem
             // 
-            this.readerRightsView1.Location = new System.Drawing.Point(10, 69);
-            this.readerRightsView1.Margin = new System.Windows.Forms.Padding(4);
-            this.readerRightsView1.Name = "readerRightsView1";
-            this.readerRightsView1.Size = new System.Drawing.Size(536, 97);
-            this.readerRightsView1.TabIndex = 26;
-            // 
-            // Penalt
-            // 
-            this.Penalt.HeaderText = "Íàðóøåíèå";
-            this.Penalt.Name = "Penalt";
-            this.Penalt.ReadOnly = true;
-            this.Penalt.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Penalt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Penalt.Width = 85;
+            this.SelfCheckStationReferenceToolStripMenuItem.Name = "SelfCheckStationReferenceToolStripMenuItem";
+            this.SelfCheckStationReferenceToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
+            this.SelfCheckStationReferenceToolStripMenuItem.Text = "Ñïðàâêà ÑÑÎ";
+            this.SelfCheckStationReferenceToolStripMenuItem.Click += new System.EventHandler(this.SelfCheckStationReferenceToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1081,6 +1090,7 @@ namespace CirculationApp
         private System.Windows.Forms.ToolStripMenuItem DebtoListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ReaderRegistrationAndLitresToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OrdersBySubjectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SelfCheckStationReferenceToolStripMenuItem;
         //private System.Windows.Forms.DataGridView dgvTransfer;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;

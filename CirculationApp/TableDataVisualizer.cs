@@ -20,7 +20,7 @@ using Utilities;
 namespace CirculationApp
 {
     public enum ReferenceType { HallService, ActiveHallOrders, FinishedHallOrders, AllBooksInHall, DebtorList, ReaderRegistration
-                                ,OrdersCountBySubject }
+                                ,OrdersCountBySubject, SelfCheckStationReference }
 
     public partial class TableDataVisualizer : Form
     {
@@ -70,10 +70,62 @@ namespace CirculationApp
                     ReaderRegistration();
                     break;
                 case ReferenceType.OrdersCountBySubject:
-                    tableToDisplay_ = csm_.GetOrdersCountBySubject(bjUser, dp_.StartDate, dp.EndDate);
+                    tableToDisplay_ = csm_.GetOrdersCountBySubject(bjUser, dp_.StartDate, dp_.EndDate);
                     OrdersBySubject();
                     break;
+                case ReferenceType.SelfCheckStationReference:
+                    tableToDisplay_ = csm_.GetSelfCheckStationReference(dp_.StartDate, dp_.EndDate);
+                    SelfCheckStationReference();
+                    break;
             }
+        }
+
+        private void SelfCheckStationReference()
+        {
+            //в tableToDisplay получили список книг, которые выдавались через станции
+            List<(string, ExemplarBase)> orders = new List<(string st, ExemplarBase exemplar)>();
+            foreach (DataRow row in tableToDisplay_.Rows)
+            {
+                (string, ExemplarBase) order = ( row["st"].ToString(),
+                                                 ExemplarFactory.CreateExemplar((int)row["ExemplarId"], row["Fund"].ToString()));
+                orders.Add(order);
+            }
+            var query = orders
+                            .GroupBy(e => e.Item2.Location)
+                            .Select(g => new {
+                            dep = g.Key,
+                            station1 = g.Where(c => c.Item1 == "station1").Count(c => true), //можно так
+                            station2 = g.Where(c => c.Item1 == "station2").Sum(c => 1),      //и так
+                            total = g.Sum(c => 1),
+                        });
+            var table = query.ToList();
+            KeyValuePair<string, string>[] columns =
+            {
+                new KeyValuePair<string, string> ( "dep", "Отдел"),
+                new KeyValuePair<string, string> ( "station1", "Количество выдач ССО 2 этаж"),
+                new KeyValuePair<string, string> ( "station2", "Количество выдач ССО 3 этаж"),
+                new KeyValuePair<string, string> ( "total", "Всего выдано с помощью ССО"),
+            };
+            dgViewer.Columns.Clear();
+            foreach (var c in columns)
+                dgViewer.Columns.Add(c.Key, c.Value);
+            dgViewer.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgViewer.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dgViewer.Columns["dep"].Width = 500;
+            dgViewer.Columns["station1"].Width = 150;
+            dgViewer.Columns["station2"].Width = 150;
+            dgViewer.Columns["total"].Width = 150;
+            foreach (var item in table)
+            {
+                dgViewer.Rows.Add();
+                var row = dgViewer.Rows[dgViewer.Rows.Count - 1];
+
+                row.Cells["dep"].Value = item.dep;
+                row.Cells["station1"].Value = item.station1;
+                row.Cells["station2"].Value = item.station2;
+                row.Cells["total"].Value = item.total;
+            }
+
         }
 
         private void OrdersBySubject()

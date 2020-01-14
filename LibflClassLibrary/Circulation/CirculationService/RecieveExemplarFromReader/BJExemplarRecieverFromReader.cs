@@ -34,6 +34,20 @@ namespace LibflClassLibrary.Circulation.CirculationService.RecieveExemplarFromRe
         {
             BJExemplarInfo exemplar = (BJExemplarInfo)exemplarBase;
             CirculationInfo ci = new CirculationInfo();
+
+            if (bjUser.Login.ToLower().In("station1", "station2", "station3", "station4"))
+            {
+                if (exemplar.Fields["899$a"].ToString().ToLower().Contains("книгохранен"))
+                {
+                    ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.ForReturnToBookStorage.Value);
+                }
+                else
+                {
+                    ci.ChangeOrderStatusReturn(bjUser, oi.OrderId, CirculationStatuses.Finished.Value);
+                }
+                return;
+            }
+
             if (oi.StatusCode == CirculationStatuses.IssuedInHall.Id)
             {
                 if (exemplar.Fields["921$c"].ToString() == "ДП")

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static LibflClassLibrary.Circulation.CirculationInfo;
+using NLog;
 
 namespace SIPServer
 {
@@ -28,6 +29,7 @@ namespace SIPServer
 
         List<SipClientInfo> clients_ = new List<SipClientInfo>();
         SipServerHandler handler_ = new SipServerHandler();
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
 
         public void OnConnected(Session session)
@@ -95,6 +97,15 @@ namespace SIPServer
                     }
                 }
             }
+
+            //SipClientInfo client = new SipClientInfo();
+            //client.login = "station2";
+            //client.bjUser = new BJUserInfo();
+            //client.locationCode = "Hall 2nd floor";
+            //UserStatus us = new UserStatus();
+            //us.DepId = 2033;
+            //us.DepName = "Hall 2nd floor";
+            //client.bjUser.S
         }
 
 
@@ -229,6 +240,7 @@ namespace SIPServer
                 {
                     response.TitleIdentifier = "Неизвестная книга";
                 }
+                logger.Error($"{DateTime.Now.ToString()} Ошибка в OnItemInformation. \n" + ex.Message);
                 return;
             }
 
@@ -328,20 +340,20 @@ namespace SIPServer
         {
             Console.WriteLine("Checkout Message");
             SipClientInfo client = clients_.Find(x => x.session.Ip == session.Ip);
-            if (client == null)
-            {
-                FillCheckoutFailedResponse(response, request, "");
-                Console.WriteLine("Client is not logged in. CheckOut operation impossible.");
-                return;
-            }
-            if (client.bjUser == null)
-            {
-                FillCheckoutFailedResponse(response, request, "");
-                Console.WriteLine("NOT LOGGED IN");
-                return;
-            }
+            //if (client == null)
+            //{
+            //    FillCheckoutFailedResponse(response, request, "");
+            //    Console.WriteLine("Client is not logged in. CheckOut operation impossible.");
+            //    return;
+            //}
+            //if (client.bjUser == null)
+            //{
+            //    FillCheckoutFailedResponse(response, request, "");
+            //    Console.WriteLine("NOT LOGGED IN");
+            //    return;
+            //}
 
-
+            
             ExemplarBase exemplar;
             CirculationInfo ci;
             OrderInfo order;
@@ -358,6 +370,7 @@ namespace SIPServer
             catch (Exception ex)
             {
                 Console.WriteLine("320" + ex.Message + ex.Source + ex.Data + ex.StackTrace);
+                logger.Error($"{DateTime.Now.ToString()} Ошибка в OnCheckout. \n" + ex.Message);
                 FillCheckoutFailedResponse(response, request, ex.Message);
                 return;
             }
@@ -386,6 +399,7 @@ namespace SIPServer
                 {
                     Console.WriteLine("377" + ex.Message + ex.Source + ex.Data + ex.StackTrace);
                     FillCheckoutFailedResponse(response, request, ex.Message);
+                    logger.Error($"{DateTime.Now.ToString()} Ошибка в OnCheckout. \n" + ex.Message);
                     return;
                 }
             }
@@ -399,7 +413,7 @@ namespace SIPServer
                 catch (Exception ex)
                 {
                     Console.WriteLine("391" + ex.Message + ex.Source + ex.Data + ex.StackTrace);
-
+                    logger.Error($"{DateTime.Now.ToString()} Ошибка в OnCheckout. \n" + ex.Message);
                     FillCheckoutFailedResponse(response, request, ex.Message);
                     return;
                 }
@@ -484,7 +498,7 @@ namespace SIPServer
             if (!string.IsNullOrEmpty(message))
             {
                 ALISError error = ALISErrorList._list.Find(x => x.Code == message);
-                response.ScreenMessage = (error != null) ? error.Message : "Неизвестная ошибка";
+                response.ScreenMessage = (error != null) ? error.Message : message;
                     
             }
             else
@@ -550,18 +564,23 @@ namespace SIPServer
             }
             catch (Exception ex)
             {
+                FillCheckinFailedResponse(response, request);
                 Console.WriteLine(ex.Message);
                 response.Ok = false;
+                logger.Error($"{DateTime.Now.ToString()} Ошибка в OnCheckin. \n" + ex.Message);
                 return;
             }
 
             try
             {
-                ci.RecieveBookFromReader(exemplar, order, client.bjUser);
+                exemplar.circulation.exemplarRecieverFromReader.RecieveBookFromReader(exemplar, order, client.bjUser);
+                //ci.RecieveBookFromReader(exemplar, order, client.bjUser);
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 FillCheckinFailedResponse(response, request);
+                logger.Error($"{DateTime.Now.ToString()} Ошибка в OnCheckin. \n" + ex.Message);
                 return;
             }
 
@@ -635,6 +654,7 @@ namespace SIPServer
             catch (Exception ex)
             {
                 FillRenewFailedResponse(response, request);
+                logger.Error($"{DateTime.Now.ToString()} Ошибка в OnRenew. \n" + ex.Message);
                 return;
             }
 
@@ -660,6 +680,7 @@ namespace SIPServer
                 {
                     result = false;
                     ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                    logger.Error($"{DateTime.Now.ToString()} Ошибка в OnRenew. \n" + ex.Message);
                     response.ScreenMessage = error.Message;
                 }
             }

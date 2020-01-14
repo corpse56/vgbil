@@ -304,5 +304,26 @@ namespace LibflClassLibrary.Circulation.DB
             }
         }
 
+        public string GET_SELF_CHECK_STATION_REFERENCE
+        {
+            get
+            {
+                return  " select case when Changer = 938 then 'station1' else 'station2' end st," +
+                        " B.BookId, B.ExemplarId, B.Fund " +
+                        " from Circulation..OrdersFlow A " +
+                        " left join Circulation..Orders B on B.Id = A.OrderId " +
+                        " where cast(cast(Changed as varchar(11)) as datetime) between @startDate and @endDate" +
+                        " and Changer in (@station1, @station2) and " +
+                        " A.StatusName in ('" + CirculationStatuses.IssuedAtHome.Value + "','" + CirculationStatuses.IssuedInHall.Value + "')";
+                        //" union all "+
+                        //" select 'station2', B.BookId, B.ExemplarId, B.Fund " +
+                        //" from Circulation..OrdersFlow A " +
+                        //" left join Circulation..Orders B on B.Id = A.OrderId " +
+                        //" where cast(cast(Changed as varchar(11)) as datetime) between @startDate and @endDate" +
+                        //" and Changer = @station2 and StatusName in ('" + CirculationStatuses.IssuedAtHome.Value + "'," +
+                        //" " + CirculationStatuses.IssuedInHall.Value + ")";
+            }
+        }
+
     }
 }

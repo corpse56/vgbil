@@ -74,6 +74,12 @@ namespace LibflClassLibrary.Circulation
             return result;
         }
 
+        internal DataTable GetSelfCheckStationReference(DateTime startDate, DateTime endDate)
+        {
+            DataTable table = dbWrapper_.GetSelfCheckStationReference(startDate, endDate);
+            return table;
+        }
+
         internal DataTable GetOrdersCountBySubject(BJUserInfo bjUser, DateTime startDate, DateTime endDate)
         {
             return dbWrapper_.GetOrdersCountBySubject(bjUser.SelectedUserStatus.UnifiedLocationCode, startDate, endDate);

@@ -142,7 +142,7 @@ namespace LibflClassLibrary.Books.BJBooks.DB
                         " and not exists (select 1 from BJVVV..DATAEXT C " +
                         "                 where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')" +
                         " union all" +
-                        " select 'BJVVV' fund, A.IDDATA exemplarId, A.IDMAIN bookId from REDKOSTJ..DATAEXT A" +
+                        " select 'REDKOSTJ' fund, A.IDDATA exemplarId, A.IDMAIN bookId from REDKOSTJ..DATAEXT A" +
                         " where A.MNFIELD = 899 and A.MSFIELD = '$p' and A.SORT = @inv " +
                         " and not exists (select 1 from REDKOSTJ..DATAEXT C " +
                         "                 where A.IDDATA = C.IDDATA and MNFIELD = 482 and MSFIELD = '$a')" +

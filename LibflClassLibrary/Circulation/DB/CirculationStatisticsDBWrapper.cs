@@ -73,6 +73,21 @@ namespace LibflClassLibrary.Circulation.DB
             return table;
         }
 
+        internal DataTable GetSelfCheckStationReference(DateTime startDate, DateTime endDate)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_SELF_CHECK_STATION_REFERENCE, connection);
+                dataAdapter.SelectCommand.Parameters.Add("startDate", SqlDbType.DateTime).Value = startDate.Date;
+                dataAdapter.SelectCommand.Parameters.Add("endDate", SqlDbType.DateTime).Value = endDate.Date;
+                dataAdapter.SelectCommand.Parameters.Add("station1", SqlDbType.Int).Value = 938;
+                dataAdapter.SelectCommand.Parameters.Add("station2", SqlDbType.Int).Value = 939;
+                int cnt = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
         internal DataTable GetOrdersCountBySubject(int unifiedLocationCode, DateTime startDate, DateTime endDate)
         {
             DataTable table = new DataTable();
