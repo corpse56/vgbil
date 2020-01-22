@@ -212,7 +212,7 @@ namespace LibflClassLibrary.ALISAPI.ResponseObjects.Books
                 ExemplarView.CarrierCode = 3011;
                 ExemplarView.Location = "Электронный доступ";
                 ExemplarView.LocationCode = 2030;
-                ExemplarView.BookUrl = (ExemplarView.AccessCode == 1001) ? @"http://catalog.libfl.ru/Bookreader/Viewer?bookID=" + ElExemplar.BookId + "&view_mode=HQ" : null;
+                ExemplarView.BookUrl = (ExemplarView.AccessCode == 1001) ? @"http://catalog.libfl.ru/Bookreader/Viewer?bookID=" + result.ID + "&view_mode=HQ" : null;
                 result.Exemplars.Add(ExemplarView);
             }
             return result;

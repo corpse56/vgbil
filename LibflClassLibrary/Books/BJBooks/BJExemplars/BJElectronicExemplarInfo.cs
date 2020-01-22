@@ -23,6 +23,7 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
             this.Fund = Fund;
             base.IDMAIN = IDMAIN;
             base.Fund = Fund;
+            this.BookId = $"{this.Fund}_{this.IDMAIN.ToString()}";
             loader = new BJExemplarLoader(Fund);
 
             //BJBookInfo book = BJBookInfo.GetBookInfoByPIN(IDMAIN, Fund);
@@ -61,8 +62,8 @@ namespace LibflClassLibrary.Books.BJBooks.BJExemplars
         }
 
         private BJExemplarLoader loader;
-        public int IDMAIN { get; set; }
-        public string Fund { get; set; }
+        //public int IDMAIN { get; set; }
+        //public string Fund { get; set; }
         public List<BJElectronicExemplarAvailabilityStatus> Statuses;
         //public BJElectronicExemplarAvailabilityStatus this[BJElectronicAvailabilityProjects key]
         //{

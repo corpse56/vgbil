@@ -204,7 +204,7 @@ public partial class _Default : System.Web.UI.Page
                 row["inv"] = (exemplar.Fields["899$x"].ToString() ==string.Empty) ? exemplar.Fields["899$p"].ToString() : exemplar.Fields["899$p"].ToString() + "\nметка: "+exemplar.Fields["899$x"].ToString();;
                 row["metka"] = exemplar.Fields["899$x"].ToString();
                 row["status"] = Status.ToString();//
-                row["IDDATA"] = exemplar.IdData;
+                row["IDDATA"] = exemplar.Id;
                 row["StatusCode"] = StatusCode;
                 row["StatusNameInBase"] = StatusNameInBase;
                 row["Rack"] = exemplar.Fields["899$c"].ToString();
@@ -253,7 +253,7 @@ public partial class _Default : System.Web.UI.Page
         command.Parameters.Add("IDREADER", SqlDbType.Int).Value = int.Parse(idreader);
         command.Parameters.Add("IDMAIN", SqlDbType.Int).Value = exemplar.IDMAIN;
         command.Parameters.Add("INV", SqlDbType.NVarChar).Value = exemplar.Fields["899$p"].ToString();
-        command.Parameters.Add("IDDATA", SqlDbType.Int).Value = exemplar.IdData;
+        command.Parameters.Add("IDDATA", SqlDbType.Int).Value = exemplar.Id;
         command.Parameters.Add("DepId", SqlDbType.Int).Value = bjUser.SelectedUserStatus.DepId;
         command.ExecuteNonQuery();
         ZCon.Close();
