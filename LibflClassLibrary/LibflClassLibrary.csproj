@@ -86,6 +86,7 @@
     <Reference Include="System.Net.Http">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Net.Http.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -161,6 +162,8 @@
     <Compile Include="CirculationACC\Classes\ReaderVO.cs" />
     <Compile Include="CirculationACC\Classes\XmlConnections.cs" />
     <Compile Include="CirculationApp\Department.cs" />
+    <Compile Include="CirculationCache\ExemplarCache.cs" />
+    <Compile Include="CirculationCache\OrderCache.cs" />
     <Compile Include="CirculationFCC\Classes\BJRecord.cs" />
     <Compile Include="CirculationFCC\Classes\BookVO.cs" />
     <Compile Include="CirculationFCC\Classes\DataGridViewDisableButtonCell.cs" />
@@ -244,6 +247,7 @@
     <Compile Include="ImageCatalog\ICLoader.cs" />
     <Compile Include="ImageCatalog\ICOrderInfo.cs" />
     <Compile Include="ImageCatalog\ICOrderFlowInfo.cs" />
+    <Compile Include="ImageCatalog\ICQueries.cs" />
     <Compile Include="ImageCatalog\ImageCard.cs" />
     <Compile Include="Utilites\IniFile.cs" />
     <Compile Include="Litres\LitresAccountManager.cs" />

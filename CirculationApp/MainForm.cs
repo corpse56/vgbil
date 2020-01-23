@@ -31,6 +31,7 @@ using ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.Errors;
 using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.Books;
+using LibflClassLibrary.CirculationCache;
 
 namespace CirculationApp
 {
@@ -40,7 +41,8 @@ namespace CirculationApp
     {
         Department department;
         CirculationInfo ci = new CirculationInfo();
-
+        ExemplarCache exemplarCache_ = new ExemplarCache();
+        OrderCache orderCache_ = new OrderCache();
         //public int EmpID;
         SerialPort port;
         private BJUserInfo bjUser;
@@ -85,6 +87,7 @@ namespace CirculationApp
         }
         public delegate void ScanFuncDelegate(string data);
         
+
 
         void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -407,44 +410,50 @@ namespace CirculationApp
             RPhoto.Image = null;
             department.ExpectedBar = ExpectingAction.WaitingBook;
         }
+        bool firstTimeLoadLog = true;
         private void ShowLog()
         {
             List<OrderFlowInfo> flow = ci.GetOrdersFlow(bjUser.SelectedUserStatus.UnifiedLocationCode);
-
-            KeyValuePair<string, string>[] columns =
+            if (firstTimeLoadLog)
             {
-                new KeyValuePair<string, string> ( "time", "Время"),
-                new KeyValuePair<string, string> ( "bar", "Штрихкод"),
-                new KeyValuePair<string, string> ( "title", "Издание"),
-                new KeyValuePair<string, string> ( "reader", "Читатель"),
-                new KeyValuePair<string, string> ( "status", "Действие"),
-                new KeyValuePair<string, string> ( "baseName", "Фонд"),
-                //new KeyValuePair<string, string> ( "issueType", "Тип выдачи"),
-            };
-            dgvLog.Columns.Clear();
-            foreach (var c in columns)
-                dgvLog.Columns.Add(c.Key, c.Value);
+                KeyValuePair<string, string>[] columns =
+                {
+                    new KeyValuePair<string, string> ( "time", "Время"),
+                    new KeyValuePair<string, string> ( "bar", "Штрихкод"),
+                    new KeyValuePair<string, string> ( "title", "Издание"),
+                    new KeyValuePair<string, string> ( "reader", "Читатель"),
+                    new KeyValuePair<string, string> ( "status", "Действие"),
+                    new KeyValuePair<string, string> ( "baseName", "Фонд"),
+                    //new KeyValuePair<string, string> ( "issueType", "Тип выдачи"),
+                };
 
-            dgvLog.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgvLog.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+                dgvLog.Columns.Clear();
+                foreach (var c in columns)
+                    dgvLog.Columns.Add(c.Key, c.Value);
 
-            dgvLog.Columns["time"].DefaultCellStyle.Format = "HH:mm";
-            dgvLog.Columns["bar"].Width = 100;
-            dgvLog.Columns["title"].Width = 300;
-            dgvLog.Columns["reader"].Width = 80;
-            dgvLog.Columns["status"].Width = 180;
-            dgvLog.Columns["baseName"].Width = 70;
-            //dgvLog.Columns["issueType"].Width = 80;
+                dgvLog.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                dgvLog.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+
+                dgvLog.Columns["time"].DefaultCellStyle.Format = "HH:mm";
+                dgvLog.Columns["bar"].Width = 100;
+                dgvLog.Columns["title"].Width = 300;
+                dgvLog.Columns["reader"].Width = 80;
+                dgvLog.Columns["status"].Width = 180;
+                dgvLog.Columns["baseName"].Width = 70;
+                //dgvLog.Columns["issueType"].Width = 80;
+            }
+            //dgvLog.Rows.Clear();
             int i = 0;
             foreach(OrderFlowInfo fi in flow)
             {
 
                 dgvLog.Rows.Add();
                 var row = dgvLog.Rows[dgvLog.Rows.Count - 1];
-                OrderInfo oi = ci.GetOrder(fi.OrderId);
+                OrderInfo oi = orderCache_.GetOrder(fi.OrderId);
                 //BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(oi.ExemplarId, oi.Fund);
-                ExemplarBase exemplar = ExemplarFactory.CreateExemplar(oi.ExemplarId, oi.Fund);
-                BookBase book = BookFactory.CreateBookByPin(exemplar.BookId);
+                ExemplarBase exemplar = exemplarCache_.GetExemplar(oi.ExemplarId, oi.Fund);
+                //ExemplarBase exemplar = ExemplarFactory.CreateExemplar(oi.ExemplarId, oi.Fund);
+                //BookBase book = BookFactory.CreateBookByPin(exemplar.BookId);
 
                 row.Cells["time"].Value = fi.Changed;
                 row.Cells["bar"].Value = exemplar.Bar;
@@ -461,7 +470,7 @@ namespace CirculationApp
             {
                 c.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            
+            firstTimeLoadLog = false;
         }
 
 

@@ -25,7 +25,7 @@ namespace LibflClassLibrary.Books
         public abstract string Location { get; set; }
         public abstract string Language { get; set; }
         public abstract string PublicationClass { get; set; }
-
+        public string CahceKey { get { return this.Fund + this.Id; } }
         public CirculationManager circulation;
         public IExemplarSimpleViewer simpleViewer;
         public string AuthorTitle

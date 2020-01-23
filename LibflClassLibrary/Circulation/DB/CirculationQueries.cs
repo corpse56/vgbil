@@ -355,7 +355,7 @@ namespace LibflClassLibrary.Circulation.DB
         {
             get
             {
-                return  " select * from Circulation..OrdersFlow F " +
+                return  " select top 35 * from Circulation..OrdersFlow F " +
                         " left join Circulation..Orders O on F.OrderId = O.ID " +
                         " where DepartmentId = @depId and cast(cast(Changed as varchar(11)) as datetime) = cast(cast(GETDATE() as varchar(11)) as datetime) and O.ExemplarId != 0 " +
                         " order by Changed desc" ;
