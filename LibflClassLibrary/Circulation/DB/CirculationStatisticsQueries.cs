@@ -314,7 +314,8 @@ namespace LibflClassLibrary.Circulation.DB
                         " left join Circulation..Orders B on B.Id = A.OrderId " +
                         " where cast(cast(Changed as varchar(11)) as datetime) between @startDate and @endDate" +
                         " and Changer in (@station1, @station2) and " +
-                        " A.StatusName in ('" + CirculationStatuses.IssuedAtHome.Value + "','" + CirculationStatuses.IssuedInHall.Value + "')";
+                        " A.StatusName in ('" + CirculationStatuses.IssuedAtHome.Value + "','" + CirculationStatuses.IssuedInHall.Value + "')" +
+                        " and B.ID is not null";
                         //" union all "+
                         //" select 'station2', B.BookId, B.ExemplarId, B.Fund " +
                         //" from Circulation..OrdersFlow A " +

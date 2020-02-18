@@ -67,7 +67,7 @@
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
+            this.label2.AutoEllipsis = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.Location = new System.Drawing.Point(12, 91);
             this.label2.Name = "label2";
@@ -97,6 +97,8 @@
             // 
             // bOk
             // 
+            this.bOk.AutoEllipsis = true;
+            this.bOk.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.bOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.bOk.Location = new System.Drawing.Point(305, 247);
             this.bOk.Name = "bOk";
@@ -109,8 +111,7 @@
             // fBJAuthorization
             // 
             this.AcceptButton = this.bOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.ClientSize = new System.Drawing.Size(692, 293);
             this.Controls.Add(this.bOk);
             this.Controls.Add(this.cbRoles);

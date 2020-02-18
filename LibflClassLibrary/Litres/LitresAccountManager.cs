@@ -45,8 +45,8 @@ namespace LibflClassLibrary.Litres
                 throw new Exception("L004");
             }
             loader.AssignLitresAccount(readerId);
+            result = loader.GetLitresAccount(readerId);
             return result;
-
         }
 
         public LitresInfo GetLitresNewAccount()

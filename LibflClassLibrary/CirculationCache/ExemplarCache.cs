@@ -10,7 +10,6 @@ namespace LibflClassLibrary.CirculationCache
 {
     public class ExemplarCache
     {
-        //List<BookBase> cache_ = new List<BookBase>();
         MemoryCache cache_ = new MemoryCache("ExemplarCache");
         public ExemplarBase GetExemplar(int id, string fund)
         {

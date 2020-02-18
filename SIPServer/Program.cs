@@ -1,3 +1,4 @@
+using NLog;
 using SipLibrary;
 using SipLibrary.Abstract;
 using SipLibrary.TextEncodings;
@@ -12,7 +13,7 @@ namespace SIPServer
 {
     class Program
     {
-        
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
             // The code provided will print ‘Hello World’ to the console.
@@ -38,13 +39,22 @@ namespace SIPServer
 
             controller_ = new Controller(endpoint, disp_, encoding);
             ///disp_.OnCheckout()
-            while (true)
+            try
             {
-                if (Console.ReadLine() ==  "quit")
+                while (true)
                 {
-                    controller_.StopServer();
-                    break;
+                    if (Console.ReadLine() == "quit")
+                    {
+                        controller_.StopServer();
+                        break;
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                logger.Error($"{ex.Message} {ex.StackTrace} {ex.Source}");
+                Console.WriteLine($"{ex.Message} {ex.StackTrace}");
+                Console.ReadKey();
             }
 
         }

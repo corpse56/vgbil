@@ -49,6 +49,11 @@ namespace LibflClassLibrary.Circulation
             List<int> result = new List<int>();
             BookBase b = BookFactory.CreateBookByPin(bookId);
             BJBookInfo book = (BJBookInfo)b;
+            if (book == null)
+            {
+                result.Add(OrderTypes.NoActionProvided.Id);
+                return result;
+            }
             ReaderInfo reader = ReaderInfo.GetReader(readerId);
             foreach (ExemplarBase eee in book.Exemplars)
             {
@@ -392,7 +397,8 @@ namespace LibflClassLibrary.Circulation
                     loader.IssueBookToReader(order, issueType, bjUser);
                     break;
                 case CirculationStatuses.ForReturnToBookStorage.Value:
-                    //читатель тот же. можно просто снова выдать
+                    //читатель тот же. можно просто завершить текущий заказ и снова выдать
+                    this.FinishOrder(order, bjUser);
                     loader.IssueBookToReader(order, issueType, bjUser);
                     break;
                 case CirculationStatuses.InReserve.Value:

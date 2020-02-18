@@ -36,7 +36,7 @@ namespace ALISAPI.Controllers
             }
             catch (Exception ex)
             {
-                return ALISErrorFactory.CreateError("G001", Request);
+                return ALISErrorFactory.CreateError("G002", Request);
             }
             return ALISResponseFactory.CreateResponse(basket, Request);
         }

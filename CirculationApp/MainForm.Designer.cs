@@ -107,10 +107,10 @@ namespace CirculationApp
             this.DebtoListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReaderRegistrationAndLitresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OrdersBySubjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SelfCheckStationReferenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.timerIssuedInHallCount = new System.Windows.Forms.Timer(this.components);
             this.dataGridViewButtonColumn1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.SelfCheckStationReferenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainTabContainer.SuspendLayout();
             this.MainTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -930,6 +930,13 @@ namespace CirculationApp
             this.OrdersBySubjectToolStripMenuItem.Text = "Выдачи по тематике";
             this.OrdersBySubjectToolStripMenuItem.Click += new System.EventHandler(this.OrdersBySubjectToolStripMenuItem_Click);
             // 
+            // SelfCheckStationReferenceToolStripMenuItem
+            // 
+            this.SelfCheckStationReferenceToolStripMenuItem.Name = "SelfCheckStationReferenceToolStripMenuItem";
+            this.SelfCheckStationReferenceToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
+            this.SelfCheckStationReferenceToolStripMenuItem.Text = "Справка ССО";
+            this.SelfCheckStationReferenceToolStripMenuItem.Click += new System.EventHandler(this.SelfCheckStationReferenceToolStripMenuItem_Click);
+            // 
             // pbLogo
             // 
             this.pbLogo.Image = global::CirculationApp.Properties.Resources.Artboard2;
@@ -954,18 +961,11 @@ namespace CirculationApp
             this.dataGridViewButtonColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewButtonColumn1.Width = 85;
             // 
-            // SelfCheckStationReferenceToolStripMenuItem
-            // 
-            this.SelfCheckStationReferenceToolStripMenuItem.Name = "SelfCheckStationReferenceToolStripMenuItem";
-            this.SelfCheckStationReferenceToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
-            this.SelfCheckStationReferenceToolStripMenuItem.Text = "Справка ССО";
-            this.SelfCheckStationReferenceToolStripMenuItem.Click += new System.EventHandler(this.SelfCheckStationReferenceToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AcceptButton = this.bConfirm;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1189, 732);
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.pbLogo);

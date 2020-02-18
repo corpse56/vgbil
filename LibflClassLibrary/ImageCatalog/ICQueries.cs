@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +14,29 @@ namespace LibflClassLibrary.ImageCatalog
         {
             this.tableName_ = tableName;
         }
-        public string GET_CARD
+        public static string GET_CARD
         {
             get
             {
-                return $" select * from ImageCatalog..{tableName_} A " +
-                        " where A.MNFIELD = 10 and A.MSFIELD = '$b' and A.IDDATA = @iddata";
+                return $" select *,0 CardType from ImageCatalog..CardMain A " +
+                        " where A.FilesName = @cardFileName" +
+                        " union all " +
+                        " select *,3 CardType from ImageCatalog..CardAV A " +
+                        " where A.FilesName = @cardFileName" +
+                        " union all " +
+                        " select *,1 CardType from ImageCatalog..CardPeriodical A " +
+                        " where A.FilesName = @cardFileName" +
+                        " union all " +
+                        " select *,2 CardType from ImageCatalog..CardSubscript A " +
+                        " where A.FilesName = @cardFileName";
+            }
+        }
+
+        public static string GET_IC_ORDER
+        {
+            get
+            {
+                return $" select * from Circulation..ICOrder where Id = @OrderId ";
             }
         }
 

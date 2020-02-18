@@ -70,7 +70,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -111,6 +111,7 @@
     <Compile Include="ALISAPI\RequestObjects\Readers\BirthDateMatchReaderId.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\ChangePasswordLocalReader.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\ChangePasswordByEmail.cs" />
+    <Compile Include="ALISAPI\RequestObjects\Readers\CheckAuthorizationToken.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\CheckPasswordUrl.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\ConfirmRegistrationRemoteReader.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\PreRegisterRemoteReader.cs" />
@@ -247,8 +248,9 @@
     <Compile Include="ImageCatalog\ICLoader.cs" />
     <Compile Include="ImageCatalog\ICOrderInfo.cs" />
     <Compile Include="ImageCatalog\ICOrderFlowInfo.cs" />
+    <Compile Include="ImageCatalog\ICOrderLoader.cs" />
     <Compile Include="ImageCatalog\ICQueries.cs" />
-    <Compile Include="ImageCatalog\ImageCard.cs" />
+    <Compile Include="ImageCatalog\ImageCardInfo.cs" />
     <Compile Include="Utilites\IniFile.cs" />
     <Compile Include="Litres\LitresAccountManager.cs" />
     <Compile Include="Litres\LitresApiHandler.cs" />

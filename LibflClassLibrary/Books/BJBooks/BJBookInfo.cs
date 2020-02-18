@@ -1,24 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Text;
-using System.Runtime.Serialization;
 using System.Data;
-using System.Windows.Forms;
 using System.Security.Cryptography;
-using LibflClassLibrary.Books;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Books.BJBooks.DB;
-using Newtonsoft.Json;
 using LibflClassLibrary.Readers;
-using LibflClassLibrary.ExportToVufind.Vufind;
-using LibflClassLibrary.ExportToVufind.BJ;
-using LibflClassLibrary.ExportToVufind;
-using Utilities;
-using System.Diagnostics;
 using LibflClassLibrary.Books.BJBooks.Loaders;
-
+using Newtonsoft.Json;
 /// <summary>
 /// Сводное описание для BookInfo
 /// </summary>

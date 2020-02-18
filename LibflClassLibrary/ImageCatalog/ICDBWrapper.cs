@@ -16,15 +16,27 @@ namespace LibflClassLibrary.ImageCatalog
         {
             connectionString = AppSettings.ConnectionString;
         }
-        internal DataTable GetCard(string cardId, string tableName)
+
+        internal DataTable GetICOrderById(int id)
         {
             DataTable table = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                //SqlDataAdapter dataAdapter = new SqlDataAdapter(BJQueries.SELECT_RECORD_QUERY, connection);
-                //dataAdapter.SelectCommand.Parameters.Add("idmain", SqlDbType.Int).Value = idmain;
-                //dataAdapter.Fill(table);
-                //return table;
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.GET_IC_ORDER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("OrderId", SqlDbType.Int).Value = id;
+                int i = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
+        internal DataTable GetCard(string cardFileName)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.GET_CARD, connection);
+                dataAdapter.SelectCommand.Parameters.Add("cardFileName", SqlDbType.NVarChar).Value = cardFileName;
+                int i = dataAdapter.Fill(table);
             }
             return table;
         }

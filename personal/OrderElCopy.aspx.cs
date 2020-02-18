@@ -4,14 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DataProviderAPI.Loaders;
 using BookForOrder;
 using InvOfBookForOrder;
 using System.Data.SqlClient;
 using System.Data;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using DataProviderAPI.ValueObjects;
 using System.Web.Security;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.ExportToVufind;
@@ -20,84 +18,84 @@ using LibflClassLibrary.Books.BJBooks.BJExemplars;
 
 public partial class OrderElCopy : System.Web.UI.Page
 {
-    protected void Page_Load(object sender, EventArgs e)
-    {
+    //protected void Page_Load(object sender, EventArgs e)
+    //{
 
-        string IDMAIN = Request["pin"];
-        string IDBASE = Request["idbase"];
+    //    string IDMAIN = Request["pin"];
+    //    string IDBASE = Request["idbase"];
 
-        string IDReader = Request.QueryString["idreader"];
+    //    string IDReader = Request.QueryString["idreader"];
 
-        if (IDReader == null)
-        {
+    //    if (IDReader == null)
+    //    {
             
 
-            IDReader = User.Identity.Name;
-            //Response.Write("User.Identity.Name " + IDReader);
-            if (IDReader == string.Empty)
-            {
-                Response.Write("Неизвестная ошибка");
-                return;
-            }
-        }
-        //else
-        //{
-        //    Response.Write("Request" + IDReader);
-        //}
-        //string vkey = Request["vkey"];
-        string BaseName = (IDBASE == "1") ? "BJVVV" : "REDKOSTJ";
+    //        IDReader = User.Identity.Name;
+    //        //Response.Write("User.Identity.Name " + IDReader);
+    //        if (IDReader == string.Empty)
+    //        {
+    //            Response.Write("Неизвестная ошибка");
+    //            return;
+    //        }
+    //    }
+    //    //else
+    //    //{
+    //    //    Response.Write("Request" + IDReader);
+    //    //}
+    //    //string vkey = Request["vkey"];
+    //    string BaseName = (IDBASE == "1") ? "BJVVV" : "REDKOSTJ";
 
 
-        ReaderInfo readerAPI = ReaderInfo.GetReader(int.Parse(IDReader));
+    //    ReaderInfo readerAPI = ReaderInfo.GetReader(int.Parse(IDReader));
 
 
-        ExemplarLoader loader = new ExemplarLoader(BaseName);
-        DataProviderAPI.ValueObjects.ElectronicExemplarInfoAPI exemplar = loader.GetElectronicExemplarInfo(BaseName + "_" + IDMAIN);
+    //    ExemplarLoader loader = new ExemplarLoader(BaseName);
+    //    DataProviderAPI.ValueObjects.ElectronicExemplarInfoAPI exemplar = loader.GetElectronicExemplarInfo(BaseName + "_" + IDMAIN);
 
 
 
-        if (exemplar.ForAllReader)//открытый БЕЗ авторского права
-        {
+    //    if (exemplar.ForAllReader)//открытый БЕЗ авторского права
+    //    {
 
-            RedirectToNewViewer(IDMAIN, true, "", IDReader);
+    //        RedirectToNewViewer(IDMAIN, true, "", IDReader);
 
-        }
-        else    //ЗАКРЫТЫЕ АВТОРСКИМ ПРАВОМ
-        {
-            BJBookInfo book = BJBookInfo.GetBookInfoByPIN(int.Parse(IDMAIN), BaseName);
-            ReaderInfo reader = ReaderInfo.GetReader(int.Parse(IDReader));
+    //    }
+    //    else    //ЗАКРЫТЫЕ АВТОРСКИМ ПРАВОМ
+    //    {
+    //        BJBookInfo book = BJBookInfo.GetBookInfoByPIN(int.Parse(IDMAIN), BaseName);
+    //        ReaderInfo reader = ReaderInfo.GetReader(int.Parse(IDReader));
 
-            if (!book.IsElectronicCopyIssued())//если книга не выдана никому, то проверяем ограничения, потом неявно выдаём и перенаправляем на вьювер
-            {
-                if (CheckLimitations(book, reader))
-                {
-                    return;
-                }
-                book.IssueElectronicCopyToReader(reader.NumberReader);
-                string ViewKey = book.GetElectronicViewKeyForReader(reader.NumberReader);
-                RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
-            }
-            else
-            {
-                if (!book.IsElectronicCopyIsuuedToReader(reader.NumberReader))//если этому читателю не выдана эта книга, то проверяем ограничения
-                {
-                    if (CheckLimitations(book, reader))
-                    {
-                        return;
-                    }
-                    //если ограничения не сработали, то выдаём и перенаправляем
-                    book.IssueElectronicCopyToReader(reader.NumberReader);
-                    string ViewKey = book.GetElectronicViewKeyForReader(reader.NumberReader);
-                    RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
-                }
-                else//если этому читателю выдана эта книга
-                {
-                    string ViewKey = book.GetElectronicViewKeyForReader(reader.NumberReader);
-                    RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
-                }
-            }
-        }
-    }
+    //        if (!book.IsElectronicCopyIssued())//если книга не выдана никому, то проверяем ограничения, потом неявно выдаём и перенаправляем на вьювер
+    //        {
+    //            if (CheckLimitations(book, reader))
+    //            {
+    //                return;
+    //            }
+    //            book.IssueElectronicCopyToReader(reader.NumberReader);
+    //            string ViewKey = book.GetElectronicViewKeyForReader(reader.NumberReader);
+    //            RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
+    //        }
+    //        else
+    //        {
+    //            if (!book.IsElectronicCopyIsuuedToReader(reader.NumberReader))//если этому читателю не выдана эта книга, то проверяем ограничения
+    //            {
+    //                if (CheckLimitations(book, reader))
+    //                {
+    //                    return;
+    //                }
+    //                //если ограничения не сработали, то выдаём и перенаправляем
+    //                book.IssueElectronicCopyToReader(reader.NumberReader);
+    //                string ViewKey = book.GetElectronicViewKeyForReader(reader.NumberReader);
+    //                RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
+    //            }
+    //            else//если этому читателю выдана эта книга
+    //            {
+    //                string ViewKey = book.GetElectronicViewKeyForReader(reader.NumberReader);
+    //                RedirectToNewViewer(IDMAIN, false, ViewKey, IDReader);
+    //            }
+    //        }
+    //    }
+    //}
 
     private bool CheckLimitations(BJBookInfo book, ReaderInfo reader)
     {

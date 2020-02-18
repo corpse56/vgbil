@@ -128,7 +128,8 @@ namespace SIPServer
                 response.UnavailableHoldsCount = 0;
                 response.InstitutionId = request.InstitutionId;
                 response.PatronIdentifier = request.PatronId;
-                response.PersonalName = string.Empty;
+                response.PersonalName = "Читатель не найден";
+                response.ValidPatron = false;
                 Console.WriteLine("Читатель не найден");
                 return;
             }
@@ -176,12 +177,28 @@ namespace SIPServer
                 foreach (var order in chargedOrders)
                 {
                     ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
+                    if (exemplar == null)
+                    {
+                        BJExemplarInfo fake = new BJExemplarInfo();
+                        fake.Bar = $"Экземпляр удалён из базы. Id = {order.ExemplarId}, Fund = {order.Fund}";
+                        fake.Title = $"Экземпляр удалён из базы. Id = {order.ExemplarId}, Fund = {order.Fund}";
+                        exemplar = fake;
+                    }
                     response.ChargedItems.Add(exemplar.Bar);
                 }
                 foreach (var order in holdOrders)
                 {
                     ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
-                    response.HoldItems.Add(exemplar.Bar);
+                    if (exemplar == null)
+                    {
+                        BJExemplarInfo fake = new BJExemplarInfo();
+                        fake.Bar = $"Экземпляр удалён из базы. Id = {order.ExemplarId}, Fund = {order.Fund}";
+                        fake.Title = $"Экземпляр удалён из базы. Id = {order.ExemplarId}, Fund = {order.Fund}";
+                        exemplar = fake;
+                    }
+                    if (exemplar.Bar != null) response.HoldItems.Add(exemplar.Bar);
+                    else if (exemplar.InventoryNumber != null) response.HoldItems.Add(exemplar.InventoryNumber);
+                    else response.HoldItems.Add(exemplar.Id);
                 }
             }
         }
@@ -189,7 +206,7 @@ namespace SIPServer
         public void OnScStatus(Session session, ScStatusRequest request, AcsStatusResponse response)
         {
             Console.WriteLine("Sc Status Message");
-
+            //request.
             SipClientInfo client = clients_.Find(x => x.session.Ip == session.Ip);
             response.OnlineStatus = (client == null) ? false : true;
             response.CheckInOk = true;
@@ -203,7 +220,7 @@ namespace SIPServer
             response.SupportedMessages = SupportedMessages.DefaultValue();
             response.SupportedMessages.PatronInformation = true;
             response.ProtocolVersion = ProtocolVersion.VERSION_2_00;
-            //response.
+            response.TerminalLocation = (client == null) ? $"Станция не залогинена. IP = {session.Ip}" : client.bjUser.Login;
             response.DateTimeSync = DateTime.Now;
         }
 
@@ -226,21 +243,14 @@ namespace SIPServer
             }
             catch (Exception ex)
             {
-                response.CirculationStatus = CirculationStatus.LOST;
+                response.CirculationStatus = CirculationStatus.MISSING;
                 response.SecurityMarker = SecurityMarker.OTHER;
                 response.FeeType = FeeType.ADMINISTRATIVE;
                 response.TransactionDate = DateTime.Now;
                 response.ItemIdentifier = request.ItemIdentifier;
                 exemplar = ExemplarFactory.CreateExemplar(bar);
-                if (exemplar != null)
-                {
-                    response.TitleIdentifier = exemplar.AuthorTitle;
-                }
-                else
-                {
-                    response.TitleIdentifier = "Неизвестная книга";
-                }
-                logger.Error($"{DateTime.Now.ToString()} Ошибка в OnItemInformation. \n" + ex.Message);
+                response.ScreenMessage = "Книга не найдена!";
+                //logger.Error($"{DateTime.Now.ToString()} mation. \n" + ex.Message);
                 return;
             }
 
@@ -374,7 +384,13 @@ namespace SIPServer
                 FillCheckoutFailedResponse(response, request, ex.Message);
                 return;
             }
-
+            if (reader == null)
+            {
+                Console.WriteLine("Читатель не найден");
+                //logger.Error($"{DateTime.Now.ToString()} Ошибка в OnCheckout. \n" + ex.Message);
+                FillCheckoutFailedResponse(response, request, $"Выдача невозможна! Читатель с идентификатором {request.PatronIdentifier} не найден!");
+                return;
+            }
 
             // обязательные поля
             response.Ok = true;
@@ -498,8 +514,7 @@ namespace SIPServer
             if (!string.IsNullOrEmpty(message))
             {
                 ALISError error = ALISErrorList._list.Find(x => x.Code == message);
-                response.ScreenMessage = (error != null) ? error.Message : message;
-                    
+                response.ScreenMessage = (error != null) ? error.Message : message;           
             }
             else
             {
@@ -653,6 +668,8 @@ namespace SIPServer
             }
             catch (Exception ex)
             {
+                ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                response.ScreenMessage = (error != null) ? error.Message : ex.Message;
                 FillRenewFailedResponse(response, request);
                 logger.Error($"{DateTime.Now.ToString()} Ошибка в OnRenew. \n" + ex.Message);
                 return;
@@ -680,8 +697,8 @@ namespace SIPServer
                 {
                     result = false;
                     ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                    response.ScreenMessage = (error != null) ? error.Message : ex.Message;
                     logger.Error($"{DateTime.Now.ToString()} Ошибка в OnRenew. \n" + ex.Message);
-                    response.ScreenMessage = error.Message;
                 }
             }
 
