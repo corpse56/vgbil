@@ -36,7 +36,49 @@ namespace LibflClassLibrary.ImageCatalog
         {
             get
             {
-                return $" select * from Circulation..ICOrder where Id = @OrderId ";
+                return $" select * from Circulation..ICOrders where Id = @OrderId ";
+            }
+        }
+
+        public static string NEW_ORDER
+        {
+            get
+            {
+                return "insert into Circulation..ICOrders (CardFileName,  CardSide,  StartDate,  StatusName,  ReaderId,  Comment)" +
+                       "                           values (@CardFileName, @CardSide, @StartDate, @StatusName, @ReaderId, @Comment);" +
+                       "select SCOPE_IDENTITY()";
+            }
+        }
+
+        public static string CHANGE_ORDER_STATUS
+        {
+            get
+            {
+                return " BEGIN TRANSACTION; " +
+                       " insert into Circulation..ICOrdersFlow (OrderId, StatusName, Changed,  Changer,    DepartmentId, Refusual ) " +
+                       " values                            (@OrderId, @StatusName,getdate(), @Changer, @DepartmentId, @Refusual );" +
+                       " update Circulation..ICOrders set StatusName = @StatusName where ID = @OrderId;" +
+                       " COMMIT; ";
+            }
+        }
+
+        public static string IS_ORDER_EXISTS
+        {
+            get
+            {
+                return $" select * from Circulation..ICOrders " +
+                       $" where CardFileName = @CardFileName and CardSide = @CardSide and ReaderId = @ReaderId " +
+                       $" and StatusName not in  (@FinishedStatusName, @RefusualStatusName) ";
+            }
+        }
+
+        public static string GET_ACTIVE_ORDERS_BY_READER
+        {
+            get
+            {
+                return $" select Id from Circulation..ICOrders " +
+                       $" where ReaderId = @ReaderId " +
+                       $" and StatusName not in  (@FinishedStatusName, @RefusualStatusName) ";
             }
         }
 

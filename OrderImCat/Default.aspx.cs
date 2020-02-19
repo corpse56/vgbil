@@ -1,4 +1,6 @@
-﻿using LibflClassLibrary.ImageCatalog;
+﻿using ALISAPI.Errors;
+using LibflClassLibrary.ALISAPI.Errors;
+using LibflClassLibrary.ImageCatalog;
 using LibflClassLibrary.Readers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -37,9 +39,11 @@ public partial class _Default : System.Web.UI.Page
         //    }
         //}
         //Label1.Text = "11111";
+        ReaderInfo reader = ReaderInfo.GetReader(189245);
+        Label2.Text = reader.FIO;
 
 
-
+///////////////////////////////////////////////////////////////////////////////////
         JObject mockCookie = new JObject();
         mockCookie.Add("orderType", "book");
         mockCookie.Add("cardId", "000029274");
@@ -50,22 +54,48 @@ public partial class _Default : System.Web.UI.Page
         string s = mockCookie.ToString();
         ICCookie mcookie = JsonConvert.DeserializeObject<ICCookie>(mockCookie.ToString());
 
-        ReaderInfo reader = ReaderInfo.GetReader(189245);
-        Label2.Text = reader.FIO;
-        //ImageCardInfo card = ImageCardInfo.GetCard("000029274", "090", true);
-        ICOrderInfo order = ICOrderInfo.CreateOrder(mcookie.cardId, mcookie.cardSide, reader.NumberReader, mcookie.comment);
-        //mainSideImage.ImageUrl = order.Card.MainSideUrl;
-        //selectedSideImage.ImageUrl = order.SelectedSideUrl;
-
-
-
+        try
+        {
+            ICOrderInfo.CreateOrder(mcookie.cardId, mcookie.cardSide, reader.NumberReader, mcookie.comment);
+        }
+        catch (Exception ex)
+        {
+            ImageCardInfo card = ImageCardInfo.GetCard(mcookie.cardId, false);
+            ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+            string userMessage = (error != null) ? error.Message : ex.Message;
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", $"alert('Вы не можете заказать книгу по выбранной карточке. {userMessage}');", true);
+            //return;
+        }
+        ImageCatalogCirculationManager circ = new ImageCatalogCirculationManager();
+        List<ICOrderInfo> userOrders = circ.GetActiveOrdersByReader(reader.NumberReader);
+        Session.Add("userOrders", userOrders);
+        Session.Add("reader", reader);
         DataTable dataSource = new DataTable();
-        //dataSource.Columns.Add("mainSideImage", typeof(Image));
-        dataSource.Columns.Add("num", typeof(int));
-        DataRow row = dataSource.NewRow();
-        row["num"] = 1;// order.Card.MainSideImage;
+        dataSource.Columns.Add("orderId");
+        dataSource.Columns.Add("num");
+        dataSource.Columns.Add("comment");
+        dataSource.Columns.Add("statusName");
+        dataSource.Columns.Add("mainSideUrl");
+        dataSource.Columns.Add("selectedSideUrl");
+        int i = 1;
+        foreach (ICOrderInfo order in userOrders)
+        {
+            DataRow row = dataSource.NewRow();
+            row["orderId"] = order.Id;
+            row["num"] = i++;
+            row["comment"] = order.Comment;
+            row["statusName"] = order.StatusName;
+            row["mainSideUrl"] = order.Card.MainSideUrl;
+            row["selectedSideUrl"] = order.SelectedSideUrl;
+            dataSource.Rows.Add(row);
+        }
         gwBasket.DataSource = dataSource;
-        ((BoundField)gwBasket.Columns[0]).DataField = "num";
+        ((BoundField)gwBasket.Columns[0]).DataField = "orderId";
+        ((BoundField)gwBasket.Columns[1]).DataField = "mainSideUrl";
+        ((BoundField)gwBasket.Columns[2]).DataField = "selectedSideUrl";
+        ((BoundField)gwBasket.Columns[3]).DataField = "num";
+        ((BoundField)gwBasket.Columns[6]).DataField = "comment";
+        ((BoundField)gwBasket.Columns[7]).DataField = "statusName";
         gwBasket.DataBind();
 
 
@@ -73,28 +103,14 @@ public partial class _Default : System.Web.UI.Page
 
     protected void gwBasket_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        JObject mockCookie = new JObject();
-        mockCookie.Add("orderType", "book");
-        mockCookie.Add("cardId", "000029274");
-        mockCookie.Add("cardSide", "90");
-        mockCookie.Add("comment", "Мне нужен 90-й том");
-
-
-        string s = mockCookie.ToString();
-        ICCookie mcookie = JsonConvert.DeserializeObject<ICCookie>(mockCookie.ToString());
-
-        ReaderInfo reader = ReaderInfo.GetReader(189245);
-        Label2.Text = reader.FIO;
-        //ImageCardInfo card = ImageCardInfo.GetCard("000029274", "090", true);
-        ICOrderInfo order = ICOrderInfo.CreateOrder(mcookie.cardId, mcookie.cardSide, reader.NumberReader, mcookie.comment);
-
+        
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
             Image img = (Image)e.Row.FindControl("mainSideImage");
+            img.ImageUrl = e.Row.Cells[1].Text;//order.Card.MainSideUrl;
+            img = (Image)e.Row.FindControl("selectedSideImage");
+            img.ImageUrl = e.Row.Cells[2].Text;// order.SelectedSideUrl;
 
-            //bool PrNoCreated = bool.Parse(gwBasket.DataKeys[e.Row.RowIndex]["PrNoCreated"].ToString());
-            img.ImageUrl = order.Card.MainSideUrl;
-           
         }
     }
 }

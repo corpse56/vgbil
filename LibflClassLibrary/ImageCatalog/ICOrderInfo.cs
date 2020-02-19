@@ -15,9 +15,10 @@ namespace LibflClassLibrary.ImageCatalog
         public string Comment { get; set; }
         public int ReaderId { get; set; }
         public DateTime StartDate { get; set; }
-        public string SelectedSideUrl;
-        public Image SelectedSideImage;
+        public string SelectedSideUrl { get; set; }
+        public Image SelectedSideImage { get; set; }
         public ImageCardInfo Card;
+        public string StatusName { get;set; }
         //public Image SelectedSideImage;
         //public string SelectedSideUrl;
         public static ICOrderInfo GetICOrderById(int id)

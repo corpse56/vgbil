@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.ExportToVufind;
+﻿using LibflClassLibrary.Circulation;
+using LibflClassLibrary.ExportToVufind;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,6 +30,20 @@ namespace LibflClassLibrary.ImageCatalog
             return table;
         }
 
+        internal DataTable GetActiveOrdersByReader(int readerId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.GET_ACTIVE_ORDERS_BY_READER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = readerId;
+                dataAdapter.SelectCommand.Parameters.Add("FinishedStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Finished.Value;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                int i = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
         internal DataTable GetCard(string cardFileName)
         {
             DataTable table = new DataTable();
@@ -39,6 +54,80 @@ namespace LibflClassLibrary.ImageCatalog
                 int i = dataAdapter.Fill(table);
             }
             return table;
+        }
+
+        internal void InsertOrderInDb(ICOrderInfo order)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = ICQueries.NEW_ORDER;
+                command.Parameters.Clear();
+                command.Parameters.Add("CardFileName", SqlDbType.NVarChar).Value = order.CardFileName;
+                command.Parameters.Add("CardSide", SqlDbType.Int).Value = order.SelectedCardSide;
+                command.Parameters.Add("StartDate", SqlDbType.DateTime).Value = order.StartDate;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = order.StatusName;
+                command.Parameters.Add("ReaderId", SqlDbType.Int).Value = order.ReaderId;
+                command.Parameters.Add("Comment", SqlDbType.NVarChar).Value = order.Comment;
+                order.Id = Convert.ToInt32(command.ExecuteScalar());
+                
+            }
+
+            this.ChangeOrderStatus(order.Id, order.StatusName, 1, 2033, null);
+            //this.DeleteFromBasket(reader.NumberReader, new List<string>() { exemplar.BookId });
+            return;// order.Id;
+        }
+
+        internal DataTable GetOrdersCountForReader(int readerId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.GET_ACTIVE_ORDERS_BY_READER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.NVarChar).Value = readerId;
+                dataAdapter.SelectCommand.Parameters.Add("FinishedStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Finished.Value;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                int i = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
+        internal DataTable IsOrderAlreadyExists(ICOrderInfo order)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.IS_ORDER_EXISTS, connection);
+                dataAdapter.SelectCommand.Parameters.Add("CardFileName", SqlDbType.NVarChar).Value = order.CardFileName;
+                dataAdapter.SelectCommand.Parameters.Add("CardSide", SqlDbType.NVarChar).Value = order.SelectedCardSide;
+                dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.NVarChar).Value = order.ReaderId;
+                dataAdapter.SelectCommand.Parameters.Add("FinishedStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Finished.Value;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                int i = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
+        private void ChangeOrderStatus(int orderId, string StatusName, int ChangerId, int DepartmentId, string Refusual)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = ICQueries.CHANGE_ORDER_STATUS;
+                command.Parameters.Clear();
+                //(@OrderId, @StatusName, @Changer, @DepartmentId, @Refusual
+                command.Parameters.Add("OrderId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = StatusName;
+                command.Parameters.Add("Changer", SqlDbType.Int).Value = ChangerId;
+                command.Parameters.Add("DepartmentId", SqlDbType.Int).Value = DepartmentId;
+                command.Parameters.Add("Refusual", SqlDbType.NVarChar).Value = Refusual ?? (object)DBNull.Value;
+
+                Convert.ToInt32(command.ExecuteNonQuery());
+            }
         }
     }
 }

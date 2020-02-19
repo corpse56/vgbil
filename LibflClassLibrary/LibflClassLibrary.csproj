@@ -251,6 +251,7 @@
     <Compile Include="ImageCatalog\ICOrderLoader.cs" />
     <Compile Include="ImageCatalog\ICQueries.cs" />
     <Compile Include="ImageCatalog\ImageCardInfo.cs" />
+    <Compile Include="ImageCatalog\ImageCatalogCirculationManager.cs" />
     <Compile Include="Utilites\IniFile.cs" />
     <Compile Include="Litres\LitresAccountManager.cs" />
     <Compile Include="Litres\LitresApiHandler.cs" />

@@ -100,25 +100,39 @@
     <form id="form1" runat="server">
         <div>
             <center>
-                <asp:Label ID="Label1" runat="server" Text="Личный кабинет для заказа литературы из имидж-каталога"></asp:Label>
-                <asp:Label ID="Label2" runat="server" Text="ФИО"></asp:Label>
+                <asp:Label ID="Label1" runat="server" Font-Size = "20px" Text="Личный кабинет для заказа литературы из имидж-каталога"></asp:Label>
+                <br />
+                <asp:Label ID="Label2" runat="server" Font-Size = "20px" Text="ФИО"></asp:Label>
             </center>
             <br />
             <br />
             <br />
-             
+           
+        <div  style="position:absolute;left:50px;">
+
              <asp:GridView ID="gwBasket" runat="server" AutoGenerateColumns = "False"  BorderWidth="3px"
-                  BorderStyle="Solid" BorderColor = "Black"  
-                  Font-Size = "15px" CellPadding="5" 
+                  BorderStyle="Solid" BorderColor = "Black" 
+                  Font-Size = "20px" CellPadding="5" 
                   onrowdatabound="gwBasket_RowDataBound">                                  
                 <Columns>
                     <asp:BoundField
-                        DataField="OrderId" >
+                        DataField="orderId" >
+                        <HeaderStyle CssClass="hiddencol" />
+                        <ItemStyle CssClass="hiddencol" />
+                    </asp:BoundField>
+                    <asp:BoundField
+                        DataField="mainSideUrl" >
+                        <HeaderStyle CssClass="hiddencol" />
+                        <ItemStyle CssClass="hiddencol" />
+                    </asp:BoundField>
+                    <asp:BoundField
+                        DataField="selectedSideUrl" >
                         <HeaderStyle CssClass="hiddencol" />
                         <ItemStyle CssClass="hiddencol" />
                     </asp:BoundField>
                                         
-                    <asp:BoundField HeaderText="№№" >
+                    <asp:BoundField HeaderText="№№" 
+                        DataField="num">
                     <HeaderStyle BackColor="Silver" />
                     </asp:BoundField>
 
@@ -145,13 +159,11 @@
                     <asp:BoundField HeaderText="Статус" >
                     <HeaderStyle BackColor="Silver" />
                         <ItemStyle Width="200px" />
-                    </asp:BoundField>
-
-                                        
-                   
-                                                                             
+                    </asp:BoundField>                                                                             
                 </Columns>
             </asp:GridView>
+        </div>
+
  <!--<asp:TemplateField HeaderText="Удаление" >
                     <HeaderStyle BackColor="Silver" />
                         <ItemTemplate>

@@ -366,6 +366,32 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Невозможная ситуация при приёме книги от читателя",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
+//////////////////////////////////////////////////////////////////////Ошибки имидж каталога//////////////////////////
+            new ALISError()
+            {
+                Code = "M001",
+                Message = "Карточка с указанным номером не найдена",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "M002",
+                Message = "Номер карты имеет неверный формат. Невозможно перевести в число.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "M003",
+                Message = "Заказ на выбранную карточку уже существует",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "M004",
+                Message = "Максимальное число заказов (30) из имидж каталога превышено.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+
 
         };
     }

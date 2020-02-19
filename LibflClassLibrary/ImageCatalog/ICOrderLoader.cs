@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.ExportToVufind;
+﻿using LibflClassLibrary.Circulation;
+using LibflClassLibrary.ExportToVufind;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,6 +14,23 @@ namespace LibflClassLibrary.ImageCatalog
 {
     public class ICOrderLoader
     {
+        ICDBWrapper dbWrapper = new ICDBWrapper();
+
+        internal List<ICOrderInfo> GetActiveOrdersByReader(int readerId)
+        {
+            DataTable table = new DataTable();
+            table = dbWrapper.GetActiveOrdersByReader(readerId);
+            List<ICOrderInfo> result = new List<ICOrderInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                ICOrderInfo item = this.GetICOrderById((int)row["Id"]);
+                result.Add(item);
+            }
+            return result;
+        }
+
+        public const int MAX_ALLOWED_ORDERS_PER_READER = 30;
+
         internal ICOrderInfo GetICOrderById(int id)
         {
             ICDBWrapper dbWrapper = new ICDBWrapper();
@@ -27,6 +45,9 @@ namespace LibflClassLibrary.ImageCatalog
             result.SelectedCardSide = (int)row["CardSide"];
             result.CardFileName = row["CardFileName"].ToString();
             result.Card = ImageCardInfo.GetCard(result.CardFileName, true);
+            string selectedCard = result.SelectedCardSide.ToString();
+            selectedCard = (selectedCard.Length == 1) ? $"0{selectedCard}" : selectedCard;
+            result.SelectedSideUrl = $@"https://cdn.libfl.ru/imcat/{ICLoader.GetPath(result.Card.SeparatorId)}/HQ/{result.CardFileName}_{selectedCard}.jpg";
             LoadImages(result, result.Card, result.SelectedCardSide.ToString());
             return result;
         }
@@ -44,7 +65,34 @@ namespace LibflClassLibrary.ImageCatalog
             order.SelectedSideUrl = $@"https://cdn.libfl.ru/imcat/{ICLoader.GetPath(order.Card.SeparatorId)}/HQ/{order.CardFileName}_{selectedCard}.jpg";
             LoadImages(order, order.Card, order.SelectedCardSide.ToString());
             order.StartDate = DateTime.Now;
+            order.StatusName = CirculationStatuses.OrderIsFormed.Value;
+            if (this.IsOrderAlreadyExists(order))
+            {
+                throw new Exception("M003");
+            }
+            if (this.GetOrdersCountForReader(order.ReaderId) >= MAX_ALLOWED_ORDERS_PER_READER)
+            {
+                throw new Exception("M004");
+            }
+            this.InsertOrderInDb(order);
             return order;
+        }
+
+        private int GetOrdersCountForReader(int readerId)
+        {
+            DataTable table = dbWrapper.GetOrdersCountForReader(readerId);
+            return (table.Rows.Count);
+        }
+
+        private bool IsOrderAlreadyExists(ICOrderInfo order)
+        {
+            DataTable table = dbWrapper.IsOrderAlreadyExists(order);
+            return (table.Rows.Count == 0) ? false : true;
+        }
+
+        private void InsertOrderInDb(ICOrderInfo order)
+        {
+            dbWrapper.InsertOrderInDb(order);
         }
 
         private void LoadImages(ICOrderInfo order, ImageCardInfo card, string selectedCard)
