@@ -31,9 +31,9 @@ namespace SIPServer
             //var ip = IPAddress.Loopback;
 
             Utilities.IniFile iniFile = new Utilities.IniFile("SipServerSettings.ini");
-            var ip = IPAddress.Parse(iniFile.Read("ip", "SIPServer"));
+            //var ip = IPAddress.Parse(iniFile.Read("ip", "SIPServer"));
             //ip = IPAddress.Parse("192.168.190.165");
-
+            IPAddress ip = IPAddress.Any;
             var endpoint = new IPEndPoint(ip, 6001);
             var encoding =  new AsciiUTF8Encoding();
 
