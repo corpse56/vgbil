@@ -18,7 +18,8 @@ namespace LibflClassLibrary.ImageCatalog
         public string SelectedSideUrl { get; set; }
         public Image SelectedSideImage { get; set; }
         public ImageCardInfo Card;
-        public string StatusName { get;set; }
+        public string StatusName { get; set; }
+        public string RefusualReason { get; set; }
         //public Image SelectedSideImage;
         //public string SelectedSideUrl;
         public static ICOrderInfo GetICOrderById(int id)

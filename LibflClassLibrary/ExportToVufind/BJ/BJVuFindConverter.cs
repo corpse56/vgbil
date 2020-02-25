@@ -248,7 +248,7 @@ namespace LibflClassLibrary.ExportToVufind.BJ
                             break;
                         case "899$w":
                             writer.WritePropertyName("exemplar_barcode");
-                            writer.WriteValue(r["PLAIN"].ToString());
+                            writer.WriteValue(r["SORT"].ToString());
                             ExemplarsCreatedDateList.Add((DateTime)r["Created"]);
                             break;
                         case "899$x":

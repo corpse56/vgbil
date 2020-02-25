@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.Circulation;
+﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Circulation;
 using LibflClassLibrary.ExportToVufind;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,11 @@ namespace LibflClassLibrary.ImageCatalog
             return result;
         }
 
-        public const int MAX_ALLOWED_ORDERS_PER_READER = 30;
+        internal void DeleteOrder(int readerId, int orderId)
+        {
+            dbWrapper.DeleteOrder(orderId);
+        }
+
 
         internal ICOrderInfo GetICOrderById(int id)
         {
@@ -44,6 +49,7 @@ namespace LibflClassLibrary.ImageCatalog
             result.Comment = row["Comment"].ToString();
             result.SelectedCardSide = (int)row["CardSide"];
             result.CardFileName = row["CardFileName"].ToString();
+            result.StatusName = row["StatusName"].ToString();
             result.Card = ImageCardInfo.GetCard(result.CardFileName, true);
             string selectedCard = result.SelectedCardSide.ToString();
             selectedCard = (selectedCard.Length == 1) ? $"0{selectedCard}" : selectedCard;
@@ -51,6 +57,26 @@ namespace LibflClassLibrary.ImageCatalog
             LoadImages(result, result.Card, result.SelectedCardSide.ToString());
             return result;
         }
+
+        internal void RefuseOrder(ICOrderInfo order, BJUserInfo bjUser, string refusualReason)
+        {
+            dbWrapper.RefuseOrder( order,  bjUser,  refusualReason);
+        }
+
+        internal List<ICOrderInfo> GetHistoryOrdersByReader(int readerId)
+        {
+            DataTable table = new DataTable();
+            table = dbWrapper.GetHistoryOrdersByReader(readerId);
+            List<ICOrderInfo> result = new List<ICOrderInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                ICOrderInfo item = this.GetICOrderById((int)row["Id"]);
+                item.RefusualReason = row["Refusual"].ToString();
+                result.Add(item);
+            }
+            return result;
+        }
+
         internal ICOrderInfo CreateOrder(string cardFileName, string selectedCardSide, int readerId, string comment)
         {
             ICOrderInfo order = new ICOrderInfo();
@@ -70,7 +96,7 @@ namespace LibflClassLibrary.ImageCatalog
             {
                 throw new Exception("M003");
             }
-            if (this.GetOrdersCountForReader(order.ReaderId) >= MAX_ALLOWED_ORDERS_PER_READER)
+            if (this.GetOrdersCountForReader(order.ReaderId) >= ICLoader.MAX_ALLOWED_ORDERS_PER_READER)
             {
                 throw new Exception("M004");
             }

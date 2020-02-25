@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="_Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="history.aspx.cs" Inherits="history" %>
 
 <!DOCTYPE html>
 
@@ -141,27 +141,25 @@ function enableScroll() {
             <br />
             <br />
             <center>
-                <asp:Label ID="Label1" runat="server" Font-Size = "20px" Text="Личный кабинет для заказа литературы из имидж-каталога"></asp:Label>
+                <asp:Label ID="Label1" runat="server" Font-Size = "20px" Text="История заказа литературы из имидж-каталога"></asp:Label>
                 <br />
                 <asp:Label ID="Label2" runat="server" Font-Size = "20px" Text="ФИО"></asp:Label>
             </center>
             <br />
             <br />
-            <br />
             <div align="right">
-                <asp:LinkButton ID="LinkButton1" runat="server" Font-Size ="20px" PostBackUrl="~/history.aspx">История заказов.</asp:LinkButton>
+                <asp:LinkButton ID="LinkButton1" runat="server"  Font-Size ="20px" PostBackUrl="~/Default.aspx">Активные заказы.</asp:LinkButton>
             </div>
             <br />
             <br />
-           <div align="center" style="font-size:x-large">Активные заказы из имидж каталога</div>
+           <div align="center" style="font-size:x-large">История заказов из имидж каталога</div>
             <br />
-
         <div  style="position:absolute;left:50px;">
 
              <asp:GridView ID="gwBasket" runat="server" AutoGenerateColumns = "False"  BorderWidth="3px"
                   BorderStyle="Solid" BorderColor = "Black" 
                   Font-Size = "20px" CellPadding="5" 
-                  onrowdatabound="gwBasket_RowDataBound" OnRowCommand="gwBasket_RowCommand">                                  
+                  onrowdatabound="gwBasket_RowDataBound" OnDataBound="gwBasket_DataBound">                                  
                 <Columns>
                     <asp:BoundField
                         DataField="orderId" >
@@ -181,11 +179,11 @@ function enableScroll() {
                                         
                     <asp:BoundField HeaderText="№№" 
                         DataField="num">
-                    <HeaderStyle BackColor="Silver" />
+                    <HeaderStyle BackColor="Yellow" />
                     </asp:BoundField>
 
                     <asp:TemplateField HeaderText="Главная карточка" >
-                    <HeaderStyle BackColor="Silver" />
+                    <HeaderStyle BackColor="Yellow" />
                         <ItemTemplate>
                             <asp:ImageButton ID="mainSideImage" runat="server" 
                             Width="300px" Height ="150px" Style="cursor: pointer" OnClientClick="return LoadDiv(this.src);" />
@@ -193,7 +191,7 @@ function enableScroll() {
                     </asp:TemplateField>
 
                     <asp:TemplateField HeaderText="Выбранная карточка" >
-                    <HeaderStyle BackColor="Silver" />
+                    <HeaderStyle BackColor="Yellow" />
                         <ItemTemplate>
                             <asp:ImageButton ID="selectedSideImage" runat="server" 
                             Width="300px" Height ="150px" Style="cursor: pointer" OnClientClick="return LoadDiv(this.src);" />
@@ -201,21 +199,13 @@ function enableScroll() {
                     </asp:TemplateField>
                
                     <asp:BoundField HeaderText="Комментарий" >
-                    <HeaderStyle BackColor="Silver" />
+                    <HeaderStyle BackColor="Yellow" />
                     </asp:BoundField>
 
                     <asp:BoundField HeaderText="Статус" >
-                    <HeaderStyle BackColor="Silver" />
+                    <HeaderStyle BackColor="Yellow" />
                         <ItemStyle Width="200px" />
-                    </asp:BoundField>
-                    
-                    <asp:TemplateField HeaderText="Отменить заказ" >
-                    <HeaderStyle BackColor="Silver" />
-                        <ItemTemplate>
-                            <asp:LinkButton ID="LinkButton1" runat="server" CommandName="delOrder" 
-                            CommandArgument='<%#Eval("orderId")%>'>Отменить заказ</asp:LinkButton>
-                        </ItemTemplate>
-                    </asp:TemplateField>
+                    </asp:BoundField>                    
 
                 </Columns>
             </asp:GridView>
@@ -253,3 +243,4 @@ function enableScroll() {
     </form>
 </body>
 </html>
+

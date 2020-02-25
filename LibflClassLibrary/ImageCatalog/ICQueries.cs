@@ -82,5 +82,24 @@ namespace LibflClassLibrary.ImageCatalog
             }
         }
 
+        public static string DELETE_ORDER
+        {
+            get
+            {
+                return $" delete from Circulation..ICOrders " +
+                       $" where Id = @orderId ";
+            }
+        }
+
+        public static string GET_HISTORY_ORDERS_BY_READER
+        {
+            get
+            {
+                return $" select A.Id, B.Refusual from Circulation..ICOrders A " +
+                       $" left join Circulation..ICOrdersFlow B on A.Id = B.OrderId and B.StatusName = @RefusualStatusName " +
+                       $" where A.ReaderId = @ReaderId " +
+                       $" and A.StatusName in  (@FinishedStatusName, @RefusualStatusName) ";
+            }
+        }
     }
 }

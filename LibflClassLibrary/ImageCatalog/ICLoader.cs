@@ -13,6 +13,7 @@ namespace LibflClassLibrary.ImageCatalog
 {
     public class ICLoader
     {
+        public const int MAX_ALLOWED_ORDERS_PER_READER = 30;
         ICDBWrapper dbWrapper = new ICDBWrapper();
         internal ImageCardInfo GetCard(string cardFileName,  bool isNeedToLoadImages)
         {

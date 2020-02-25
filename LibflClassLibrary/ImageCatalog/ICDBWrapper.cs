@@ -1,4 +1,5 @@
-﻿using LibflClassLibrary.Circulation;
+﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Circulation;
 using LibflClassLibrary.ExportToVufind;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,21 @@ namespace LibflClassLibrary.ImageCatalog
             return table;
         }
 
+        internal void DeleteOrder(int orderId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = ICQueries.DELETE_ORDER;
+                command.Parameters.Clear();
+                command.Parameters.Add("orderId", SqlDbType.Int).Value = orderId;
+                command.ExecuteNonQuery();
+
+            }
+        }
+
         internal DataTable GetCard(string cardFileName)
         {
             DataTable table = new DataTable();
@@ -51,6 +67,25 @@ namespace LibflClassLibrary.ImageCatalog
             {
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.GET_CARD, connection);
                 dataAdapter.SelectCommand.Parameters.Add("cardFileName", SqlDbType.NVarChar).Value = cardFileName;
+                int i = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
+        internal void RefuseOrder(ICOrderInfo order, BJUserInfo bjUser, string refusualReason)
+        {
+            ChangeOrderStatus(order.Id, CirculationStatuses.Refusual.Value, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, refusualReason);
+        }
+
+        internal DataTable GetHistoryOrdersByReader(int readerId)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.GET_HISTORY_ORDERS_BY_READER, connection);
+                dataAdapter.SelectCommand.Parameters.Add("ReaderId", SqlDbType.Int).Value = readerId;
+                dataAdapter.SelectCommand.Parameters.Add("FinishedStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Finished.Value;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
                 int i = dataAdapter.Fill(table);
             }
             return table;
@@ -129,5 +164,6 @@ namespace LibflClassLibrary.ImageCatalog
                 Convert.ToInt32(command.ExecuteNonQuery());
             }
         }
+
     }
 }

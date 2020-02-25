@@ -1,11 +1,8 @@
-﻿using ALISAPI.Errors;
-using LibflClassLibrary.ALISAPI.Errors;
-using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
+﻿using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
 using LibflClassLibrary.ImageCatalog;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.ReadersJSONViewers;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,7 +14,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class _Default : System.Web.UI.Page
+public partial class history : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -74,42 +71,11 @@ public partial class _Default : System.Web.UI.Page
             Session.Add("currentReader", reader);
         }
 
-        ///////////////////////////////////////////////////////////////////////////////////
-        //JObject mockCookie = new JObject();
-        //mockCookie.Add("orderType", "book");
-        //mockCookie.Add("cardId", "000029274");
-        //mockCookie.Add("cardSide", "90");
-        //mockCookie.Add("comment", "Мне нужен 90-й том");
-        if (!Page.IsPostBack)
-        {
-            HttpCookie orderCookie = Request.Cookies.Get(@"cookie['json']");
-            if (orderCookie != null)
-            {
-                string orderCookieText = HttpUtility.UrlDecode(orderCookie.Value.ToString());
-                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "orderCookie", $"alert('{orderCookieText}');", true);
-
-                ICCookie cookieView = JsonConvert.DeserializeObject<ICCookie>(orderCookieText);
-
-                try
-                {
-                    ICOrderInfo.CreateOrder(cookieView.cardId, cookieView.cardSide, reader.NumberReader, cookieView.comment);
-                }
-                catch (Exception ex)
-                {
-                    ImageCardInfo card = ImageCardInfo.GetCard(cookieView.cardId, false);
-                    ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
-                    string userMessage = (error != null) ? error.Message : ex.Message;
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", $"alert('Вы не можете заказать книгу по выбранной карточке. {userMessage}');", true);
-                    //return;
-                }
-                Request.Cookies.Remove(@"cookie['json']");//нельзя просто взять и удалить куки)))
-            }
-        }
-        ShowActiveOrders();
+        ShowHistoryOrders();
 
     }
 
-    private void ShowActiveOrders()
+    private void ShowHistoryOrders()
     {
         if (Session["currentReader"] == null)
         {
@@ -117,7 +83,7 @@ public partial class _Default : System.Web.UI.Page
         }
         ReaderInfo reader = (ReaderInfo)Session["currentReader"];
         ImageCatalogCirculationManager circ = new ImageCatalogCirculationManager();
-        List<ICOrderInfo> userOrders = circ.GetActiveOrdersByReader(reader.NumberReader);
+        List<ICOrderInfo> userOrders = circ.GetHistoryOrdersByReader(reader.NumberReader);
         //Session.Add("userOrders", userOrders);
         DataTable dataSource = new DataTable();
         dataSource.Columns.Add("orderId");
@@ -146,12 +112,15 @@ public partial class _Default : System.Web.UI.Page
         ((BoundField)gwBasket.Columns[6]).DataField = "comment";
         ((BoundField)gwBasket.Columns[7]).DataField = "statusName";
         gwBasket.DataBind();
+    }
+
+    protected void gwBasket_DataBound(object sender, EventArgs e)
+    {
 
     }
 
     protected void gwBasket_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
             Image img = (Image)e.Row.FindControl("mainSideImage");
@@ -160,34 +129,5 @@ public partial class _Default : System.Web.UI.Page
             img.ImageUrl = e.Row.Cells[2].Text;// order.SelectedSideUrl;
 
         }
-    }
-
-    protected void gwBasket_RowCommand(object sender, GridViewCommandEventArgs e)
-    {
-        if (Session["currentReader"] == null)
-        {
-            Response.Redirect("https://oauth.libfl.ru/?redirect_uri=https://opac.libfl.ru/OrderImCat/");
-        }
-        ReaderInfo reader = (ReaderInfo)Session["currentReader"];
-        int argument = Convert.ToInt32(e.CommandArgument);
-
-        object check = e.CommandSource;
-        switch (e.CommandName)
-        {
-            case "delOrder":
-                DeleteOrder(reader.NumberReader, argument);
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delComplete", 
-                    $"alert('Заказ №№ {e.CommandArgument.ToString()} успешно удалён.');", true);
-                break;
-        }
-        ShowActiveOrders();
-
-    }
-
-    private void DeleteOrder(int numberReader, int orderId)
-    {
-        ImageCatalogCirculationManager circ = new ImageCatalogCirculationManager();
-        circ.DeleteOrder(numberReader, orderId);
-        //ShowActiveOrders();
     }
 }

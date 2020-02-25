@@ -1,4 +1,5 @@
 ﻿using ALISAPI.Errors;
+using LibflClassLibrary.ImageCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -388,7 +389,13 @@ namespace LibflClassLibrary.ALISAPI.Errors
             new ALISError()
             {
                 Code = "M004",
-                Message = "Максимальное число заказов (30) из имидж каталога превышено.",
+                Message = $"Максимальное число заказов ({ICLoader.MAX_ALLOWED_ORDERS_PER_READER}) из имидж каталога превышено.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "M005",
+                Message = "Удалить заказ можно только со статусом \"Заказ сформирован\". ",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
 
