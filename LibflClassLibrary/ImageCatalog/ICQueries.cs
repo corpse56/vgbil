@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibflClassLibrary.Circulation;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -36,7 +37,9 @@ namespace LibflClassLibrary.ImageCatalog
         {
             get
             {
-                return $" select * from Circulation..ICOrders where Id = @OrderId ";
+                return $" select * from Circulation..ICOrders A " +
+                       $" left join Circulation..ICOrdersFlow B on A.Id = B.OrderId and B.StatusName  = '{CirculationStatuses.Refusual.Value}' "  +
+                       $" where A.Id = @OrderId ";
             }
         }
 
@@ -99,6 +102,16 @@ namespace LibflClassLibrary.ImageCatalog
                        $" left join Circulation..ICOrdersFlow B on A.Id = B.OrderId and B.StatusName = @RefusualStatusName " +
                        $" where A.ReaderId = @ReaderId " +
                        $" and A.StatusName in  (@FinishedStatusName, @RefusualStatusName) ";
+            }
+        }
+
+        public static string GET_ACTIVE_ORDERS_FOR_BOOKKEEPING
+        {
+            get
+            {
+                return $" select Id from Circulation..ICOrders " +
+                       $" where StatusName not in  (@FinishedStatusName,@RefusualStatusName) " +
+                       $" or (StatusName in  (@RefusualStatusName) and StartDate > dateadd(day, -3, getdate()))";
             }
         }
     }

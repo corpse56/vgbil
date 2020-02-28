@@ -32,6 +32,26 @@ namespace LibflClassLibrary.ImageCatalog
             ICOrderLoader loader = new ICOrderLoader();
             return loader.CreateOrder(cardFileName, selectedCardSide, readerId, comment);
         }
+        public static string GetCardTypeString(CardType ct)
+        {
+            string result = "book";
+            switch(ct)
+            {
+                case CardType.AV:
+                    result = "cardav";
+                    break;
+                case CardType.MAIN:
+                    result = "book";
+                    break;
+                case CardType.PERIODICAL:
+                    result = "period";
+                    break;
+                case CardType.SUBSCRIPT:
+                    result = "subscript";
+                    break;
+            }
+            return result;
+        }
     }
 
 }

@@ -46,17 +46,17 @@
         return false;
     }
 
-    function HideDiv()
-    {
-        var bcgDiv = document.getElementById("divBackground");
-        var imgDiv = document.getElementById("divImage");
-        var imgFull = document.getElementById("imgFull");
-        if (bcgDiv != null) {
-        bcgDiv.style.display = "none";
-        imgDiv.style.display = "none";
-        imgFull.style.display = "none";
-        enableScroll();
-    }
+        function HideDiv() {
+            var bcgDiv = document.getElementById("divBackground");
+            var imgDiv = document.getElementById("divImage");
+            var imgFull = document.getElementById("imgFull");
+            if (bcgDiv != null) {
+                bcgDiv.style.display = "none";
+                imgDiv.style.display = "none";
+                imgFull.style.display = "none";
+                enableScroll();
+            }
+        }
     // left: 37, up: 38, right: 39, down: 40,
 // spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
 var keys = {37: 1, 38: 1, 39: 1, 40: 1};

@@ -18,6 +18,7 @@ using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Books.BJBooks;
 using ExtGui;
+using LibflClassLibrary.ImageCatalog;
 
 namespace BookkeepingForOrder
 {
@@ -457,9 +458,60 @@ namespace BookkeepingForOrder
                         FormHisTable_Interface();
                         break;
                     }
+                case "tpImCatOrders":
+                    {
+                        ShowImCatOrders();
+                        break;
+                    }
+
             }
         }
 
+        private void ShowImCatOrders()
+        {
+            ImageCatalogCirculationManager circ = new ImageCatalogCirculationManager();
+            List<ICOrderInfo> activeOrders = circ.GetActiveOrdersForBookkeeping();
+
+            KeyValuePair<string, string>[] columns =
+            {
+                new KeyValuePair<string, string> ( "OrderId", "Номер заказа"),
+                new KeyValuePair<string, string> ( "StartDate", "Дата заказа"),
+                new KeyValuePair<string, string> ( "ReaderId", "Номер читателя"),
+                new KeyValuePair<string, string> ( "CardFileName", "Имя файла карточки"),
+                new KeyValuePair<string, string> ( "SelectedSide", "Выбранная сторона карточки"),
+                new KeyValuePair<string, string> ( "StatusName", "Статус заказа"),
+                new KeyValuePair<string, string> ( "Comment", "Комментарий читателя"),
+                new KeyValuePair<string, string> ( "RefusualReason", "Причина отказа"),
+            };
+            dgImCatOrders.Columns.Clear();
+            foreach (var c in columns)
+                dgImCatOrders.Columns.Add(c.Key, c.Value);
+            dgImCatOrders.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgImCatOrders.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dgImCatOrders.Columns["OrderId"].Width = 70;
+            dgImCatOrders.Columns["StartDate"].Width = 100;
+            dgImCatOrders.Columns["ReaderId"].Width = 100;
+            dgImCatOrders.Columns["CardFileName"].Width = 120;
+            dgImCatOrders.Columns["SelectedSide"].Width = 100;
+            dgImCatOrders.Columns["StatusName"].Width = 200;
+            dgImCatOrders.Columns["Comment"].Width = 300;
+            dgImCatOrders.Columns["RefusualReason"].Width = 150;
+            foreach (var item in activeOrders)
+            {
+                dgImCatOrders.Rows.Add();
+                var row = dgImCatOrders.Rows[dgImCatOrders.Rows.Count - 1];
+
+                row.Cells["OrderId"].Value = item.Id;
+                row.Cells["StartDate"].Value = item.StartDate.ToString("dd.MM.yyyy hh:mm");
+                row.Cells["ReaderId"].Value = item.ReaderId;
+                row.Cells["CardFileName"].Value = item.CardFileName;
+                row.Cells["SelectedSide"].Value = item.SelectedCardSide;
+                row.Cells["StatusName"].Value = item.StatusName;
+                row.Cells["Comment"].Value = item.Comment;
+                row.Cells["RefusualReason"].Value = item.RefusualReason;
+            }
+
+        }
 
         private void Form1_Shown(object sender, EventArgs e)
         {
@@ -898,6 +950,29 @@ namespace BookkeepingForOrder
             Form3 f3 = new Form3(this, this.user);
             f3.ShowReaderOrders();
             f3.ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bGoToImCatalog_Click(object sender, EventArgs e)
+        {
+            if (dgImCatOrders.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите строку!");
+                return;
+            }
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value));
+            string cardType = ICOrderInfo.GetCardTypeString(order.Card.CardType);
+            System.Diagnostics.Process.Start($@"https://imcat.libfl.ru/ic/orders/open.php?cardId={order.CardFileName}&orderType={cardType}&countSide={order.SelectedCardSide}");
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

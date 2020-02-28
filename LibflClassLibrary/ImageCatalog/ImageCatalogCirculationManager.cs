@@ -38,5 +38,11 @@ namespace LibflClassLibrary.ImageCatalog
             ICOrderLoader loader = new ICOrderLoader();
             loader.RefuseOrder(order, bjUser, refusualReason);
         }
+
+        public List<ICOrderInfo> GetActiveOrdersForBookkeeping()
+        {
+            ICOrderLoader loader = new ICOrderLoader();
+            return loader.GetActiveOrdersForBookkeeping();
+        }
     }
 }

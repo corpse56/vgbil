@@ -80,35 +80,113 @@ public partial class _Default : System.Web.UI.Page
         //mockCookie.Add("cardId", "000029274");
         //mockCookie.Add("cardSide", "90");
         //mockCookie.Add("comment", "Мне нужен 90-й том");
+
         if (!Page.IsPostBack)
         {
             HttpCookie orderCookie = Request.Cookies.Get(@"cookie['json']");
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "expireCookiecheck", $"alert('" +
+            //    $"{orderCookie.Expires.ToShortDateString()} {orderCookie.Expires.ToShortTimeString()}');", true);
+
             if (orderCookie != null)
             {
                 string orderCookieText = HttpUtility.UrlDecode(orderCookie.Value.ToString());
                 //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "orderCookie", $"alert('{orderCookieText}');", true);
-
-                ICCookie cookieView = JsonConvert.DeserializeObject<ICCookie>(orderCookieText);
-
+                ICCookie cookieView = null;
                 try
                 {
-                    ICOrderInfo.CreateOrder(cookieView.cardId, cookieView.cardSide, reader.NumberReader, cookieView.comment);
+                    cookieView = JsonConvert.DeserializeObject<ICCookie>(orderCookieText);
                 }
                 catch (Exception ex)
+                { }
+
+                if (cookieView != null)
                 {
-                    ImageCardInfo card = ImageCardInfo.GetCard(cookieView.cardId, false);
-                    ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
-                    string userMessage = (error != null) ? error.Message : ex.Message;
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", $"alert('Вы не можете заказать книгу по выбранной карточке. {userMessage}');", true);
-                    //return;
+
+                    try
+                    {
+                        ICOrderInfo.CreateOrder(cookieView.cardId, cookieView.cardSide, reader.NumberReader, cookieView.comment);
+                    }
+                    catch (Exception ex)
+                    {
+                        ImageCardInfo card = ImageCardInfo.GetCard(cookieView.cardId, false);
+                        ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                        string userMessage = (error != null) ? error.Message : ex.Message;
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", $"alert('Вы не можете заказать книгу по выбранной карточке. {userMessage}');", true);
+                        //return;
+                    }
+                    //Request.Cookies.Remove(@"cookie['json']");//нельзя просто взять и удалить куки)))
+                    //Cookies[@"cookie['json']"].Expires = DateTime.Now.AddDays(-1);
+                    //Request.Cookies[@"cookie['json']"].Expires = DateTime.Now.AddDays(-1);
+                    //orderCookie.Expires = DateTime.Now.AddDays(-1);
+
+                    //HttpCookie myCookie = new HttpCookie(@"cookie['json']");
+                    //myCookie.Expires = DateTime.Now.AddDays(-1d);
+                    //myCookie.Domain = orderCookie.Domain;
+                    //myCookie.Value = "";
+                    //Response.Cookies.Add(myCookie);
+                    //Request.Cookies.Clear();
+                    //Session.Abandon();
+                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delCookie",
+                    //    @"document.cookie = 'cookie[\'json\']=; Max-Age=-99999999;';", true);
+                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delCookie",
+                    //    @"document.cookie = 'cookie[\'json\']=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';", true);
+                    //document.cookie = 'cookie[\'json\']=; Max-Age=-99999999;';
+                    /*ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alerCookie",
+                        @"alert('document.cookie = cookie[''json'']=; Max-Age=-99999999;');", true);*/
+
                 }
-                Request.Cookies.Remove(@"cookie['json']");//нельзя просто взять и удалить куки)))
             }
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delCookie",
+            //    $"setCookie('{orderCookie.Name}', '', -1)", true);
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delCookie",
+                "document.cookie = \"cookie['json'] = test; max-age = -999; path =/; domain =.libfl.ru\"", true);
+            //HttpCookie myCookie = new HttpCookie(@"cookie['json']");
+            //myCookie.Expires = DateTime.Now.AddDays(-1d);
+            ////myCookie.Domain = orderCookie.Domain;
+            //myCookie.Value = "";
+            //Response.Cookies.Add(myCookie);
+            //SetCookie(orderCookie.Name, "", -2);
+            //HttpCookie currentUserCookie = HttpContext.Current.Request.Cookies[@"cookie['json']"];
+            //HttpContext.Current.Response.Cookies.Remove(@"cookie['json']");
+            //currentUserCookie.Expires = DateTime.Now.AddDays(-10);
+            //currentUserCookie.Value = null;
+            //HttpContext.Current.Response.SetCookie(currentUserCookie);
+            //Response.SetCookie(currentUserCookie);
+            ShowActiveOrders();
+            //DateTime dt = HttpContext.Current.Response.Cookies[@"cookie['json']"].Expires;
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "dt",
+            //    $@"alert('{dt.ToShortDateString()}')", true);
+
         }
-        ShowActiveOrders();
 
     }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        HttpCookie currentUserCookie = HttpContext.Current.Request.Cookies[@"cookie['json']"];
+        HttpContext.Current.Response.Cookies.Remove(@"cookie['json']");
+        currentUserCookie.Expires = DateTime.Now.AddDays(-10);
+        currentUserCookie.Value = null;
+        HttpContext.Current.Response.SetCookie(currentUserCookie);
+        Response.SetCookie(currentUserCookie);
 
+    }
+    public bool SetCookie(string cookiename, string cookievalue, int iDaysToExpire)
+    {
+        try
+        {
+            HttpCookie objCookie = new HttpCookie(cookiename);
+            Response.Cookies.Clear();
+            Response.Cookies.Add(objCookie);
+            objCookie.Values.Add(cookiename, cookievalue);
+            DateTime dtExpiry = DateTime.Now.AddDays(iDaysToExpire);
+            Response.Cookies[cookiename].Expires = dtExpiry;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        return true;
+    }
     private void ShowActiveOrders()
     {
         if (Session["currentReader"] == null)
@@ -158,7 +236,6 @@ public partial class _Default : System.Web.UI.Page
             img.ImageUrl = e.Row.Cells[1].Text;//order.Card.MainSideUrl;
             img = (Image)e.Row.FindControl("selectedSideImage");
             img.ImageUrl = e.Row.Cells[2].Text;// order.SelectedSideUrl;
-
         }
     }
 
@@ -169,15 +246,18 @@ public partial class _Default : System.Web.UI.Page
             Response.Redirect("https://oauth.libfl.ru/?redirect_uri=https://opac.libfl.ru/OrderImCat/");
         }
         ReaderInfo reader = (ReaderInfo)Session["currentReader"];
-        int argument = Convert.ToInt32(e.CommandArgument);
+        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "checkdelorder",
+        //        $"alert('------ {e.CommandArgument.ToString()} ------');", true);
+
 
         object check = e.CommandSource;
         switch (e.CommandName)
         {
             case "delOrder":
+                int argument = Convert.ToInt32(e.CommandArgument);
                 DeleteOrder(reader.NumberReader, argument);
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delComplete", 
-                    $"alert('Заказ №№ {e.CommandArgument.ToString()} успешно удалён.');", true);
+                    $"alert('Заказ № {e.CommandArgument.ToString()} успешно удалён.');", true);
                 break;
         }
         ShowActiveOrders();
@@ -190,4 +270,6 @@ public partial class _Default : System.Web.UI.Page
         circ.DeleteOrder(numberReader, orderId);
         //ShowActiveOrders();
     }
+
+   
 }

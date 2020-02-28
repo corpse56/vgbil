@@ -54,7 +54,21 @@ namespace LibflClassLibrary.ImageCatalog
             string selectedCard = result.SelectedCardSide.ToString();
             selectedCard = (selectedCard.Length == 1) ? $"0{selectedCard}" : selectedCard;
             result.SelectedSideUrl = $@"https://cdn.libfl.ru/imcat/{ICLoader.GetPath(result.Card.SeparatorId)}/HQ/{result.CardFileName}_{selectedCard}.jpg";
+            result.RefusualReason = row["Refusual"].ToString();
             LoadImages(result, result.Card, result.SelectedCardSide.ToString());
+            return result;
+        }
+
+        internal List<ICOrderInfo> GetActiveOrdersForBookkeeping()
+        {
+            DataTable table = new DataTable();
+            table = dbWrapper.GetActiveOrdersForBookkeeping();
+            List<ICOrderInfo> result = new List<ICOrderInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                ICOrderInfo item = this.GetICOrderById((int)row["Id"]);
+                result.Add(item);
+            }
             return result;
         }
 

@@ -72,6 +72,19 @@ namespace LibflClassLibrary.ImageCatalog
             return table;
         }
 
+        internal DataTable GetActiveOrdersForBookkeeping()
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.GET_ACTIVE_ORDERS_FOR_BOOKKEEPING, connection);
+                dataAdapter.SelectCommand.Parameters.Add("FinishedStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Finished.Value;
+                dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                int i = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+
         internal void RefuseOrder(ICOrderInfo order, BJUserInfo bjUser, string refusualReason)
         {
             ChangeOrderStatus(order.Id, CirculationStatuses.Refusual.Value, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, refusualReason);

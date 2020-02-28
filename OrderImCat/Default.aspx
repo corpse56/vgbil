@@ -5,7 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <script type="text/javascript" src="scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="scripts/jquery.cookie.js"></script>
+    
     <script type="text/javascript">
+
     function LoadDiv(url)
     {
         var img = new Image();
@@ -26,7 +30,7 @@
         if (document.body.clientHeight > document.body.scrollHeight)
         {
             bcgDiv.style.height = document.body.clientHeight + "px";
-            alert(document.body.clientHeight);
+            //alert(document.body.clientHeight);
         }
         else
         {
@@ -42,58 +46,65 @@
 
         bcgDiv.style.display = "block";
         imgDiv.style.display = "block";
-        disableScroll();
+        //disableScroll();
         return false;
     }
 
-    function HideDiv()
-    {
-        var bcgDiv = document.getElementById("divBackground");
-        var imgDiv = document.getElementById("divImage");
-        var imgFull = document.getElementById("imgFull");
-        if (bcgDiv != null) {
-        bcgDiv.style.display = "none";
-        imgDiv.style.display = "none";
-        imgFull.style.display = "none";
-        enableScroll();
-    }
+        function HideDiv() {
+            var bcgDiv = document.getElementById("divBackground");
+            var imgDiv = document.getElementById("divImage");
+            var imgFull = document.getElementById("imgFull");
+            if (bcgDiv != null) {
+                bcgDiv.style.display = "none";
+                imgDiv.style.display = "none";
+                imgFull.style.display = "none";
+                //enableScroll();
+            }
+        }
+        function setCookie(cname, cvalue, exdays)
+        {
+          var d = new Date();
+          d.setTime(d.getTime() + (exdays*24*60*60*1000));
+          var expires = "expires="+ d.toUTCString();
+          document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
     // left: 37, up: 38, right: 39, down: 40,
 // spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
-var keys = {37: 1, 38: 1, 39: 1, 40: 1};
+//var keys = {37: 1, 38: 1, 39: 1, 40: 1};
 
-function preventDefault(e) {
-  e = e || window.event;
-  if (e.preventDefault)
-      e.preventDefault();
-  e.returnValue = false;  
-}
+//function preventDefault(e) {
+//  e = e || window.event;
+//  if (e.preventDefault)
+//      e.preventDefault();
+//  e.returnValue = false;  
+//}
 
-function preventDefaultForScrollKeys(e) {
-    if (keys[e.keyCode]) {
-        preventDefault(e);
-        return false;
-    }
-}
+//function preventDefaultForScrollKeys(e) {
+//    if (keys[e.keyCode]) {
+//        preventDefault(e);
+//        return false;
+//    }
+//}
 
-function disableScroll() {
-  if (window.addEventListener) // older FF
-      window.addEventListener('DOMMouseScroll', preventDefault, false);
-  document.addEventListener('wheel', preventDefault, {passive: false}); // Disable scrolling in Chrome
-  window.onwheel = preventDefault; // modern standard
-  window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
-  window.ontouchmove  = preventDefault; // mobile
-  document.onkeydown  = preventDefaultForScrollKeys;
-}
+//function disableScroll() {
+//  if (window.addEventListener) // older FF
+//      window.addEventListener('DOMMouseScroll', preventDefault, false);
+//  document.addEventListener('wheel', preventDefault, {passive: false}); // Disable scrolling in Chrome
+//  window.onwheel = preventDefault; // modern standard
+//  window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+//  window.ontouchmove  = preventDefault; // mobile
+//  document.onkeydown  = preventDefaultForScrollKeys;
+//}
 
-function enableScroll() {
-    if (window.removeEventListener)
-        window.removeEventListener('DOMMouseScroll', preventDefault, false);
-    document.removeEventListener('wheel', preventDefault, {passive: false}); // Enable scrolling in Chrome
-    window.onmousewheel = document.onmousewheel = null; 
-    window.onwheel = null; 
-    window.ontouchmove = null;  
-    document.onkeydown = null;  
-}
+//function enableScroll() {
+//    if (window.removeEventListener)
+//        window.removeEventListener('DOMMouseScroll', preventDefault, false);
+//    document.removeEventListener('wheel', preventDefault, {passive: false}); // Enable scrolling in Chrome
+//    window.onmousewheel = document.onmousewheel = null; 
+//    window.onwheel = null; 
+//    window.ontouchmove = null;  
+//    document.onkeydown = null;  
+//}
 
 </script>
     <style type="text/css">
@@ -137,6 +148,7 @@ function enableScroll() {
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" />
         <div>
             <br />
             <br />

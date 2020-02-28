@@ -70,9 +70,10 @@ public partial class history : System.Web.UI.Page
         {
             Session.Add("currentReader", reader);
         }
-
-        ShowHistoryOrders();
-
+        if (!Page.IsPostBack)
+        {
+            ShowHistoryOrders();
+        }
     }
 
     private void ShowHistoryOrders()
