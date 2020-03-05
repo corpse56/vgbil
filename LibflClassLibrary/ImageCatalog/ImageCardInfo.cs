@@ -29,6 +29,8 @@ namespace LibflClassLibrary.ImageCatalog
         public int Box;
         public int CountSide;
         public string MainSideUrl;
+        public int LanguageId;
+        public string LanguageName;
         public static ImageCardInfo GetCard(string cardFileName, bool isNeedToLoadImages)
         {
             ICLoader loader = new ICLoader();

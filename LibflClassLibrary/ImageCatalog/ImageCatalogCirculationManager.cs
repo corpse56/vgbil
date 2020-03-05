@@ -19,7 +19,7 @@ namespace LibflClassLibrary.ImageCatalog
         public void DeleteOrder(int readerId, int orderId)
         {
             ICOrderLoader loader = new ICOrderLoader();
-            ICOrderInfo order = ICOrderInfo.GetICOrderById(orderId);
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(orderId, false);
             if (order.StatusName != CirculationStatuses.OrderIsFormed.Value)
             {
                 throw new Exception("M005");

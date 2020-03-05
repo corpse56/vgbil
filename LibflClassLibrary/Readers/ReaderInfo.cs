@@ -34,6 +34,10 @@ namespace LibflClassLibrary.Readers
         {
             get { return $"{this.FamilyName} {this.Name} {this.FatherName}"; }
         }
+        public string FIOShort
+        {
+            get { return $"{this.FamilyName} {this.Name.Substring(0,1).ToUpper()}. {this.FatherName.Substring(0,1).ToUpper()}."; }
+        }
         public string Name { get; set; }
         public string FatherName { get; set; }
         public DateTime DateBirth { get; set; }

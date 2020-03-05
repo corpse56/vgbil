@@ -22,10 +22,10 @@ namespace LibflClassLibrary.ImageCatalog
         public string RefusualReason { get; set; }
         //public Image SelectedSideImage;
         //public string SelectedSideUrl;
-        public static ICOrderInfo GetICOrderById(int id)
+        public static ICOrderInfo GetICOrderById(int id, bool loadImages)
         {
             ICOrderLoader loader = new ICOrderLoader();
-            return loader.GetICOrderById(id);
+            return loader.GetICOrderById(id, loadImages);
         }
         public static ICOrderInfo CreateOrder(string cardFileName, string selectedCardSide, int readerId, string comment)
         {
@@ -48,6 +48,33 @@ namespace LibflClassLibrary.ImageCatalog
                     break;
                 case CardType.SUBSCRIPT:
                     result = "subscript";
+                    break;
+            }
+            return result;
+        }
+
+        public string GetBarString()
+        {
+            string result = this.Id.ToString();
+            switch (result.Length)
+            {
+                case 1:
+                    result = $"M00000{result}";
+                    break;
+                case 2:
+                    result = $"*M0000{result}*";
+                    break;
+                case 3:
+                    result = $"*M000{result}*";
+                    break;
+                case 4:
+                    result = $"*M00{result}*";
+                    break;
+                case 5:
+                    result = $"*M0{result}*";
+                    break;
+                case 6:
+                    result = $"*M{result}*";
                     break;
             }
             return result;

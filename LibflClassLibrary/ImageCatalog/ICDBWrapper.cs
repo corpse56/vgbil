@@ -45,6 +45,7 @@ namespace LibflClassLibrary.ImageCatalog
             return table;
         }
 
+
         internal void DeleteOrder(int orderId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

@@ -29,15 +29,15 @@ namespace BookkeepingForOrder
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpEmployeeOrders = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
@@ -60,14 +60,16 @@ namespace BookkeepingForOrder
             this.bReadersHistory = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.dgwRHis = new System.Windows.Forms.DataGridView();
+            this.tpImCatOrders = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.bGoToImCatalog = new System.Windows.Forms.Button();
+            this.bImCatRefuse = new System.Windows.Forms.Button();
+            this.bICPrintOrder = new System.Windows.Forms.Button();
+            this.dgImCatOrders = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.tpImCatOrders = new System.Windows.Forms.TabPage();
-            this.dgImCatOrders = new System.Windows.Forms.DataGridView();
-            this.bICPrintOrder = new System.Windows.Forms.Button();
-            this.bImCatRefuse = new System.Windows.Forms.Button();
-            this.bGoToImCatalog = new System.Windows.Forms.Button();
+            this.bAssignCardToCatalog = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tpEmployeeOrders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgwEmp)).BeginInit();
@@ -146,23 +148,23 @@ namespace BookkeepingForOrder
             this.dgwEmp.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightCoral;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgwEmp.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.LightCoral;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgwEmp.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.dgwEmp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.LightCoral;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgwEmp.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.LightCoral;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgwEmp.DefaultCellStyle = dataGridViewCellStyle13;
             this.dgwEmp.EnableHeadersVisualStyles = false;
             this.dgwEmp.Location = new System.Drawing.Point(2, 8);
             this.dgwEmp.Margin = new System.Windows.Forms.Padding(4);
@@ -243,37 +245,37 @@ namespace BookkeepingForOrder
             this.dgwReaders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightCoral;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgwReaders.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.LightCoral;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgwReaders.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.dgwReaders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightCoral;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgwReaders.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.LightCoral;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgwReaders.DefaultCellStyle = dataGridViewCellStyle15;
             this.dgwReaders.EnableHeadersVisualStyles = false;
             this.dgwReaders.Location = new System.Drawing.Point(2, 7);
             this.dgwReaders.Margin = new System.Windows.Forms.Padding(4);
             this.dgwReaders.MultiSelect = false;
             this.dgwReaders.Name = "dgwReaders";
             this.dgwReaders.ReadOnly = true;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.LightCoral;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgwReaders.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.Color.LightCoral;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgwReaders.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
             this.dgwReaders.RowHeadersVisible = false;
             this.dgwReaders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgwReaders.Size = new System.Drawing.Size(1188, 567);
@@ -315,6 +317,7 @@ namespace BookkeepingForOrder
             this.button6.Text = "button6";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Visible = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button12
             // 
@@ -357,14 +360,14 @@ namespace BookkeepingForOrder
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgwHis.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightYellow;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgwHis.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.LightYellow;
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgwHis.DefaultCellStyle = dataGridViewCellStyle17;
             this.dgwHis.Location = new System.Drawing.Point(-4, 4);
             this.dgwHis.Margin = new System.Windows.Forms.Padding(4);
             this.dgwHis.Name = "dgwHis";
@@ -417,14 +420,14 @@ namespace BookkeepingForOrder
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgwRHis.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.LightYellow;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgwRHis.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle18.BackColor = System.Drawing.Color.LightYellow;
+            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgwRHis.DefaultCellStyle = dataGridViewCellStyle18;
             this.dgwRHis.Location = new System.Drawing.Point(2, 7);
             this.dgwRHis.Margin = new System.Windows.Forms.Padding(4);
             this.dgwRHis.Name = "dgwRHis";
@@ -433,6 +436,96 @@ namespace BookkeepingForOrder
             this.dgwRHis.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgwRHis.Size = new System.Drawing.Size(1188, 572);
             this.dgwRHis.TabIndex = 1;
+            // 
+            // tpImCatOrders
+            // 
+            this.tpImCatOrders.Controls.Add(this.button1);
+            this.tpImCatOrders.Controls.Add(this.bGoToImCatalog);
+            this.tpImCatOrders.Controls.Add(this.bImCatRefuse);
+            this.tpImCatOrders.Controls.Add(this.bICPrintOrder);
+            this.tpImCatOrders.Controls.Add(this.dgImCatOrders);
+            this.tpImCatOrders.Location = new System.Drawing.Point(4, 25);
+            this.tpImCatOrders.Name = "tpImCatOrders";
+            this.tpImCatOrders.Padding = new System.Windows.Forms.Padding(3);
+            this.tpImCatOrders.Size = new System.Drawing.Size(1197, 617);
+            this.tpImCatOrders.TabIndex = 4;
+            this.tpImCatOrders.Text = "Заказы из имидж каталога";
+            this.tpImCatOrders.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(63, 504);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "testPaint";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // bGoToImCatalog
+            // 
+            this.bGoToImCatalog.Location = new System.Drawing.Point(495, 581);
+            this.bGoToImCatalog.Name = "bGoToImCatalog";
+            this.bGoToImCatalog.Size = new System.Drawing.Size(358, 30);
+            this.bGoToImCatalog.TabIndex = 3;
+            this.bGoToImCatalog.Text = "Перейти к карточке на страницу имидж-каталога";
+            this.bGoToImCatalog.UseVisualStyleBackColor = true;
+            this.bGoToImCatalog.Click += new System.EventHandler(this.bGoToImCatalog_Click);
+            // 
+            // bImCatRefuse
+            // 
+            this.bImCatRefuse.Location = new System.Drawing.Point(859, 581);
+            this.bImCatRefuse.Name = "bImCatRefuse";
+            this.bImCatRefuse.Size = new System.Drawing.Size(163, 30);
+            this.bImCatRefuse.TabIndex = 3;
+            this.bImCatRefuse.Text = "Дать отказ";
+            this.bImCatRefuse.UseVisualStyleBackColor = true;
+            this.bImCatRefuse.Click += new System.EventHandler(this.bImCatRefuse_Click);
+            // 
+            // bICPrintOrder
+            // 
+            this.bICPrintOrder.Location = new System.Drawing.Point(1028, 581);
+            this.bICPrintOrder.Name = "bICPrintOrder";
+            this.bICPrintOrder.Size = new System.Drawing.Size(163, 30);
+            this.bICPrintOrder.TabIndex = 3;
+            this.bICPrintOrder.Text = "Распечатать заказ";
+            this.bICPrintOrder.UseVisualStyleBackColor = true;
+            this.bICPrintOrder.Click += new System.EventHandler(this.bICPrintOrder_Click);
+            // 
+            // dgImCatOrders
+            // 
+            this.dgImCatOrders.AllowUserToAddRows = false;
+            this.dgImCatOrders.AllowUserToDeleteRows = false;
+            this.dgImCatOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgImCatOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgImCatOrders.DefaultCellStyle = dataGridViewCellStyle10;
+            this.dgImCatOrders.EnableHeadersVisualStyles = false;
+            this.dgImCatOrders.Location = new System.Drawing.Point(4, 7);
+            this.dgImCatOrders.Margin = new System.Windows.Forms.Padding(4);
+            this.dgImCatOrders.MultiSelect = false;
+            this.dgImCatOrders.Name = "dgImCatOrders";
+            this.dgImCatOrders.ReadOnly = true;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.LightCoral;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgImCatOrders.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            this.dgImCatOrders.RowHeadersVisible = false;
+            this.dgImCatOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgImCatOrders.Size = new System.Drawing.Size(1188, 567);
+            this.dgImCatOrders.TabIndex = 2;
             // 
             // label1
             // 
@@ -455,88 +548,22 @@ namespace BookkeepingForOrder
             this.timer2.Interval = 3000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // tpImCatOrders
+            // bAssignCardToCatalog
             // 
-            this.tpImCatOrders.Controls.Add(this.bGoToImCatalog);
-            this.tpImCatOrders.Controls.Add(this.bImCatRefuse);
-            this.tpImCatOrders.Controls.Add(this.bICPrintOrder);
-            this.tpImCatOrders.Controls.Add(this.dgImCatOrders);
-            this.tpImCatOrders.Location = new System.Drawing.Point(4, 25);
-            this.tpImCatOrders.Name = "tpImCatOrders";
-            this.tpImCatOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.tpImCatOrders.Size = new System.Drawing.Size(1197, 617);
-            this.tpImCatOrders.TabIndex = 4;
-            this.tpImCatOrders.Text = "Заказы из имидж каталога";
-            this.tpImCatOrders.UseVisualStyleBackColor = true;
-            // 
-            // dgImCatOrders
-            // 
-            this.dgImCatOrders.AllowUserToAddRows = false;
-            this.dgImCatOrders.AllowUserToDeleteRows = false;
-            this.dgImCatOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgImCatOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgImCatOrders.DefaultCellStyle = dataGridViewCellStyle8;
-            this.dgImCatOrders.EnableHeadersVisualStyles = false;
-            this.dgImCatOrders.Location = new System.Drawing.Point(4, 7);
-            this.dgImCatOrders.Margin = new System.Windows.Forms.Padding(4);
-            this.dgImCatOrders.MultiSelect = false;
-            this.dgImCatOrders.Name = "dgImCatOrders";
-            this.dgImCatOrders.ReadOnly = true;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightCoral;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgImCatOrders.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
-            this.dgImCatOrders.RowHeadersVisible = false;
-            this.dgImCatOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgImCatOrders.Size = new System.Drawing.Size(1188, 567);
-            this.dgImCatOrders.TabIndex = 2;
-            // 
-            // bICPrintOrder
-            // 
-            this.bICPrintOrder.Location = new System.Drawing.Point(1028, 581);
-            this.bICPrintOrder.Name = "bICPrintOrder";
-            this.bICPrintOrder.Size = new System.Drawing.Size(163, 30);
-            this.bICPrintOrder.TabIndex = 3;
-            this.bICPrintOrder.Text = "Распечатать заказ";
-            this.bICPrintOrder.UseVisualStyleBackColor = true;
-            // 
-            // bImCatRefuse
-            // 
-            this.bImCatRefuse.Location = new System.Drawing.Point(859, 581);
-            this.bImCatRefuse.Name = "bImCatRefuse";
-            this.bImCatRefuse.Size = new System.Drawing.Size(163, 30);
-            this.bImCatRefuse.TabIndex = 3;
-            this.bImCatRefuse.Text = "Дать отказ";
-            this.bImCatRefuse.UseVisualStyleBackColor = true;
-            // 
-            // bGoToImCatalog
-            // 
-            this.bGoToImCatalog.Location = new System.Drawing.Point(495, 581);
-            this.bGoToImCatalog.Name = "bGoToImCatalog";
-            this.bGoToImCatalog.Size = new System.Drawing.Size(358, 30);
-            this.bGoToImCatalog.TabIndex = 3;
-            this.bGoToImCatalog.Text = "Перейти к карточке на страницу имидж-каталога";
-            this.bGoToImCatalog.UseVisualStyleBackColor = true;
-            this.bGoToImCatalog.Click += new System.EventHandler(this.bGoToImCatalog_Click);
+            this.bAssignCardToCatalog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bAssignCardToCatalog.Location = new System.Drawing.Point(846, 6);
+            this.bAssignCardToCatalog.Name = "bAssignCardToCatalog";
+            this.bAssignCardToCatalog.Size = new System.Drawing.Size(360, 29);
+            this.bAssignCardToCatalog.TabIndex = 2;
+            this.bAssignCardToCatalog.Text = "Привязать карточку к электронному каталогу";
+            this.bAssignCardToCatalog.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1213, 701);
+            this.Controls.Add(this.bAssignCardToCatalog);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -595,6 +622,8 @@ namespace BookkeepingForOrder
         private System.Windows.Forms.Button bICPrintOrder;
         private System.Windows.Forms.DataGridView dgImCatOrders;
         private System.Windows.Forms.Button bGoToImCatalog;
+        private System.Windows.Forms.Button bAssignCardToCatalog;
+        private System.Windows.Forms.Button button1;
     }
 }
 

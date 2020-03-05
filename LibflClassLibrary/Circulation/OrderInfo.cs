@@ -43,5 +43,6 @@ namespace LibflClassLibrary.Circulation
         public int IssuingDepartmentId { get; set; }
         public string BookUrl { get; set; }
         public string Fund { get; set; }
+
     }
 }

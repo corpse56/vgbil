@@ -101,7 +101,6 @@ public partial class _Default : System.Web.UI.Page
 
                 if (cookieView != null)
                 {
-
                     try
                     {
                         ICOrderInfo.CreateOrder(cookieView.cardId, cookieView.cardSide, reader.NumberReader, cookieView.comment);
@@ -114,25 +113,6 @@ public partial class _Default : System.Web.UI.Page
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", $"alert('Вы не можете заказать книгу по выбранной карточке. {userMessage}');", true);
                         //return;
                     }
-                    //Request.Cookies.Remove(@"cookie['json']");//нельзя просто взять и удалить куки)))
-                    //Cookies[@"cookie['json']"].Expires = DateTime.Now.AddDays(-1);
-                    //Request.Cookies[@"cookie['json']"].Expires = DateTime.Now.AddDays(-1);
-                    //orderCookie.Expires = DateTime.Now.AddDays(-1);
-
-                    //HttpCookie myCookie = new HttpCookie(@"cookie['json']");
-                    //myCookie.Expires = DateTime.Now.AddDays(-1d);
-                    //myCookie.Domain = orderCookie.Domain;
-                    //myCookie.Value = "";
-                    //Response.Cookies.Add(myCookie);
-                    //Request.Cookies.Clear();
-                    //Session.Abandon();
-                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delCookie",
-                    //    @"document.cookie = 'cookie[\'json\']=; Max-Age=-99999999;';", true);
-                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delCookie",
-                    //    @"document.cookie = 'cookie[\'json\']=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';", true);
-                    //document.cookie = 'cookie[\'json\']=; Max-Age=-99999999;';
-                    /*ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alerCookie",
-                        @"alert('document.cookie = cookie[''json'']=; Max-Age=-99999999;');", true);*/
 
                 }
             }
@@ -160,16 +140,9 @@ public partial class _Default : System.Web.UI.Page
         }
 
     }
-    protected void Button1_Click(object sender, EventArgs e)
-    {
-        HttpCookie currentUserCookie = HttpContext.Current.Request.Cookies[@"cookie['json']"];
-        HttpContext.Current.Response.Cookies.Remove(@"cookie['json']");
-        currentUserCookie.Expires = DateTime.Now.AddDays(-10);
-        currentUserCookie.Value = null;
-        HttpContext.Current.Response.SetCookie(currentUserCookie);
-        Response.SetCookie(currentUserCookie);
 
-    }
+    //не работает. неизвестно почему. как узнать почему не работает?
+    
     public bool SetCookie(string cookiename, string cookievalue, int iDaysToExpire)
     {
         try

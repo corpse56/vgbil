@@ -44,6 +44,13 @@ namespace LibflClassLibrary.BJUsers
             BJUserInfo result = loader.GetUserByLogin(login.ToUpper());
             return result;
         }
+        public static BJUserInfo GetAdmin()
+        {
+            BJUserLoader loader = new BJUserLoader("BJVVV");
+            BJUserInfo result = loader.GetUserByLogin("ADMIN");
+            result.SelectedUserStatus = result.UserStatus[0];
+            return result;
+        }
 
         public static string HashPassword(string password)
         {

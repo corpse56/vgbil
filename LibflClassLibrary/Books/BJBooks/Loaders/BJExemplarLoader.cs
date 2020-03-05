@@ -97,6 +97,11 @@ namespace LibflClassLibrary.Books.BJBooks.Loaders
                     exemplar.Fields.AddField(row["NAME"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString()); //местонахождение берём из LIST_8, а не из DATAEXTPLAIN, потому что в поле PLAIN меняются некоторые символы
                     continue;
                 }
+                if (row["MNFIELD"].ToString() + row["MSFIELD"].ToString() == "899$w")
+                {
+                    exemplar.Fields.AddField(row["SORT"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString()); //местонахождение берём из LIST_8, а не из DATAEXTPLAIN, потому что в поле PLAIN меняются некоторые символы
+                    continue;
+                }
                 exemplar.Fields.AddField(row["PLAIN"].ToString(), (int)row["MNFIELD"], row["MSFIELD"].ToString());//добавляем все поля блока 260 к объекту экземпляра
                 if ((int)row["MNFIELD"] == 929 && row["MSFIELD"].ToString() == "$b")
                 {

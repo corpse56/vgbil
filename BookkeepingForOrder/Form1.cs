@@ -19,6 +19,7 @@ using LibflClassLibrary.Readers;
 using LibflClassLibrary.Books.BJBooks;
 using ExtGui;
 using LibflClassLibrary.ImageCatalog;
+using Zen.Barcode;
 
 namespace BookkeepingForOrder
 {
@@ -964,13 +965,49 @@ namespace BookkeepingForOrder
                 MessageBox.Show("Выберите строку!");
                 return;
             }
-            ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value));
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), false);
             string cardType = ICOrderInfo.GetCardTypeString(order.Card.CardType);
             System.Diagnostics.Process.Start($@"https://imcat.libfl.ru/ic/orders/open.php?cardId={order.CardFileName}&orderType={cardType}&countSide={order.SelectedCardSide}");
 
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            BarcodeDraw bdraw = BarcodeDrawFactory.GetSymbology(BarcodeSymbology.Code39C);
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(1, true);
+            Image barcodeImage = bdraw.Draw(order.GetBarString(), 40);
+            barcodeImage.Save(@"e:\orderBarcode.jpg");
+
+
+            //Form2 f2 = new Form2(this);
+            //f2.Show();
+        }
+
+        private void bICPrintOrder_Click(object sender, EventArgs e)
+        {
+            if (dgImCatOrders.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите строку!");
+                return;
+
+            }
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), false);
+            ReaderInfo reader = ReaderInfo.GetReader(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["ReaderId"].Value));
+
+            PrintBlankImageCatalog pb = new PrintBlankImageCatalog(user, this, reader, order);
+        }
+
+        private void bImCatRefuse_Click(object sender, EventArgs e)
         {
 
         }

@@ -19,16 +19,24 @@ namespace LibflClassLibrary.ImageCatalog
         {
             get
             {
-                return $" select *,0 CardType from ImageCatalog..CardMain A " +
+                return " select A.*,0 CardType, C.ID langId, C.NAME langName from ImageCatalog..CardMain A " +
+                        " left join ImageCatalog..SeparatorMain B on A.IDSeparator = B.ID " +
+                        " left join ImageCatalog..Language C on C.ID = B.IDLanguage" +
                         " where A.FilesName = @cardFileName" +
                         " union all " +
-                        " select *,3 CardType from ImageCatalog..CardAV A " +
+                        " select A.*,3 CardType, C.ID langId, C.NAME langName from ImageCatalog..CardAV A " +
+                        " left join ImageCatalog..SeparatorAV B on A.IDSeparator = B.ID " +
+                        " left join ImageCatalog..Country C on C.ID = B.IDCountry " +
                         " where A.FilesName = @cardFileName" +
                         " union all " +
-                        " select *,1 CardType from ImageCatalog..CardPeriodical A " +
+                        " select A.*,1 CardType, 0 langId, 'Периодика' langName from ImageCatalog..CardPeriodical A " +
+                        " left join ImageCatalog..SeparatorPeriodical B on A.IDSeparator = B.ID " +
+                        " left join ImageCatalog..Country C on C.ID = B.IDCountry" +
                         " where A.FilesName = @cardFileName" +
                         " union all " +
-                        " select *,2 CardType from ImageCatalog..CardSubscript A " +
+                        " select A.*,2 CardType, C.ID langId, C.NAME langName from ImageCatalog..CardSubscript A " +
+                        " left join ImageCatalog..SeparatorSubscript B on A.IDSeparator = B.ID " +
+                        " left join ImageCatalog..Language C on C.ID = B.IDLanguage" +
                         " where A.FilesName = @cardFileName";
             }
         }
@@ -114,5 +122,7 @@ namespace LibflClassLibrary.ImageCatalog
                        $" or (StatusName in  (@RefusualStatusName) and StartDate > dateadd(day, -3, getdate()))";
             }
         }
+
+
     }
 }

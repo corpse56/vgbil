@@ -29,6 +29,7 @@ namespace LibflClassLibrary.ImageCatalog
             }
             ImageCardInfo result = new ImageCardInfo();
             DataTable cardTable = dbWrapper.GetCard(cardFileName);
+
             foreach (DataRow row in cardTable.Rows)
             {
                 result.Box = Convert.ToInt32(row["Box"]);
@@ -38,6 +39,8 @@ namespace LibflClassLibrary.ImageCatalog
                 result.Closet = (int)row["Closet"];
                 result.CountSide = (int)row["CountSide"];
                 result.SeparatorId = (int)row["IDSeparator"];
+                result.LanguageId = (int)row["langId"];
+                result.LanguageName = row["langName"].ToString();
                 result.MainSideFullFileName = $@"\\{AppSettings.IPAddressFileServer}\ImageCatalog\{GetPath(result.SeparatorId)}\HQ\{result.CardFileName}_01.jpg";
                 result.MainSideUrl = $@"https://cdn.libfl.ru/imcat/{GetPath(result.SeparatorId)}/HQ/{result.CardFileName}_01.jpg";
             }

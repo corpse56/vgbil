@@ -24,7 +24,7 @@ namespace LibflClassLibrary.ImageCatalog
             List<ICOrderInfo> result = new List<ICOrderInfo>();
             foreach (DataRow row in table.Rows)
             {
-                ICOrderInfo item = this.GetICOrderById((int)row["Id"]);
+                ICOrderInfo item = this.GetICOrderById((int)row["Id"], false);
                 result.Add(item);
             }
             return result;
@@ -36,7 +36,7 @@ namespace LibflClassLibrary.ImageCatalog
         }
 
 
-        internal ICOrderInfo GetICOrderById(int id)
+        internal ICOrderInfo GetICOrderById(int id, bool loadImages)
         {
             ICDBWrapper dbWrapper = new ICDBWrapper();
             DataTable table = dbWrapper.GetICOrderById(id);
@@ -55,7 +55,10 @@ namespace LibflClassLibrary.ImageCatalog
             selectedCard = (selectedCard.Length == 1) ? $"0{selectedCard}" : selectedCard;
             result.SelectedSideUrl = $@"https://cdn.libfl.ru/imcat/{ICLoader.GetPath(result.Card.SeparatorId)}/HQ/{result.CardFileName}_{selectedCard}.jpg";
             result.RefusualReason = row["Refusual"].ToString();
-            LoadImages(result, result.Card, result.SelectedCardSide.ToString());
+            if (loadImages)
+            {
+                LoadImages(result, result.Card, result.SelectedCardSide.ToString());
+            }
             return result;
         }
 
@@ -66,7 +69,7 @@ namespace LibflClassLibrary.ImageCatalog
             List<ICOrderInfo> result = new List<ICOrderInfo>();
             foreach (DataRow row in table.Rows)
             {
-                ICOrderInfo item = this.GetICOrderById((int)row["Id"]);
+                ICOrderInfo item = this.GetICOrderById((int)row["Id"], true);
                 result.Add(item);
             }
             return result;
@@ -84,7 +87,7 @@ namespace LibflClassLibrary.ImageCatalog
             List<ICOrderInfo> result = new List<ICOrderInfo>();
             foreach (DataRow row in table.Rows)
             {
-                ICOrderInfo item = this.GetICOrderById((int)row["Id"]);
+                ICOrderInfo item = this.GetICOrderById((int)row["Id"], false);
                 item.RefusualReason = row["Refusual"].ToString();
                 result.Add(item);
             }

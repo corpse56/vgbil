@@ -148,7 +148,6 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" />
         <div>
             <br />
             <br />

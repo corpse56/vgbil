@@ -18,11 +18,11 @@ namespace ImageCardTest
             ImageCatalogCirculationManager manager = new ImageCatalogCirculationManager();
             BJUserInfo user = BJUserInfo.GetUserByLogin("bk", "BJVVV");
             user.SelectedUserStatus = user.UserStatus[0];
-            ICOrderInfo order = ICOrderInfo.GetICOrderById(10);
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(10, false);
             manager.RefuseOrder(order, user, "refuse111");
-            order = ICOrderInfo.GetICOrderById(11);
+            order = ICOrderInfo.GetICOrderById(11, false);
             manager.RefuseOrder(order, user, "refuse222");
-            order = ICOrderInfo.GetICOrderById(12);
+            order = ICOrderInfo.GetICOrderById(12, false);
             manager.RefuseOrder(order, user, "refuse333");
 
 

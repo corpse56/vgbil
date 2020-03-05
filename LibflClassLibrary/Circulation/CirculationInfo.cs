@@ -705,6 +705,24 @@ namespace LibflClassLibrary.Circulation
                                     IsOrderedSuccessfully = true;
                                     break;
                                 }
+                                CirculationInfo ci = new CirculationInfo();
+                                OrderInfo order = null;
+                                try
+                                {
+                                    order = ci.GetLastOrder(Convert.ToInt32(e.Id), e.Fund);
+                                }
+                                catch
+                                {
+                                    continue;
+                                }
+                                if (order.StatusName == CirculationStatuses.ForReturnToBookStorage.Value)
+                                {
+                                    ci.FinishOrder(order, BJUserInfo.GetAdmin());
+                                    this.NewOrder(e, reader, OrderTypes.InLibrary.Id, 4);
+                                    IsOrderedSuccessfully = true;
+                                    break;
+                                }
+
                             }
                         }
                         if (IsOrderedSuccessfully)
