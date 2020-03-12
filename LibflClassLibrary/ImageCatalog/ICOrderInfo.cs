@@ -59,7 +59,7 @@ namespace LibflClassLibrary.ImageCatalog
             switch (result.Length)
             {
                 case 1:
-                    result = $"M00000{result}";
+                    result = $"*M00000{result}*";
                     break;
                 case 2:
                     result = $"*M0000{result}*";

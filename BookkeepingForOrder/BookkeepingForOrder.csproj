@@ -50,6 +50,12 @@
   <ItemGroup>
     <Compile Include="ConnectionsXML.cs" />
     <Compile Include="DbForEmployee.cs" />
+    <Compile Include="fICRefuseReason.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fICRefuseReason.Designer.cs">
+      <DependentUpon>fICRefuseReason.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +78,9 @@
     <Compile Include="PrintBlankImageCatalog.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="fICRefuseReason.resx">
+      <DependentUpon>fICRefuseReason.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Form1.cs</DependentUpon>

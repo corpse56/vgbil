@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing.Printing;
 using System.Drawing;
-using System.Data;
-using System.Data.SqlClient;
 using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.ReadersRight;
 using LibflClassLibrary.Readers.ReadersRights;
 using System.Windows.Forms;
-using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Books;
 using LibflClassLibrary.ImageCatalog;
 using Utilities;
@@ -23,7 +20,7 @@ namespace BookkeepingForOrder
     {
         private static PrintDocument pd;
         private Font printFont;
-        private int PaperSize = 1200;
+        private int PaperSize = 1600;
         private ReaderInfo reader;
         private ICOrderInfo order;
         private BJUserInfo bjUser;
@@ -88,9 +85,12 @@ namespace BookkeepingForOrder
             #endregion
 
             this.printFont = new Font("Arial Unicode MS", 10f);
+            string[] ddd = new string[PrinterSettings.InstalledPrinters.Count];
+            PrinterSettings.InstalledPrinters.CopyTo(ddd, 0);
+            pd.PrinterSettings.PrinterName = @"Zebra TLP2844";
             
             pd.DefaultPageSettings.PaperSize = new PaperSize("rdr", 315, PaperSize);
-
+            
             pd.PrintPage += new PrintPageEventHandler(pd_PrintPage);
         }
         public void Print()
@@ -130,13 +130,16 @@ namespace BookkeepingForOrder
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
             CurrentY += 25;
 
-            rectangle = new Rectangle(70, CurrentY, 245, 50);
+            rectangle = new Rectangle(0, CurrentY, 315, 70);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            Font barFont = new Font("C39HrP24Dh", 24f);
-            str = order.GetBarString();
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-            CurrentY += 50;
-
+            //BarcodeDraw bdraw = BarcodeDrawFactory.GetSymbology(BarcodeSymbology.Code39C);
+            //Image barcodeImage = bdraw.Draw(order.GetBarString(), 40);
+            //e.Graphics.DrawImage(barcodeImage, 20, CurrentY+5);
+            str = "Билет № " + reader.NumberReader;
+            Font barFont = new Font("C39HrP24DhTt", 40f, FontStyle.Regular);
+            rectangle = new Rectangle(50, CurrentY + 10, 315, 50);
+            e.Graphics.DrawString(order.GetBarString(), barFont, Brushes.Black, rectangle, format);
+            CurrentY += 70;
 
             rectangle = new Rectangle(0, CurrentY, 70, 50);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
@@ -192,6 +195,12 @@ namespace BookkeepingForOrder
 
             rectangle = new Rectangle(0, CurrentY, 315, 75);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = $"Комментарий читателя: {order.Comment}";
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 75;
+
+            rectangle = new Rectangle(0, CurrentY, 315, 75);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
 
 
             //========вторая часть требования
@@ -236,7 +245,7 @@ namespace BookkeepingForOrder
             rectangle = new Rectangle(0, CurrentY, 315, 500);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
             Image img = order.Card.MainSideImage;
-            img.RotateFlip(RotateFlipType.Rotate90FlipX);
+            img.RotateFlip(RotateFlipType.Rotate90FlipNone);
             e.Graphics.DrawImage(img, new PointF(15, CurrentY + 15));
             //e.Graphics.DrawString($"{img.Width},{img.Height}", printFont, Brushes.Black, rectangle, format);
             CurrentY += 500;
@@ -251,7 +260,7 @@ namespace BookkeepingForOrder
             rectangle = new Rectangle(0, CurrentY, 315, 500);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
             img = order.SelectedSideImage;
-            img.RotateFlip(RotateFlipType.Rotate90FlipX);
+            img.RotateFlip(RotateFlipType.Rotate90FlipNone);
             e.Graphics.DrawImage(img, new PointF(15, CurrentY + 15));
             CurrentY += 500;
         }

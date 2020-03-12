@@ -64,14 +64,16 @@ namespace BookkeepingForOrder
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
             CurrentY += 25;
 
-            rectangle = new Rectangle(0, CurrentY, 315, 50);
+            rectangle = new Rectangle(0, CurrentY, 315, 70);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            BarcodeDraw bdraw = BarcodeDrawFactory.GetSymbology(BarcodeSymbology.Code39C);
-            Image barcodeImage = bdraw.Draw(order.GetBarString(), 5);
-            barcodeImage.Save(@"e:\orderBarcode.jpg");
-            e.Graphics.DrawImage(barcodeImage, 0, CurrentY);
-            CurrentY += 50;
-
+            //BarcodeDraw bdraw = BarcodeDrawFactory.GetSymbology(BarcodeSymbology.Code39C);
+            //Image barcodeImage = bdraw.Draw(order.GetBarString(), 40);
+            //e.Graphics.DrawImage(barcodeImage, 20, CurrentY+5);
+            str = "Билет № " + reader.NumberReader;
+            Font barFont = new Font("C39HrP24DhTt", 40f, FontStyle.Regular);
+            rectangle = new Rectangle(50, CurrentY+10, 315, 50);
+            e.Graphics.DrawString(order.GetBarString(), barFont, Brushes.Black, rectangle, format);
+            CurrentY += 70;
 
             rectangle = new Rectangle(0, CurrentY, 70, 50);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);
@@ -124,6 +126,12 @@ namespace BookkeepingForOrder
             str = DateTime.Now.Date.ToString("dd.MM.yyyy");
             e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
             CurrentY += 25;
+
+            rectangle = new Rectangle(0, CurrentY, 315, 75);
+            e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            str = $"Комментарий читателя: {order.Comment}";
+            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            CurrentY += 75;
 
             rectangle = new Rectangle(0, CurrentY, 315, 75);
             e.Graphics.DrawRectangle(Pens.Black, rectangle);

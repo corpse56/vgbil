@@ -44,7 +44,7 @@
         bcgDiv.style.width = "100%";
         imgDiv.style.width = "650px";
 
-        bcgDiv.style.display = "block";
+        bcgDiv.style.display = "none";
         imgDiv.style.display = "block";
         //disableScroll();
         return false;
@@ -161,6 +161,10 @@
             <br />
             <div align="right">
                 <asp:LinkButton ID="LinkButton1" runat="server" Font-Size ="20px" PostBackUrl="~/history.aspx">История заказов.</asp:LinkButton>
+            </div>
+            <br />
+            <div align="right">
+                <asp:LinkButton ID="LinkButton2" runat="server" Font-Size ="20px" PostBackUrl="http://imcatnew.libfl.ru/ic/book/index.php">Перейти в имидж каталог</asp:LinkButton>
             </div>
             <br />
             <br />

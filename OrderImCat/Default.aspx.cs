@@ -116,27 +116,10 @@ public partial class _Default : System.Web.UI.Page
 
                 }
             }
-            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delCookie",
-            //    $"setCookie('{orderCookie.Name}', '', -1)", true);
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delCookie",
                 "document.cookie = \"cookie['json'] = test; max-age = -999; path =/; domain =.libfl.ru\"", true);
-            //HttpCookie myCookie = new HttpCookie(@"cookie['json']");
-            //myCookie.Expires = DateTime.Now.AddDays(-1d);
-            ////myCookie.Domain = orderCookie.Domain;
-            //myCookie.Value = "";
-            //Response.Cookies.Add(myCookie);
-            //SetCookie(orderCookie.Name, "", -2);
-            //HttpCookie currentUserCookie = HttpContext.Current.Request.Cookies[@"cookie['json']"];
-            //HttpContext.Current.Response.Cookies.Remove(@"cookie['json']");
-            //currentUserCookie.Expires = DateTime.Now.AddDays(-10);
-            //currentUserCookie.Value = null;
-            //HttpContext.Current.Response.SetCookie(currentUserCookie);
-            //Response.SetCookie(currentUserCookie);
-            ShowActiveOrders();
-            //DateTime dt = HttpContext.Current.Response.Cookies[@"cookie['json']"].Expires;
-            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "dt",
-            //    $@"alert('{dt.ToShortDateString()}')", true);
 
+            ShowActiveOrders();
         }
 
     }

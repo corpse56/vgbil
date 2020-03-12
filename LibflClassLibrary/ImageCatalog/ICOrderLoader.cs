@@ -1,6 +1,8 @@
 ﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books;
 using LibflClassLibrary.Circulation;
 using LibflClassLibrary.ExportToVufind;
+using LibflClassLibrary.Readers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -50,7 +52,7 @@ namespace LibflClassLibrary.ImageCatalog
             result.SelectedCardSide = (int)row["CardSide"];
             result.CardFileName = row["CardFileName"].ToString();
             result.StatusName = row["StatusName"].ToString();
-            result.Card = ImageCardInfo.GetCard(result.CardFileName, true);
+            result.Card = ImageCardInfo.GetCard(result.CardFileName, loadImages);
             string selectedCard = result.SelectedCardSide.ToString();
             selectedCard = (selectedCard.Length == 1) ? $"0{selectedCard}" : selectedCard;
             result.SelectedSideUrl = $@"https://cdn.libfl.ru/imcat/{ICLoader.GetPath(result.Card.SeparatorId)}/HQ/{result.CardFileName}_{selectedCard}.jpg";
@@ -60,6 +62,12 @@ namespace LibflClassLibrary.ImageCatalog
                 LoadImages(result, result.Card, result.SelectedCardSide.ToString());
             }
             return result;
+        }
+
+
+        internal void AssignCardToCatalog(ICOrderInfo ICOrder, ExemplarBase ICExemplar, BJUserInfo bjUser)
+        {
+            dbWrapper.AssignCardToCatalog(ICOrder, ICExemplar, bjUser);
         }
 
         internal List<ICOrderInfo> GetActiveOrdersForBookkeeping()
@@ -74,10 +82,26 @@ namespace LibflClassLibrary.ImageCatalog
             }
             return result;
         }
+        internal List<ICOrderInfo> GetActiveOrdersForCafedra()
+        {
+            DataTable table = new DataTable();
+            table = dbWrapper.GetActiveOrdersForCafedra();
+            List<ICOrderInfo> result = new List<ICOrderInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                ICOrderInfo item = this.GetICOrderById((int)row["Id"], true);
+                result.Add(item);
+            }
+            return result;
+        }
 
         internal void RefuseOrder(ICOrderInfo order, BJUserInfo bjUser, string refusualReason)
         {
             dbWrapper.RefuseOrder( order,  bjUser,  refusualReason);
+        }
+        internal void ChangeOrderStatus(ICOrderInfo order, BJUserInfo bjUser, string statusName)
+        {
+            dbWrapper.ChangeOrderStatus(order, bjUser, statusName);
         }
 
         internal List<ICOrderInfo> GetHistoryOrdersByReader(int readerId)
@@ -96,6 +120,10 @@ namespace LibflClassLibrary.ImageCatalog
 
         internal ICOrderInfo CreateOrder(string cardFileName, string selectedCardSide, int readerId, string comment)
         {
+            ReaderInfo reader = ReaderInfo.GetReader(readerId);
+            if (reader.IsRemoteReader)
+                throw new Exception("M006");
+
             ICOrderInfo order = new ICOrderInfo();
             order.Card = ImageCardInfo.GetCard(cardFileName, true);
             order.CardFileName = cardFileName;
@@ -117,6 +145,7 @@ namespace LibflClassLibrary.ImageCatalog
             {
                 throw new Exception("M004");
             }
+            
             this.InsertOrderInDb(order);
             return order;
         }

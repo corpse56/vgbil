@@ -66,6 +66,12 @@ namespace BookkeepingForOrder
                 return;
             }
             user = fAuth.User;
+            if (!user.SelectedUserStatus.DepName.ToLower().Contains("книгохранени"))
+            {
+                MessageBox.Show("¬ы не сотрудник книгохранени€!");
+                Close();
+            }
+
             label1.Text = $"{user.SelectedUserStatus.DepName} {user.FIO}";
             //дл€ 0 и 4 этажа требовани€ выводить в одну таблицу.
             if (user.SelectedUserStatus.DepId == 8 || user.SelectedUserStatus.DepId == 15)
@@ -529,11 +535,20 @@ namespace BookkeepingForOrder
             FormMainTable_Interface();
 
             ShowReaderOrders();
+            ShowImCatOrders();
             //ShowReaderHistoryOrders();
             bool NeedFlash = false;
             foreach (DataGridViewRow row in dgwReaders.Rows)
             {
                 if (row.Cells["status"].Value.ToString() == CirculationStatuses.OrderIsFormed.Value)
+                {
+                    NeedFlash = true;
+                    break;
+                }
+            }
+            foreach (DataGridViewRow row in dgImCatOrders.Rows)
+            {
+                if (row.Cells["StatusName"].Value.ToString() == CirculationStatuses.OrderIsFormed.Value)
                 {
                     NeedFlash = true;
                     break;
@@ -953,11 +968,6 @@ namespace BookkeepingForOrder
             f3.ShowDialog();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void bGoToImCatalog_Click(object sender, EventArgs e)
         {
             if (dgImCatOrders.SelectedRows.Count == 0)
@@ -967,30 +977,19 @@ namespace BookkeepingForOrder
             }
             ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), false);
             string cardType = ICOrderInfo.GetCardTypeString(order.Card.CardType);
-            System.Diagnostics.Process.Start($@"https://imcat.libfl.ru/ic/orders/open.php?cardId={order.CardFileName}&orderType={cardType}&countSide={order.SelectedCardSide}");
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-
+            System.Diagnostics.Process.Start($@"https://imcat.libfl.ru/ic/orders/open.php?cardId={order.CardFileName}&orderType={cardType}&countSide=1");
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            BarcodeDraw bdraw = BarcodeDrawFactory.GetSymbology(BarcodeSymbology.Code39C);
-            ICOrderInfo order = ICOrderInfo.GetICOrderById(1, true);
-            Image barcodeImage = bdraw.Draw(order.GetBarString(), 40);
-            barcodeImage.Save(@"e:\orderBarcode.jpg");
+            //BarcodeDraw bdraw = BarcodeDrawFactory.GetSymbology(BarcodeSymbology.Code39C);
+            //ICOrderInfo order = ICOrderInfo.GetICOrderById(1, true);
+            //Image barcodeImage = bdraw.Draw(order.GetBarString(), 40);
+            //barcodeImage.Save(@"e:\orderBarcode.jpg");
 
 
-            //Form2 f2 = new Form2(this);
-            //f2.Show();
+            Form2 f2 = new Form2(this);
+            f2.Show();
         }
 
         private void bICPrintOrder_Click(object sender, EventArgs e)
@@ -1001,14 +1000,46 @@ namespace BookkeepingForOrder
                 return;
 
             }
-            ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), false);
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), true);
             ReaderInfo reader = ReaderInfo.GetReader(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["ReaderId"].Value));
 
             PrintBlankImageCatalog pb = new PrintBlankImageCatalog(user, this, reader, order);
+            pb.Print();
+            ImageCatalogCirculationManager icCirc = new ImageCatalogCirculationManager();
+            icCirc.ChangeOrderStatus(order, user, CirculationStatuses.EmployeeLookingForBook.Value);
+            ShowImCatOrders();
+
         }
 
         private void bImCatRefuse_Click(object sender, EventArgs e)
         {
+            if (dgImCatOrders.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("¬ыберите строку!");
+                return;
+
+            }
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), true);
+            ReaderInfo reader = ReaderInfo.GetReader(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["ReaderId"].Value));
+            fICRefuseReason refu = new fICRefuseReason();
+            refu.ShowDialog();
+            if (refu.IsCanceled) return;
+            
+            ImageCatalogCirculationManager cm = new ImageCatalogCirculationManager();
+            cm.RefuseOrder(order, user, refu.Cause);
+            ShowImCatOrders();
+        }
+
+        private void bGoToSelectedImCatalog_Click(object sender, EventArgs e)
+        {
+            if (dgImCatOrders.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("¬ыберите строку!");
+                return;
+            }
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), false);
+            string cardType = ICOrderInfo.GetCardTypeString(order.Card.CardType);
+            System.Diagnostics.Process.Start($@"https://imcat.libfl.ru/ic/orders/open.php?cardId={order.CardFileName}&orderType={cardType}&countSide={order.SelectedCardSide}");
 
         }
     }

@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books;
 using LibflClassLibrary.Circulation;
 using System;
 using System.Collections.Generic;
@@ -38,11 +39,28 @@ namespace LibflClassLibrary.ImageCatalog
             ICOrderLoader loader = new ICOrderLoader();
             loader.RefuseOrder(order, bjUser, refusualReason);
         }
+        public void ChangeOrderStatus(ICOrderInfo order, BJUserInfo bjUser, string statusName)
+        {
+            ICOrderLoader loader = new ICOrderLoader();
+            loader.ChangeOrderStatus(order, bjUser, statusName);
+        }
 
         public List<ICOrderInfo> GetActiveOrdersForBookkeeping()
         {
             ICOrderLoader loader = new ICOrderLoader();
             return loader.GetActiveOrdersForBookkeeping();
         }
+        public List<ICOrderInfo> GetActiveOrdersForCafedra()
+        {
+            ICOrderLoader loader = new ICOrderLoader();
+            return loader.GetActiveOrdersForCafedra();
+        }
+
+        public void AssignCardToCatalog(ICOrderInfo ICOrder, ExemplarBase ICExemplar, BJUserInfo bjUser)
+        {
+            ICOrderLoader loader = new ICOrderLoader();
+            loader.AssignCardToCatalog(ICOrder, ICExemplar, bjUser);
+        }
+
     }
 }

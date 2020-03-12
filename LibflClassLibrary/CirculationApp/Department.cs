@@ -6,6 +6,7 @@ using LibflClassLibrary.Books.BJBooks;
 using LibflClassLibrary.Books.BJBooks.BJExemplars;
 using LibflClassLibrary.Circulation;
 using LibflClassLibrary.Circulation.CirculationService;
+using LibflClassLibrary.ImageCatalog;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.ReadersRight;
 using LibflClassLibrary.Readers.ReadersRights;
@@ -19,10 +20,11 @@ namespace CirculationApp
 {
     public enum BARType { Book, Reader, NotExist }
     public enum ExpectingAction { WaitingBook, WaitingReader, WaitingConfimation }//0 - ожидается штрихкод книги, 1 - ожидается штрихкод читателя, 2 - ожидается подтверждение или отмена выдачи
-
+    public enum ExpectingActionForAssignCardToCatalog { WaitingCardBar, WaitingBookBar, WaitingConfirmation }
     public class Department 
     {
         public ExpectingAction ExpectedBar = ExpectingAction.WaitingBook;
+        public ExpectingActionForAssignCardToCatalog ExpectedActionForCard = ExpectingActionForAssignCardToCatalog.WaitingCardBar;
 
         public Department(BJUserInfo bjUser) 
         {
@@ -32,9 +34,16 @@ namespace CirculationApp
 
 
         CirculationInfo ci = new CirculationInfo();
+        ImageCatalogCirculationManager icCirc = new ImageCatalogCirculationManager();
         public ExemplarBase ScannedExemplar;
         public ReaderInfo ScannedReader;
         public BJUserInfo bjUser;
+
+        //public string scannedCardRequirmentBar;
+        //public string scannedBookBar;
+        //public int scannedICOrderId;
+        public ICOrderInfo scannedICOrder;
+        public ExemplarBase scannedICExemplar;
         /// <summary>
         /// Возвращаемые значения:
         /// 0 - Издание принято от читателя. Сдано.
@@ -128,6 +137,34 @@ namespace CirculationApp
             }
             return true;
         }
+
+        public void RecieveImCatOrderToCafedra(string fromport)
+        {
+            if (fromport.Substring(0, 1) != "M")
+            {
+                throw new Exception("Считанный штрихкод не является штрихкодом с требования карточного каталога");
+            }
+            int icOrderId = 0;
+            string tmp = fromport.Substring(1, fromport.Length - 1);
+            try
+            {
+                icOrderId = Convert.ToInt32(tmp);
+            }
+            catch
+            {
+                throw new Exception("Ошибка при декодировании штрихкода в номер заказа");
+            }
+
+            ICOrderInfo iCOrder = ICOrderInfo.GetICOrderById(icOrderId, false);
+
+            if (iCOrder == null) throw new Exception($"Ошибка при получении заказа из базы. Номер заказа {icOrderId}");
+
+            ImageCatalogCirculationManager cm = new ImageCatalogCirculationManager();
+            cm.ChangeOrderStatus(iCOrder, bjUser, CirculationStatuses.WaitingFirstIssue.Value);
+
+
+        }
+
         public int GetAttendance()
         {
             return ci.GetAttendance(bjUser);
@@ -152,6 +189,45 @@ namespace CirculationApp
             else
             {
                 exemplar.circulation.exemplarRecieverFromReader.RecieveBookFromReader(exemplar, oi, bjUser);
+            }
+        }
+
+        public void AssignCardToCatalog(string fromport)
+        {
+            if (ExpectedActionForCard == ExpectingActionForAssignCardToCatalog.WaitingCardBar)
+            {
+                if (fromport.Substring(0,1) != "M")
+                {
+                    throw new Exception("Считанный штрихкод не является штрихкодом с требования карточного каталога");
+                }
+                int icOrderId = 0;
+                string tmp = fromport.Substring(1, fromport.Length-1);
+                try
+                {
+                    icOrderId = Convert.ToInt32(tmp);
+                }
+                catch 
+                {
+                    throw new Exception("Ошибка при декодировании штрихкода в номер заказа");
+                }
+                
+                ICOrderInfo iCOrder = ICOrderInfo.GetICOrderById(icOrderId, false);
+
+                scannedICOrder = iCOrder ?? throw new Exception($"Ошибка при получении заказа из базы. Номер заказа {icOrderId}");
+
+                this.ExpectedActionForCard = ExpectingActionForAssignCardToCatalog.WaitingBookBar;
+                return;
+            }
+            if (ExpectedActionForCard == ExpectingActionForAssignCardToCatalog.WaitingBookBar)
+            {
+                if ((fromport.Substring(0, 1) != "U") && (fromport.Substring(0, 1) != "Y"))
+                {
+                    throw new Exception("Считанный штрихкод не является штрихкодом книги либо периодики");
+                }
+                ExemplarBase exemplar = ExemplarFactory.CreateExemplar(fromport);
+                scannedICExemplar = exemplar ?? throw new Exception($"Книга со штрихкодом {fromport} не найдена.");
+                this.ExpectedActionForCard = ExpectingActionForAssignCardToCatalog.WaitingConfirmation;
+                return;
             }
         }
 

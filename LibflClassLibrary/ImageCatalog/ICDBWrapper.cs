@@ -1,4 +1,5 @@
 ﻿using LibflClassLibrary.BJUsers;
+using LibflClassLibrary.Books;
 using LibflClassLibrary.Circulation;
 using LibflClassLibrary.ExportToVufind;
 using System;
@@ -73,6 +74,35 @@ namespace LibflClassLibrary.ImageCatalog
             return table;
         }
 
+        internal void AssignCardToCatalog(ICOrderInfo ICOrder, ExemplarBase ICExemplar, BJUserInfo bjUser)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = ICQueries.CARD_TO_CATALOG;
+                command.Parameters.Clear();
+                command.Parameters.Add("CardFileName", SqlDbType.NVarChar).Value = ICOrder.CardFileName;
+                command.Parameters.Add("CardTableName", SqlDbType.NVarChar).Value = ICOrder.Card.CardType.ToString();
+                command.Parameters.Add("ExemplarBar", SqlDbType.NVarChar).Value = ICExemplar.Bar;
+                command.Parameters.Add("BookId", SqlDbType.NVarChar).Value = ICExemplar.BookId;
+                command.Parameters.Add("ExemplarId", SqlDbType.NVarChar).Value = ICExemplar.Id;
+                command.Parameters.Add("UserId", SqlDbType.Int).Value = bjUser.Id;
+                command.Parameters.Add("AssignDate", SqlDbType.DateTime).Value = DateTime.Now;
+                command.ExecuteNonQuery();
+
+            }
+
+            return;
+        }
+
+
+        internal void ChangeOrderStatus(ICOrderInfo order, BJUserInfo bjUser, string statusName)
+        {
+            this.ChangeOrderStatus(order.Id, statusName, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode, null);
+        }
+
         internal DataTable GetActiveOrdersForBookkeeping()
         {
             DataTable table = new DataTable();
@@ -81,6 +111,18 @@ namespace LibflClassLibrary.ImageCatalog
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.GET_ACTIVE_ORDERS_FOR_BOOKKEEPING, connection);
                 dataAdapter.SelectCommand.Parameters.Add("FinishedStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Finished.Value;
                 dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
+                int i = dataAdapter.Fill(table);
+            }
+            return table;
+        }
+        internal DataTable GetActiveOrdersForCafedra()
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.GET_ACTIVE_ORDERS_FOR_CAFEDRA, connection);
+                dataAdapter.SelectCommand.Parameters.Add("WaitingFirstIssue", SqlDbType.NVarChar).Value = CirculationStatuses.WaitingFirstIssue.Value;
+                //dataAdapter.SelectCommand.Parameters.Add("RefusualStatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Refusual.Value;
                 int i = dataAdapter.Fill(table);
             }
             return table;

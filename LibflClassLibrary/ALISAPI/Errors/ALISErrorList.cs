@@ -398,6 +398,12 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Удалить заказ можно только со статусом \"Заказ сформирован\". ",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
+            new ALISError()
+            {
+                Code = "M006",
+                Message = "Удалённый читатель не может заказывать литературу из имидж-каталога ",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
 
 
         };

@@ -32,6 +32,7 @@ using LibflClassLibrary.ALISAPI.Errors;
 using LibflClassLibrary.ExportToVufind;
 using LibflClassLibrary.Books;
 using LibflClassLibrary.CirculationCache;
+using LibflClassLibrary.ImageCatalog;
 
 namespace CirculationApp
 {
@@ -139,12 +140,65 @@ namespace CirculationApp
                     }
                     ShowAttendance();
                     break;
-                case "Приём книг на кафедру из хранения/в хранение с кафедры":
+                case "Приём книг из/в хранение":
                     RecieveBookFromInBookKeeping(fromport);
                     ShowBookTransfer(bjUser);
                     break;
                 #endregion
 
+                case "Привязать карточку к каталогу":
+                    AssignCardToCatalogStart(fromport);
+                    break;
+                case "Заказы из имидж-каталога":
+                    ImCatOrdersScanned(fromport);
+                    break;
+
+
+            }
+        }
+
+        private void ImCatOrdersScanned(string fromport)
+        {
+            try
+            {
+                department.RecieveImCatOrderToCafedra(fromport);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+            
+            ShowImCatOrders();
+            MessageBox.Show("Заказ успешно принят на кафедру.");
+        }
+
+        private void AssignCardToCatalogStart(string fromport)
+        {
+            try
+            {
+                department.AssignCardToCatalog(fromport);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                ShowAssignCardToCatalog();
+            }
+            if (department.ExpectedActionForCard == ExpectingActionForAssignCardToCatalog.WaitingBookBar)
+            {
+                label8.Visible = true;
+                label8.Text = $"Штрихкод: {fromport}";
+                label9.Visible = true;
+            }
+            if (department.ExpectedActionForCard == ExpectingActionForAssignCardToCatalog.WaitingConfirmation)
+            {
+                label11.Visible = true;
+                label11.Text = $"Штрихкод: {fromport}";
+                bAssignCardToCatalog.Enabled = true;
+            }
+            if (department.ExpectedActionForCard == ExpectingActionForAssignCardToCatalog.WaitingCardBar)
+            {
+                ShowAssignCardToCatalog();
             }
         }
 
@@ -239,26 +293,6 @@ namespace CirculationApp
             lBooksCountInHall.Text = $"Выдано в зал: {department.GetIssuedInHallBooksCount()} книг";
         }
 
-        private void AttendanceScan(string fromport)
-        {
-            if (!ReaderVO.IsReader(fromport))
-            {
-                MessageBox.Show("Неверный штрихкод читателя!", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            ReaderVO reader = new ReaderVO(fromport);
-
-            if (!reader.IsAlreadyMarked())
-            {
-                //department.AddAttendance(reader);
-                //lAttendance.Text = "На сегодня посещаемость составляет: " + department.GetAttendance() + " человек(а)";
-            }
-            else
-            {
-                MessageBox.Show("Этот читатель уже посетил текущий зал сегодня!");
-                return;
-            }
-        }
 
         public void FillFormular(ReaderInfo reader)
         {
@@ -553,11 +587,70 @@ namespace CirculationApp
                 case "Учёт посещаемости":
                     ShowAttendance();
                     break;
-                case "Приём книг на кафедру из хранения/в хранение с кафедры":
+                case "Приём книг из/в хранение":
                     ShowBookTransfer(bjUser);
+                    break;
+                case "Привязать карточку к каталогу":
+                    ShowAssignCardToCatalog();
+                    break;
+                case "Заказы из имидж-каталога":
+                    ShowImCatOrders();
                     break;
 
             }
+        }
+
+        private void ShowImCatOrders()
+        {
+            ImageCatalogCirculationManager circ = new ImageCatalogCirculationManager();
+            List<ICOrderInfo> activeOrders = circ.GetActiveOrdersForCafedra();
+
+            KeyValuePair<string, string>[] columns =
+            {
+                new KeyValuePair<string, string> ( "OrderId", "Номер заказа"),
+                new KeyValuePair<string, string> ( "StartDate", "Дата заказа"),
+                new KeyValuePair<string, string> ( "ReaderId", "Номер читателя"),
+                new KeyValuePair<string, string> ( "CardFileName", "Имя файла карточки"),
+                new KeyValuePair<string, string> ( "SelectedSide", "Выбранная сторона карточки"),
+                new KeyValuePair<string, string> ( "StatusName", "Статус заказа"),
+                new KeyValuePair<string, string> ( "Comment", "Комментарий читателя"),
+            };
+            dgImCatOrders.Columns.Clear();
+            foreach (var c in columns)
+                dgImCatOrders.Columns.Add(c.Key, c.Value);
+            dgImCatOrders.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgImCatOrders.RowTemplate.DefaultCellStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dgImCatOrders.Columns["OrderId"].Width = 70;
+            dgImCatOrders.Columns["StartDate"].Width = 100;
+            dgImCatOrders.Columns["ReaderId"].Width = 100;
+            dgImCatOrders.Columns["CardFileName"].Width = 120;
+            dgImCatOrders.Columns["SelectedSide"].Width = 100;
+            dgImCatOrders.Columns["StatusName"].Width = 200;
+            dgImCatOrders.Columns["Comment"].Width = 300;
+            foreach (var item in activeOrders)
+            {
+                dgImCatOrders.Rows.Add();
+                var row = dgImCatOrders.Rows[dgImCatOrders.Rows.Count - 1];
+
+                row.Cells["OrderId"].Value = item.Id;
+                row.Cells["StartDate"].Value = item.StartDate.ToString("dd.MM.yyyy hh:mm");
+                row.Cells["ReaderId"].Value = item.ReaderId;
+                row.Cells["CardFileName"].Value = item.CardFileName;
+                row.Cells["SelectedSide"].Value = item.SelectedCardSide;
+                row.Cells["StatusName"].Value = item.StatusName;
+                row.Cells["Comment"].Value = item.Comment;
+            }
+        }
+
+        private void ShowAssignCardToCatalog()
+        {
+            label8.Visible = false;
+            label9.Visible = false;
+            label11.Visible = false;
+            bAssignCardToCatalog.Enabled = false;
+            department.scannedICExemplar = null;
+            department.scannedICOrder = null;
+            department.ExpectedActionForCard = ExpectingActionForAssignCardToCatalog.WaitingCardBar;
         }
 
         private void ShowBookTransfer(BJUserInfo bjUser)
@@ -950,6 +1043,55 @@ namespace CirculationApp
 
             TableDataVisualizer tbv = new TableDataVisualizer(dp, bjUser, ReferenceType.SelfCheckStationReference);
             tbv.ShowDialog();
+
+        }
+
+        private void bCancelAssign_Click(object sender, EventArgs e)
+        {
+            ShowAssignCardToCatalog();
+        }
+
+        private void bAssignCardToCatalog_Click(object sender, EventArgs e)
+        {
+            ImageCatalogCirculationManager icCirc = new ImageCatalogCirculationManager();
+            try
+            {
+                icCirc.AssignCardToCatalog(department.scannedICOrder, department.scannedICExemplar, bjUser);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                ShowAssignCardToCatalog();
+                return;
+            }
+            ShowAssignCardToCatalog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            bEmulation_Click(sender, e);
+        }
+
+        private void bFinishImCatOrder_Click(object sender, EventArgs e)
+        {
+            if (dgImCatOrders.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите строку!");
+                return;
+            }
+            int orderId = Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value);
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(orderId, false);
+            if (order == null)
+            {
+                MessageBox.Show("Заказ не найден");
+                return;
+            }
+            ImageCatalogCirculationManager cm = new ImageCatalogCirculationManager();
+            cm.ChangeOrderStatus(order, bjUser, CirculationStatuses.Finished.Value);
+
+            ShowImCatOrders();
+            MessageBox.Show("Заказ успешно завершён!");
+
 
         }
     }

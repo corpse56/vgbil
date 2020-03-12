@@ -85,6 +85,21 @@ namespace CirculationApp
             this.dgvTransfer = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.bEmulationTransfer = new System.Windows.Forms.Button();
+            this.tpICCardToCatalog = new System.Windows.Forms.TabPage();
+            this.bEmulationICcard = new System.Windows.Forms.Button();
+            this.bCancelAssign = new System.Windows.Forms.Button();
+            this.bAssignCardToCatalog = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tpImCat = new System.Windows.Forms.TabPage();
+            this.label14 = new System.Windows.Forms.Label();
+            this.bFinishImCatOrder = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.dgImCatOrders = new System.Windows.Forms.DataGridView();
             this.label10 = new System.Windows.Forms.Label();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.выданныеКнигиНаТекущийМоментToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,6 +139,9 @@ namespace CirculationApp
             this.AttendanceTab.SuspendLayout();
             this.AcceptBooksTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTransfer)).BeginInit();
+            this.tpICCardToCatalog.SuspendLayout();
+            this.tpImCat.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgImCatOrders)).BeginInit();
             this.contextMenuStrip2.SuspendLayout();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
@@ -143,7 +161,7 @@ namespace CirculationApp
             // bChangeAuthorization
             // 
             this.bChangeAuthorization.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bChangeAuthorization.Location = new System.Drawing.Point(961, 110);
+            this.bChangeAuthorization.Location = new System.Drawing.Point(1042, 110);
             this.bChangeAuthorization.Margin = new System.Windows.Forms.Padding(4);
             this.bChangeAuthorization.Name = "bChangeAuthorization";
             this.bChangeAuthorization.Size = new System.Drawing.Size(215, 28);
@@ -161,7 +179,7 @@ namespace CirculationApp
             this.tbCurrentEmployee.Margin = new System.Windows.Forms.Padding(4);
             this.tbCurrentEmployee.Name = "tbCurrentEmployee";
             this.tbCurrentEmployee.ReadOnly = true;
-            this.tbCurrentEmployee.Size = new System.Drawing.Size(661, 23);
+            this.tbCurrentEmployee.Size = new System.Drawing.Size(742, 23);
             this.tbCurrentEmployee.TabIndex = 8;
             // 
             // MainTabContainer
@@ -173,11 +191,13 @@ namespace CirculationApp
             this.MainTabContainer.Controls.Add(this.FormularTab);
             this.MainTabContainer.Controls.Add(this.AttendanceTab);
             this.MainTabContainer.Controls.Add(this.AcceptBooksTab);
+            this.MainTabContainer.Controls.Add(this.tpICCardToCatalog);
+            this.MainTabContainer.Controls.Add(this.tpImCat);
             this.MainTabContainer.Location = new System.Drawing.Point(15, 138);
             this.MainTabContainer.Margin = new System.Windows.Forms.Padding(4);
             this.MainTabContainer.Name = "MainTabContainer";
             this.MainTabContainer.SelectedIndex = 0;
-            this.MainTabContainer.Size = new System.Drawing.Size(1161, 581);
+            this.MainTabContainer.Size = new System.Drawing.Size(1242, 581);
             this.MainTabContainer.TabIndex = 9;
             this.MainTabContainer.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -197,7 +217,7 @@ namespace CirculationApp
             this.MainTab.Margin = new System.Windows.Forms.Padding(4);
             this.MainTab.Name = "MainTab";
             this.MainTab.Padding = new System.Windows.Forms.Padding(4);
-            this.MainTab.Size = new System.Drawing.Size(1153, 552);
+            this.MainTab.Size = new System.Drawing.Size(1234, 552);
             this.MainTab.TabIndex = 0;
             this.MainTab.Text = "Приём/выдача изданий";
             this.MainTab.UseVisualStyleBackColor = true;
@@ -391,7 +411,7 @@ namespace CirculationApp
             this.FormularTab.Location = new System.Drawing.Point(4, 25);
             this.FormularTab.Name = "FormularTab";
             this.FormularTab.Padding = new System.Windows.Forms.Padding(3);
-            this.FormularTab.Size = new System.Drawing.Size(1153, 552);
+            this.FormularTab.Size = new System.Drawing.Size(1234, 552);
             this.FormularTab.TabIndex = 3;
             this.FormularTab.Text = "Формуляр читателя";
             this.FormularTab.UseVisualStyleBackColor = true;
@@ -675,7 +695,7 @@ namespace CirculationApp
             this.AttendanceTab.Location = new System.Drawing.Point(4, 25);
             this.AttendanceTab.Name = "AttendanceTab";
             this.AttendanceTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AttendanceTab.Size = new System.Drawing.Size(1153, 552);
+            this.AttendanceTab.Size = new System.Drawing.Size(1234, 552);
             this.AttendanceTab.TabIndex = 4;
             this.AttendanceTab.Text = "Учёт посещаемости";
             this.AttendanceTab.UseVisualStyleBackColor = true;
@@ -718,9 +738,9 @@ namespace CirculationApp
             this.AcceptBooksTab.Location = new System.Drawing.Point(4, 25);
             this.AcceptBooksTab.Name = "AcceptBooksTab";
             this.AcceptBooksTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AcceptBooksTab.Size = new System.Drawing.Size(1153, 552);
+            this.AcceptBooksTab.Size = new System.Drawing.Size(1234, 552);
             this.AcceptBooksTab.TabIndex = 5;
-            this.AcceptBooksTab.Text = "Приём книг на кафедру из хранения/в хранение с кафедры";
+            this.AcceptBooksTab.Text = "Приём книг из/в хранение";
             this.AcceptBooksTab.UseVisualStyleBackColor = true;
             // 
             // dgvTransfer
@@ -737,7 +757,7 @@ namespace CirculationApp
             this.dgvTransfer.Name = "dgvTransfer";
             this.dgvTransfer.RowHeadersVisible = false;
             this.dgvTransfer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTransfer.Size = new System.Drawing.Size(1128, 428);
+            this.dgvTransfer.Size = new System.Drawing.Size(1209, 428);
             this.dgvTransfer.TabIndex = 3;
             // 
             // label2
@@ -753,13 +773,187 @@ namespace CirculationApp
             // bEmulationTransfer
             // 
             this.bEmulationTransfer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bEmulationTransfer.Location = new System.Drawing.Point(1031, 471);
+            this.bEmulationTransfer.Location = new System.Drawing.Point(1112, 471);
             this.bEmulationTransfer.Name = "bEmulationTransfer";
             this.bEmulationTransfer.Size = new System.Drawing.Size(103, 23);
             this.bEmulationTransfer.TabIndex = 1;
             this.bEmulationTransfer.Text = "Эмуляция";
             this.bEmulationTransfer.UseVisualStyleBackColor = true;
             this.bEmulationTransfer.Click += new System.EventHandler(this.bEmulationTransfer_Click);
+            // 
+            // tpICCardToCatalog
+            // 
+            this.tpICCardToCatalog.Controls.Add(this.bEmulationICcard);
+            this.tpICCardToCatalog.Controls.Add(this.bCancelAssign);
+            this.tpICCardToCatalog.Controls.Add(this.bAssignCardToCatalog);
+            this.tpICCardToCatalog.Controls.Add(this.label11);
+            this.tpICCardToCatalog.Controls.Add(this.label9);
+            this.tpICCardToCatalog.Controls.Add(this.label8);
+            this.tpICCardToCatalog.Controls.Add(this.label5);
+            this.tpICCardToCatalog.Location = new System.Drawing.Point(4, 25);
+            this.tpICCardToCatalog.Name = "tpICCardToCatalog";
+            this.tpICCardToCatalog.Padding = new System.Windows.Forms.Padding(3);
+            this.tpICCardToCatalog.Size = new System.Drawing.Size(1234, 552);
+            this.tpICCardToCatalog.TabIndex = 6;
+            this.tpICCardToCatalog.Text = "Привязать карточку к каталогу";
+            this.tpICCardToCatalog.UseVisualStyleBackColor = true;
+            // 
+            // bEmulationICcard
+            // 
+            this.bEmulationICcard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.bEmulationICcard.Location = new System.Drawing.Point(87, 522);
+            this.bEmulationICcard.Name = "bEmulationICcard";
+            this.bEmulationICcard.Size = new System.Drawing.Size(92, 24);
+            this.bEmulationICcard.TabIndex = 18;
+            this.bEmulationICcard.Text = "эмуляция";
+            this.bEmulationICcard.UseVisualStyleBackColor = true;
+            this.bEmulationICcard.Click += new System.EventHandler(this.bEmulation_Click);
+            // 
+            // bCancelAssign
+            // 
+            this.bCancelAssign.Location = new System.Drawing.Point(518, 418);
+            this.bCancelAssign.Name = "bCancelAssign";
+            this.bCancelAssign.Size = new System.Drawing.Size(238, 34);
+            this.bCancelAssign.TabIndex = 17;
+            this.bCancelAssign.Text = "Отмена";
+            this.bCancelAssign.UseVisualStyleBackColor = true;
+            this.bCancelAssign.Click += new System.EventHandler(this.bCancelAssign_Click);
+            // 
+            // bAssignCardToCatalog
+            // 
+            this.bAssignCardToCatalog.Location = new System.Drawing.Point(231, 418);
+            this.bAssignCardToCatalog.Name = "bAssignCardToCatalog";
+            this.bAssignCardToCatalog.Size = new System.Drawing.Size(238, 34);
+            this.bAssignCardToCatalog.TabIndex = 16;
+            this.bAssignCardToCatalog.Text = "Привязать карточку к каталогу";
+            this.bAssignCardToCatalog.UseVisualStyleBackColor = true;
+            this.bAssignCardToCatalog.Click += new System.EventHandler(this.bAssignCardToCatalog_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label11.Location = new System.Drawing.Point(161, 298);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(200, 42);
+            this.label11.TabIndex = 15;
+            this.label11.Text = "Штрихкод:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.Location = new System.Drawing.Point(39, 203);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(539, 42);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "2. Считайте штрихкод с книги";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label8.Location = new System.Drawing.Point(161, 95);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(200, 42);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "Штрихкод:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.Location = new System.Drawing.Point(39, 29);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(1018, 42);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "1. Считайте штрихкод с требования карточного каталога";
+            // 
+            // tpImCat
+            // 
+            this.tpImCat.Controls.Add(this.label14);
+            this.tpImCat.Controls.Add(this.bFinishImCatOrder);
+            this.tpImCat.Controls.Add(this.label13);
+            this.tpImCat.Controls.Add(this.label12);
+            this.tpImCat.Controls.Add(this.button1);
+            this.tpImCat.Controls.Add(this.dgImCatOrders);
+            this.tpImCat.Location = new System.Drawing.Point(4, 25);
+            this.tpImCat.Name = "tpImCat";
+            this.tpImCat.Padding = new System.Windows.Forms.Padding(3);
+            this.tpImCat.Size = new System.Drawing.Size(1234, 552);
+            this.tpImCat.TabIndex = 7;
+            this.tpImCat.Text = "Заказы из имидж-каталога";
+            this.tpImCat.UseVisualStyleBackColor = true;
+            // 
+            // label14
+            // 
+            this.label14.BackColor = System.Drawing.SystemColors.Control;
+            this.label14.ForeColor = System.Drawing.Color.Red;
+            this.label14.Location = new System.Drawing.Point(737, 496);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(485, 41);
+            this.label14.TabIndex = 22;
+            this.label14.Text = "Внимание! Заказы из имидж-каталога необходимо завершать сразу после выдачи книги " +
+    "читателю либо по возврату книги в хранение";
+            // 
+            // bFinishImCatOrder
+            // 
+            this.bFinishImCatOrder.Location = new System.Drawing.Point(344, 496);
+            this.bFinishImCatOrder.Name = "bFinishImCatOrder";
+            this.bFinishImCatOrder.Size = new System.Drawing.Size(222, 36);
+            this.bFinishImCatOrder.TabIndex = 21;
+            this.bFinishImCatOrder.Text = "Завершить выбранный заказ";
+            this.bFinishImCatOrder.UseVisualStyleBackColor = true;
+            this.bFinishImCatOrder.Click += new System.EventHandler(this.bFinishImCatOrder_Click);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label13.Location = new System.Drawing.Point(18, 70);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(472, 24);
+            this.label13.TabIndex = 20;
+            this.label13.Text = "Заказы из имидж каталога, ожидающие читателей:";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label12.Location = new System.Drawing.Point(18, 20);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(1136, 33);
+            this.label12.TabIndex = 13;
+            this.label12.Text = "Считайте штрихкод с заказа из имидж каталога, чтобы принять заказ на кафедру";
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(13, 510);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(92, 24);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "эмуляция";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // dgImCatOrders
+            // 
+            this.dgImCatOrders.AllowUserToAddRows = false;
+            this.dgImCatOrders.AllowUserToDeleteRows = false;
+            this.dgImCatOrders.AllowUserToOrderColumns = true;
+            this.dgImCatOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgImCatOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgImCatOrders.Location = new System.Drawing.Point(13, 106);
+            this.dgImCatOrders.MultiSelect = false;
+            this.dgImCatOrders.Name = "dgImCatOrders";
+            this.dgImCatOrders.RowHeadersVisible = false;
+            this.dgImCatOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgImCatOrders.Size = new System.Drawing.Size(1209, 384);
+            this.dgImCatOrders.TabIndex = 4;
             // 
             // label10
             // 
@@ -847,7 +1041,7 @@ namespace CirculationApp
             this.справкаToolStripMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(1189, 24);
+            this.MainMenu.Size = new System.Drawing.Size(1270, 24);
             this.MainMenu.TabIndex = 12;
             this.MainMenu.Text = "menuStrip1";
             // 
@@ -966,7 +1160,7 @@ namespace CirculationApp
             this.AcceptButton = this.bConfirm;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1189, 732);
+            this.ClientSize = new System.Drawing.Size(1270, 732);
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.pbLogo);
             this.Controls.Add(this.label10);
@@ -998,6 +1192,11 @@ namespace CirculationApp
             this.AcceptBooksTab.ResumeLayout(false);
             this.AcceptBooksTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTransfer)).EndInit();
+            this.tpICCardToCatalog.ResumeLayout(false);
+            this.tpICCardToCatalog.PerformLayout();
+            this.tpImCat.ResumeLayout(false);
+            this.tpImCat.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgImCatOrders)).EndInit();
             this.contextMenuStrip2.ResumeLayout(false);
             this.MainMenu.ResumeLayout(false);
             this.MainMenu.PerformLayout();
@@ -1091,6 +1290,21 @@ namespace CirculationApp
         private System.Windows.Forms.ToolStripMenuItem ReaderRegistrationAndLitresToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OrdersBySubjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SelfCheckStationReferenceToolStripMenuItem;
+        private System.Windows.Forms.TabPage tpICCardToCatalog;
+        private System.Windows.Forms.Button bCancelAssign;
+        private System.Windows.Forms.Button bAssignCardToCatalog;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button bEmulationICcard;
+        private System.Windows.Forms.TabPage tpImCat;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridView dgImCatOrders;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button bFinishImCatOrder;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
         //private System.Windows.Forms.DataGridView dgvTransfer;
         //private Circulation.BRIT_SOVETDataSetTableAdapters.ZAKAZTableAdapter zAKAZTableAdapter;
         //private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;

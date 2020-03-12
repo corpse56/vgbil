@@ -123,6 +123,25 @@ namespace LibflClassLibrary.ImageCatalog
             }
         }
 
+        public static string GET_ACTIVE_ORDERS_FOR_CAFEDRA
+        {
+            get
+            {
+                return $" select Id from Circulation..ICOrders " +
+                       $" where StatusName in  (@WaitingFirstIssue)";
+            }
+        }
+
+
+        public static string CARD_TO_CATALOG
+        {
+            get
+            {
+                return $" insert into Circulation..CardToCatalog " +
+                       $"        (CardFileName,  CardTableName,  ExemplarBar,  BookId,  ExemplarId,  UserId,  AssignDate) " +
+                       $" values (@CardFileName, @CardTableName, @ExemplarBar, @BookId, @ExemplarId, @UserId, @AssignDate) ";
+            }
+        }
 
     }
 }

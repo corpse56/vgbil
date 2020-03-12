@@ -827,7 +827,7 @@ namespace LibflClassLibrary.Circulation
         }
 
 
-        private void NewOrder(ExemplarBase exemplar, ReaderInfo reader, int orderTypeId, int ReturnInDays)
+        public void NewOrder(ExemplarBase exemplar, ReaderInfo reader, int orderTypeId, int ReturnInDays)
         {
             List<BasketInfo> basket = loader.GetBasket(reader.NumberReader);
             string bookId = exemplar.BookId;
