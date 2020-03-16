@@ -243,6 +243,7 @@
     <Compile Include="ExportToVufind\CERFVufindConverter.cs" />
     <Compile Include="ExportToVufind\KeyValueMapping.cs" />
     <Compile Include="Books\BJBooks\DB\DatabaseWrapper.cs" />
+    <Compile Include="ImageCatalog\CardToCatalogInfo.cs" />
     <Compile Include="ImageCatalog\ICCookie.cs" />
     <Compile Include="ImageCatalog\ICDBWrapper.cs" />
     <Compile Include="ImageCatalog\ICLoader.cs" />

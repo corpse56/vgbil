@@ -368,6 +368,12 @@ namespace LibflClassLibrary.Circulation
                 }
             }
 
+            if (IsTenBooksAlreadyIssuedAtHome(reader))
+            {
+                throw new Exception("C030");
+            }
+
+
             //ищем заказ с таким экземпляром.
             OrderInfo order = this.FindOrderByExemplar(exemplar);
 
@@ -469,6 +475,20 @@ namespace LibflClassLibrary.Circulation
             //    case 1999://Уточнить доступ    Проследовать в { { location_2007} }. Возможность доступа уточните у сотрудника.
             //        break;
             //}
+        }
+
+        private bool IsTenBooksAlreadyIssuedAtHome(ReaderInfo reader)
+        {
+            List<OrderInfo> orders = loader.GetOrders(reader.NumberReader);
+            int count = 0;
+            foreach (var order in orders)
+            {
+                if (order.StatusName == CirculationStatuses.IssuedAtHome.Value)
+                {
+                    count++;
+                }
+            }
+            return (count >= 10) ? true : false;
         }
 
         public OrderInfo GetLastOrder(int idData, string fund)
@@ -764,7 +784,10 @@ namespace LibflClassLibrary.Circulation
 
         }
 
-
+        public void ProlongUnconditionally(int orderId)
+        {
+            loader.ProlongOrder(orderId, 30);
+        }
         public void ProlongOrder(int OrderId)
         {
             OrderInfo order = this.GetOrder(OrderId);

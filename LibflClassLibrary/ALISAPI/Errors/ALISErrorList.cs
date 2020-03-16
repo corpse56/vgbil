@@ -367,6 +367,12 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Невозможная ситуация при приёме книги от читателя",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
+            new ALISError()
+            {
+                Code = "C030",
+                Message = "Нельзя выдать на дом более 10 книг",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
 //////////////////////////////////////////////////////////////////////Ошибки имидж каталога//////////////////////////
             new ALISError()
             {

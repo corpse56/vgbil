@@ -143,5 +143,13 @@ namespace LibflClassLibrary.ImageCatalog
             }
         }
 
+        public static string GET_BOOKS_ON_CARD
+        {
+            get
+            {
+                return $" select * from Circulation..CardToCatalog " +
+                       $" where CardFileName = @cardFileName ";
+            }
+        }
     }
 }

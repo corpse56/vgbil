@@ -64,6 +64,22 @@ namespace LibflClassLibrary.ImageCatalog
             return result;
         }
 
+        internal List<CardToCatalogInfo> GetBooksOnCard(string cardFileName)
+        {
+            DataTable table = dbWrapper.GetBooksOnCard(cardFileName);
+            List<CardToCatalogInfo> result = new List<CardToCatalogInfo>();
+            foreach (DataRow row in table.Rows)
+            {
+                CardToCatalogInfo item = new CardToCatalogInfo();
+                item.BookId = row["BookId"].ToString();
+                item.CardFileName = row["CardFileName"].ToString();
+                item.CardTableName = row["CardTableName"].ToString();
+                item.ExemplarBar = row["ExemplarBar"].ToString();
+                item.ExemplarId = row["ExemplarId"].ToString();
+                result.Add(item);
+            }
+            return result;
+        }
 
         internal void AssignCardToCatalog(ICOrderInfo ICOrder, ExemplarBase ICExemplar, BJUserInfo bjUser)
         {
@@ -77,7 +93,7 @@ namespace LibflClassLibrary.ImageCatalog
             List<ICOrderInfo> result = new List<ICOrderInfo>();
             foreach (DataRow row in table.Rows)
             {
-                ICOrderInfo item = this.GetICOrderById((int)row["Id"], true);
+                ICOrderInfo item = this.GetICOrderById((int)row["Id"], false);
                 result.Add(item);
             }
             return result;
@@ -173,16 +189,29 @@ namespace LibflClassLibrary.ImageCatalog
             string pwd = AppSettings.PasswordFileServerRead;
             string ip = AppSettings.IPAddressFileServer;
             string directoryPath = $@"\\{ip}\ImageCatalog\{ICLoader.GetPath(card.SeparatorId)}\HQ\";
-
-            using (new NetworkConnection(directoryPath, new NetworkCredential(login, pwd)))
+            try
             {
-                DirectoryInfo di = new DirectoryInfo(directoryPath);
-                selectedCard = (selectedCard.Length == 1) ? $"0{selectedCard}" : selectedCard;
-                FileInfo[] files = di.GetFiles($"{order.CardFileName}_{selectedCard}.jpg");
-                if (files.Length != 0)
+                    DirectoryInfo di = new DirectoryInfo(directoryPath);
+                    selectedCard = (selectedCard.Length == 1) ? $"0{selectedCard}" : selectedCard;
+                    FileInfo[] files = di.GetFiles($"{order.CardFileName}_{selectedCard}.jpg");
+                    if (files.Length != 0)
+                    {
+                        FileInfo selectedImageFile = files.FirstOrDefault(x => x.Name == $"{order.CardFileName}_{selectedCard}.jpg");
+                        order.SelectedSideImage = (selectedImageFile == null) ? null : Image.FromFile(selectedImageFile.FullName);
+                    }
+            }
+            catch
+            {
+                using (new NetworkConnection(directoryPath, new NetworkCredential(login, pwd)))
                 {
-                    FileInfo selectedImageFile = files.FirstOrDefault(x => x.Name == $"{order.CardFileName}_{selectedCard}.jpg");
-                    order.SelectedSideImage = (selectedImageFile == null) ? null : Image.FromFile(selectedImageFile.FullName);
+                    DirectoryInfo di = new DirectoryInfo(directoryPath);
+                    selectedCard = (selectedCard.Length == 1) ? $"0{selectedCard}" : selectedCard;
+                    FileInfo[] files = di.GetFiles($"{order.CardFileName}_{selectedCard}.jpg");
+                    if (files.Length != 0)
+                    {
+                        FileInfo selectedImageFile = files.FirstOrDefault(x => x.Name == $"{order.CardFileName}_{selectedCard}.jpg");
+                        order.SelectedSideImage = (selectedImageFile == null) ? null : Image.FromFile(selectedImageFile.FullName);
+                    }
                 }
             }
         }

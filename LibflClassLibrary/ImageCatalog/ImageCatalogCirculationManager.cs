@@ -61,6 +61,11 @@ namespace LibflClassLibrary.ImageCatalog
             ICOrderLoader loader = new ICOrderLoader();
             loader.AssignCardToCatalog(ICOrder, ICExemplar, bjUser);
         }
+        public List<CardToCatalogInfo> GetBooksOnCard(string cardFileName)
+        {
+            ICOrderLoader loader = new ICOrderLoader();
+            return loader.GetBooksOnCard(cardFileName);
+        }
 
     }
 }

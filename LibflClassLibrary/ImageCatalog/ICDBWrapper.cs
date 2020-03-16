@@ -74,6 +74,19 @@ namespace LibflClassLibrary.ImageCatalog
             return table;
         }
 
+        internal DataTable GetBooksOnCard(string cardFileName)
+        {
+            DataTable table = new DataTable();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(ICQueries.GET_BOOKS_ON_CARD, connection);
+                dataAdapter.SelectCommand.Parameters.Add("cardFileName", SqlDbType.NVarChar).Value = cardFileName;
+                int i = dataAdapter.Fill(table);
+            }
+            return table;
+
+        }
+
         internal void AssignCardToCatalog(ICOrderInfo ICOrder, ExemplarBase ICExemplar, BJUserInfo bjUser)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

@@ -87,7 +87,7 @@ namespace BookkeepingForOrder
             this.printFont = new Font("Arial Unicode MS", 10f);
             string[] ddd = new string[PrinterSettings.InstalledPrinters.Count];
             PrinterSettings.InstalledPrinters.CopyTo(ddd, 0);
-            pd.PrinterSettings.PrinterName = @"Zebra TLP2844";
+            //pd.PrinterSettings.PrinterName = @"Zebra TLP2844";
             
             pd.DefaultPageSettings.PaperSize = new PaperSize("rdr", 315, PaperSize);
             

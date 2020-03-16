@@ -1019,7 +1019,7 @@ namespace BookkeepingForOrder
                 return;
 
             }
-            ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), true);
+            ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), false);
             ReaderInfo reader = ReaderInfo.GetReader(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["ReaderId"].Value));
             fICRefuseReason refu = new fICRefuseReason();
             refu.ShowDialog();
