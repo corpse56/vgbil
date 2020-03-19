@@ -977,6 +977,7 @@ namespace BookkeepingForOrder
             }
             ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), false);
             string cardType = ICOrderInfo.GetCardTypeString(order.Card.CardType);
+
             System.Diagnostics.Process.Start($@"https://imcat.libfl.ru/ic/orders/open.php?cardId={order.CardFileName}&orderType={cardType}&countSide=1");
         }
 

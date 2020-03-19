@@ -40,7 +40,7 @@
         bcgDiv.style.width = "100%";
         imgDiv.style.width = "650px";
 
-        bcgDiv.style.display = "block";
+        bcgDiv.style.display = "none";
         imgDiv.style.display = "block";
         disableScroll();
         return false;

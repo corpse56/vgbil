@@ -660,6 +660,9 @@ namespace LibflClassLibrary.Circulation
             }
             else
             {
+                //coronavirus
+                throw new Exception("C031");
+
                 if (this.IsBookAlreadyIssuedToReader(book, reader))
                 {
                     throw new Exception("C006");

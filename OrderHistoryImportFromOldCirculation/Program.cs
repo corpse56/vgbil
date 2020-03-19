@@ -25,8 +25,14 @@ namespace OrderHistoryImportFromOldCirculation
             //int i = Convert.ToInt32(str);
 
             CirculationInfo ci = new CirculationInfo();
-            ci.ProlongUnconditionally(45324);
+            //ci.ProlongUnconditionally(45324);
             //ci.ProlongOrder(45324);
+            ExemplarBase exemplar = ExemplarFactory.CreateExemplarByInventoryNumber("1224491");
+            ReaderInfo reader = ReaderInfo.GetReader(184615);
+            //ci.IssueBookToReader(exemplar, reader, BJUserInfo.GetAdmin());
+            OrderInfo order = ci.GetLastOrder(Convert.ToInt32(exemplar.Id), exemplar.Fund);
+            //ci.RecieveBookFromReader(exemplar, order, BJUserInfo.GetAdmin());
+            exemplar.circulation.exemplarRecieverFromReader.RecieveBookFromReader(exemplar, order, BJUserInfo.GetAdmin(), CirculationStatuses.InReserve.Value);
 
             Console.WriteLine("Hello World!");
             Console.ReadKey();

@@ -1,6 +1,7 @@
 ﻿using ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.Errors;
 using LibflClassLibrary.ALISAPI.RequestObjects.Readers;
+using LibflClassLibrary.Circulation;
 using LibflClassLibrary.ImageCatalog;
 using LibflClassLibrary.Readers;
 using LibflClassLibrary.Readers.ReadersJSONViewers;
@@ -131,11 +132,15 @@ public partial class _Default : System.Web.UI.Page
         try
         {
             HttpCookie objCookie = new HttpCookie(cookiename);
+            objCookie.Domain = ".libfl.ru";
+            objCookie.Path = "/";
+            objCookie.Value = cookievalue;
+            objCookie.HttpOnly = true;
+            DateTime dtExpiry = DateTime.Now.AddDays(iDaysToExpire);
+            objCookie.Expires = dtExpiry;
+
             Response.Cookies.Clear();
             Response.Cookies.Add(objCookie);
-            objCookie.Values.Add(cookiename, cookievalue);
-            DateTime dtExpiry = DateTime.Now.AddDays(iDaysToExpire);
-            Response.Cookies[cookiename].Expires = dtExpiry;
         }
         catch (Exception e)
         {
@@ -167,7 +172,8 @@ public partial class _Default : System.Web.UI.Page
             row["orderId"] = order.Id;
             row["num"] = i++;
             row["comment"] = order.Comment;
-            row["statusName"] = order.StatusName;
+            row["statusName"] = (order.StatusName == CirculationStatuses.Refusual.Value) ? 
+                                 $"{order.StatusName}: {order.RefusualReason}" : order.StatusName;
             row["mainSideUrl"] = order.Card.MainSideUrl;
             row["selectedSideUrl"] = order.SelectedSideUrl;
             dataSource.Rows.Add(row);
@@ -192,6 +198,11 @@ public partial class _Default : System.Web.UI.Page
             img.ImageUrl = e.Row.Cells[1].Text;//order.Card.MainSideUrl;
             img = (Image)e.Row.FindControl("selectedSideImage");
             img.ImageUrl = e.Row.Cells[2].Text;// order.SelectedSideUrl;
+            if (e.Row.Cells[7].Text.Contains("тказ"))
+            {
+                e.Row.Cells[7].ForeColor = System.Drawing.Color.Red;
+            }
+
         }
     }
 
@@ -211,7 +222,18 @@ public partial class _Default : System.Web.UI.Page
         {
             case "delOrder":
                 int argument = Convert.ToInt32(e.CommandArgument);
-                DeleteOrder(reader.NumberReader, argument);
+                try
+                {
+                    DeleteOrder(reader.NumberReader, argument);
+                }
+                catch (Exception ex)
+                {
+                    ALISError error = ALISErrorList._list.Find(x => x.Code == ex.Message);
+                    string userMessage = (error != null) ? error.Message : ex.Message;
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delComplete",
+                        $"alert('Заказ № {e.CommandArgument.ToString()} не может быть удалён. {userMessage}');", true);
+                    break;
+                }
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delComplete", 
                     $"alert('Заказ № {e.CommandArgument.ToString()} успешно удалён.');", true);
                 break;
@@ -224,8 +246,18 @@ public partial class _Default : System.Web.UI.Page
     {
         ImageCatalogCirculationManager circ = new ImageCatalogCirculationManager();
         circ.DeleteOrder(numberReader, orderId);
-        //ShowActiveOrders();
+        ShowActiveOrders();
     }
 
-   
+
+
+    protected void LinkButton3_Click(object sender, EventArgs e)
+    {
+        //выйти
+        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "delCookie",
+        //    "document.cookie = \"ReaderToken = test; max-age = -999; path =/; domain =.libfl.ru\"", true);
+        SetCookie("ReaderToken", "expiredToken", -7);
+        Response.Redirect("https://oauth.libfl.ru/?redirect_uri=https://opac.libfl.ru/OrderImCat/");
+
+    }
 }

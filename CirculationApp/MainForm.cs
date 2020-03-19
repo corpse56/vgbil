@@ -1065,6 +1065,7 @@ namespace CirculationApp
                 return;
             }
             ShowAssignCardToCatalog();
+            MessageBox.Show("Карточка успешно привязана к электронному каталогу.");
         }
 
         private void button1_Click(object sender, EventArgs e)

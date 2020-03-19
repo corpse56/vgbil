@@ -264,6 +264,7 @@ namespace ALISAPI.Controllers
 
             CirculationInfo Circulation = new CirculationInfo();
 
+            //коронавирус
 
             try
             {

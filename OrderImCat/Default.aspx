@@ -167,6 +167,10 @@
                 <asp:LinkButton ID="LinkButton2" runat="server" Font-Size ="20px" PostBackUrl="http://imcatnew.libfl.ru/ic/book/index.php">Перейти в имидж каталог</asp:LinkButton>
             </div>
             <br />
+            <div align="right">
+                <asp:LinkButton ID="LinkButton3" runat="server" Font-Size ="20px" PostBackUrl="~/Default.aspx" OnClick="LinkButton3_Click">Выйти</asp:LinkButton>
+            </div>
+            <br />
             <br />
            <div align="center" style="font-size:x-large">Активные заказы из имидж каталога</div>
             <br />

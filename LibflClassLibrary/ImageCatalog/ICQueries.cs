@@ -89,7 +89,8 @@ namespace LibflClassLibrary.ImageCatalog
             {
                 return $" select Id from Circulation..ICOrders " +
                        $" where ReaderId = @ReaderId " +
-                       $" and StatusName not in  (@FinishedStatusName, @RefusualStatusName) ";
+                       $" and (StatusName not in  (@FinishedStatusName, @RefusualStatusName) " +
+                       $" or (StatusName in  (@RefusualStatusName) and StartDate > dateadd(day, -3, getdate())))";
             }
         }
 
@@ -109,7 +110,8 @@ namespace LibflClassLibrary.ImageCatalog
                 return $" select A.Id, B.Refusual from Circulation..ICOrders A " +
                        $" left join Circulation..ICOrdersFlow B on A.Id = B.OrderId and B.StatusName = @RefusualStatusName " +
                        $" where A.ReaderId = @ReaderId " +
-                       $" and A.StatusName in  (@FinishedStatusName, @RefusualStatusName) ";
+                       $" and A.StatusName in  (@FinishedStatusName, @RefusualStatusName)" +
+                       $" order by A.Id desc ";
             }
         }
 
