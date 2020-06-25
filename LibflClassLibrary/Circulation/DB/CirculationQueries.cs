@@ -294,6 +294,18 @@ namespace LibflClassLibrary.Circulation.DB
                        " commit;";
             }
         }
+        public string PROLONG_ORDER_TO_DATE
+        {
+            get
+            {
+                return " begin transaction; " +
+                        " update Circulation..Orders set ReturnDate = @toDate where ID = @orderId; " +
+                       " insert into Circulation..OrdersFlow (OrderId, StatusName,  Changed,  Changer,    DepartmentId, Refusual ) " +
+                       " values                              (@OrderId, @StatusName,getdate(),    1  ,      2033,           null ); " +
+                       " commit;";
+            }
+        }
+
 
 
         public string REFUSE_ORDER//этот запрос сам вставляет действие оператора. Остальные используют метод ChangeStatus. не знаю зачем. можно переделать для однообразия.

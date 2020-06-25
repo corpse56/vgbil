@@ -71,7 +71,8 @@ namespace BookkeepingForOrder
             dgwReaders.Columns["pubdate"].Visible = false;
             dgwReaders.Columns["iddata"].Visible = false;
             CirculationInfo circulation = new CirculationInfo();
-            List<OrderInfo> orders = circulation.GetOrdersForStorage(bjUser.SelectedUserStatus.DepId, bjUser.SelectedUserStatus.DepName, CirculationStatuses.EmployeeLookingForBook.Value);
+            List<OrderInfo> orders = circulation.GetOrdersForStorage(bjUser.SelectedUserStatus.DepId, bjUser.SelectedUserStatus.DepName,
+                                                                    CirculationStatuses.EmployeeLookingForBook.Value);
             if (bjUser.SelectedUserStatus.DepId == 8)//0 и 4 этаж должны получать заказы в одну точку
             {
                 List<OrderInfo> orders1 = circulation.GetOrdersForStorage(15, "…Хран… Сектор книгохранения - 0 этаж");

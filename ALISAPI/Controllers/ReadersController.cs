@@ -217,6 +217,7 @@ namespace ALISAPI.Controllers
         [Route("Readers/SetPasswordLocalReader")]
         public HttpResponseMessage SetPasswordLocalReader()
         {
+            ALISReaderRemote.ReaderRemote re = new ALISReaderRemote.ReaderRemote(RegisterConnectionString);
 
             string JSONRequest = Request.Content.ReadAsStringAsync().Result;
             SetPasswordLocalReader request;
@@ -240,7 +241,8 @@ namespace ALISAPI.Controllers
             }
             try
             {
-                reader.SetPasswordLocalReader(request, reader);
+                re.PasSaveBaseAndDelTemp(request.ReaderId, request.NewPassword);
+                //reader.SetPasswordLocalReader(request, reader);
             }
             catch (Exception ex)
             {

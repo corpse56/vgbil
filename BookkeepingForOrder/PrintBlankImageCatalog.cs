@@ -20,7 +20,7 @@ namespace BookkeepingForOrder
     {
         private static PrintDocument pd;
         private Font printFont;
-        private int PaperSize = 1600;
+        //private int PaperSize = 1600;
         private ReaderInfo reader;
         private ICOrderInfo order;
         private BJUserInfo bjUser;
@@ -88,9 +88,21 @@ namespace BookkeepingForOrder
             string[] ddd = new string[PrinterSettings.InstalledPrinters.Count];
             PrinterSettings.InstalledPrinters.CopyTo(ddd, 0);
             //pd.PrinterSettings.PrinterName = @"Zebra TLP2844";
+            Utilities.IniFile iniFile = new Utilities.IniFile("PrintBlankSettings.ini");
+            int paperSize = int.Parse(iniFile.Read("paperSize", "PrintBlankImageCatalog"));
+            int rawKind = int.Parse(iniFile.Read("rawKind", "PrintBlankImageCatalog"));
+            pd.DefaultPageSettings.PaperSize = new PaperSize("Custom", 315, paperSize);
+            pd.DefaultPageSettings.PaperSize.RawKind = rawKind;
+            pd.PrinterSettings.DefaultPageSettings.PaperSize = new PaperSize("Custom", 315, paperSize);
+            pd.PrinterSettings.DefaultPageSettings.PaperSize.RawKind = rawKind;
+            pd.DefaultPageSettings.Landscape = false;
             
-            pd.DefaultPageSettings.PaperSize = new PaperSize("rdr", 315, PaperSize);
-            
+            //PrinterSettings ps = new PrinterSettings();
+
+            //pd.PrinterSettings = ps;
+           // pd.DefaultPageSettings.PaperSize = new PaperSize("Custom", 315, paperSize);
+
+
             pd.PrintPage += new PrintPageEventHandler(pd_PrintPage);
         }
         public void Print()
@@ -250,19 +262,26 @@ namespace BookkeepingForOrder
             //e.Graphics.DrawString($"{img.Width},{img.Height}", printFont, Brushes.Black, rectangle, format);
             CurrentY += 500;
 
-            printFont = new Font("Arial Unicode MS", 10f);
-            rectangle = new Rectangle(0, CurrentY, 315, 25);
-            e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            str = "Выбранная карточка:";
-            e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
-            CurrentY += 25;
+            //printFont = new Font("Arial Unicode MS", 10f);
+            //rectangle = new Rectangle(0, CurrentY, 315, 25);
+            //e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            //str = "Выбранная карточка:";
+            //e.Graphics.DrawString(str, printFont, Brushes.Black, rectangle, format);
+            //CurrentY += 25;
 
-            rectangle = new Rectangle(0, CurrentY, 315, 500);
-            e.Graphics.DrawRectangle(Pens.Black, rectangle);
-            img = order.SelectedSideImage;
-            img.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            e.Graphics.DrawImage(img, new PointF(15, CurrentY + 15));
-            CurrentY += 500;
+            //rectangle = new Rectangle(0, CurrentY, 315, 500);
+            //e.Graphics.DrawRectangle(Pens.Black, rectangle);
+            //img = order.SelectedSideImage;
+            //img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            //e.Graphics.DrawImage(img, new PointF(15, CurrentY + 15));
+            //CurrentY += 500;
+            ////MessageBox.Show(CurrentY.ToString());
+
+            //rectangle = new Rectangle(0, CurrentY, 315, 100);
+            //e.Graphics.DrawRectangle(Pens.Black, rectangle);
+
+
+
         }
 
 

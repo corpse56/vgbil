@@ -26,7 +26,7 @@ namespace VufindIncrementUpdate
             Program.BJIncrementUpdate("BJACC");
             Program.BJIncrementUpdate("BJFCC");
             Program.BJIncrementUpdate("BJSCC");
-            Program.LitresIncrementUpdate();
+            //Program.LitresIncrementUpdate();
 
 
             //для отладки

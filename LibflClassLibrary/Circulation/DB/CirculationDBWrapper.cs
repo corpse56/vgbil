@@ -501,7 +501,23 @@ namespace LibflClassLibrary.Circulation.DB
                 command.Parameters.Add("orderId", SqlDbType.Int).Value = orderId;
                 command.Parameters.Add("days", SqlDbType.Int).Value = days;
                 command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Prolonged.Value;
-                command.ExecuteNonQuery();                
+                command.ExecuteNonQuery();
+            }
+
+        }
+        internal void ProlongOrder(int orderId, DateTime toDate)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.PROLONG_ORDER_TO_DATE;
+                command.Parameters.Clear();
+                command.Parameters.Add("orderId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("toDate", SqlDbType.DateTime).Value = toDate;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Prolonged.Value;
+                command.ExecuteNonQuery();
             }
 
         }

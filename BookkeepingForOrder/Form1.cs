@@ -1006,8 +1006,11 @@ namespace BookkeepingForOrder
 
             PrintBlankImageCatalog pb = new PrintBlankImageCatalog(user, this, reader, order);
             pb.Print();
-            ImageCatalogCirculationManager icCirc = new ImageCatalogCirculationManager();
-            icCirc.ChangeOrderStatus(order, user, CirculationStatuses.EmployeeLookingForBook.Value);
+            if (order.StatusName == CirculationStatuses.OrderIsFormed.Value)
+            {
+                ImageCatalogCirculationManager icCirc = new ImageCatalogCirculationManager();
+                icCirc.ChangeOrderStatus(order, user, CirculationStatuses.EmployeeLookingForBook.Value);
+            }
             ShowImCatOrders();
 
         }

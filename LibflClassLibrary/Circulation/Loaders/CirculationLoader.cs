@@ -428,6 +428,10 @@ namespace LibflClassLibrary.Circulation.Loaders
         {
             dbWrapper.ProlongOrder(orderId, days);
         }
+        internal void ProlongOrder(int orderId, DateTime toDate)
+        {
+            dbWrapper.ProlongOrder(orderId, toDate);
+        }
 
         internal int GetOrderTimesProlonged(int orderId)
         {

@@ -212,6 +212,7 @@ namespace BookForOrder
             {
                 con = new SqlConnection(XmlConnections.GetConnection("/Connections/Tech"));
             }
+            con = new SqlConnection(XmlConnections.GetConnection("/Connections/TechOut"));
             con.Open();
             sdvig.DeleteCommand = new SqlCommand("delete from TECHNOLOG_VVV..USERLIST where session = '" + session + "'", con);
             sdvig.DeleteCommand.ExecuteNonQuery();

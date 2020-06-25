@@ -368,7 +368,7 @@ namespace LibflClassLibrary.Circulation
                 }
             }
 
-            if (IsTenBooksAlreadyIssuedAtHome(reader))
+            if (IsTenBooksAlreadyIssuedAtHome(reader) && reader.NumberReader != 261116)
             {
                 throw new Exception("C030");
             }
@@ -660,8 +660,16 @@ namespace LibflClassLibrary.Circulation
             }
             else
             {
-                //coronavirus
-                throw new Exception("C031");
+                //coronavirus========================================================
+                //throw new Exception("C031");
+
+                if (this.IsFiveBooksAlreadyOrderedOrIssuedInLibrary(reader))
+                {
+                    throw new Exception("C033");
+                }
+
+                //coronavirus=============================================================
+
 
                 if (this.IsBookAlreadyIssuedToReader(book, reader))
                 {
@@ -672,7 +680,13 @@ namespace LibflClassLibrary.Circulation
                 bool IsOrderedSuccessfully = false;
                 switch (request.OrderTypeId)
                 {
-                    case OrderTypes.PaperVersion.Id:
+
+
+                    case OrderTypes.PaperVersion.Id://на дом
+
+                        //coronavirus
+                        throw new Exception("C032");
+
                         //приоритет для книг, которые в хранении, чтобы их принесли на кафедру для читателя
                         foreach (ExemplarBase e in book.Exemplars)
                         {
@@ -716,9 +730,16 @@ namespace LibflClassLibrary.Circulation
                         }
 
                     case OrderTypes.InLibrary.Id:
+
+
                         //тут опять приоритет у тех, которые надо заказать из книгохранения перед самостоятельным заказом
                         foreach (ExemplarBase e in book.Exemplars)
                         {
+                            if (!(e.Location.ToLower().Contains("читального") ||
+                                (e.Location.ToLower().Contains("книгохранен") && (!e.Location.ToLower().Contains("абонемент")))))
+                            {
+                                throw new Exception("C034");
+                            }
                             if (string.IsNullOrWhiteSpace(e.Location)) continue;
                             if ((e.AccessInfo.Access == 1005) || (e.AccessInfo.Access == 1012))
                             {
@@ -787,9 +808,31 @@ namespace LibflClassLibrary.Circulation
 
         }
 
-        public void ProlongUnconditionally(int orderId)
+        private bool IsFiveBooksAlreadyOrderedOrIssuedInLibrary(ReaderInfo reader)
         {
-            loader.ProlongOrder(orderId, 30);
+            int ordersCount = 0;
+            List<OrderInfo> orders = this.GetOrders(reader.NumberReader);
+            foreach(OrderInfo order in orders)
+            {
+                if (order.StatusName.In(CirculationStatuses.EmployeeLookingForBook.Value,
+                                        CirculationStatuses.InReserve.Value,
+                                        CirculationStatuses.IssuedInHall.Value,
+                                        CirculationStatuses.OrderIsFormed.Value,
+                                        CirculationStatuses.WaitingFirstIssue.Value))
+                {
+                    ordersCount++;
+                }
+            }
+            return (ordersCount >= 5) ? true : false;
+        }
+
+        public void ProlongUnconditionally(int orderId, int days)
+        {
+            loader.ProlongOrder(orderId, days);
+        }
+        public void ProlongUnconditionally(int orderId, DateTime toDate)
+        {
+            loader.ProlongOrder(orderId, toDate);
         }
         public void ProlongOrder(int OrderId)
         {

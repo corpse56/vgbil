@@ -8,6 +8,7 @@ using LibflClassLibrary.Circulation.Loaders;
 using LibflClassLibrary.Readers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,12 +28,31 @@ namespace OrderHistoryImportFromOldCirculation
             CirculationInfo ci = new CirculationInfo();
             //ci.ProlongUnconditionally(45324);
             //ci.ProlongOrder(45324);
-            ExemplarBase exemplar = ExemplarFactory.CreateExemplarByInventoryNumber("1224491");
-            ReaderInfo reader = ReaderInfo.GetReader(184615);
+            //ExemplarBase exemplar = ExemplarFactory.CreateExemplarByInventoryNumber("1224491");
+            //ReaderInfo reader = ReaderInfo.GetReader(184615);
             //ci.IssueBookToReader(exemplar, reader, BJUserInfo.GetAdmin());
-            OrderInfo order = ci.GetLastOrder(Convert.ToInt32(exemplar.Id), exemplar.Fund);
+            //OrderInfo order = ci.GetLastOrder(Convert.ToInt32(exemplar.Id), exemplar.Fund);
             //ci.RecieveBookFromReader(exemplar, order, BJUserInfo.GetAdmin());
-            exemplar.circulation.exemplarRecieverFromReader.RecieveBookFromReader(exemplar, order, BJUserInfo.GetAdmin(), CirculationStatuses.InReserve.Value);
+            //exemplar.circulation.exemplarRecieverFromReader.RecieveBookFromReader(exemplar, order, BJUserInfo.GetAdmin(), CirculationStatuses.InReserve.Value);
+            DateTime toDate = new DateTime(2020, 8, 31);
+            ci.ProlongUnconditionally(59522, toDate);
+            ci.ProlongUnconditionally(59523, toDate);
+            ci.ProlongUnconditionally(59524, toDate);
+            ci.ProlongUnconditionally(59525, toDate);
+
+
+            //List<OrderInfo> list = ci.GetOrders(CirculationStatuses.IssuedAtHome.Value);
+            //DateTime startYear = new DateTime(2020, 1, 1); // DateTime.ParseExact("20200101", "yyyyMMdd", CultureInfo.InvariantCulture);
+            //DateTime toDate = new DateTime(2020, 7, 31);
+            //foreach (OrderInfo order in list)
+            //{
+            //    if (order.IssueDate >= startYear)
+            //    {
+            //        ci.ProlongUnconditionally(order.OrderId, toDate);
+            //    }
+            //}
+             
+
 
             Console.WriteLine("Hello World!");
             Console.ReadKey();
