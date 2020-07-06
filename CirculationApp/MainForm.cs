@@ -357,25 +357,25 @@ namespace CirculationApp
             dgvFormular.Columns["rack"].Width = 100;
             dgvFormular.Columns["issDep"].Width = 100;
             dgvFormular.Columns["retDep"].Width = 100;
-
             foreach (OrderInfo order in formular)
             {
+                string bjaccNotFoundMessage = $"{order.BookId}  нига удалена из базы. „тобы узнать, заглавие книги обратитесь в ÷»»“.";
                 dgvFormular.Rows.Add();
                 var row = dgvFormular.Rows[dgvFormular.Rows.Count - 1];
                 //BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
                 ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
                 //BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
-                row.Cells["id"].Value = order.OrderId;
-                row.Cells["bar"].Value = exemplar.Bar;//.Fields["899$w"].ToString();
-                row.Cells["inv"].Value = exemplar.InventoryNumber;//.Fields["899$p"].ToString();
-                row.Cells["author"].Value = exemplar.Author;//book.Fields["700$a"].ToString();
-                row.Cells["title"].Value = exemplar.Title;//book.Fields["200$a"].ToString();
+                row.Cells["id"].Value = order.Book.Title.Contains(" нига не найдена в базе")? bjaccNotFoundMessage : order.OrderId.ToString();
+                row.Cells["bar"].Value = order.Book.Title.Contains(" нига не найдена в базе") ? bjaccNotFoundMessage : exemplar.Bar;//.Fields["899$w"].ToString();
+                row.Cells["inv"].Value = order.Book.Title.Contains(" нига не найдена в базе") ? bjaccNotFoundMessage : exemplar.InventoryNumber;//.Fields["899$p"].ToString();
+                row.Cells["author"].Value = order.Book.Title.Contains(" нига не найдена в базе") ? bjaccNotFoundMessage : exemplar.Author;//book.Fields["700$a"].ToString();
+                row.Cells["title"].Value = order.Book.Title.Contains(" нига не найдена в базе") ? bjaccNotFoundMessage : exemplar.Title;//book.Fields["200$a"].ToString();
                 row.Cells["issueDate"].Value = order.IssueDate;
                 row.Cells["returnDate"].Value = order.ReturnDate;
-                row.Cells["cipher"].Value = exemplar.Cipher;
-                row.Cells["baseName"].Value = BookBase.GetRusFundName(exemplar.Fund);
+                row.Cells["cipher"].Value = order.Book.Title.Contains(" нига не найдена в базе") ? bjaccNotFoundMessage : exemplar.Cipher;
+                row.Cells["baseName"].Value = BookBase.GetRusFundName(order.Fund);
                 row.Cells["status"].Value = order.StatusName;
-                row.Cells["rack"].Value = (exemplar is BJExemplarInfo) ? ((BJExemplarInfo)exemplar).Fields["899$c"].ToString() : "";
+                row.Cells["rack"].Value = order.Book.Title.Contains(" нига не найдена в базе") ? bjaccNotFoundMessage : (exemplar is BJExemplarInfo) ? ((BJExemplarInfo)exemplar).Fields["899$c"].ToString() : "";
                 row.Cells["issDep"].Value = string.IsNullOrEmpty(order.IssueDep) ?  "" : KeyValueMapping.LocationCodeToName[int.Parse(order.IssueDep)];
                 row.Cells["retDep"].Value = string.IsNullOrEmpty(order.ReturnDep) ? "" : KeyValueMapping.LocationCodeToName[int.Parse(order.ReturnDep)];
             }

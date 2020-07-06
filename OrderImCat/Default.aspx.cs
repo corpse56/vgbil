@@ -64,7 +64,9 @@ public partial class _Default : System.Web.UI.Page
         }
 
         ReaderInfo reader = ReaderInfo.GetReader(rsv.ReaderId);
-        Label2.Text = reader.FIO;
+        //ReaderInfo reader = ReaderInfo.GetReader(189245); 
+
+         Label2.Text = reader.FIO;
         if (Session["currentReader"] != null)
         {
             Session.Remove("currentReader");
