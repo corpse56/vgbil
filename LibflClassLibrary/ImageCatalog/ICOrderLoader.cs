@@ -55,7 +55,7 @@ namespace LibflClassLibrary.ImageCatalog
             result.Card = ImageCardInfo.GetCard(result.CardFileName, loadImages);
             string selectedCard = result.SelectedCardSide.ToString();
             selectedCard = (selectedCard.Length == 1) ? $"0{selectedCard}" : selectedCard;
-            result.SelectedSideUrl = $@"https://cdn.libfl.ru/imcat/{ICLoader.GetPath(result.Card.SeparatorId)}/HQ/{result.CardFileName}_{selectedCard}.jpg";
+            result.SelectedSideUrl = $@"https://cdn.libfl.ru/imcatnew/{ICLoader.GetPath(result.Card.SeparatorId)}/HQ/{result.CardFileName}_{selectedCard}.jpg";
             result.RefusualReason = row["Refusual"].ToString();
             if (loadImages)
             {
@@ -149,7 +149,7 @@ namespace LibflClassLibrary.ImageCatalog
             order.SelectedCardSide = (int.TryParse(selectedCardSide, out numericSelectedCardSide)) ? numericSelectedCardSide : 1;
             string selectedCard = order.SelectedCardSide.ToString();
             selectedCard = (selectedCard.Length == 1) ? $"0{selectedCard}" : selectedCard;
-            order.SelectedSideUrl = $@"https://cdn.libfl.ru/imcat/{ICLoader.GetPath(order.Card.SeparatorId)}/HQ/{order.CardFileName}_{selectedCard}.jpg";
+            order.SelectedSideUrl = $@"https://cdn.libfl.ru/imcatnew/{ICLoader.GetPath(order.Card.SeparatorId)}/HQ/{order.CardFileName}_{selectedCard}.jpg";
             LoadImages(order, order.Card, order.SelectedCardSide.ToString());
             order.StartDate = DateTime.Now;
             order.StatusName = CirculationStatuses.OrderIsFormed.Value;
@@ -185,9 +185,9 @@ namespace LibflClassLibrary.ImageCatalog
 
         private void LoadImages(ICOrderInfo order, ImageCardInfo card, string selectedCard)
         {
-            string login = AppSettings.LoginFileServerRead;
-            string pwd = AppSettings.PasswordFileServerRead;
-            string ip = AppSettings.IPAddressFileServer;
+            string login = AppSettings.LoginImageCatalogRead;
+            string pwd = AppSettings.PasswordImageCatalogRead;
+            string ip = AppSettings.IPAddressImageCatalogServer;
             string directoryPath = $@"\\{ip}\ImageCatalog\{ICLoader.GetPath(card.SeparatorId)}\HQ\";
             try
             {

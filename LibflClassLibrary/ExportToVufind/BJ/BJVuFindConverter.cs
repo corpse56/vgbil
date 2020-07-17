@@ -181,6 +181,13 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             {
                 exemplar = BJLoader.GetExemplar((int)iddata["IDDATA"]);
                 BJExemplarInfo bjExemplar = BJExemplarInfo.GetExemplarByIdData((int)iddata["IDDATA"], this.Fund);
+                if (bjExemplar.Fields["921$c"].HasValue)
+                {
+                    if (bjExemplar.Fields["921$c"].ToString() == "Выдана в стороннюю организацию")
+                    {
+                        continue;
+                    }
+                }
                 if (bjExemplar.AccessInfo.Access == 1020)//экстремистская литература. не выгружаем такое.
                 {
                     continue;

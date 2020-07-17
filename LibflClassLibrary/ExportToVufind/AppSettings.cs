@@ -41,6 +41,14 @@ namespace LibflClassLibrary.ExportToVufind
                 return connectionString;
             }
         }
+        static public string IPAddressImageCatalogServer
+        {
+            get
+            {
+                string connectionString = "192.168.1.78";
+                return connectionString;
+            }
+        }
         static public string LoginFileServerRead
         {
             get
@@ -49,11 +57,27 @@ namespace LibflClassLibrary.ExportToVufind
                 return connectionString;
             }
         }
+        static public string LoginImageCatalogRead
+        {
+            get
+            {
+                string connectionString = "192.168.1.78\\ImageCatView";
+                return connectionString;
+            }
+        }
         static public string PasswordFileServerRead
         {
             get
             {
                 string connectionString = "Image_123Viewer";
+                return connectionString;
+            }
+        }
+        static public string PasswordImageCatalogRead
+        {
+            get
+            {
+                string connectionString = "View_ImCat";
                 return connectionString;
             }
         }

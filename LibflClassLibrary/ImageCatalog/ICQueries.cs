@@ -19,24 +19,24 @@ namespace LibflClassLibrary.ImageCatalog
         {
             get
             {
-                return " select A.*,0 CardType, C.ID langId, C.NAME langName from ImageCatalog..CardMain A " +
-                        " left join ImageCatalog..SeparatorMain B on A.IDSeparator = B.ID " +
-                        " left join ImageCatalog..Language C on C.ID = B.IDLanguage" +
+                return " select A.*,0 CardType, C.ID langId, C.NAME langName from ImageCatalogFinal..CardMain A " +
+                        " left join ImageCatalogFinal..SeparatorMain B on A.IDSeparator = B.ID " +
+                        " left join ImageCatalogFinal..Language C on C.ID = B.IDLanguage" +
                         " where A.FilesName = @cardFileName" +
                         " union all " +
-                        " select A.*,3 CardType, C.ID langId, C.NAME langName from ImageCatalog..CardAV A " +
-                        " left join ImageCatalog..SeparatorAV B on A.IDSeparator = B.ID " +
-                        " left join ImageCatalog..Country C on C.ID = B.IDCountry " +
+                        " select A.*,3 CardType, C.ID langId, C.NAME langName from ImageCatalogFinal..CardAV A " +
+                        " left join ImageCatalogFinal..SeparatorAV B on A.IDSeparator = B.ID " +
+                        " left join ImageCatalogFinal..Country C on C.ID = B.IDCountry " +
                         " where A.FilesName = @cardFileName" +
                         " union all " +
-                        " select A.*,1 CardType, 0 langId, 'Периодика' langName from ImageCatalog..CardPeriodical A " +
-                        " left join ImageCatalog..SeparatorPeriodical B on A.IDSeparator = B.ID " +
-                        " left join ImageCatalog..Country C on C.ID = B.IDCountry" +
+                        " select A.*,1 CardType, 0 langId, 'Периодика' langName from ImageCatalogFinal..CardPeriodical A " +
+                        " left join ImageCatalogFinal..SeparatorPeriodical B on A.IDSeparator = B.ID " +
+                        " left join ImageCatalogFinal..Country C on C.ID = B.IDCountry" +
                         " where A.FilesName = @cardFileName" +
                         " union all " +
-                        " select A.*,2 CardType, C.ID langId, C.NAME langName from ImageCatalog..CardSubscript A " +
-                        " left join ImageCatalog..SeparatorSubscript B on A.IDSeparator = B.ID " +
-                        " left join ImageCatalog..Language C on C.ID = B.IDLanguage" +
+                        " select A.*,2 CardType, C.ID langId, C.NAME langName from ImageCatalogFinal..CardSubscript A " +
+                        " left join ImageCatalogFinal..SeparatorSubscript B on A.IDSeparator = B.ID " +
+                        " left join ImageCatalogFinal..Language C on C.ID = B.IDLanguage" +
                         " where A.FilesName = @cardFileName";
             }
         }

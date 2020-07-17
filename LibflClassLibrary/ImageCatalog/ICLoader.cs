@@ -41,8 +41,8 @@ namespace LibflClassLibrary.ImageCatalog
                 result.SeparatorId = (int)row["IDSeparator"];
                 result.LanguageId = (int)row["langId"];
                 result.LanguageName = row["langName"].ToString();
-                result.MainSideFullFileName = $@"\\{AppSettings.IPAddressFileServer}\ImageCatalog\{GetPath(result.SeparatorId)}\HQ\{result.CardFileName}_01.jpg";
-                result.MainSideUrl = $@"https://cdn.libfl.ru/imcat/{GetPath(result.SeparatorId)}/HQ/{result.CardFileName}_01.jpg";
+                result.MainSideFullFileName = $@"\\{AppSettings.IPAddressImageCatalogServer}\ImageCatalog\{GetPath(result.SeparatorId)}\HQ\{result.CardFileName}_01.jpg";
+                result.MainSideUrl = $@"https://cdn.libfl.ru/imcatnew/{GetPath(result.SeparatorId)}/HQ/{result.CardFileName}_01.jpg";
             }
             if (isNeedToLoadImages)
             {
@@ -55,9 +55,9 @@ namespace LibflClassLibrary.ImageCatalog
 
         private void LoadImages(ImageCardInfo card)
         {
-            string login = AppSettings.LoginFileServerRead;
-            string pwd = AppSettings.PasswordFileServerRead;
-            string ip = AppSettings.IPAddressFileServer;
+            string login = AppSettings.LoginImageCatalogRead;
+            string pwd = AppSettings.PasswordImageCatalogRead;
+            string ip = AppSettings.IPAddressImageCatalogServer;
             string directoryPath = $@"\\{ip}\ImageCatalog\{ICLoader.GetPath(card.SeparatorId)}\HQ\";
 
             using (new NetworkConnection(directoryPath, new NetworkCredential(login, pwd)))

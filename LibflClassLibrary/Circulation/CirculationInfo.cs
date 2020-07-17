@@ -367,12 +367,26 @@ namespace LibflClassLibrary.Circulation
                     throw new Exception("C028");
                 }
             }
-
-            if (IsTenBooksAlreadyIssuedAtHome(reader) && reader.NumberReader != 261116)
+            if (reader.Rights[ReaderRightsEnum.Employee] == null)//на сотрудников не распространяется
             {
-                throw new Exception("C030");
+                if (IsTenBooksAlreadyIssuedAtHome(reader))
+                {
+                    throw new Exception("C030");
+                }
+            }
+            if (reader.Rights[ReaderRightsEnum.Employee] == null)
+            {
+                if (this.IsFiveBooksAlreadyOrderedOrIssuedInLibrary(reader))
+                {
+                    throw new Exception("C033");
+                }
             }
 
+            ////для карантиныча
+            //if (IsTenBooksAlreadyIssuedAtHome(reader) && reader.NumberReader != 261116)
+            //{
+            //    throw new Exception("C030");
+            //}
 
             //ищем заказ с таким экземпляром.
             OrderInfo order = this.FindOrderByExemplar(exemplar);
@@ -660,15 +674,14 @@ namespace LibflClassLibrary.Circulation
             }
             else
             {
-                //coronavirus========================================================
-                //throw new Exception("C031");
 
-                if (this.IsFiveBooksAlreadyOrderedOrIssuedInLibrary(reader))
+                if (reader.Rights[ReaderRightsEnum.Employee] == null)
                 {
-                    throw new Exception("C033");
+                    if (this.IsFiveBooksAlreadyOrderedOrIssuedInLibrary(reader))
+                    {
+                        throw new Exception("C033");
+                    }
                 }
-
-                //coronavirus=============================================================
 
 
                 if (this.IsBookAlreadyIssuedToReader(book, reader))
@@ -676,7 +689,6 @@ namespace LibflClassLibrary.Circulation
                     throw new Exception("C006");
                 }
 
-                //ExemplarSimpleView exemplarSimpleView;
                 bool IsOrderedSuccessfully = false;
                 switch (request.OrderTypeId)
                 {
@@ -684,22 +696,12 @@ namespace LibflClassLibrary.Circulation
 
                     case OrderTypes.PaperVersion.Id://на дом
 
-                        //coronavirus
-                        if (book.Fund.In("BJACC", "BJFCC", "BJSCC", "REDKOSTJ"))
-                        {
-                            throw new Exception("C034");
-                        }
 
                         //приоритет для книг, которые в хранении, чтобы их принесли на кафедру для читателя
                         foreach (ExemplarBase e in book.Exemplars)
                         {
                             //if (!e.Fields["899$a"].HasValue) continue;
                             if (string.IsNullOrWhiteSpace(e.Location)) continue;
-                            if (!e.Location.ToLower().Contains("абонемент"))
-                            {
-                                //throw new Exception("C032");
-                                continue;
-                            }
 
                             if (e.AccessInfo.Access == 1000)
                             {
@@ -719,15 +721,6 @@ namespace LibflClassLibrary.Circulation
                         foreach (ExemplarBase e in book.Exemplars)
                         {
                             if (string.IsNullOrWhiteSpace(e.Location)) continue;
-                            if (
-                                   e.Location.ToLower().Contains("американ")
-                                || e.Location.ToLower().Contains("франко")
-                                || e.Location.ToLower().Contains("славянс")
-                                || e.Location.ToLower().Contains("ибероамер"))
-                            {
-                                //throw new Exception("C032");
-                                continue;
-                            }
 
                             if ((e.AccessInfo.Access == 1006))
                             {
@@ -752,22 +745,8 @@ namespace LibflClassLibrary.Circulation
 
 
                         //тут опять приоритет у тех, которые надо заказать из книгохранения перед самостоятельным заказом
-                        int exemplarCount = 0;
                         foreach (ExemplarBase e in book.Exemplars)
                         {
-                            exemplarCount++;
-                            if (!(e.Location.ToLower().Contains("читального") ||
-                                (e.Location.ToLower().Contains("книгохранен") && (!e.Location.ToLower().Contains("абонемент")))))
-                            {
-                                if (exemplarCount == book.Exemplars.Count)
-                                {
-                                    throw new Exception("C034");
-                                }
-                                else
-                                {
-                                    continue;
-                                }
-                            }
                             if (string.IsNullOrWhiteSpace(e.Location)) continue;
                             if ((e.AccessInfo.Access == 1005) || (e.AccessInfo.Access == 1012))
                             {
@@ -807,6 +786,11 @@ namespace LibflClassLibrary.Circulation
                             if (string.IsNullOrWhiteSpace(e.Location)) continue;
                             if ((e.AccessInfo.Access == 1007) || (e.AccessInfo.Access == 1014))
                             {
+                                if (e.Location.ToLower().Contains("детск"))
+                                {
+                                    continue;
+                                }
+
                                 if (!this.IsExemplarIssued(e))
                                 {
                                     this.NewOrder(e, reader, OrderTypes.SelfOrder.Id, 4);

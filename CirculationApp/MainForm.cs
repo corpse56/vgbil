@@ -537,7 +537,7 @@ namespace CirculationApp
             }
             try
             {
-                ci.ProlongOrder((int)dgvFormular.SelectedRows[0].Cells["id"].Value);
+                ci.ProlongOrder(Convert.ToInt32(dgvFormular.SelectedRows[0].Cells["id"].Value));
             }
             catch (Exception ex)
             {
@@ -909,7 +909,7 @@ namespace CirculationApp
             if (dr == DialogResult.No) return;
             try
             {
-                ci.RemoveResponsibility(bjUser, (int)dgvFormular.SelectedRows[0].Cells["id"].Value, CirculationStatuses.Finished.Value);
+                ci.RemoveResponsibility(bjUser, Convert.ToInt32(dgvFormular.SelectedRows[0].Cells["id"].Value), CirculationStatuses.Finished.Value);
             }
             catch (Exception ex)
             {

@@ -22,6 +22,12 @@ public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+
+        //test
+        //ICOrderInfo.CreateOrder("000000029", "1", 189245, "тестзаказ");
+
+
+        /*
         HttpCookie oauthCookie = Request.Cookies["ReaderToken"];
         oauthCookie = Request.Cookies.Get("ReaderToken");
         //oauthCookie = new HttpCookie("ReaderToken", "eyJpdiI6ImxmaU9GZUVPako3elF6dXFnY3pGV2c9PSIsInZhbHVlIjoiRGlodlNPZzgzYVFCZTZqeUlvVFAyNWFYRCtVODNcL0pMeGVcL1ZsQ29cL3Z2ZXFQNWdzR1p1b3ZkUExVQnRZYkZoZWN5Z1dnZWUraGdPMjk0QmRuY0FPSm8ySWFnbElTak51OTNiakNwd0Z1RkZSNGc4WEx0KzJXZzV0SnBGU25ycmVPOEJvbm51RE9QNlRKM3lYTktsVEllMkRNRWU4M04ra0QrTlU1Szh2ZThIdlV5ajNsdlQzWmYzZUVqVW5GQmNjMDhOMEw2TDZzbEZMTlhCRDRySVZJaUsySmRJZ0NyY3pncTVcL2NCNlFRUmtcL0ZNOWp0U1J6bjUrNjdvUXZBdlU3eEVLMDJQWFNPMmtjUXo1WjNHQXJvdz09IiwibWFjIjoiMDNlYjI0ZWU1OTY4MGRkZGU1ODU2YTE5ZjFkYmY4MjY4ZDAxYjYwZDMzNGMyNmYzNjUyYTY2OWM3OTVlN2IyMiJ9");
@@ -63,8 +69,8 @@ public partial class _Default : System.Web.UI.Page
             }
         }
 
-        ReaderInfo reader = ReaderInfo.GetReader(rsv.ReaderId);
-        //ReaderInfo reader = ReaderInfo.GetReader(189245); 
+        ReaderInfo reader = ReaderInfo.GetReader(rsv.ReaderId);*/
+        ReaderInfo reader = ReaderInfo.GetReader(189245); 
 
          Label2.Text = reader.FIO;
         if (Session["currentReader"] != null)

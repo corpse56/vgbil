@@ -978,7 +978,7 @@ namespace BookkeepingForOrder
             ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), false);
             string cardType = ICOrderInfo.GetCardTypeString(order.Card.CardType);
 
-            System.Diagnostics.Process.Start($@"https://imcat.libfl.ru/ic/orders/open.php?cardId={order.CardFileName}&orderType={cardType}&countSide=1");
+            System.Diagnostics.Process.Start($@"https://imcatnew.libfl.ru/ic/orders/open.php?cardId={order.CardFileName}&orderType={cardType}&countSide=1");
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -1043,7 +1043,7 @@ namespace BookkeepingForOrder
             }
             ICOrderInfo order = ICOrderInfo.GetICOrderById(Convert.ToInt32(dgImCatOrders.SelectedRows[0].Cells["OrderId"].Value), false);
             string cardType = ICOrderInfo.GetCardTypeString(order.Card.CardType);
-            System.Diagnostics.Process.Start($@"https://imcat.libfl.ru/ic/orders/open.php?cardId={order.CardFileName}&orderType={cardType}&countSide={order.SelectedCardSide}");
+            System.Diagnostics.Process.Start($@"https://imcatnew.libfl.ru/ic/orders/open.php?cardId={order.CardFileName}&orderType={cardType}&countSide={order.SelectedCardSide}");
 
         }
     }

@@ -46,6 +46,8 @@ public partial class _Default : System.Web.UI.Page
     {
         ZCon = new SqlConnection(WebConfigurationManager.ConnectionStrings["Zakaz"].ConnectionString);
         bjUser = (BJUserInfo)Session["bjUser"];
+        //bjUser = BJUserInfo.GetUserById(979);
+        //bjUser.SelectedUserStatus = bjUser.UserStatus[0];
         if (bjUser == null)
         {
             FormsAuthentication.RedirectToLoginPage();

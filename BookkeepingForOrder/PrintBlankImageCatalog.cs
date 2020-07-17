@@ -88,6 +88,7 @@ namespace BookkeepingForOrder
             string[] ddd = new string[PrinterSettings.InstalledPrinters.Count];
             PrinterSettings.InstalledPrinters.CopyTo(ddd, 0);
             //pd.PrinterSettings.PrinterName = @"Zebra TLP2844";
+            //pd.PrinterSettings.PrinterName = "HP Color LaserJet Pro MFP M476 PCL 6";
             Utilities.IniFile iniFile = new Utilities.IniFile("PrintBlankSettings.ini");
             int paperSize = int.Parse(iniFile.Read("paperSize", "PrintBlankImageCatalog"));
             int rawKind = int.Parse(iniFile.Read("rawKind", "PrintBlankImageCatalog"));
