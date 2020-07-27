@@ -34,24 +34,24 @@ namespace OrderHistoryImportFromOldCirculation
             //OrderInfo order = ci.GetLastOrder(Convert.ToInt32(exemplar.Id), exemplar.Fund);
             //ci.RecieveBookFromReader(exemplar, order, BJUserInfo.GetAdmin());
             //exemplar.circulation.exemplarRecieverFromReader.RecieveBookFromReader(exemplar, order, BJUserInfo.GetAdmin(), CirculationStatuses.InReserve.Value);
+            //DateTime toDate = new DateTime(2020, 8, 31);
+            //ci.ProlongUnconditionally(59522, toDate);
+            //ci.ProlongUnconditionally(59523, toDate);
+            //ci.ProlongUnconditionally(59524, toDate);
+            //ci.ProlongUnconditionally(59525, toDate);
+
+
+            List<OrderInfo> list = ci.GetOrders(CirculationStatuses.IssuedAtHome.Value);
+            DateTime startYear = new DateTime(2020, 1, 1); // DateTime.ParseExact("20200101", "yyyyMMdd", CultureInfo.InvariantCulture);
             DateTime toDate = new DateTime(2020, 8, 31);
-            ci.ProlongUnconditionally(59522, toDate);
-            ci.ProlongUnconditionally(59523, toDate);
-            ci.ProlongUnconditionally(59524, toDate);
-            ci.ProlongUnconditionally(59525, toDate);
+            foreach (OrderInfo order in list)
+            {
+                if (order.IssueDate >= startYear)
+                {
+                    ci.ProlongUnconditionally(order.OrderId, toDate);
+                }
+            }
 
-
-            //List<OrderInfo> list = ci.GetOrders(CirculationStatuses.IssuedAtHome.Value);
-            //DateTime startYear = new DateTime(2020, 1, 1); // DateTime.ParseExact("20200101", "yyyyMMdd", CultureInfo.InvariantCulture);
-            //DateTime toDate = new DateTime(2020, 7, 31);
-            //foreach (OrderInfo order in list)
-            //{
-            //    if (order.IssueDate >= startYear)
-            //    {
-            //        ci.ProlongUnconditionally(order.OrderId, toDate);
-            //    }
-            //}
-             
 
 
             Console.WriteLine("Hello World!");

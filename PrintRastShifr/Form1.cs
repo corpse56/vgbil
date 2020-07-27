@@ -146,7 +146,7 @@ namespace RastShifrRestored
                 set2.Clear();
                 if (adapter.Fill(set2) == 0)// 0 - в этом блоке нет расстановочного шифра. 1 - в этом блоке есть расстановочный его и печатаем
                 {
-                    adapter.SelectCommand.CommandText = "select SORT from DATAEXT where IDDATA = " + set.Tables[0].Rows[0][1].ToString()
+                    adapter.SelectCommand.CommandText = "select SORT from BJVVV..DATAEXT where IDDATA = " + set.Tables[0].Rows[0][1].ToString()
                                                         + " and DATAEXT.MNFIELD=899 and DATAEXT.MSFIELD='$b'";
                     set2 = new DataSet();
                     int countshifr = adapter.Fill(set2);

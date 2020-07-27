@@ -360,13 +360,13 @@ namespace LibflClassLibrary.Circulation
             //если читатель не проходил через проход, то книгу не выдавать, пока не пройдёт через проход
             //это сделано для того, чтобы читатель не прошёл по гостевому, набрал бы книг, и вышел по гостевому.
 
-            if (!reader.IsEnteredThroughAccessControlSystem())
-            {
-                if (reader.Rights[ReaderRightsEnum.Employee] == null)//на сотрудников не распространяется
-                {
-                    throw new Exception("C028");
-                }
-            }
+            //if (!reader.IsEnteredThroughAccessControlSystem())
+            //{
+            //    if (reader.Rights[ReaderRightsEnum.Employee] == null)//на сотрудников не распространяется
+            //    {
+            //        throw new Exception("C028");
+            //    }
+            //}
             if (reader.Rights[ReaderRightsEnum.Employee] == null)//на сотрудников не распространяется
             {
                 if (IsTenBooksAlreadyIssuedAtHome(reader))
@@ -376,7 +376,7 @@ namespace LibflClassLibrary.Circulation
             }
             if (reader.Rights[ReaderRightsEnum.Employee] == null)
             {
-                if (this.IsFiveBooksAlreadyOrderedOrIssuedInLibrary(reader))
+                if (this.IsFiveBooksAlreadyIssuedInLibrary(reader))
                 {
                     throw new Exception("C033");
                 }
@@ -824,13 +824,26 @@ namespace LibflClassLibrary.Circulation
         {
             int ordersCount = 0;
             List<OrderInfo> orders = this.GetOrders(reader.NumberReader);
-            foreach(OrderInfo order in orders)
+            foreach (OrderInfo order in orders)
             {
                 if (order.StatusName.In(CirculationStatuses.EmployeeLookingForBook.Value,
                                         CirculationStatuses.InReserve.Value,
                                         CirculationStatuses.IssuedInHall.Value,
                                         CirculationStatuses.OrderIsFormed.Value,
                                         CirculationStatuses.WaitingFirstIssue.Value))
+                {
+                    ordersCount++;
+                }
+            }
+            return (ordersCount >= 5) ? true : false;
+        }
+        private bool IsFiveBooksAlreadyIssuedInLibrary(ReaderInfo reader)
+        {
+            int ordersCount = 0;
+            List<OrderInfo> orders = this.GetOrders(reader.NumberReader);
+            foreach (OrderInfo order in orders)
+            {
+                if (order.StatusName.In(CirculationStatuses.IssuedInHall.Value))
                 {
                     ordersCount++;
                 }
