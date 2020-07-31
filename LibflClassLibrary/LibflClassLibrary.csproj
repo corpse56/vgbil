@@ -106,6 +106,7 @@
     <Compile Include="ALISAPI\RequestObjects\Circulation\BasketDelete.cs" />
     <Compile Include="ALISAPI\RequestObjects\Circulation\ImpersonalBasket.cs" />
     <Compile Include="ALISAPI\RequestObjects\Circulation\MakeOrder.cs" />
+    <Compile Include="ALISAPI\RequestObjects\DigitizationQuene\AddToQueneItemInfo.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\AccessToken.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\AuthorizeInfo.cs" />
     <Compile Include="ALISAPI\RequestObjects\Readers\BirthDateMatchReaderId.cs" />
@@ -229,6 +230,11 @@
     <Compile Include="Controls\RoundProgress.designer.cs">
       <DependentUpon>RoundProgress.cs</DependentUpon>
     </Compile>
+    <Compile Include="DigitizationQuene\DB\DigitizationQueneQueries.cs" />
+    <Compile Include="DigitizationQuene\DB\DigitizatioQueneDBWrapper.cs" />
+    <Compile Include="DigitizationQuene\DigitizationQueneItemInfo.cs" />
+    <Compile Include="DigitizationQuene\DigitizationQueneManager.cs" />
+    <Compile Include="DigitizationQuene\Loaders\DigitizationQueneItemLoader.cs" />
     <Compile Include="ExportToRusMARC\RMCONVERT.cs" />
     <Compile Include="ExportToVufind\AppSettings.cs" />
     <Compile Include="Books\BJBooks\AuthoritativeFile.cs" />

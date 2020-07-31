@@ -24,6 +24,14 @@ namespace LibflClassLibrary.ExportToVufind
                 return connectionString;
             }
         }
+        static public string DevConnectionString
+        {
+            get
+            {
+                string connectionString = @"Data Source=192.168.1.165;Initial Catalog=Readers;Integrated Security=True;";
+                return connectionString;
+            }
+        }
         static public string StatisticsConnectionString
         {
             get

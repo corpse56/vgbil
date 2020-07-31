@@ -434,6 +434,25 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Удалённый читатель не может заказывать литературу из имидж-каталога ",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
+//////////////////////////////////////////////////////////////////////Ошибки очереди на оцифровку//////////////////////////
+            new ALISError()
+            {
+                Code = "Q001",
+                Message = "Эта книга уже присутствует в очереди на оцифровку!",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "Q002",
+                Message = "Нельзя добавить в очередь на оцифровку более двух изданий в сутки!",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
+            new ALISError()
+            {
+                Code = "Q003",
+                Message = "Очередь на оцифровку переполнена! Попробуйте позже.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
 
 
         };

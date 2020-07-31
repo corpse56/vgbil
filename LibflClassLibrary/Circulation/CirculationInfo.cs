@@ -786,11 +786,6 @@ namespace LibflClassLibrary.Circulation
                             if (string.IsNullOrWhiteSpace(e.Location)) continue;
                             if ((e.AccessInfo.Access == 1007) || (e.AccessInfo.Access == 1014))
                             {
-                                if (e.Location.ToLower().Contains("детск"))
-                                {
-                                    continue;
-                                }
-
                                 if (!this.IsExemplarIssued(e))
                                 {
                                     this.NewOrder(e, reader, OrderTypes.SelfOrder.Id, 4);
