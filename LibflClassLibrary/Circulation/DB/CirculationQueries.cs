@@ -294,6 +294,19 @@ namespace LibflClassLibrary.Circulation.DB
                        " commit;";
             }
         }
+        public string PROLONG_ORDER_BY_EMPLOYEE
+        {
+            get
+            {
+                return " begin transaction; " +
+                        " update Circulation..Orders set ReturnDate = dateadd(day, @days, ReturnDate) where ID = @orderId; " +
+                       " insert into Circulation..OrdersFlow (OrderId, StatusName,  Changed,  Changer,    DepartmentId, Refusual ) " +
+                       " values                              (@OrderId, @StatusName,getdate(),    @userId  ,      @depId,           null ); " +
+                       " commit;";
+            }
+        }
+
+
         public string PROLONG_ORDER_TO_DATE
         {
             get

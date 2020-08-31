@@ -370,6 +370,7 @@ namespace LibflClassLibrary.Circulation.DB
 
         }
 
+
         internal DataTable ElectronicIssueCount(ReaderInfo reader)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -505,6 +506,24 @@ namespace LibflClassLibrary.Circulation.DB
             }
 
         }
+        internal void ProlongOrderByEmployee(int orderId, int days, int userId, int depId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                command.Connection.Open();
+                command.CommandText = Queries.PROLONG_ORDER_BY_EMPLOYEE;
+                command.Parameters.Clear();
+                command.Parameters.Add("orderId", SqlDbType.Int).Value = orderId;
+                command.Parameters.Add("days", SqlDbType.Int).Value = days;
+                command.Parameters.Add("userId", SqlDbType.Int).Value = userId;
+                command.Parameters.Add("depId", SqlDbType.Int).Value = depId;
+                command.Parameters.Add("StatusName", SqlDbType.NVarChar).Value = CirculationStatuses.Prolonged.Value;
+                command.ExecuteNonQuery();
+            }
+        }
+
         internal void ProlongOrder(int orderId, DateTime toDate)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

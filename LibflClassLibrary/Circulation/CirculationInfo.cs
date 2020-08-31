@@ -554,6 +554,7 @@ namespace LibflClassLibrary.Circulation
             return loader.GetExemplarAvailabilityStatus(idData, fund);
         }
 
+
         public List<OrderInfo> GetOrdersForStorage(int depId, string depName)
         {
             return loader.GetOrdersForStorage(depId, depName);
@@ -854,6 +855,40 @@ namespace LibflClassLibrary.Circulation
         {
             loader.ProlongOrder(orderId, toDate);
         }
+        public void ProlongOrderByEmployee(int orderId, BJUserInfo bjUser)
+        {
+            OrderInfo order = this.GetOrder(orderId);
+            if ((order.StatusCode == CirculationStatuses.EmployeeLookingForBook.Id) ||
+                 (order.StatusCode == CirculationStatuses.Finished.Id) ||
+                 (order.StatusCode == CirculationStatuses.ForReturnToBookStorage.Id) ||
+                 (order.StatusCode == CirculationStatuses.IssuedFromAnotherReserve.Id) ||
+                 (order.StatusCode == CirculationStatuses.OrderIsFormed.Id) ||
+                 (order.StatusCode == CirculationStatuses.Refusual.Id) ||
+                 (order.StatusCode == CirculationStatuses.SelfOrder.Id) ||
+                 (order.StatusCode == CirculationStatuses.WaitingFirstIssue.Id)
+               )
+            {
+                throw new Exception("C015");
+            }
+            else if ((order.StatusCode == CirculationStatuses.ElectronicIssue.Id) ||
+                        (order.StatusCode == CirculationStatuses.IssuedAtHome.Id)
+                      )
+            {
+                  loader.ProlongOrderByEmployee(orderId, 30, bjUser);
+            }
+            else if ((order.StatusCode == CirculationStatuses.IssuedInHall.Id) ||
+                      (order.StatusCode == CirculationStatuses.InReserve.Id)
+                    )
+            {
+                 loader.ProlongOrderByEmployee(orderId, 10, bjUser);
+                
+            }
+            else
+            {
+                throw new Exception("C018");
+            }
+        }
+
         public void ProlongOrder(int OrderId)
         {
             OrderInfo order = this.GetOrder(OrderId);

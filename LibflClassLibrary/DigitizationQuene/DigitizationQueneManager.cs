@@ -14,6 +14,14 @@ namespace LibflClassLibrary.DigitizationQuene
         {
             return loader.GetQuene();
         }
+        public List<DigitizationQueneItemInfo> GetLast400Completed()
+        {
+            return loader.GetCompleted();
+        }
+        public List<DigitizationQueneItemInfo> GetDeleted()
+        {
+            return loader.GetDeleted();
+        }
         public void AddToQuene(string bookId, int readerId)
         {
             try

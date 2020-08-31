@@ -64,13 +64,16 @@ namespace LibflClassLibrary.DigitizationQuene.Loaders
             {
                 throw new Exception("Q003");
             }
-
+            if ((BAZA)idBase != BAZA.BJVVV)
+            {
+                throw new Exception("Q004");
+            }
             dbWrapper.AddToQuene(idBase, idMain, readerId);
         }
         private int GetIdBase(string bookId)
         {
             string fund = BJBookInfo.GetFund(bookId);
-            switch (bookId)
+            switch (fund)
             {
                 case "BJVVV":
                     return 1;

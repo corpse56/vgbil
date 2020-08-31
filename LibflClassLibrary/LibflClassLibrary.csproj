@@ -128,6 +128,7 @@
     <Compile Include="ALISAPI\ResponseObjects\Books\ExemplarSimpleViewInfo.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\IExemplarSimpleViewer.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Books\ViewFactory.cs" />
+    <Compile Include="ALISAPI\ResponseObjects\DigitizationQuene\DigitizationQueneItemAPIView.cs" />
     <Compile Include="ALISAPI\ResponseObjects\General\BooleanResponse.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Readers\LoginType.cs" />
     <Compile Include="ALISAPI\ResponseObjects\Circulation\ReaderBasket.cs" />

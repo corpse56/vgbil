@@ -537,7 +537,8 @@ namespace CirculationApp
             }
             try
             {
-                ci.ProlongOrder(Convert.ToInt32(dgvFormular.SelectedRows[0].Cells["id"].Value));
+                //ci.ProlongOrder(Convert.ToInt32(dgvFormular.SelectedRows[0].Cells["id"].Value));
+                ci.ProlongOrderByEmployee(Convert.ToInt32(dgvFormular.SelectedRows[0].Cells["id"].Value), bjUser);
             }
             catch (Exception ex)
             {
@@ -546,6 +547,7 @@ namespace CirculationApp
                 return;
             }
             FillFormular(ReaderInfo.GetReader(int.Parse(lFromularNumber.Text)));
+            MessageBox.Show("Продлено успешно!");
         }
 
         private void bChangeAuthorization_Click(object sender, EventArgs e)

@@ -32,6 +32,7 @@ namespace LibflClassLibrary.DigitizationQuene.DB
             get
             {
                 return " select * from Circulation..DigitizationQuene A " +
+                       " left join BookAddInf..ScanInfo CC on A.IDMAIN = CC.IDBook and A.BAZA = CC.IDBase" +
                        " where A.DELETED = 1 ";
             }
         }
@@ -39,9 +40,10 @@ namespace LibflClassLibrary.DigitizationQuene.DB
         {
             get
             {
-                return " select * from Circulation..DigitizationQuene A " +
+                return " select top (400) * from Circulation..DigitizationQuene A " +
                        " left join BookAddInf..ScanInfo CCC on A.IDMAIN = CCC.IDBook and A.BAZA = CCC.IDBase" +
-                       " where exists (select IDBook,IDBase from BookAddInf..ScanInfo CC where A.IDMAIN = CC.IDBook and A.BAZA = CC.IDBase))";
+                       " where exists (select IDBook,IDBase from BookAddInf..ScanInfo CC where A.IDMAIN = CC.IDBook and A.BAZA = CC.IDBase)" +
+                       " order by CCC.DateEBook desc";
             }
         }
         internal string ADD_TO_QUENE

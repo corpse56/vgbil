@@ -453,6 +453,12 @@ namespace LibflClassLibrary.ALISAPI.Errors
                 Message = "Очередь на оцифровку переполнена! Попробуйте позже.",
                 httpStatusCode = System.Net.HttpStatusCode.BadRequest,
             },
+            new ALISError()
+            {
+                Code = "Q004",
+                Message = "Оцифровка книг возможна только для книг основного фонда.",
+                httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+            },
 
 
         };

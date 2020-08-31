@@ -432,6 +432,10 @@ namespace LibflClassLibrary.Circulation.Loaders
         {
             dbWrapper.ProlongOrder(orderId, toDate);
         }
+        internal void ProlongOrderByEmployee(int orderId, int days, BJUserInfo bjUser)
+        {
+            dbWrapper.ProlongOrderByEmployee(orderId, days, bjUser.Id, bjUser.SelectedUserStatus.UnifiedLocationCode);
+        }
 
         internal int GetOrderTimesProlonged(int orderId)
         {
@@ -487,5 +491,6 @@ namespace LibflClassLibrary.Circulation.Loaders
             DataTable table = dbWrapper.GetLastOrder(idData, fund);
             return (table.Rows.Count == 0) ? null : FillOrderFromDataRow(table.Rows[0]);
         }
+
     }
 }
