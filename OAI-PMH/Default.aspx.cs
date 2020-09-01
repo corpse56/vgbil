@@ -21,6 +21,7 @@ public partial class _Default : System.Web.UI.Page
     
     protected void Page_Load(object sender, EventArgs e)
     {
+        //?verb=ListRecords&from=2020-08-01&metadataPrefix=marc21&until=2020-09-01
         //?verb=ListRecords&from=2018-11-14&metadataPrefix=marc21&until=2018-10-16
         //?verb=ListRecords&from=2018-01-01&metadataPrefix=marc21&until=2018-11-16
         //Default.aspx?verb=getRecord&metadataPrefix=marc21&identifier=BJVVV1465086
