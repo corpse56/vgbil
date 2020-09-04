@@ -365,7 +365,7 @@ namespace CirculationApp
                 //BJExemplarInfo exemplar = BJExemplarInfo.GetExemplarByIdData(order.ExemplarId, order.Fund);
                 ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
                 //BJBookInfo book = BJBookInfo.GetBookInfoByPIN(exemplar.IDMAIN, exemplar.Fund);
-                row.Cells["id"].Value = order.Book.Title.Contains(" нига не найдена в базе")? bjaccNotFoundMessage : order.OrderId.ToString();
+                row.Cells["id"].Value = order.OrderId.ToString();
                 row.Cells["bar"].Value = order.Book.Title.Contains(" нига не найдена в базе") ? bjaccNotFoundMessage : exemplar.Bar;//.Fields["899$w"].ToString();
                 row.Cells["inv"].Value = order.Book.Title.Contains(" нига не найдена в базе") ? bjaccNotFoundMessage : exemplar.InventoryNumber;//.Fields["899$p"].ToString();
                 row.Cells["author"].Value = order.Book.Title.Contains(" нига не найдена в базе") ? bjaccNotFoundMessage : exemplar.Author;//book.Fields["700$a"].ToString();

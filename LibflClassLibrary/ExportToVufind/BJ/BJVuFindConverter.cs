@@ -956,10 +956,11 @@ namespace LibflClassLibrary.ExportToVufind.BJ
             if (!wasHierarchy && int.Parse(result.Level_id) < 0)
             {
                 AddHierarchyFields(currentIDMAIN, currentIDMAIN, result);
-                if (int.Parse(result.Level_id) == -4)
-                {
-                    AddExemplarFields(currentIDMAIN, result, this.Fund);
-                }
+            }
+            if (int.Parse(result.Level_id) == -4)//если сборник. со сборниками отдельная песня
+            {
+                AddExemplarFields(currentIDMAIN, result, this.Fund);
+                return result;
             }
             if (int.Parse(result.Level_id) < 0)
             {
