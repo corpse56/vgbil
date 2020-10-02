@@ -281,6 +281,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "OrderImCat", "OrderImCat\",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicIssuesByDepartments", "ElectronicIssuesByDepartments\ElectronicIssuesByDepartments.csproj", "{AB44EC40-D4CA-4EB0-A581-F8ECAB346082}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jpgToPdf", "jpgToPdf\jpgToPdf.csproj", "{44B04E57-15B4-42F7-A96F-030E519EDE69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -479,6 +481,10 @@ Global
 		{AB44EC40-D4CA-4EB0-A581-F8ECAB346082}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB44EC40-D4CA-4EB0-A581-F8ECAB346082}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB44EC40-D4CA-4EB0-A581-F8ECAB346082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44B04E57-15B4-42F7-A96F-030E519EDE69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44B04E57-15B4-42F7-A96F-030E519EDE69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44B04E57-15B4-42F7-A96F-030E519EDE69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44B04E57-15B4-42F7-A96F-030E519EDE69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -507,6 +513,7 @@ Global
 		{5F9CBDD1-7AE0-4D5C-835B-607CD15CAE92} = {172B6033-F306-482B-B443-5D565ADCB12A}
 		{F2D33901-0DF7-4407-A8B5-6716D398A075} = {43CBF2E9-8CE3-4AFF-9948-87AA9904013A}
 		{AB44EC40-D4CA-4EB0-A581-F8ECAB346082} = {172B6033-F306-482B-B443-5D565ADCB12A}
+		{44B04E57-15B4-42F7-A96F-030E519EDE69} = {172B6033-F306-482B-B443-5D565ADCB12A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA724ECA-4FCD-4BF4-9553-7CA9DBF07D8D}

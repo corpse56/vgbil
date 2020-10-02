@@ -32,6 +32,21 @@ namespace LibflClassLibrary.Circulation.DB
             return table;
         }
 
+        internal DataTable GetTodaySelfOrders(int unifiedLocationCode, string selfOrderStatus)
+        {
+            DataTable table = new DataTable();
+            //using (SqlConnection connection = new SqlConnection(connectionString))
+            //{
+            //    SqlDataAdapter dataAdapter = new SqlDataAdapter(queries_.GET_TODAY_SELF_ORDER, connection);
+            //    dataAdapter.SelectCommand.Parameters.Add("unifiedLocationCode", SqlDbType.Int).Value = unifiedLocationCode;
+            //    dataAdapter.SelectCommand.Parameters.Add("status", SqlDbType.Int).Value = selfOrderStatus;
+
+            //    int cnt = dataAdapter.Fill(table);
+            //}
+            return table;
+
+        }
+
         internal DataTable GetActiveHallOrders(int unifiedLocationCode)
         {
             DataTable table = new DataTable();

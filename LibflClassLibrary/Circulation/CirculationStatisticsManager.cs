@@ -25,6 +25,16 @@ namespace LibflClassLibrary.Circulation
 
         }
 
+        public List<OrderInfo> GetTodaySelfOrders(BJUserInfo bjUser)
+        {
+            return csl_.GetTodaySelfOrders(bjUser);
+        }
+
+        public List<OrderInfo> GetOrders(BJUserInfo bjUser_, string value)
+        {
+            throw new NotImplementedException();
+        }
+
         public int GetAttendance(DateTime startDate, DateTime endDate, BJUserInfo bjUser)
         {
             return csl_.GetAttendance(startDate, endDate, bjUser);

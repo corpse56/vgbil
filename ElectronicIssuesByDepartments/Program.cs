@@ -20,15 +20,19 @@ namespace ElectronicIssuesByDepartments
         static void Main(string[] args)
         {
 
-            MakeStat(@"e:\Analytics Все данные по веб-сайту Ежедневный отчет в минкульт, выдач 20200601-20200630.csv",
-                        @"c:\Users\admin\Documents\elIssueStatistic\июнь с авторскими правами.csv",
-                        @"c:\Users\admin\Documents\elIssueStatistic\июнь без авторских прав.csv");
-            MakeStat(@"e:\Analytics Все данные по веб-сайту Ежедневный отчет в минкульт, выдач 20200701-20200731.csv",
-                        @"c:\Users\admin\Documents\elIssueStatistic\июль с авторскими правами.csv",
-                        @"c:\Users\admin\Documents\elIssueStatistic\июль без авторских прав.csv");
-            MakeStat(@"e:\Analytics Все данные по веб-сайту Ежедневный отчет в минкульт, выдач 20200801-20200831.csv",
-                        @"c:\Users\admin\Documents\elIssueStatistic\август с авторскими правами.csv",
-                        @"c:\Users\admin\Documents\elIssueStatistic\август без авторских прав.csv");
+            //MakeStat(@"e:\Analytics Все данные по веб-сайту Ежедневный отчет в минкульт, выдач 20200601-20200630.csv",
+            //            @"c:\Users\admin\Documents\elIssueStatistic\июнь с авторскими правами.csv",
+            //            @"c:\Users\admin\Documents\elIssueStatistic\июнь без авторских прав.csv");
+            //MakeStat(@"e:\Analytics Все данные по веб-сайту Ежедневный отчет в минкульт, выдач 20200701-20200731.csv",
+            //            @"c:\Users\admin\Documents\elIssueStatistic\июль с авторскими правами.csv",
+            //            @"c:\Users\admin\Documents\elIssueStatistic\июль без авторских прав.csv");
+            //MakeStat(@"e:\Analytics Все данные по веб-сайту Ежедневный отчет в минкульт, выдач 20200801-20200831.csv",
+            //            @"c:\Users\admin\Documents\elIssueStatistic\август с авторскими правами.csv",
+            //            @"c:\Users\admin\Documents\elIssueStatistic\август без авторских прав.csv");
+
+            MakeStat(@"e:\Analytics Все данные по веб-сайту Ежедневный отчет в минкульт, выдач 20200901-20200930.csv",
+                        @"c:\Users\admin\Documents\elIssueStatistic\Сентябрь с авторскими правами.csv",
+                        @"c:\Users\admin\Documents\elIssueStatistic\Сентябрь без авторских прав.csv");
 
             // Bookreader / Viewer ? bookID = BJVVV_1365375 & view_mode = HQ
             // Bookreader / Viewer ? OrderId = 82549 & view_mode = HQ
@@ -52,16 +56,22 @@ namespace ElectronicIssuesByDepartments
                     {
                         continue;
                     }
-                    if (line.Contains("OrderId"))
+                    if (line.ToLower().Contains("orderid"))
                     {
-                        int pos = line.IndexOf("OrderId") + 8;
+                        int pos = line.ToLower().IndexOf("orderid") + 8;
                         int posEnd = line.IndexOf("&");
+                        if (posEnd < 0) continue;
                         int orderId = Convert.ToInt32(line.Substring(pos, posEnd - pos));
 
                         pos = line.IndexOf(",") + 1;
                         int times = Convert.ToInt32(line.Substring(pos));
                         CirculationInfo ci = new CirculationInfo();
-                        OrderInfo order = ci.GetOrder(orderId);
+                        OrderInfo order;
+                        try
+                        {
+                            order = ci.GetOrder(orderId);
+                        }
+                        catch { continue; }
                         BJBookInfo book = BJBookInfo.GetBookInfoByPIN(order.BookId);
                         string department = GetBestDepartment(book);
 
@@ -79,7 +89,7 @@ namespace ElectronicIssuesByDepartments
                     }
                     else
                     {
-                        int pos = line.IndexOf("bookID") + 7;
+                        int pos = line.ToLower().IndexOf("bookid") + 7;
                         int posEnd = line.IndexOf("&");
                         posEnd = (posEnd < pos) ? line.IndexOf(",") : posEnd;
                         var bookId = line.Substring(pos, posEnd - pos);

@@ -28,6 +28,20 @@ namespace LibflClassLibrary.Circulation
 
         }
 
+        internal List<OrderInfo> GetTodaySelfOrders(BJUserInfo bjUser)
+        {
+            DataTable table = dbWrapper_.GetTodaySelfOrders(bjUser.SelectedUserStatus.UnifiedLocationCode, CirculationStatuses.SelfOrder.Value);
+            List<OrderInfo> orders = new List<OrderInfo>();
+            CirculationLoader cl = new CirculationLoader();
+            foreach (DataRow row in table.Rows)
+            {
+                OrderInfo order = cl.FillOrderFromDataRow(row);
+                orders.Add(order);
+            }
+            return orders;
+
+        }
+
         internal List<OrderInfo> GetActiveHallOrders(BJUserInfo bjUser)
         {
             DataTable table = dbWrapper_.GetActiveHallOrders(bjUser.SelectedUserStatus.UnifiedLocationCode);

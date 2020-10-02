@@ -25,6 +25,7 @@ public partial class _Default : System.Web.UI.Page
         //?verb=ListRecords&from=2018-11-14&metadataPrefix=marc21&until=2018-10-16
         //?verb=ListRecords&from=2018-01-01&metadataPrefix=marc21&until=2018-11-16
         //Default.aspx?verb=getRecord&metadataPrefix=marc21&identifier=BJVVV1465086
+        //Default.aspx?verb=getRecord&metadataPrefix=marc21&identifier=REDKOSTJ19376
         string verb ="";
         if (Request["verb"] != null)
         {
@@ -1073,6 +1074,18 @@ public partial class _Default : System.Web.UI.Page
                     attribute.Value = rsub["IDENT"].ToString();
                     subf.Attributes.Append(attribute);
                     subf.InnerText = pol.Substring(0, k).Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
+                    if (rsub["MET"].ToString() == "200" && rsub["IDENT"].ToString() == "h")
+                    {
+                        if (subf.InnerText.Length >= 45)
+                        {
+                            subf.InnerText = subf.InnerText.Substring(0, 44);
+                        }
+                    }
+                    if (rsub["MET"].ToString() == "225" && rsub["IDENT"].ToString() == "a")
+                    {
+                        if (subf.InnerText.Length >= 450)
+                            subf.InnerText = subf.InnerText.Substring(0, 449);
+                    }
                     node.AppendChild(subf);
 
                     //pol = pol.Substring(k);
@@ -1095,6 +1108,16 @@ public partial class _Default : System.Web.UI.Page
                         if (k < 0)
                             ppol = ppol.Substring(1);
                         subf.InnerText = ppol.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
+                        if (rsub["MET"].ToString() == "200" && rsub["IDENT"].ToString() == "h")
+                        {
+                            if (subf.InnerText.Length >= 45)
+                                subf.InnerText = subf.InnerText.Substring(0, 44);
+                        }
+                        if (rsub["MET"].ToString() == "225" && rsub["IDENT"].ToString() == "a")
+                        {
+                            if (subf.InnerText.Length >= 450)
+                                subf.InnerText = subf.InnerText.Substring(0, 449);
+                        }
                         node.AppendChild(subf);
 
                     }
@@ -1106,6 +1129,16 @@ public partial class _Default : System.Web.UI.Page
                     attribute.Value = rsub["IDENT"].ToString();
                     subf.Attributes.Append(attribute);
                     subf.InnerText = pol.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
+                    if (rsub["MET"].ToString() == "200" && rsub["IDENT"].ToString() == "h")
+                    {
+                        if (subf.InnerText.Length >= 45)
+                            subf.InnerText = subf.InnerText.Substring(0, 44);
+                    }
+                    if (rsub["MET"].ToString() == "225" && rsub["IDENT"].ToString() == "a")
+                    {
+                        if (subf.InnerText.Length >= 450)
+                            subf.InnerText = subf.InnerText.Substring(0, 449);
+                    }
                     node.AppendChild(subf);
                 }
                 //ident = pol.Substring(0, 1)[0];

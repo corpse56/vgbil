@@ -25,14 +25,14 @@ namespace VufindConditionalBulkUpdate
 
             List<string> sborniki = FindSbornik(fund);
 
-            bj.DeleteFromIndex(sborniki);
+            //bj.DeleteFromIndex(sborniki);
 
             //далее перевыгружаем их в отдельный файл
-            BJVuFindConverter converter = new BJVuFindConverter(fund);
-            List<VufindDoc> docs = converter.Export(sborniki);
+            //BJVuFindConverter converter = new BJVuFindConverter(fund);
+            //List<VufindDoc> docs = converter.Export(sborniki);
 
             //далее загружаем их обратно с исправленным местонахождением
-            bj.AddToIndex(docs);
+            //bj.AddToIndex(docs);
 
 
         }

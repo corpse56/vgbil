@@ -221,7 +221,7 @@ namespace BookkeepingForOrder
                 dgwRHis.Rows.Clear();
             }
             CirculationInfo circulation = new CirculationInfo();
-            List<OrderInfo> orders = circulation.GetOrdersHistoryForStorage(user.SelectedUserStatus.DepId, user.SelectedUserStatus.DepName);
+            List<OrderInfo> orders = circulation.GetOrdersHistoryForStorage(user.SelectedUserStatus.UnifiedLocationCode, user.SelectedUserStatus.DepName);
             foreach (var order in orders)
             {
                 ExemplarBase exemplar = ExemplarFactory.CreateExemplar(order.ExemplarId, order.Fund);
